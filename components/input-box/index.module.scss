@@ -1,0 +1,55 @@
+@import "../../styles/variables";
+
+.disabled {
+  box-shadow: $box-shadow !important;
+  color: $disabled-button-color !important;
+  border: $input-box-border !important;
+  cursor: not-allowed !important;
+  background-color: $list-hover-color !important;
+}
+
+.label {
+  font-size: 0.75rem;
+  line-height: 21px;
+  font-weight: 600;
+}
+.error {
+  font-size: 0.75rem;
+  color: $error;
+}
+.inputBox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+  .inputWrapper {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    border: $input-box-border;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    background-color: $white;
+
+    .inputField {
+      display: flex;
+      flex: 1;
+      background-color: inherit;
+      line-height: 1.5rem;
+      font-size: 1rem;
+      max-height: 48px;
+      padding-left: 0;
+      border: none;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+.focus {
+  border: 1px solid $primary !important;
+  box-shadow: $input-box-shadow;
+}

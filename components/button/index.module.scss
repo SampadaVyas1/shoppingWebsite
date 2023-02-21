@@ -1,0 +1,91 @@
+@import "../../styles/variables";
+
+.button {
+  border: none;
+  height: 48px;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $white;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+
+  .iconLeading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 1.5rem;
+    max-width: 1.5rem;
+  }
+
+  .iconTrailing {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 1.5rem;
+    max-width: 1.5rem;
+  }
+
+  .buttonLabel {
+    display: flex;
+    justify-content: center;
+    color: inherit;
+    font-weight: 600;
+    line-height: 24px;
+    font-size: 1rem;
+    background: transparent;
+    white-space: nowrap;
+  }
+  &:hover {
+    cursor: pointer;
+    box-shadow: $button-hover-shadow;
+  }
+}
+
+.outlined {
+  border: 1px solid $primary;
+  color: $primary;
+  min-width: 120px;
+  background-color: $white;
+
+  &:disabled {
+    color: $gray-500 !important;
+    border: 1px solid $disabled-button-color !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+  }
+}
+
+.text {
+  color: $primary;
+
+  &:hover {
+    background-color: $primary-light;
+    padding: 0.5rem;
+    text-decoration: underline;
+    box-shadow: none;
+  }
+  &:disabled {
+    color: $gray-500 !important;
+    cursor: not-allowed !important;
+    background-color: transparent;
+    text-decoration: none;
+  }
+}
+
+.contained {
+  background-color: $primary;
+  color: $white;
+  min-width: 120px;
+
+  &:disabled {
+    background-color: $disabled-button-color !important;
+    border: 1px solid $disabled-button-color !important;
+    color: $white !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+  }
+}

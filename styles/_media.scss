@@ -1,0 +1,14 @@
+$xs-min: 320px;
+$sm-min: 480px;
+$smx-min: 576px;
+$md-min: 783px;
+$lg-min: 992px;
+$xl-min: 1200px;
+
+$ultra-lg-min: 1440px;
+
+$xs-max: ($sm-min - 1);
+$sm-max: ($smx-min - 1);
+$smx-max: ($md-min - 1);
+$md-max: ($lg-min - 1);
+$lg-max: ($xl-min - 1);

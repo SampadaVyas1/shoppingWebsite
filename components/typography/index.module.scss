@@ -1,0 +1,207 @@
+@import "../../styles/variables";
+@import "../../styles/media";
+.header {
+  font-size: $headerFontSize;
+  font-weight: 700;
+
+  @media screen and (max-width: $md-min) {
+    font-size: $headerFontSize-md;
+  }
+}
+
+.subHeader {
+  font-size: $subHeaderFontSize;
+  font-weight: 600;
+
+  @media screen and (max-width: $md-min) {
+    font-size: $subHeaderFontSize-md;
+  }
+}
+
+.title {
+  font-size: $titleFontSize;
+  font-weight: 600;
+  font-family: $Montserrat;
+
+  @media screen and (max-width: $md-min) {
+    font-size: $titleFontSize-md;
+  }
+}
+
+.body {
+  font-size: $bodyFontSize;
+  font-weight: 400;
+
+  @media screen and (max-width: $md-min) {
+    font-size: $bodyFontSize-md;
+  }
+}
+
+.body1 {
+  font-size: $body1FontSize;
+  font-weight: 400;
+  font-family: $Roboto;
+
+  @media screen and (max-width: $md-min) {
+    font-size: $body1FontSize-md;
+  }
+}
+
+.text {
+  font-size: $textFontSize;
+  font-weight: 400;
+
+  @media screen and (max-width: $md-min) {
+    font-size: $textFontSize-md;
+  }
+
+  @media screen and (max-width: $smx-max) {
+    font-size: 0.75rem;
+  }
+}
+
+.caption {
+  font-size: $captionFontSize;
+  font-weight: 300;
+}
+
+.error {
+  font-size: $errorFontSize;
+  font-weight: 400;
+  color: $error;
+}
+
+.headline32 {
+  font-family: $Montserrat;
+
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 48px;
+  color: $gray-900;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 1.25rem;
+    line-height: 30px;
+  }
+}
+
+.headline24 {
+  font-family: $Montserrat;
+
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 36px;
+  color: $gray-900;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 1.125rem;
+    line-height: 27px;
+  }
+}
+
+.headline16 {
+  font-family: $Roboto;
+
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 24px;
+  color: $gray-900;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 1.125rem;
+    line-height: 24px;
+  }
+}
+
+.subtitle16 {
+  font-family: $Roboto;
+
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 24px;
+  color: $gray-900;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 0.875rem;
+    line-height: 24px;
+  }
+}
+
+.subtitle18 {
+  font-family: $Roboto;
+
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 24px;
+  color: $gray-500;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 0.875rem;
+    line-height: 24px;
+  }
+}
+
+.supportingText {
+  font-family: $Roboto;
+
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 24px;
+  color: $gray-500;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 0.875rem;
+    line-height: 21px;
+  }
+}
+
+.buttonText {
+  font-family: $Roboto;
+
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 24px;
+  color: $gray-500;
+  letter-spacing: 0.0125em;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 0.875rem;
+  }
+}
+
+.inputLabel {
+  font-family: $Roboto;
+
+  font-weight: 600;
+  font-size: 0.875rem;
+  line-height: 21px;
+  color: $gray-900;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 0.875rem;
+  }
+}
+
+.chipTextSemibold {
+  font-family: $Roboto;
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 18px;
+  color: $gray-500;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 0.625rem;
+  }
+}
+
+.chipTextSemibold {
+  font-family: $Roboto;
+
+  font-size: 0.75rem;
+  line-height: 18px;
+  color: $gray-500;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 0.625rem;
+  }
+}

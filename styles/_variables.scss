@@ -1,0 +1,53 @@
+$primary: #2c74d6;
+$primary-dark: #013a6b;
+$box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05), 0px 0px 0px 4px #dfdfdf;
+$card-bg: linear-gradient(180deg, rgba(238, 247, 254, 0) 0%, #eef7fe 100%);
+$primary-light: #eef7fe;
+$card-box-shadow: 0px 2px 16px rgba(7, 81, 176, 0.04);
+$success-color: #04bfa4;
+$error: #ff5252;
+$gray: #667085;
+$white: #ffffff;
+$modal-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+$modal-backdrop-background: rgba(52, 64, 84, 0.7);
+$list-hover-color: #f9fafc;
+$disabled-button-color: #98a2b3;
+$Montserrat: "Montserrat";
+$Roboto: "Roboto";
+$input-box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05), 0px 0px 0px 4px #eef7fe;
+$input-box-border: 1px solid $gray;
+$button-group-horizontal-first-child: 0.5rem 0rem 0rem 0.5rem;
+$button-group-horizontal-last-child: 0rem 0.5rem 0.5rem 0rem;
+$button-group-vertical-first-child: 0.5rem 0.5rem 0rem 0rem;
+$button-group-vertical-last-child: 0rem 0rem 0.5rem 0.5rem;
+$button-group-border: 1px solid #eaecf0;
+$button-group-box-shadow: 0rem 0.063rem 0.125rem rgba(16, 24, 40, 0.05);
+$button-hover-shadow: 0px 0px 6px rgba(16, 24, 40, 0.25);
+$button-focus-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05),
+  0px 0px 0px 4px #eef7fe;
+
+$headerFontSize-md: 3.75rem;
+$headerFontSize: 4.5rem;
+$subHeaderFontSize-md: 2.5rem;
+$subHeaderFontSize: 3.75rem;
+$titleFontSize-md: 1.5rem;
+$tabHeadingFontSize: 2rem;
+$titleFontSize: 2.25rem;
+$tabHeadingFontSize: 2rem;
+$bodyFontSize-md: 1.125rem;
+$bodyFontSize: 1.5rem;
+$body1FontSize-md: 1.125rem;
+$body1FontSize: 1.125rem;
+$textFontSize-md: 0.875rem;
+$textFontSize: 1rem;
+$captionFontSize: 0.875rem;
+$errorFontSize: 0.875rem;
+
+$gray-900: #101828;
+$gray-700: #344054;
+$gray-500: #667085;
+$gray-300: #d0d5dd;
+$gray-200: #eaecf0;
+$gray-500: #667085;
+
+$border: 1px solid $gray-300;

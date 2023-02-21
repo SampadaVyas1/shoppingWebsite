@@ -1,0 +1,22 @@
+@import "../../styles/variables";
+
+.imagePlaceholder {
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  background-color: $primary;
+  color: $white;
+  object-fit: contain;
+  object-position: center;
+  font-weight: 600;
+
+  .profileText {
+    user-select: none;
+    font: inherit;
+    color: inherit;
+  }
+}
