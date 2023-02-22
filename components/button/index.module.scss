@@ -2,7 +2,7 @@
 
 .button {
   border: none;
-  height: 48px;
+  height: 3rem;
   padding: 0.75rem;
   box-sizing: border-box;
   display: flex;
@@ -34,26 +34,26 @@
     justify-content: center;
     color: inherit;
     font-weight: 600;
-    line-height: 24px;
+    line-height: 1.5rem;
     font-size: 1rem;
     background: transparent;
     white-space: nowrap;
   }
   &:hover {
     cursor: pointer;
-    box-shadow: $button-hover-shadow;
+    box-shadow: $buttonHoverShadow;
   }
 }
 
 .outlined {
-  border: 1px solid $primary;
+  border: 0.0625rem solid $primary;
   color: $primary;
-  min-width: 120px;
+  min-width: 7.5rem;
   background-color: $white;
 
   &:disabled {
     color: $gray-500 !important;
-    border: 1px solid $disabled-button-color !important;
+    border: 0.0625rem solid $disabledButtonColor !important;
     cursor: not-allowed !important;
     box-shadow: none !important;
   }
@@ -63,7 +63,7 @@
   color: $primary;
 
   &:hover {
-    background-color: $primary-light;
+    background-color: $primaryLight;
     padding: 0.5rem;
     text-decoration: underline;
     box-shadow: none;
@@ -79,11 +79,11 @@
 .contained {
   background-color: $primary;
   color: $white;
-  min-width: 120px;
+  min-width: 7.5rem;
 
   &:disabled {
-    background-color: $disabled-button-color !important;
-    border: 1px solid $disabled-button-color !important;
+    background-color: $disabledButtonColor !important;
+    border: 0.0625rem solid $disabledButtonColor !important;
     color: $white !important;
     cursor: not-allowed !important;
     box-shadow: none !important;

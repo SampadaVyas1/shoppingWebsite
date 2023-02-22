@@ -1,5 +1,4 @@
-import React, { Component, FormEventHandler, useState } from "react";
-import InputBox from "../input-box";
+import React from "react";
 import styles from "./index.module.scss";
 
 interface IModalProps {

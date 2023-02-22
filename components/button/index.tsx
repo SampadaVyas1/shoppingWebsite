@@ -1,7 +1,8 @@
+import { HtmlHTMLAttributes } from "react";
 import ImageComponent from "../image";
 import styles from "./index.module.scss";
 
-interface IButtonProps {
+interface IButtonProps extends HtmlHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   startIcon?: string;
   endIcon?: string;

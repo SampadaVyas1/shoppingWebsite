@@ -68,7 +68,7 @@
 .error {
   font-size: $errorFontSize;
   font-weight: 400;
-  color: $error;
+  color: $errorText;
 }
 
 .headline32 {
@@ -76,12 +76,12 @@
 
   font-weight: 600;
   font-size: 2rem;
-  line-height: 48px;
+  line-height: 3rem;
   color: $gray-900;
 
   @media screen and (max-width: $md-min) {
     font-size: 1.25rem;
-    line-height: 30px;
+    line-height: 1.875rem;
   }
 }
 
@@ -90,12 +90,12 @@
 
   font-weight: 600;
   font-size: 1.5rem;
-  line-height: 36px;
+  line-height: 2.25rem;
   color: $gray-900;
 
   @media screen and (max-width: $md-min) {
     font-size: 1.125rem;
-    line-height: 27px;
+    line-height: 1.6875rem;
   }
 }
 
@@ -104,12 +104,12 @@
 
   font-weight: 600;
   font-size: 1rem;
-  line-height: 24px;
+  line-height: 1.5rem;
   color: $gray-900;
 
   @media screen and (max-width: $md-min) {
     font-size: 1.125rem;
-    line-height: 24px;
+    line-height: 1.5rem;
   }
 }
 
@@ -118,12 +118,12 @@
 
   font-weight: 400;
   font-size: 0.875rem;
-  line-height: 24px;
+  line-height: 1.5rem;
   color: $gray-900;
 
   @media screen and (max-width: $md-min) {
     font-size: 0.875rem;
-    line-height: 24px;
+    line-height: 1.5rem;
   }
 }
 
@@ -132,12 +132,12 @@
 
   font-weight: 400;
   font-size: 1.125rem;
-  line-height: 24px;
+  line-height: 1.5rem;
   color: $gray-500;
 
   @media screen and (max-width: $md-min) {
     font-size: 0.875rem;
-    line-height: 24px;
+    line-height: 1.5rem;
   }
 }
 
@@ -146,12 +146,12 @@
 
   font-weight: 400;
   font-size: 0.875rem;
-  line-height: 24px;
+  line-height: 1.5rem;
   color: $gray-500;
 
   @media screen and (max-width: $md-min) {
     font-size: 0.875rem;
-    line-height: 21px;
+    line-height: 1.5rem;
   }
 }
 
@@ -160,7 +160,7 @@
 
   font-weight: 700;
   font-size: 1rem;
-  line-height: 24px;
+  line-height: 1.5rem;
   color: $gray-500;
   letter-spacing: 0.0125em;
 
@@ -174,7 +174,7 @@
 
   font-weight: 600;
   font-size: 0.875rem;
-  line-height: 21px;
+  line-height: 1.5rem;
   color: $gray-900;
 
   @media screen and (max-width: $md-min) {
@@ -186,7 +186,7 @@
   font-family: $Roboto;
   font-weight: 600;
   font-size: 0.75rem;
-  line-height: 18px;
+  line-height: 1.125rem;
   color: $gray-500;
 
   @media screen and (max-width: $md-min) {
@@ -198,7 +198,7 @@
   font-family: $Roboto;
 
   font-size: 0.75rem;
-  line-height: 18px;
+  line-height: 1.125rem;
   color: $gray-500;
 
   @media screen and (max-width: $md-min) {

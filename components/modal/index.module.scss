@@ -10,13 +10,13 @@
   top: 0;
   left: 0;
   z-index: 99;
-  background-color: $modal-backdrop-background;
+  background-color: $modalBackdropBackground;
 
   .modal {
     padding: 1.25rem;
     border-radius: 0.5rem;
     background-color: white;
-    box-shadow: $modal-box-shadow;
+    box-shadow: $modalBoxShadow;
 
     .heading {
       font-weight: 600;

@@ -1,0 +1,53 @@
+@import "../../styles/variables";
+.skeleton {
+  width: inherit;
+  height: inherit;
+  background: $shimmerBackground;
+  position: relative;
+
+  .shimmer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: $shimmerAnimationBackground;
+    animation: shimmer 1s infinite linear;
+  }
+
+  @keyframes shimmer {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(200%);
+    }
+  }
+}
+.textLarge {
+  width: 100%;
+  background: $shimmerBackground;
+  border-radius: 0.5rem;
+  min-height: 0.625rem;
+}
+.textMedium {
+  width: 70%;
+  background: $shimmerBackground;
+  border-radius: 0.5rem;
+  min-height: 0.625rem;
+}
+.textSmall {
+  width: 40%;
+  background: $shimmerBackground;
+  border-radius: 0.5rem;
+  min-height: 0.625rem;
+}
+
+.circle {
+  width: inherit;
+  height: inherit;
+  min-width: 3.75rem;
+  width: 3.75rem;
+  min-height: 3.75rem;
+  border-radius: 50%;
+}

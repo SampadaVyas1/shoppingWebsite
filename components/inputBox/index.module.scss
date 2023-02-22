@@ -1,21 +1,21 @@
 @import "../../styles/variables";
 
 .disabled {
-  box-shadow: $box-shadow !important;
-  color: $disabled-button-color !important;
-  border: $input-box-border !important;
+  box-shadow: $boxShadow !important;
+  color: $disabledButtonColor !important;
+  border: $inputBoxBorder !important;
   cursor: not-allowed !important;
-  background-color: $list-hover-color !important;
+  background-color: $listHoverColor !important;
 }
 
 .label {
   font-size: 0.75rem;
-  line-height: 21px;
+  line-height: 1.3125rem;
   font-weight: 600;
 }
 .error {
   font-size: 0.75rem;
-  color: $error;
+  color: $errorText;
 }
 .inputBox {
   display: flex;
@@ -27,7 +27,7 @@
     flex: 1;
     align-items: center;
     justify-content: center;
-    border: $input-box-border;
+    border: $inputBoxBorder;
     border-radius: 0.5rem;
     padding: 0.75rem 1rem;
     background-color: $white;
@@ -38,7 +38,7 @@
       background-color: inherit;
       line-height: 1.5rem;
       font-size: 1rem;
-      max-height: 48px;
+      max-height: 3rem;
       padding-left: 0;
       border: none;
 
@@ -50,6 +50,6 @@
 }
 
 .focus {
-  border: 1px solid $primary !important;
-  box-shadow: $input-box-shadow;
+  border: 0.0625rem solid $primary !important;
+  box-shadow: $inputBoxShadow;
 }
