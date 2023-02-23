@@ -10,6 +10,7 @@ import AuthProvider, { AuthContext } from "@/context/authContext";
 import { useRouter } from "next/router";
 import SkeletonLoader from "@/components/skeletonLoader";
 import ROUTES from "@/common/routes";
+import Table from "@/components/table";
 
 export default function Home() {
   const { loaderSpinner } = Images;
@@ -50,6 +51,7 @@ export default function Home() {
           <SkeletonLoader type="textSmall" />
         </div>
       </div>
+      <Table />
     </div>
   );
 }
