@@ -1,6 +1,6 @@
 import Button from "@/components/button";
 import AuthProvider, { AuthContext } from "@/context/authContext";
-import ProtectedRoute from "@/protectedRoute";
+import ProtectedRoute from "@/hoc/protectedRoute";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useContext } from "react";

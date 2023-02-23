@@ -1,3 +1,4 @@
+import ROUTES from "@/common/routes";
 import { AuthContext } from "@/context/authContext";
 import Login from "@/pages/login";
 import { useRouter } from "next/router";
@@ -8,9 +9,9 @@ const ProtectedRoute = ({ children }: any) => {
   const context = useContext(AuthContext);
   useEffect(() => {
     if (!context.isLoggedIn) {
-      router.replace("/login");
+      router.replace(ROUTES.LOGIN);
     }
-  }, []);
+  }, [context.isLoggedIn, router]);
 
   return context.isLoggedIn ? children : <Login />;
 };

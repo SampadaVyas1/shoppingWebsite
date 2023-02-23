@@ -1,8 +1,14 @@
+import { EVENT } from "@/common/enums";
 import React, { useRef, useCallback, useEffect, HTMLAttributes } from "react";
-import { MOUSE_DOWN } from "../../helpers/constants";
+import { EVENT_TYPE } from "../../common/constants";
 
 interface props extends HTMLAttributes<HTMLDivElement> {
-  event?: "click" | "mousedown" | "mouseup" | "pointerdown" | "pointerup";
+  event?:
+    | EVENT.CLICK
+    | EVENT.MOUSE_DOWN
+    | EVENT.MOUSE_UP
+    | EVENT.POINTER_DOWN
+    | EVENT.POINTER_UP;
   children: React.ReactNode;
   handleClose: () => void;
   customClass?: string;
@@ -12,15 +18,6 @@ function ClickAwayListener(props: props) {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
   const { event, children, customClass, handleClose, ...otherProps } = props;
 
-  useEffect(() => {
-    const { event = MOUSE_DOWN } = props;
-    window.document.addEventListener(event, handleClickOutside);
-    return () => {
-      const { event = MOUSE_DOWN } = props;
-      window.document.removeEventListener(event, handleClickOutside);
-    };
-  }, [handleClose]);
-
   const handleClickOutside = useCallback(
     (event: any) => {
       const { handleClose } = props;
@@ -28,8 +25,17 @@ function ClickAwayListener(props: props) {
         handleClose && handleClose();
       }
     },
-    [handleClose]
+    [props]
   );
+
+  useEffect(() => {
+    const { event = EVENT_TYPE.MOUSE_DOWN } = props;
+    window.document.addEventListener(event, handleClickOutside);
+    return () => {
+      const { event = EVENT_TYPE.MOUSE_DOWN } = props;
+      window.document.removeEventListener(event, handleClickOutside);
+    };
+  }, [handleClickOutside, handleClose, props]);
 
   return (
     <div ref={ref} className={customClass} {...otherProps}>

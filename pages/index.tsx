@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from "react";
 import AuthProvider, { AuthContext } from "@/context/authContext";
 import { useRouter } from "next/router";
 import SkeletonLoader from "@/components/skeletonLoader";
+import ROUTES from "@/common/routes";
 
 export default function Home() {
   const { loaderSpinner } = Images;
@@ -22,7 +23,7 @@ export default function Home() {
 
   const handleLogout = () => {
     handleLogin();
-    router.push("/login");
+    router.push(ROUTES.LOGIN);
   };
 
   return (

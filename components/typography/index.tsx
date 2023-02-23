@@ -1,4 +1,4 @@
-import { SUBTITLE_16 } from "@/helpers/constants";
+import { VARIANT_TYPE } from "@/common/constants";
 import React, { HTMLAttributes } from "react";
 import styles from "./index.module.scss";
 
@@ -28,7 +28,7 @@ interface ITypographyProps extends HTMLAttributes<HTMLParagraphElement> {
 
 class Typography extends React.Component<ITypographyProps> {
   render() {
-    const { variant = SUBTITLE_16, customStyle, ...otherProps } = this.props;
+    const { variant = VARIANT_TYPE.SUBTITLE_16, customStyle, ...otherProps } = this.props;
 
     return (
       <div className={`${styles[variant]} ${customStyle}`} {...otherProps}>
