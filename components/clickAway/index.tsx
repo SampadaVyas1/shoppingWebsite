@@ -14,7 +14,7 @@ interface props extends HTMLAttributes<HTMLDivElement> {
   customClass?: string;
 }
 
-function ClickAwayListener(props: props) {
+const ClickAwayListener = (props: props) => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
   const { event, children, customClass, handleClose, ...otherProps } = props;
 
@@ -42,6 +42,6 @@ function ClickAwayListener(props: props) {
       {children}
     </div>
   );
-}
+};
 
 export default ClickAwayListener;

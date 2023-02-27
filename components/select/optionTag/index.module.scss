@@ -1,0 +1,24 @@
+@import "../../../styles/variables";
+.optionTagWrapper {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  flex: 1;
+
+  .optionTag {
+    display: flex;
+    gap: 0.125rem;
+    border: $border;
+    border-radius: 0.25rem;
+    align-items: center;
+    line-height: 1rem;
+    padding: 0.25rem 0.5rem;
+    box-sizing: border-box;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    .cross {
+      width: 0.75rem;
+      height: 0.75rem;
+    }
+  }
+}

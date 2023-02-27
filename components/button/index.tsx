@@ -1,3 +1,4 @@
+import { BUTTON_VARIANT } from "@/common/enums";
 import { HtmlHTMLAttributes } from "react";
 import ImageComponent from "../image";
 import styles from "./index.module.scss";
@@ -6,18 +7,19 @@ interface IButtonProps extends HtmlHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   startIcon?: string;
   endIcon?: string;
-  variant?: "text" | "outlined" | "contained";
-  size?: "2xl" | "xl" | "large" | "medium" | "small";
+  variant?:
+    | BUTTON_VARIANT.TEXT
+    | BUTTON_VARIANT.OUTLINED
+    | BUTTON_VARIANT.CONTAINED;
   disabled?: boolean;
   customStyle?: string;
 }
 
 const Button = (props: IButtonProps) => {
   const {
-    variant = "outlined",
+    variant = BUTTON_VARIANT.OUTLINED,
     startIcon,
     endIcon,
-    size,
     children,
     customStyle,
     ...otherProps

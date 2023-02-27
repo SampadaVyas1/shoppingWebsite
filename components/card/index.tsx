@@ -2,7 +2,7 @@ import styles from "./index.module.scss";
 
 interface ICardProps {
   title?: string;
-  children: any;
+  children: JSX.Element;
   customClass?: string;
 }
 

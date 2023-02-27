@@ -7,19 +7,10 @@ interface IModalProps {
   customStyle?: string;
   customBackdrop?: string;
   header?: string;
-  isOpen?: boolean;
-  formData?: any;
 }
 
-function Modal(props: IModalProps) {
-  const {
-    children,
-    onClose,
-    customStyle,
-    header,
-    customBackdrop,
-    isOpen = false,
-  } = props;
+const Modal = (props: IModalProps) => {
+  const { children, onClose, customStyle, header, customBackdrop } = props;
   const backdropStyle = customBackdrop
     ? customBackdrop
     : `${styles.modalBackdrop}`;
@@ -27,11 +18,11 @@ function Modal(props: IModalProps) {
     ? `${styles.modal} ${customStyle}`
     : `${styles.modal}`;
 
-  function handleModalClick(
+  const handleModalClick = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
-  ) {
+  ) => {
     event.stopPropagation();
-  }
+  };
 
   return (
     <div className={backdropStyle} onClick={onClose}>
@@ -41,6 +32,6 @@ function Modal(props: IModalProps) {
       </div>
     </div>
   );
-}
+};
 
 export default Modal;

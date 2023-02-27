@@ -13,7 +13,7 @@ interface IImageProps
   fallbackClass?: string;
 }
 
-function ImageComponent(props: IImageProps) {
+const ImageComponent = (props: IImageProps) => {
   const { src, fallbackText, customClass, fallbackClass, ...otherProps } =
     props;
   const [imagePlaceholder, setImagePlaceholder] = useState<boolean>(false);
@@ -30,6 +30,7 @@ function ImageComponent(props: IImageProps) {
           src={src}
           alt="image"
           className={customClass}
+          onClick={props.onClick}
           draggable={false}
           width={40}
           height={40}
@@ -54,5 +55,5 @@ function ImageComponent(props: IImageProps) {
       <Rectangle className={customClass} onClick={props.onClick as any} />
     </Fragment>
   );
-}
+};
 export default ImageComponent;

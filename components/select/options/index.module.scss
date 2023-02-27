@@ -1,0 +1,38 @@
+@import "../../../styles/variables";
+
+.optionsWrapper {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  min-width: 7.5rem;
+  flex: 1;
+  background-color: $white;
+  max-height: 12.5rem;
+  overflow-y: scroll;
+  box-shadow: $cardBoxShadow;
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-200;
+    border-radius: 0.5rem;
+  }
+
+  .option {
+    font-size: 1rem;
+    padding: 0.5rem;
+    line-height: 1.5rem;
+    box-sizing: border-box;
+    &:hover {
+      cursor: pointer;
+      background-color: $listHoverColor;
+    }
+  }
+  .selected {
+    background-color: $primaryLight;
+    color: $primary;
+    font-weight: 600;
+  }
+}

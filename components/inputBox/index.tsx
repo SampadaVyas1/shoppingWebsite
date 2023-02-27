@@ -1,11 +1,11 @@
 import React, {
   ChangeEvent,
-  Component,
   HTMLAttributes,
   useEffect,
   useRef,
   useState,
 } from "react";
+import ImageComponent from "../image";
 import styles from "./index.module.scss";
 
 interface IInputProps extends HTMLAttributes<HTMLInputElement> {
@@ -14,13 +14,14 @@ interface IInputProps extends HTMLAttributes<HTMLInputElement> {
   value?: any;
   disabled?: boolean;
   multiline?: boolean;
-  handleChange?: (value: string | number) => void;
+  handleChange?: (value: any) => void;
   autoFocus?: boolean;
   pattern?: string;
   error?: string;
+  startIcon?: string;
 }
 
-function InputBox(props: IInputProps) {
+const InputBox = (props: IInputProps) => {
   const {
     customClass,
     value,
@@ -32,6 +33,7 @@ function InputBox(props: IInputProps) {
     pattern,
     label,
     error,
+    startIcon,
     ...otherProps
   } = props;
   const [customInputWrapperClass, setCustomInputWrapperClass] =
@@ -41,19 +43,19 @@ function InputBox(props: IInputProps) {
         : `${styles.inputWrapper}`
     );
 
-  function onFocus() {
+  const onFocus = () => {
     setCustomInputWrapperClass(`${styles.inputWrapper} ${styles.focus}`);
-  }
-  function onBlur() {
+  };
+  const onBlur = () => {
     setCustomInputWrapperClass(`${styles.inputWrapper}`);
-  }
+  };
 
-  function handleInputChange(
+  const handleInputChange = (
     event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
-  ) {
+  ) => {
     const value = event?.target?.value;
     props.handleChange && props.handleChange(value);
-  }
+  };
   const inputElement = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -67,6 +69,9 @@ function InputBox(props: IInputProps) {
       {label && <div className={styles.label}>{label}</div>}
 
       <div className={`${customClass} ${customInputWrapperClass}`}>
+        {startIcon && (
+          <ImageComponent src={startIcon} customClass={styles.startIcon} />
+        )}
         {multiline ? (
           <textarea
             className={styles.inputField}
@@ -99,6 +104,6 @@ function InputBox(props: IInputProps) {
       {error && <div className={styles.error}>{error}</div>}
     </div>
   );
-}
+};
 
 export default InputBox;

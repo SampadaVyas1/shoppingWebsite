@@ -1,41 +1,43 @@
-import { VARIANT_TYPE } from "@/common/constants";
+import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import React, { HTMLAttributes } from "react";
 import styles from "./index.module.scss";
 
 interface ITypographyProps extends HTMLAttributes<HTMLParagraphElement> {
   children: any;
   variant?:
-    | "header"
-    | "subHeader"
-    | "title"
-    | "body"
-    | "body1"
-    | "text"
-    | "captions"
-    | "error"
-    | "headline32"
-    | "headline24"
-    | "headline16"
-    | "subtitle16"
-    | "subtitle18"
-    | "supportingText"
-    | "buttonText"
-    | "inputLabel"
-    | "chipTextSemibold"
-    | "chipText";
+    | TYPOGRAPHY_VARIANT.HEADER
+    | TYPOGRAPHY_VARIANT.SUBHEADER
+    | TYPOGRAPHY_VARIANT.BODY
+    | TYPOGRAPHY_VARIANT.BUTTON_TEXT
+    | TYPOGRAPHY_VARIANT.CAPTIONS
+    | TYPOGRAPHY_VARIANT.TEXT
+    | TYPOGRAPHY_VARIANT.ERROR
+    | TYPOGRAPHY_VARIANT.INPUT_LABEL
+    | TYPOGRAPHY_VARIANT.CHIP_TEXT
+    | TYPOGRAPHY_VARIANT.CHIP_TEXT_SEMIBOLD
+    | TYPOGRAPHY_VARIANT.SUPPORTING_TEXT
+    | TYPOGRAPHY_VARIANT.HEADLINE_16
+    | TYPOGRAPHY_VARIANT.HEADLINE_24
+    | TYPOGRAPHY_VARIANT.HEADLINE_32
+    | TYPOGRAPHY_VARIANT.SUBTITLE_16
+    | TYPOGRAPHY_VARIANT.SUBTITLE_18
+    | TYPOGRAPHY_VARIANT.TITLE;
   customStyle?: string;
 }
 
-class Typography extends React.Component<ITypographyProps> {
-  render() {
-    const { variant = VARIANT_TYPE.SUBTITLE_16, customStyle, ...otherProps } = this.props;
+const Typography = (props: ITypographyProps) => {
+  const {
+    variant = TYPOGRAPHY_VARIANT.SUBTITLE_16,
+    customStyle,
+    children,
+    ...otherProps
+  } = props;
 
-    return (
-      <div className={`${styles[variant]} ${customStyle}`} {...otherProps}>
-        {this.props.children}
-      </div>
-    );
-  }
-}
+  return (
+    <div className={`${styles[variant]} ${customStyle}`} {...otherProps}>
+      {children}
+    </div>
+  );
+};
 
 export default Typography;
