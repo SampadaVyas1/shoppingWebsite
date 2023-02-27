@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import Button from "../button";
-import styles from "./index.module.scss";
+import styles from "./buttonGroup.module.scss";
 
 interface IButtonGroupProps {
   buttons: string[];
@@ -40,7 +40,11 @@ const ButtonGroup = (props: IButtonGroupProps) => {
         <Button
           onClick={handleButtonClick(index)}
           key={index}
-          customStyle={index === activeButton ? activeButtonClass : buttonStyle}
+          customStyle={
+            index === activeButton
+              ? `${buttonStyle} ${activeButtonClass}`
+              : buttonStyle
+          }
         >
           {label}
         </Button>

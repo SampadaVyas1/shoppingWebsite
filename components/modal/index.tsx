@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./index.module.scss";
+import styles from "./modal.module.scss";
 
 interface IModalProps {
   children: any;

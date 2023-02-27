@@ -7,12 +7,19 @@ import { useContext, useEffect } from "react";
 const ProtectedRoute = ({ children }: any) => {
   const router = useRouter();
   const context = useContext(AuthContext);
+  const isLoggedIn =
+    context.isLoggedIn && ROUTES.hasOwnProperty(router.pathname);
   useEffect(() => {
-    if (!context.isLoggedIn) {
+    console.log(
+      context.isLoggedIn,
+      ROUTES.hasOwnProperty(router.pathname),
+      router.pathname
+    );
+    if (!isLoggedIn && router.pathname !== "/_error") {
       router.replace(ROUTES.LOGIN);
     }
-  }, [context.isLoggedIn, router]);
+  }, [context.isLoggedIn]);
 
-  return context.isLoggedIn ? children : <Login />;
+  return isLoggedIn && router.pathname === "/_error" ? children : <Login />;
 };
 export default ProtectedRoute;

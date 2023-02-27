@@ -1,6 +1,5 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { Fragment, ImgHTMLAttributes, useState } from "react";
-import styles from "./index.module.scss";
+import styles from "./image.module.scss";
 import Typography from "../typography";
 import Rectangle from "../../public/assets/images/rectangle.svg";
 import Image from "next/image";

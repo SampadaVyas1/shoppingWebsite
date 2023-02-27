@@ -1,4 +1,6 @@
+import { ERROR_CODES, TOKEN } from "@/common/constants";
 import ROUTES from "@/common/routes";
+import { getDataFromLocalStorage } from "@/common/utils";
 import axios from "axios";
 
 const service = axios.create({
@@ -7,9 +9,7 @@ const service = axios.create({
 
 service.interceptors.request.use((config) => {
   const token =
-    typeof window !== "undefined"
-      ? window.atob(`${localStorage.getItem("token")}`)
-      : "";
+    typeof window !== "undefined" ? getDataFromLocalStorage(TOKEN) : "";
   if (token) {
     config.headers.Authorization = token;
   }
@@ -19,17 +19,17 @@ service.interceptors.request.use((config) => {
 service.interceptors.response.use(
   (value: any) => Promise.resolve(value),
   (error: any) => {
-    if (error.code === "ERR_NETWORK") {
+    if (error.code === ERROR_CODES.ERROR_NETWORK) {
       const data = {
         data: null,
         error: {
-          code: "ERR_NETWORK",
+          code: ERROR_CODES.ERROR_NETWORK,
           message: error.message,
         },
       };
       error.response.data = data;
       return Promise.reject(error);
-    } else if (error?.response?.status === 401) {
+    } else if (error?.response?.status === ERROR_CODES.ERROR_UNAUTHORIZED) {
       window.location.href = ROUTES.LOGIN;
       return Promise.reject(error);
     }

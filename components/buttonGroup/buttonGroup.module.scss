@@ -10,15 +10,6 @@
     color: $white;
     border-radius: 0;
     border: none;
-    &:first-child {
-      border-bottom-left-radius: 0.5rem;
-      border-top-left-radius: 0.5rem;
-    }
-
-    &:last-child {
-      border-bottom-right-radius: 0.5rem;
-      border-top-right-radius: 0.5rem;
-    }
   }
   .buttons {
     border: none;
@@ -44,17 +35,6 @@
   flex-direction: column;
   .activeButton {
     border-right: none;
-    &:first-child {
-      border-top-right-radius: 0.5rem;
-      border-top-left-radius: 0.5rem;
-      border-bottom-left-radius: 0;
-    }
-
-    &:last-child {
-      border-bottom-left-radius: 0.5rem;
-      border-bottom-right-radius: 0.5rem;
-      border-top-right-radius: 0;
-    }
   }
   .buttons {
     &:not(:first-child):not(:last-child) {

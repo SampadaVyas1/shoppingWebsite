@@ -1,7 +1,7 @@
 import { BUTTON_VARIANT } from "@/common/enums";
 import { HtmlHTMLAttributes } from "react";
 import ImageComponent from "../image";
-import styles from "./index.module.scss";
+import styles from "./button.module.scss";
 
 interface IButtonProps extends HtmlHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;

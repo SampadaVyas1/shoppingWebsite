@@ -1,14 +1,24 @@
-export const encode = (data: string) => {
+export const encodeToken = (data: string) => {
   return window.btoa(data);
 };
 
-export const decode = (data: string) => {
+export const decodeToken = (data: string) => {
   return window.atob(data);
 };
 
-export const storeDataInLocalStorage = (key: string, value: any) => {
+export const setDataInLocalStorage = (key: string, value: any) => {
   localStorage.setItem(key, value);
 };
-export const fetchDataFromLocalStorage = (key: string) => {
+export const getDataFromLocalStorage = (key: string) => {
   return localStorage.getItem(key);
+};
+
+export const debounce = (callback: Function, wait: number = 100) => {
+  let timeoutId: ReturnType<typeof setTimeout> | null = null;
+  return (...args: any) => {
+    clearTimeout(timeoutId!);
+    timeoutId = setTimeout(() => {
+      callback.apply(this, args);
+    }, wait);
+  };
 };

@@ -1,4 +1,4 @@
-import styles from "./index.module.scss";
+import styles from "./card.module.scss";
 
 interface ICardProps {
   title?: string;

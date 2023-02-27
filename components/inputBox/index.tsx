@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import ImageComponent from "../image";
-import styles from "./index.module.scss";
+import styles from "./inputBox.module.scss";
 
 interface IInputProps extends HTMLAttributes<HTMLInputElement> {
   customClass?: string;

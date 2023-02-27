@@ -1,7 +1,7 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
-import checkedIcon from "../../public/assets/images/checked.svg";
-import checkboxIdeal from "../../public/assets/images/checkboxIdeal.svg";
-import styles from "./index.module.scss";
+import checkedIcon from "../../public/assets/icons/checked.svg";
+import checkboxIdeal from "../../public/assets/icons/checkboxIdeal.svg";
+import styles from "./checkbox.module.scss";
 import ImageComponent from "../image";
 import Typography from "../typography";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";

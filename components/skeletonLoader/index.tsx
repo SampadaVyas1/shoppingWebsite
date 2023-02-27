@@ -1,4 +1,4 @@
-import styles from "./index.module.scss";
+import styles from "./skeletonLoader.module.scss";
 
 interface ISkeletonLoaderProps {
   type: "circle" | "textLarge" | "textMedium" | "textSmall";

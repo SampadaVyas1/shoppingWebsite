@@ -6,14 +6,14 @@ import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Loader from "@/components/loader";
 import SkeletonLoader from "@/components/skeletonLoader";
-import ROUTES from "@/common/routes";
-import Table from "@/components/table";
-import Select from "@/components/select";
-import Images from "@/public/assets/images";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-import styles from "../styles/Home.module.scss";
 import ButtonGroup from "@/components/buttonGroup";
 import MultiSelectOptions from "@/components/select/multiselectOptions";
+import Table from "@/components/table";
+import Select from "@/components/select";
+import ROUTES from "@/common/routes";
+import Images from "@/public/assets/icons";
+import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import styles from "../styles/app.module.scss";
 
 const Home = () => {
   const { loaderSpinner } = Images;
@@ -38,12 +38,12 @@ const Home = () => {
       <Select
         searchable
         options={[
-          { id: 0, label: "Tomato" },
-          { id: 1, label: "Potato" },
-          { id: 2, label: "gdjgwe" },
-          { id: 3, label: "sjdjg" },
-          { id: 4, label: "kasjdjg" },
-          { id: 5, label: "jhfh" },
+          { id: 0, label: "Javascript" },
+          { id: 1, label: "React" },
+          { id: 2, label: "MongoDb" },
+          { id: 3, label: "HTML" },
+          { id: 4, label: "CSS" },
+          { id: 5, label: "Java" },
         ]}
       />
 
@@ -79,15 +79,15 @@ const Home = () => {
       <Select
         multiSelect={true}
         options={[
-          { id: 0, label: "Tomato" },
-          { id: 1, label: "Potato" },
-          { id: 2, label: "gdjgwe" },
-          { id: 3, label: "sjdjg" },
-          { id: 4, label: "kasjdjg" },
-          { id: 5, label: "jhfh" },
+          { id: 0, label: "Javascript" },
+          { id: 1, label: "React" },
+          { id: 2, label: "MongoDb" },
+          { id: 3, label: "HTML" },
+          { id: 4, label: "CSS" },
+          { id: 5, label: "Java" },
         ]}
         masterCheck
-        // searchable
+        searchable
       />
     </div>
   );

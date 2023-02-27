@@ -1,9 +1,9 @@
 import { useCallback, useRef, useState } from "react";
 import { Popover } from "react-tiny-popover";
 import ImageComponent from "../image";
-import arrowDown from "../../public/assets/images/arrowDown.svg";
-import arrowUp from "../../public/assets/images/arrowUp.svg";
-import styles from "./index.module.scss";
+import arrowDown from "../../public/assets/icons/arrowDown.svg";
+import arrowUp from "../../public/assets/icons/arrowUp.svg";
+import styles from "./select.module.scss";
 import Options from "./options";
 import OptionTags from "./optionTag";
 import MultiSelectOptions from "./multiselectOptions";

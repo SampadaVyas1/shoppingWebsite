@@ -1,8 +1,8 @@
 import { IOptionType } from "..";
 import React, { useCallback } from "react";
-import styles from "./index.module.scss";
+import styles from "./optionTag.module.scss";
 import ImageComponent from "../../image";
-import Images from "@/public/assets/images";
+import Images from "@/public/assets/icons";
 
 interface IOptionTagProps {
   options: IOptionType[];

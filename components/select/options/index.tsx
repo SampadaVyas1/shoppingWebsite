@@ -1,11 +1,12 @@
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { debounce } from "@/common/utils";
 import ImageComponent from "@/components/image";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
-import Images from "@/public/assets/images";
+import Images from "@/public/assets/icons";
 import { useState } from "react";
 import { IOptionType } from "..";
-import styles from "./index.module.scss";
+import styles from "./options.module.scss";
 
 interface IOptionsProp {
   options: IOptionType[];
@@ -24,12 +25,12 @@ const Options = (props: IOptionsProp) => {
     onSelect(value);
   };
 
-  const handleSearch = (value: string) => {
+  const handleSearch = debounce((value: string) => {
     const updatedOptions = options.filter((data) =>
       data.label.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredOptions(updatedOptions);
-  };
+  }, 300);
 
   return (
     <div className={styles.optionsWrapper}>
