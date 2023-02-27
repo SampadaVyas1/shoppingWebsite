@@ -96,13 +96,14 @@ const Select = (props: ISelectProps) => {
               selectedValues={
                 Array.isArray(selectedValue) ? selectedValue : [selectedValue]
               }
-              searchable
+              searchable={searchable}
               masterCheck={masterCheck}
               onSelect={handleMultiSelect}
             />
           ) : (
             <Options
               options={options}
+              searchable={searchable}
               selectedValue={
                 Array.isArray(selectedValue) ? selectedValue[0] : selectedValue
               }

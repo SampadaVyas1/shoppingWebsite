@@ -36,6 +36,7 @@ const Home = () => {
         placeholder="Enter your text here.."
       />
       <Select
+        searchable
         options={[
           { id: 0, label: "Tomato" },
           { id: 1, label: "Potato" },
@@ -86,7 +87,7 @@ const Home = () => {
           { id: 5, label: "jhfh" },
         ]}
         masterCheck
-        searchable
+        // searchable
       />
     </div>
   );

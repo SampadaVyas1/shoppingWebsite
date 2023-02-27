@@ -32,6 +32,7 @@ const CheckBox = (props: props) => {
 
   const handleCheckboxClick = (event: SyntheticEvent) => {
     event.preventDefault();
+    event.stopPropagation();
     const { disabled = false, handleClick } = props;
     if (!disabled) {
       !ideal && setChecked(!checked);
@@ -67,9 +68,16 @@ const CheckBox = (props: props) => {
         {ideal ? (
           <ImageComponent src={checkboxIdeal} customClass={styles.icon} />
         ) : checked ? (
-          <ImageComponent src={checkedIcon} customClass={styles.icon} />
+          <ImageComponent
+            src={checkedIcon}
+            customClass={styles.icon}
+            onClick={handleCheckboxClick}
+          />
         ) : (
-          <div className={styles.uncheckedBox}></div>
+          <div
+            className={styles.uncheckedBox}
+            onClick={handleCheckboxClick}
+          ></div>
         )}
         {label && (
           <Typography
