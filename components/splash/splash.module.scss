@@ -1,0 +1,13 @@
+@import "../../styles/variables";
+.splashPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 16px;
+  font-size: 1rem;
+  font-family: $Montserrat;
+  .splashText {
+    color: $primary;
+  }
+}

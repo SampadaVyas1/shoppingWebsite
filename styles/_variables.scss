@@ -1,14 +1,22 @@
 $primary: #2c74d6;
-$primaryDark: #013a6b;
 $primaryLight: #eef7fe;
+$secondary: #f4f8ff;
+$white: #ffffff;
+$primaryButtonHover: #2444a4;
+$selectMessage: #deebfe;
+$primaryTextDark: #101828;
+$primaryText: #667085;
+$disabledText: #98a2b3;
+$secondaryTextLight: #eaecf0;
+$secondaryText: #d0d5dd;
+$success: #04bfa4;
+$warning: #f39b17;
+$error: #ff5252;
 $cardBackground: linear-gradient(
   180deg,
   rgba(238, 247, 254, 0) 0%,
   $primaryLight 100%
 );
-$successBackground: #04bfa4;
-$errorText: #ff5252;
-$white: #ffffff;
 $shimmerBackground: #d2dbe2;
 $listHoverColor: #f9fafc;
 $disabledButtonColor: #98a2b3;
@@ -19,39 +27,30 @@ $shimmerAnimationBackground: linear-gradient(
   rgba(255, 255, 255, 0.3) 50%,
   rgba(255, 255, 255, 0) 80%
 );
+
 $gray-900: #101828;
 $gray-700: #344054;
 $gray-500: #667085;
 $gray-300: #d0d5dd;
 $gray-200: #eaecf0;
-$gray-500: #667085;
 
 $Montserrat: "Montserrat";
 $Roboto: "Roboto";
 
-$headerFontSize-md: 3.75rem;
-$headerFontSize: 4.5rem;
-$subHeaderFontSize-md: 2.5rem;
-$subHeaderFontSize: 3.75rem;
-$titleFontSize-md: 1.5rem;
-$tabHeadingFontSize: 2rem;
-$titleFontSize: 2.25rem;
-$tabHeadingFontSize: 2rem;
-$bodyFontSize-md: 1.125rem;
-$bodyFontSize: 1.5rem;
-$body1FontSize-md: 1.125rem;
-$body1FontSize: 1.125rem;
-$textFontSize-md: 0.875rem;
-$textFontSize: 1rem;
-$captionFontSize: 0.875rem;
-$errorFontSize: 0.875rem;
+$headerLarge: 2rem;
+$headerSemiBoldMedium: 1.25rem;
+$headerRegular: 1rem;
+$textLarge: 1rem;
+$textMedium: 0.875rem;
+$textSmall: 0.75rem;
 
-$modalBoxShadow: 0 0 0.5rem rgba(0, 0, 0, 0.25);
+$modalBoxShadow: 0 0.1875rem 0.375rem rgba(16, 24, 40, 0.16);
 $inputBoxShadow: 0 0.0625rem 0.125rem rgba(16, 24, 40, 0.05),
   0 0 0 0.25rem #eef7fe;
 $buttonHoverShadow: 0 0 0.375rem rgba(16, 24, 40, 0.25);
 $boxShadow: 0 0.0625rem 0.125rem rgba(16, 24, 40, 0.05), 0 0 0 0.25rem #dfdfdf;
-$cardBoxShadow: 0 0.125rem 1rem rgba(7, 81, 176, 0.04);
+$cardBoxShadow: 0 0.1875rem 0.375rem rgba(0, 0, 0, 0.16);
 
+$cardBorder: 0.0625rem solid $gray-200;
 $border: 0.0625rem solid $gray-300;
 $inputBoxBorder: 0.0625rem solid $gray-500;

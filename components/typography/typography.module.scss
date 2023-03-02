@@ -1,207 +1,102 @@
 @import "../../styles/variables";
 @import "../../styles/media";
-.header {
-  font-size: $headerFontSize;
-  font-weight: 700;
-
-  @media screen and (max-width: $md-min) {
-    font-size: $headerFontSize-md;
-  }
-}
-
-.subHeader {
-  font-size: $subHeaderFontSize;
-  font-weight: 600;
-
-  @media screen and (max-width: $md-min) {
-    font-size: $subHeaderFontSize-md;
-  }
-}
-
-.title {
-  font-size: $titleFontSize;
-  font-weight: 600;
+.headerLarge {
+  font-size: $headerLarge;
+  font-weight: 500;
+  line-height: 150%;
   font-family: $Montserrat;
 
   @media screen and (max-width: $md-min) {
-    font-size: $titleFontSize-md;
+    font-size: 1.5rem;
   }
 }
 
-.body {
-  font-size: $bodyFontSize;
-  font-weight: 400;
+.headerMediumSemiBold {
+  font-size: $headerSemiBoldMedium;
+  font-weight: 600;
+  line-height: 150%;
+  font-family: $Montserrat;
 
   @media screen and (max-width: $md-min) {
-    font-size: $bodyFontSize-md;
+    font-size: 1rem;
   }
 }
 
-.body1 {
-  font-size: $body1FontSize;
-  font-weight: 400;
-  font-family: $Roboto;
+.headerSmallSemiBold {
+  font-size: $headerRegular;
+  font-weight: 600;
+  line-height: 150%;
+  font-family: $Montserrat;
 
   @media screen and (max-width: $md-min) {
-    font-size: $body1FontSize-md;
+    font-size: 0.875rem;
   }
 }
 
-.text {
-  font-size: $textFontSize;
-  font-weight: 400;
+.headerSmall {
+  font-size: $headerRegular;
+  font-weight: 500;
+  line-height: 150%;
+  font-family: $Montserrat;
 
   @media screen and (max-width: $md-min) {
-    font-size: $textFontSize-md;
+    font-size: 0.875rem;
   }
+}
 
-  @media screen and (max-width: $smx-max) {
+.textLargeMedium {
+  font-size: $textLarge;
+  font-weight: 500;
+  line-height: 150%;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 0.875rem;
+  }
+}
+
+.textLargeRegular {
+  font-size: $textLarge;
+  font-weight: 400;
+  line-height: 150%;
+  @media screen and (max-width: $md-min) {
+    font-size: 0.875rem;
+  }
+}
+
+.textMediumSemiBold {
+  font-size: $textMedium;
+  font-weight: 600;
+  line-height: 150%;
+
+  @media screen and (max-width: $md-min) {
     font-size: 0.75rem;
   }
 }
 
-.caption {
-  font-size: $captionFontSize;
-  font-weight: 300;
+.textMediumRegular {
+  font-size: $textMedium;
+  line-height: 150%;
+}
+
+.textSmallSemiBold {
+  font-size: $textSmall;
+  font-weight: 600;
+  line-height: 150%;
+}
+
+.textSmallMedium {
+  font-size: $textSmall;
+  font-weight: 500;
+  line-height: 150%;
+}
+
+.textSmallRegular {
+  font-size: $textSmall;
+  line-height: 150%;
 }
 
 .error {
-  font-size: $errorFontSize;
+  font-size: $textSmall;
   font-weight: 400;
-  color: $errorText;
-}
-
-.headline32 {
-  font-family: $Montserrat;
-
-  font-weight: 600;
-  font-size: 2rem;
-  line-height: 3rem;
-  color: $gray-900;
-
-  @media screen and (max-width: $md-min) {
-    font-size: 1.25rem;
-    line-height: 1.875rem;
-  }
-}
-
-.headline24 {
-  font-family: $Montserrat;
-
-  font-weight: 600;
-  font-size: 1.5rem;
-  line-height: 2.25rem;
-  color: $gray-900;
-
-  @media screen and (max-width: $md-min) {
-    font-size: 1.125rem;
-    line-height: 1.6875rem;
-  }
-}
-
-.headline16 {
-  font-family: $Roboto;
-
-  font-weight: 600;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  color: $gray-900;
-
-  @media screen and (max-width: $md-min) {
-    font-size: 1.125rem;
-    line-height: 1.5rem;
-  }
-}
-
-.subtitle16 {
-  font-family: $Roboto;
-
-  font-weight: 400;
-  font-size: 0.875rem;
-  line-height: 1.5rem;
-  color: $gray-900;
-
-  @media screen and (max-width: $md-min) {
-    font-size: 0.875rem;
-    line-height: 1.5rem;
-  }
-}
-
-.subtitle18 {
-  font-family: $Roboto;
-
-  font-weight: 400;
-  font-size: 1.125rem;
-  line-height: 1.5rem;
-  color: $gray-500;
-
-  @media screen and (max-width: $md-min) {
-    font-size: 0.875rem;
-    line-height: 1.5rem;
-  }
-}
-
-.supportingText {
-  font-family: $Roboto;
-
-  font-weight: 400;
-  font-size: 0.875rem;
-  line-height: 1.5rem;
-  color: $gray-500;
-
-  @media screen and (max-width: $md-min) {
-    font-size: 0.875rem;
-    line-height: 1.5rem;
-  }
-}
-
-.buttonText {
-  font-family: $Roboto;
-
-  font-weight: 700;
-  font-size: 1rem;
-  line-height: 1.5rem;
-  color: $gray-500;
-  letter-spacing: 0.0125em;
-
-  @media screen and (max-width: $md-min) {
-    font-size: 0.875rem;
-  }
-}
-
-.inputLabel {
-  font-family: $Roboto;
-
-  font-weight: 600;
-  font-size: 0.875rem;
-  line-height: 1.5rem;
-  color: $gray-900;
-
-  @media screen and (max-width: $md-min) {
-    font-size: 0.875rem;
-  }
-}
-
-.chipTextSemibold {
-  font-family: $Roboto;
-  font-weight: 600;
-  font-size: 0.75rem;
-  line-height: 1.125rem;
-  color: $gray-500;
-
-  @media screen and (max-width: $md-min) {
-    font-size: 0.625rem;
-  }
-}
-
-.chipTextSemibold {
-  font-family: $Roboto;
-
-  font-size: 0.75rem;
-  line-height: 1.125rem;
-  color: $gray-500;
-
-  @media screen and (max-width: $md-min) {
-    font-size: 0.625rem;
-  }
+  color: $error;
 }

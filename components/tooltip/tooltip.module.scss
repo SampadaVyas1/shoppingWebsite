@@ -1,0 +1,72 @@
+@import "../../styles/variables";
+
+.tooltipWrapper {
+  display: flex;
+  width: fit-content;
+  position: relative;
+}
+
+.tooltipTip {
+  position: absolute;
+  border-radius: 0.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  z-index: 100;
+  width: 100%;
+
+  &::before {
+    content: " ";
+    left: 50%;
+    border: solid transparent;
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-width: 0.375rem;
+    margin-left: calc(0.375rem * -1);
+  }
+}
+
+.top {
+  bottom: 4rem;
+  &::before {
+    top: 100%;
+    border-top-color: $primary;
+  }
+}
+
+.right {
+  left: calc(100% + 1rem);
+  top: 50%;
+  transform: translateX(0) translateY(-50%);
+  &::before {
+    left: calc(0.375rem * -1);
+    top: 50%;
+    transform: translateX(0) translateY(-50%);
+    border-right-color: $primary;
+  }
+}
+
+.bottom {
+  top: 4rem;
+  &::before {
+    bottom: 100%;
+    border-bottom-color: $primary;
+  }
+}
+
+.left {
+  left: auto;
+  right: calc(100% + 1.875rem);
+  top: 50%;
+  transform: translateX(0) translateY(-50%);
+
+  &::before {
+    left: auto;
+    right: calc(0.375rem * -2);
+    top: 50%;
+    transform: translateX(0) translateY(-50%);
+    border-left-color: $primary;
+  }
+}

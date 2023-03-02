@@ -21,21 +21,23 @@ export enum BUTTON_VARIANT {
 }
 
 export enum TYPOGRAPHY_VARIANT {
-  HEADER = "header",
-  SUBHEADER = "subHeader",
-  TITLE = "title",
-  BODY = "body",
-  TEXT = "text",
-  CAPTIONS = "captions",
+  HEADER_LARGE = "headerLarge",
+  HEADER_MEDIUM_SEMIBOLD = "headerMediumSemiBold",
+  HEADER_SMALL_SEMIBOLD = "headerSmallSemiBold ",
+  HEADER_SMALL = "headerSmall",
+  TEXT_LARGE_MEDIUM = "textLargeMedium",
+  TEXT_LARGE_REGULAR = "textLargeRegular",
+  TEXT_MEDIUM_SEMIBOLD = "textMediumSemiBold ",
+  TEXT_MEDIUM_REGULAR = "textMediumRegular",
+  TEXT_SMALL_SEMIBOLD = "textSmallSemiBold ",
+  TEXT_SMALL_MEDIUM = "textSmallMedium",
+  TEXT_SMALL_REGULAR = "textSmallRegular",
   ERROR = "error",
-  HEADLINE_32 = "headline32",
-  HEADLINE_24 = "headline24",
-  HEADLINE_16 = "headline16",
-  SUBTITLE_16 = "subtitle16",
-  SUBTITLE_18 = "subtitle18",
-  SUPPORTING_TEXT = "supportingText",
-  BUTTON_TEXT = "buttonText",
-  INPUT_LABEL = "inputLabel",
-  CHIP_TEXT_SEMIBOLD = "chipTextSemibold",
-  CHIP_TEXT = "chipText",
+}
+
+export enum TOOLTIP_POSITION {
+  LEFT = "left",
+  RIGHT = "right",
+  TOP = "top",
+  BOTTOM = "bottom",
 }

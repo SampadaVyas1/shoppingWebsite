@@ -1,5 +1,6 @@
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { debounce } from "@/common/utils";
+import Card from "@/components/card";
 import ImageComponent from "@/components/image";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
@@ -33,39 +34,43 @@ const Options = (props: IOptionsProp) => {
   }, 300);
 
   return (
-    <div className={styles.optionsWrapper}>
-      {searchable && (
-        <InputBox
-          startIcon={Images.search}
-          placeholder="Search"
-          handleChange={handleSearch}
-        />
-      )}
-      {filteredOptions?.length ? (
-        filteredOptions.map((option: IOptionType) => {
-          return (
-            <div
-              className={
-                option.id === selectedValue.id
-                  ? `${styles.option} ${styles.selected}`
-                  : styles.option
-              }
-              key={option.id}
-              onClick={handleClick(option)}
-            >
-              {option.label}
+    <Card customClass={styles.optionsWrapper}>
+      <>
+        {searchable && (
+          <InputBox
+            startIcon={Images.search}
+            placeholder="Search"
+            handleChange={handleSearch}
+          />
+        )}
+        <div className={styles.singleSelectOptions}>
+          {filteredOptions?.length ? (
+            filteredOptions.map((option: IOptionType) => {
+              return (
+                <div
+                  className={
+                    option.id === selectedValue.id
+                      ? `${styles.option} ${styles.selected}`
+                      : styles.option
+                  }
+                  key={option.id}
+                  onClick={handleClick(option)}
+                >
+                  {option.label}
+                </div>
+              );
+            })
+          ) : (
+            <div className={styles.noData}>
+              <ImageComponent src={Images.search} customClass={styles.icon} />
+              <Typography variant={TYPOGRAPHY_VARIANT.SUBTITLE_18}>
+                No results Found
+              </Typography>
             </div>
-          );
-        })
-      ) : (
-        <div className={styles.noData}>
-          <ImageComponent src={Images.search} customClass={styles.icon} />
-          <Typography variant={TYPOGRAPHY_VARIANT.SUBTITLE_18}>
-            No results Found
-          </Typography>
+          )}
         </div>
-      )}
-    </div>
+      </>
+    </Card>
   );
 };
 export default Options;

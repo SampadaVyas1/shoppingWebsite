@@ -1,25 +1,25 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { TOKEN } from "@/common/constants";
 import ROUTES from "@/common/routes";
-import { AuthContext } from "@/context/authContext";
-import Login from "@/pages/login";
+import { getDataFromLocalStorage } from "@/common/utils";
 import { useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import Layout from "../layout";
 
 const ProtectedRoute = ({ children }: any) => {
   const router = useRouter();
-  const context = useContext(AuthContext);
-  const isLoggedIn =
-    context.isLoggedIn && ROUTES.hasOwnProperty(router.pathname);
-  useEffect(() => {
-    console.log(
-      context.isLoggedIn,
-      ROUTES.hasOwnProperty(router.pathname),
-      router.pathname
-    );
-    if (!isLoggedIn && router.pathname !== "/_error") {
-      router.replace(ROUTES.LOGIN);
-    }
-  }, [context.isLoggedIn]);
 
-  return isLoggedIn && router.pathname === "/_error" ? children : <Login />;
+  const isLoggedIn =
+    !!getDataFromLocalStorage(TOKEN) || ROUTES.hasOwnProperty(router.pathname);
+
+  useEffect(() => {
+    if (!isLoggedIn && router.pathname !== ROUTES[404]) {
+      router.replace(ROUTES.LOGIN);
+    } else if (isLoggedIn && router.pathname === ROUTES.LOGIN) {
+      router.back();
+    }
+  }, [isLoggedIn]);
+
+  return <Layout>{children}</Layout>;
 };
 export default ProtectedRoute;

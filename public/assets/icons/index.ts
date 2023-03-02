@@ -6,6 +6,10 @@ const Images = {
   checkboxIdeal: require("./checkboxIdeal.svg").default,
   checked: require("./checked.svg").default,
   search: require("./search.svg").default,
+  googleIcon: require("./googleIcon.svg").default,
+  coditasIcon: require("./coditasIcon.svg").default,
+  profileIcon: require("./profile.svg").default,
+  notificationIcon: require("./bell.svg").default,
 };
 
 export default Images;

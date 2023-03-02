@@ -1,0 +1,27 @@
+@import "../../styles/variables";
+@import "../../styles/media";
+.messages {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+
+  .tooltip {
+    width: 400px;
+  }
+  .tooltipContent {
+    width: 600px;
+    border-radius: 0.5rem;
+    background-color: $primary;
+    color: $white;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+  .tooltipContentLeft {
+    position: absolute;
+    top: -2rem;
+    right: 0;
+  }
+}

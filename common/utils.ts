@@ -10,7 +10,7 @@ export const setDataInLocalStorage = (key: string, value: any) => {
   localStorage.setItem(key, value);
 };
 export const getDataFromLocalStorage = (key: string) => {
-  return localStorage.getItem(key);
+  return typeof window !== "undefined" ? localStorage.getItem(key) : "";
 };
 
 export const debounce = (callback: Function, wait: number = 100) => {

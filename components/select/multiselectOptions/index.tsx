@@ -1,5 +1,6 @@
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { debounce } from "@/common/utils";
+import Card from "@/components/card";
 import CheckBox from "@/components/checkbox";
 import ImageComponent from "@/components/image";
 import InputBox from "@/components/inputBox";
@@ -69,53 +70,59 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
   }, 300);
 
   return (
-    <div
-      className={
+    <Card
+      customClass={
         customStyle
           ? `${customStyle} ${styles.optionsWrapper}`
           : styles.optionsWrapper
       }
     >
-      {searchable && (
-        <InputBox
-          startIcon={Images.search}
-          placeholder="Search"
-          handleChange={handleSearch}
-        />
-      )}
-      {masterCheck && !searchable && (
-        <CheckBox
-          label="Select All"
-          customClass={styles.option}
-          checked={
-            !!selectedValues.length && selectedValues.length === options.length
-          }
-          handleClick={handleSelectAll}
-        />
-      )}
-      {filteredOptions?.length ? (
-        filteredOptions?.map((option: IOptionType) => {
-          return (
-            <CheckBox
-              label={option.label}
-              customClass={styles.option}
-              key={option.id}
-              checked={
-                !!selectedValues.filter((item) => item.id === option.id).length
-              }
-              handleClick={handleClick(option)}
-            />
-          );
-        })
-      ) : (
-        <div className={styles.noData}>
-          <ImageComponent src={Images.search} customClass={styles.icon} />
-          <Typography variant={TYPOGRAPHY_VARIANT.SUBTITLE_18}>
-            No results Found
-          </Typography>
+      <>
+        {searchable && (
+          <InputBox
+            startIcon={Images.search}
+            placeholder="Search"
+            handleChange={handleSearch}
+          />
+        )}
+        {masterCheck && !searchable && (
+          <CheckBox
+            label="Select All"
+            customClass={styles.option}
+            checked={
+              !!selectedValues.length &&
+              selectedValues.length === options.length
+            }
+            handleClick={handleSelectAll}
+          />
+        )}
+        <div className={styles.multiSelectOptions}>
+          {filteredOptions?.length ? (
+            filteredOptions?.map((option: IOptionType) => {
+              return (
+                <CheckBox
+                  label={option.label}
+                  customClass={styles.option}
+                  key={option.id}
+                  checked={
+                    !!selectedValues.filter((item) => item.id === option.id)
+                      .length
+                  }
+                  handleClick={handleClick(option)}
+                />
+              );
+            })
+          ) : (
+            <div className={styles.noData}>
+              <ImageComponent src={Images.search} customClass={styles.icon} />
+              <Typography variant={TYPOGRAPHY_VARIANT.SUBTITLE_18}>
+                No results Found
+              </Typography>
+            </div>
+          )}
         </div>
-      )}
-    </div>
+      </>
+    </Card>
   );
 };
 export default MultiSelectOptions;

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { storeDataInLocalStorage, encode } from "../../helpers/utils";
+import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
+import { useRouter } from "next/router";
+import React, { useState, useEffect } from "react";
 
 interface IAuthContextProps {
   children: any;
@@ -10,6 +11,7 @@ export interface IAuthContextDefault {
   isLoggedIn: boolean;
   handleLogin: () => any;
   getUserInfo: () => any;
+  handleLogout: () => any;
 }
 
 interface IAuthStates {
@@ -22,6 +24,7 @@ const defaultValues = {
   isLoggedIn: false,
   handleLogin: () => {},
   getUserInfo: () => {},
+  handleLogout: () => {},
 };
 
 const AuthContext = React.createContext<IAuthContextDefault>(defaultValues);
@@ -34,8 +37,17 @@ const AuthProvider = (props: IAuthContextProps) => {
   const handleLogin = () => {
     setAuthProviderState((prevState) => ({
       ...prevState,
-      isLoggedIn: !authProviderState.isLoggedIn,
+      isLoggedIn: true,
     }));
+    setDataInLocalStorage("token", "kwkdgdkjgk");
+  };
+
+  const handleLogout = () => {
+    setAuthProviderState((prevState) => ({
+      ...prevState,
+      isLoggedIn: false,
+    }));
+    localStorage.clear();
   };
 
   const getUserInfo = () => {
@@ -43,9 +55,17 @@ const AuthProvider = (props: IAuthContextProps) => {
   };
 
   const { children } = props;
+
+  useEffect(() => {
+    setAuthProviderState((prevState) => ({
+      ...prevState,
+      isLoggedIn: !!getDataFromLocalStorage("token"),
+    }));
+  }, []);
+
   return (
     <AuthContext.Provider
-      value={{ ...authProviderState, handleLogin, getUserInfo }}
+      value={{ ...authProviderState, handleLogin, getUserInfo, handleLogout }}
     >
       {children}
     </AuthContext.Provider>

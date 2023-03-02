@@ -13,8 +13,15 @@ interface IImageProps
 }
 
 const ImageComponent = (props: IImageProps) => {
-  const { src, fallbackText, customClass, fallbackClass, ...otherProps } =
-    props;
+  const {
+    src,
+    fallbackText,
+    customClass,
+    fallbackClass,
+    width = 24,
+    height = 24,
+    ...otherProps
+  } = props;
   const [imagePlaceholder, setImagePlaceholder] = useState<boolean>(false);
 
   const handleError = (event: any) => {
@@ -31,8 +38,8 @@ const ImageComponent = (props: IImageProps) => {
           className={customClass}
           onClick={props.onClick}
           draggable={false}
-          width={40}
-          height={40}
+          width={+width}
+          height={+height}
           onError={handleError}
         />
       </Fragment>

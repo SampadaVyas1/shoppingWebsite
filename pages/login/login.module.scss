@@ -1,0 +1,107 @@
+@import "../../styles/variables";
+@import "../../styles/media";
+.loginPage {
+  display: flex;
+  height: 100%;
+
+  .section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 2rem;
+    position: relative;
+
+    .loginText {
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .appLogo {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+
+      .appName {
+        color: $primary;
+      }
+    }
+    .content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 380px;
+      gap: 1rem;
+    }
+    .loginButton {
+      width: 100%;
+      max-width: 380px;
+      font-weight: 400;
+      color: $gray-900;
+      border: 1px solid $gray-300;
+    }
+    .text {
+      color: $primaryText;
+      span {
+        color: $primary;
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .footer {
+      display: flex;
+      padding: 1.5rem;
+      width: 100%;
+      box-sizing: border-box;
+      align-items: center;
+      position: absolute;
+      border-top: 1px solid $gray-300;
+      justify-content: space-between;
+      bottom: 0;
+      left: 0;
+
+      .privacyPolicy {
+        color: $primary;
+
+        &:hover {
+          font-weight: 500;
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .sectionRight {
+    background-color: #f1f1f1;
+    .sectionImage {
+      width: 583px;
+      height: 583px;
+      object-fit: contain;
+    }
+  }
+}
+
+@media screen and (max-width: $md-max) {
+  .loginPage {
+    .section {
+      padding: 1rem;
+      box-sizing: border-box;
+      .content {
+        width: auto;
+      }
+      .footer {
+        padding: 0.5rem;
+      }
+    }
+    .sectionRight {
+      display: none;
+    }
+  }
+}
