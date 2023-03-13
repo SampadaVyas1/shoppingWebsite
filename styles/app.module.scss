@@ -1,3 +1,4 @@
+@import "./variables";
 .components {
   display: flex;
   flex-direction: column;
@@ -5,6 +6,13 @@
   padding: 1rem 1.5rem;
   box-sizing: border-box;
   width: 60%;
+}
+.tooltipContent {
+  background-color: $primary;
+  color: $white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
 }
 .profileLoader {
   display: flex;

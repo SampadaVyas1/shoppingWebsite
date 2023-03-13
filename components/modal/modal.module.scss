@@ -15,13 +15,13 @@
   .modal {
     padding: 1.25rem;
     border-radius: 0.5rem;
-    background-color: white;
+    background-color: $white;
     box-shadow: $modalBoxShadow;
 
     .heading {
       font-weight: 600;
       line-height: 2.25rem;
-      font-family: "Montserrat";
+      font-family: $Montserrat;
       margin-bottom: 1rem;
       font-size: 1.25rem;
       text-align: center;

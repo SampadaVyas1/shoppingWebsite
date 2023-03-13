@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/context/authContext";
 import { useRouter } from "next/router";
 import Button from "@/components/button";
@@ -9,12 +9,17 @@ import ROUTES from "@/common/routes";
 import Images from "@/public/assets/icons";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import styles from "../styles/app.module.scss";
+import Switch from "@/components/switch";
+import HoverCard from "@/components/hoverCard";
+import Card from "@/components/card";
 
 const Home = () => {
   const context = useContext(AuthContext);
 
   const { isLoggedIn, handleLogout } = context;
   const router = useRouter();
+
+  const [checked, setChecked] = useState<boolean>(true);
 
   const onLogout = () => {
     handleLogout();
@@ -36,6 +41,28 @@ const Home = () => {
           <SkeletonLoader type="textSmall" />
         </div>
       </div>
+      <Switch
+        active={checked}
+        disabled={true}
+        onChange={(value: boolean) => setChecked(value)}
+      />
+      <HoverCard
+        component={
+          <Card>
+            <>hello</>
+          </Card>
+        }
+      >
+        <div className={`${styles.tooltipContent}`}>
+          Hi Yuvika, Im a recruiter from Coditas, reaching out to you regarding
+          an exciting opportunity with us! We’re a Pune-based digital
+          engineering company and a certified Great Place to Work that provides
+          business solutions through UX Design and software development. You
+          seem like a great fit for the position based on your profile. If
+          you’re looking for a job change, Id love to discuss the details and
+          see if they align with your career aspirations.
+        </div>
+      </HoverCard>
     </div>
   );
 };

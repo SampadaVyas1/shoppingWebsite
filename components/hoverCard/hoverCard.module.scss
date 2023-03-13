@@ -1,0 +1,26 @@
+@import "../../styles/variables";
+.hoverCardWrapper {
+  position: relative;
+
+  .hoverContainer {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    filter: $hoverCardDropShadow;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0.125rem;
+      bottom: calc(50% - 0.75rem);
+      width: 0;
+      height: 0;
+      border-bottom: 1rem solid transparent;
+      border-left: 1rem solid transparent;
+      border-top: 1rem solid $white;
+      transform: rotate(-135deg);
+      clear: both;
+    }
+  }
+}
