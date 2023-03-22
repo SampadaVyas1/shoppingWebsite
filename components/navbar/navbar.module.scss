@@ -1,7 +1,7 @@
 @import "../../styles/variables";
 .navbar {
-  max-height: 56px;
-  height: 56px;
+  max-height: 3.5rem;
+  height: 3.5rem;
   background-color: $white;
   display: flex;
   align-items: center;
@@ -53,6 +53,24 @@
 
     &:hover {
       cursor: pointer;
+    }
+  }
+  .logoutModal {
+    width: 21.5rem;
+
+    .logout {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .text {
+        color: $gray-500;
+      }
+      .buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+      }
     }
   }
 }

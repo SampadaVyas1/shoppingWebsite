@@ -41,17 +41,21 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
   const { filteredOptions } = multiselectStates;
 
   const handleClick = useCallback(
-    (value: IOptionType) => (event: any, isChecked: boolean) => {
-      if (isChecked) {
-        onSelect && onSelect([...selectedValues, value]);
-      } else {
-        onSelect &&
-          onSelect(selectedValues.filter((option) => option.id !== value.id));
-      }
-    },
+    (value: IOptionType) =>
+      (event: React.SyntheticEvent<Element, Event>, isChecked: boolean) => {
+        if (isChecked) {
+          onSelect && onSelect([...selectedValues, value]);
+        } else {
+          onSelect &&
+            onSelect(selectedValues.filter((option) => option.id !== value.id));
+        }
+      },
     [onSelect, selectedValues]
   );
-  const handleSelectAll = (event: any, isChecked: boolean) => {
+  const handleSelectAll = (
+    event: React.SyntheticEvent<Element, Event>,
+    isChecked: boolean
+  ) => {
     if (isChecked) {
       onSelect && onSelect([...options]);
     } else {
@@ -115,7 +119,7 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
           ) : (
             <div className={styles.noData}>
               <ImageComponent src={Images.search} customClass={styles.icon} />
-              <Typography variant={TYPOGRAPHY_VARIANT.SUBTITLE_18}>
+              <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}>
                 No results Found
               </Typography>
             </div>

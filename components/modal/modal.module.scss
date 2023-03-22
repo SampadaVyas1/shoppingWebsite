@@ -13,18 +13,19 @@
   background-color: $modalBackdropBackground;
 
   .modal {
-    padding: 1.25rem;
+    padding: 1.5rem;
+    box-sizing: border-box;
     border-radius: 0.5rem;
     background-color: $white;
     box-shadow: $modalBoxShadow;
 
     .heading {
       font-weight: 600;
-      line-height: 2.25rem;
+      line-height: 1.5rem;
       font-family: $Montserrat;
+      color: $gray-900;
       margin-bottom: 1rem;
-      font-size: 1.25rem;
-      text-align: center;
+      font-size: 1rem;
     }
   }
 }

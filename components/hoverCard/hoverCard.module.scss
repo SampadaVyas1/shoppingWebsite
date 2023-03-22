@@ -1,26 +1,39 @@
 @import "../../styles/variables";
+
+.hoverContainer {
+  filter: $hoverCardDropShadow;
+
+  .right {
+    left: -0.875rem;
+    position: absolute;
+    top: 50%;
+    transform: rotate(275deg);
+  }
+  .left {
+    right: -0.875rem;
+    position: absolute;
+    left: auto;
+    top: 50%;
+    transform: rotate(90deg);
+  }
+  .top {
+    top: -0.875rem;
+    position: absolute;
+    left: calc(50% - 0.875rem);
+    transform: rotate(0deg);
+  }
+  .bottom {
+    bottom: -0.875rem;
+    top: auto;
+    position: absolute;
+    left: calc(50% - 0.875rem);
+    transform: rotate(180deg);
+  }
+}
+
 .hoverCardWrapper {
   position: relative;
-
-  .hoverContainer {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    filter: $hoverCardDropShadow;
-
-    &::after {
-      content: "";
-      position: absolute;
-      left: 0.125rem;
-      bottom: calc(50% - 0.75rem);
-      width: 0;
-      height: 0;
-      border-bottom: 1rem solid transparent;
-      border-left: 1rem solid transparent;
-      border-top: 1rem solid $white;
-      transform: rotate(-135deg);
-      clear: both;
-    }
+  &:hover {
+    cursor: pointer;
   }
 }

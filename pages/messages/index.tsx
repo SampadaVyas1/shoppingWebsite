@@ -1,32 +1,79 @@
-import { TOOLTIP_POSITION } from "@/common/enums";
+import {
+  BUTTON_VARIANT,
+  TOOLTIP_POSITION,
+  TYPOGRAPHY_VARIANT,
+} from "@/common/enums";
 import Button from "@/components/button";
+import ImageComponent from "@/components/image";
 import Tooltip from "@/components/tooltip";
 import styles from "./messages.module.scss";
-
-const TooltipContent = ({ customClass }: any) => {
-  return (
-    <div className={`${styles.tooltipContent} ${customClass}`}>
-      Hi Yuvika, Im a recruiter from Coditas, reaching out to you regarding an
-      exciting opportunity with us! We’re a Pune-based digital engineering
-      company and a certified Great Place to Work that provides business
-      solutions through UX Design and software development. You seem like a
-      great fit for the position based on your profile. If you’re looking for a
-      job change, Id love to discuss the details and see if they align with your
-      career aspirations.
-    </div>
-  );
-};
+import MessagePlaceholder from "../../public/assets/images/messagePlaceholder.svg";
+import Images from "@/public/assets/icons";
+import candidateData from "./candidates.json";
+import CandidateList from "./candidateList";
+import InputBox from "@/components/inputBox";
+import Typography from "@/components/typography";
+import { useState } from "react";
+import MessageScreen from "./messageScreen";
+import { ICandidateListCardProps } from "./candidateListCard";
 
 const Messages = () => {
+  const [selectedCandidate, setSelectedCandidate] = useState<any>(null);
+
+  const handleCandidateSelect = (candidate: any) => {
+    setSelectedCandidate(candidate);
+  };
+
   return (
-    <div className={styles.messages}>
-      <Tooltip
-        customStyle={styles.tooltip}
-        position={TOOLTIP_POSITION.BOTTOM}
-        content={<TooltipContent />}
-      >
-        <Button>Messages</Button>
-      </Tooltip>
+    <div className={styles.messagesPage}>
+      <div className={styles.candidateList}>
+        <div className={styles.searchFilter}>
+          <InputBox
+            startIcon={Images.search}
+            placeholder="Search"
+            customClass={styles.searchBar}
+          />
+          <ImageComponent src={Images.filterIcon} customClass={styles.filter} />
+        </div>
+        {candidateData.length ? (
+          <CandidateList
+            candidateData={candidateData}
+            selectedData={selectedCandidate}
+            onSelect={handleCandidateSelect}
+          />
+        ) : (
+          <div className={styles.emptyCandidateList}>
+            <ImageComponent
+              src={Images.noCandidates}
+              customClass={styles.noCandidateImage}
+            />
+            <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}>
+              Empty candidate list
+            </Typography>
+            <Typography
+              variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
+              customStyle={styles.hint}
+            >
+              {` But don't worry - you can start adding candidates by clicking on the “+” button`}
+            </Typography>
+          </div>
+        )}
+        <Button
+          startIcon={Images.plusIcon}
+          variant={BUTTON_VARIANT.CONTAINED}
+          customStyle={styles.plusIcon}
+        ></Button>
+      </div>
+      <div className={styles.messageScreen}>
+        {!selectedCandidate ? (
+          <ImageComponent
+            src={MessagePlaceholder}
+            customClass={styles.messagePlaceholder}
+          />
+        ) : (
+          <MessageScreen candidateData={selectedCandidate} />
+        )}
+      </div>
     </div>
   );
 };

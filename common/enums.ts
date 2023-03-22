@@ -40,4 +40,5 @@ export enum TOOLTIP_POSITION {
   RIGHT = "right",
   TOP = "top",
   BOTTOM = "bottom",
+  CENTER = "center",
 }

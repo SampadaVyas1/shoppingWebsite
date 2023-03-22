@@ -3,7 +3,7 @@ import React, { HTMLAttributes } from "react";
 import styles from "./typography.module.scss";
 
 interface ITypographyProps extends HTMLAttributes<HTMLParagraphElement> {
-  children: any;
+  children: JSX.Element | string;
   variant?:
     | TYPOGRAPHY_VARIANT.HEADER_LARGE
     | TYPOGRAPHY_VARIANT.HEADER_MEDIUM_SEMIBOLD

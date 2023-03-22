@@ -26,30 +26,33 @@
   .inputWrapper {
     display: flex;
     flex: 1;
+    height: 2.5rem;
     align-items: center;
     justify-content: center;
     border: $inputBoxBorder;
     border-radius: 0.5rem;
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 1rem;
     background-color: $white;
     gap: 0.5rem;
     .startIcon {
-      width: 1.125rem;
-      height: 1.125rem;
+      width: 1.5rem;
+      height: 1.5rem;
     }
 
     .inputField {
       display: flex;
       flex: 1;
       background-color: inherit;
-      line-height: 1.5rem;
-      font-size: 1rem;
+      line-height: 1.25rem;
+      font-size: 0.875rem;
+      font-family: inherit;
       max-height: 3rem;
       padding-left: 0;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       border: none;
+      resize: none;
 
       &:focus {
         outline: none;

@@ -5,7 +5,7 @@ import styles from "./buttonGroup.module.scss";
 interface IButtonGroupProps {
   buttons: string[];
   orientation?: "vertical" | "horizontal";
-  onButtonClick?: (event: any) => void;
+  onButtonClick?: (index: number) => void;
   containerClassName?: string;
   buttonClassName?: string;
   activeButtonClassName?: string;

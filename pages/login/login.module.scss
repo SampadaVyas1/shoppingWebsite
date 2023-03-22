@@ -32,15 +32,15 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      width: 380px;
+      width: 23.75rem;
       gap: 1rem;
     }
     .loginButton {
       width: 100%;
-      max-width: 380px;
+      max-width: 23.75rem;
       font-weight: 400;
       color: $gray-900;
-      border: 1px solid $gray-300;
+      border: 0.0625rem solid $gray-300;
     }
     .text {
       color: $primaryText;
@@ -62,7 +62,7 @@
       box-sizing: border-box;
       align-items: center;
       position: absolute;
-      border-top: 1px solid $gray-300;
+      border-top: 0.0625rem solid $gray-300;
       justify-content: space-between;
       bottom: 0;
       left: 0;
@@ -81,8 +81,8 @@
   .sectionRight {
     background-color: #f1f1f1;
     .sectionImage {
-      width: 583px;
-      height: 583px;
+      width: 36.4375rem;
+      height: 36.4375rem;
       object-fit: contain;
     }
   }

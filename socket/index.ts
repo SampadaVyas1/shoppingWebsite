@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-const socket = io("http://192.168.2.144:3002", {
+const socket = io("http://192.168.102.94:3001", {
   extraHeaders: {
     Authorization: process.env.NEXT_PUBLIC_AUTH_TOKEN!,
     userId: "1",

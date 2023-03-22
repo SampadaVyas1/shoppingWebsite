@@ -1,4 +1,6 @@
+import { notify } from "@/helpers/toastHelper";
 import socket from "@/socket";
+import { v4 as uuid } from "uuid";
 import { useEffect, useState } from "react";
 const Candidates = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
@@ -8,6 +10,7 @@ const Candidates = () => {
     if (socket.on) {
       socket.on("connect", () => {
         setIsConnected(true);
+        console.log("connected");
         socket.emit("join", `917972287471`);
       });
       socket.on("connect_failed", function () {
@@ -27,6 +30,7 @@ const Candidates = () => {
   };
 
   useEffect(() => {
+    socket.connect();
     connectSocket();
     // return socket.disconnect();
   }, []);
