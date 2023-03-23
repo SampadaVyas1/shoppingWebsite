@@ -37,7 +37,7 @@ const ButtonGroup = (props: IButtonGroupProps) => {
     <div
       className={`${styles.buttonGroupWrapper} ${containerClassName} ${styles[orientation]}`}
     >
-      {buttons.length &&
+      {!!buttons.length &&
         buttons.map((label, index) => (
           <Button
             onClick={handleButtonClick(index)}

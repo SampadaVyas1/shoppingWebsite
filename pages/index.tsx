@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { AuthContext } from "@/context/authContext";
 import styles from "../styles/app.module.scss";
@@ -9,12 +9,14 @@ import SkeletonLoader from "@/components/skeletonLoader";
 import { PRIVATE_ROUTES } from "@/common/routes";
 import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import Select from "@/components/select";
+import CustomCheckBox from "@/components/customCheckBox";
 
 const Home = () => {
   const context = useContext(AuthContext);
 
   const { isLoggedIn, handleLogout } = context;
   const router = useRouter();
+  const [checked, setChecked] = useState<boolean>(false);
 
   const onLogout = () => {
     handleLogout();
@@ -44,6 +46,7 @@ const Home = () => {
         ]}
         multiSelect
       />
+      <CustomCheckBox id="check" label="Hello" checked={checked} />
     </div>
   );
 };

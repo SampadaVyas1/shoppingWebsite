@@ -13,6 +13,7 @@ import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { PRIVATE_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
 import SectionImage from "../../public/assets/images/loginImage.svg";
+import Container from "@/components/container";
 
 const Login = () => {
   const context = useContext(AuthContext);
@@ -48,8 +49,8 @@ const Login = () => {
         <Loader />
       ) : (
         <div className={styles.loginPage}>
-          <div className={styles.section}>
-            <div className={styles.appLogo}>
+          <Container customClass={styles.section}>
+            <Container customClass={styles.appLogo}>
               <ImageComponent src={Images.coditasIcon} width={48} height={48} />
               <Typography
                 variant={TYPOGRAPHY_VARIANT.HEADER_LARGE}
@@ -57,7 +58,7 @@ const Login = () => {
               >
                 Candidate Connect
               </Typography>
-            </div>
+            </Container>
             <div className={styles.content}>
               <Typography
                 variant={TYPOGRAPHY_VARIANT.HEADER_LARGE}
@@ -87,7 +88,7 @@ const Login = () => {
               Having trouble logging in? <span> Contact Admin</span>
             </Typography>
 
-            <div className={styles.footer}>
+            <Container customClass={styles.footer}>
               <Typography
                 variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
                 customStyle={styles.text}
@@ -100,14 +101,14 @@ const Login = () => {
               >
                 Privacy Policy
               </Typography>
-            </div>
-          </div>
-          <div className={`${styles.section} ${styles.sectionRight}`}>
+            </Container>
+          </Container>
+          <Container customClass={`${styles.section} ${styles.sectionRight}`}>
             <ImageComponent
               src={SectionImage}
               customClass={styles.sectionImage}
             />
-          </div>
+          </Container>
         </div>
       )}
     </>

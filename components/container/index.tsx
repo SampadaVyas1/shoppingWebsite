@@ -1,7 +1,8 @@
+import { ReactNode } from "react";
 import styles from "./container.module.scss";
 
 interface IContainerProps {
-  children: JSX.Element;
+  children: ReactNode;
   customClass?: string;
 }
 

@@ -25,7 +25,7 @@ const Navbar = ({ routes }: INavbarProps) => {
             Candidate Connect
           </Typography>
         </div>
-        {routes.length &&
+        {!!routes.length &&
           routes?.map((route) => {
             const routeClassName =
               route.path === router.pathname

@@ -14,7 +14,7 @@ const OptionTags = (props: IOptionTagProps) => {
   const { close } = Images;
 
   const handleTagRemove = useCallback(
-    (value: IOptionType) => (event: any) => {
+    (value: IOptionType) => (event: React.MouseEvent) => {
       event.stopPropagation();
       onRemove(options.filter((option) => option.id !== value.id));
     },
