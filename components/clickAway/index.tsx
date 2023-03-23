@@ -1,5 +1,5 @@
-import { EVENT } from "@/common/enums";
 import React, { useRef, useCallback, useEffect, HTMLAttributes } from "react";
+import { EVENT } from "@/common/enums";
 import { EVENT_TYPE } from "../../common/constants";
 
 interface props extends HTMLAttributes<HTMLDivElement> {
@@ -19,9 +19,9 @@ const ClickAwayListener = (props: props) => {
   const { event, children, customClass, handleClose, ...otherProps } = props;
 
   const handleClickOutside = useCallback(
-    (event: any) => {
+    (event: MouseEvent | UIEvent | Event | PointerEvent | WheelEvent) => {
       const { handleClose } = props;
-      if (ref?.current && !ref.current.contains(event.target)) {
+      if (ref?.current && !ref.current.contains(event.target as Node)) {
         handleClose && handleClose();
       }
     },

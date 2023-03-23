@@ -1,12 +1,12 @@
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Popover } from "react-tiny-popover";
-import ImageComponent from "../image";
-import arrowDown from "../../public/assets/icons/arrowDown.svg";
-import arrowUp from "../../public/assets/icons/arrowUp.svg";
 import styles from "./select.module.scss";
 import Options from "./options";
+import ImageComponent from "../image";
 import OptionTags from "./optionTag";
 import MultiSelectOptions from "./multiselectOptions";
+import arrowDown from "../../public/assets/icons/arrowDown.svg";
+import arrowUp from "../../public/assets/icons/arrowUp.svg";
 
 export interface IOptionType {
   id: number;
@@ -20,7 +20,6 @@ interface ISelectProps {
   placeholder?: string;
   onSelect?: (value: IOptionType | IOptionType[]) => void;
   multiSelect?: boolean;
-  maxTagCount?: number;
   masterCheck?: boolean;
   searchable?: boolean;
 }
@@ -37,10 +36,9 @@ const Select = (props: ISelectProps) => {
     value,
     placeholder = "Select",
     onSelect,
-    multiSelect,
-    maxTagCount,
-    masterCheck,
-    searchable,
+    multiSelect = false,
+    masterCheck = false,
+    searchable = false,
   } = props;
 
   const [selectStates, setSelectStates] = useState<ISelectStates>({

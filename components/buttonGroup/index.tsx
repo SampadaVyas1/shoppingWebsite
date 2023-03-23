@@ -1,10 +1,11 @@
 import { useCallback, useState } from "react";
-import Button from "../button";
 import styles from "./buttonGroup.module.scss";
+import Button from "../button";
+import { ORIENTATIONS } from "@/common/enums";
 
 interface IButtonGroupProps {
   buttons: string[];
-  orientation?: "vertical" | "horizontal";
+  orientation?: ORIENTATIONS.VERTICAL | ORIENTATIONS.HORIZONTAL;
   onButtonClick?: (event: any) => void;
   containerClassName?: string;
   buttonClassName?: string;
@@ -14,7 +15,7 @@ interface IButtonGroupProps {
 const ButtonGroup = (props: IButtonGroupProps) => {
   const {
     buttons,
-    orientation = "horizontal",
+    orientation = ORIENTATIONS.HORIZONTAL,
     onButtonClick,
     containerClassName,
     buttonClassName,
@@ -22,6 +23,8 @@ const ButtonGroup = (props: IButtonGroupProps) => {
   } = props;
 
   const [activeButton, setActiveButton] = useState<number>(0);
+  const buttonStyle = buttonClassName || styles.buttons;
+  const activeButtonClass = activeButtonClassName || styles.activeButton;
 
   const handleButtonClick = useCallback(
     (index: number) => () => {
@@ -30,25 +33,24 @@ const ButtonGroup = (props: IButtonGroupProps) => {
     },
     [onButtonClick]
   );
-  const buttonStyle = buttonClassName || styles.buttons;
-  const activeButtonClass = activeButtonClassName || styles.activeButton;
   return (
     <div
       className={`${styles.buttonGroupWrapper} ${containerClassName} ${styles[orientation]}`}
     >
-      {buttons.map((label, index) => (
-        <Button
-          onClick={handleButtonClick(index)}
-          key={index}
-          customStyle={
-            index === activeButton
-              ? `${buttonStyle} ${activeButtonClass}`
-              : buttonStyle
-          }
-        >
-          {label}
-        </Button>
-      ))}
+      {buttons.length &&
+        buttons.map((label, index) => (
+          <Button
+            onClick={handleButtonClick(index)}
+            key={index}
+            customStyle={
+              index === activeButton
+                ? `${buttonStyle} ${activeButtonClass}`
+                : buttonStyle
+            }
+          >
+            {label}
+          </Button>
+        ))}
     </div>
   );
 };

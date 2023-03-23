@@ -1,6 +1,5 @@
-import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
-import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
+import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
 
 interface IAuthContextProps {
   children: any;

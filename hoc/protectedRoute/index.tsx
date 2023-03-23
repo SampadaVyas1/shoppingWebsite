@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { TOKEN } from "@/common/constants";
-import ROUTES from "@/common/routes";
+import { PRIVATE_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
@@ -10,12 +10,13 @@ const ProtectedRoute = ({ children }: any) => {
   const router = useRouter();
 
   const isLoggedIn =
-    !!getDataFromLocalStorage(TOKEN) || ROUTES.hasOwnProperty(router.pathname);
+    !!getDataFromLocalStorage(TOKEN) ||
+    PRIVATE_ROUTES.hasOwnProperty(router.pathname);
 
   useEffect(() => {
-    if (!isLoggedIn && router.pathname !== ROUTES[404]) {
-      router.replace(ROUTES.LOGIN);
-    } else if (isLoggedIn && router.pathname === ROUTES.LOGIN) {
+    if (!isLoggedIn && router.pathname !== PRIVATE_ROUTES[404]) {
+      router.replace(PRIVATE_ROUTES.LOGIN);
+    } else if (isLoggedIn && router.pathname === PRIVATE_ROUTES.LOGIN) {
       router.back();
     }
   }, [isLoggedIn]);

@@ -1,7 +1,7 @@
-import { TOOLTIP_POSITION } from "@/common/enums";
 import Button from "@/components/button";
 import Tooltip from "@/components/tooltip";
 import styles from "./messages.module.scss";
+import { TOOLTIP_POSITION } from "@/common/enums";
 
 const TooltipContent = ({ customClass }: any) => {
   return (

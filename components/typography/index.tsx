@@ -1,6 +1,6 @@
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import React, { HTMLAttributes } from "react";
 import styles from "./typography.module.scss";
+import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 
 interface ITypographyProps extends HTMLAttributes<HTMLParagraphElement> {
   children: any;

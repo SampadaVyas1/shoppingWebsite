@@ -1,10 +1,10 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
-import checkedIcon from "../../public/assets/icons/checked.svg";
-import checkboxIdeal from "../../public/assets/icons/checkboxIdeal.svg";
 import styles from "./checkbox.module.scss";
 import ImageComponent from "../image";
 import Typography from "../typography";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import checkedIcon from "../../public/assets/icons/checked.svg";
+import checkboxIdeal from "../../public/assets/icons/checkboxIdeal.svg";
 
 interface props {
   checked?: boolean;
@@ -81,7 +81,7 @@ const CheckBox = (props: props) => {
         )}
         {label && (
           <Typography
-            variant={TYPOGRAPHY_VARIANT.TEXT}
+            variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
             customStyle={styles.checkboxLabel}
           >
             {label}

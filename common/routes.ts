@@ -1,4 +1,4 @@
-const ROUTES = {
+export const PRIVATE_ROUTES = {
   HOME: "/",
   LOGIN: "/login",
   404: "/_error",
@@ -14,5 +14,3 @@ export const ADMIN_ROUTES = [
   ...RECRUITER_ROUTES,
   { id: 3, path: "/team", name: "Team" },
 ];
-
-export default ROUTES;

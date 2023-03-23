@@ -1,14 +1,14 @@
 @import "../../styles/variables";
 @import "../../styles/media";
+@import "../../styles/mixins";
+
 .loginPage {
   display: flex;
   height: 100%;
 
   .section {
     flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center-alignment;
     flex-direction: column;
     gap: 2rem;
     position: relative;
@@ -19,18 +19,15 @@
     }
 
     .appLogo {
-      display: flex;
       gap: 1rem;
-      align-items: center;
+      @include flex-align-center;
 
       .appName {
         color: $primary;
       }
     }
     .content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @include flex-center-alignment;
       flex-direction: column;
       width: 380px;
       gap: 1rem;
@@ -56,14 +53,12 @@
     }
 
     .footer {
-      display: flex;
+      @include flex-space-between-alignment;
       padding: 1.5rem;
       width: 100%;
       box-sizing: border-box;
-      align-items: center;
       position: absolute;
       border-top: 1px solid $gray-300;
-      justify-content: space-between;
       bottom: 0;
       left: 0;
 
@@ -79,10 +74,10 @@
     }
   }
   .sectionRight {
-    background-color: #f1f1f1;
+    background-color: $loginSectionBackground;
     .sectionImage {
-      width: 583px;
-      height: 583px;
+      width: 20rem;
+      height: 20.5rem;
       object-fit: contain;
     }
   }

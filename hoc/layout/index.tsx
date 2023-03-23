@@ -2,7 +2,11 @@ import styles from "./layout.module.scss";
 import { AuthContext } from "@/context/authContext";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import ROUTES, { ADMIN_ROUTES, RECRUITER_ROUTES } from "@/common/routes";
+import {
+  PRIVATE_ROUTES,
+  ADMIN_ROUTES,
+  RECRUITER_ROUTES,
+} from "@/common/routes";
 import Navbar from "@/components/navbar";
 import Splash from "@/components/splash";
 
@@ -16,7 +20,7 @@ const Layout = ({ children }: any) => {
 
   return (
     <>
-      {router.pathname === ROUTES[404] ? (
+      {router.pathname === PRIVATE_ROUTES[404] ? (
         children
       ) : !isLoggedIn ? (
         <Splash />

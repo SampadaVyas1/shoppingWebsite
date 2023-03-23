@@ -1,17 +1,19 @@
-import { TOKEN } from "@/common/constants";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-import ROUTES from "@/common/routes";
-import { getDataFromLocalStorage } from "@/common/utils";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+import styles from "./login.module.scss";
+import { AuthContext } from "@/context/authContext";
 import Button from "@/components/button";
 import ImageComponent from "@/components/image";
 import Loader from "@/components/loader";
 import Typography from "@/components/typography";
-import { AuthContext } from "@/context/authContext";
 import Images from "@/public/assets/icons";
-import { useRouter } from "next/router";
-import { useContext, useEffect, useState, useLayoutEffect } from "react";
+import { TOKEN } from "@/common/constants";
+import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { PRIVATE_ROUTES } from "@/common/routes";
+import { getDataFromLocalStorage } from "@/common/utils";
 import SectionImage from "../../public/assets/images/loginImage.svg";
-import styles from "./login.module.scss";
+
 const Login = () => {
   const context = useContext(AuthContext);
   const [isLoggedIn, setLoggedIn] = useState<boolean>(true);
@@ -20,21 +22,23 @@ const Login = () => {
 
   const handleClick = () => {
     context.handleLogin();
-    router.replace(ROUTES.HOME);
+    router.replace(PRIVATE_ROUTES.HOME);
   };
 
   useEffect(() => {
     setLoggedIn(!!getDataFromLocalStorage(TOKEN));
     if (
       !!getDataFromLocalStorage(TOKEN) &&
-      (router.pathname !== ROUTES.HOME || router.pathname !== ROUTES[404])
+      (router.pathname !== PRIVATE_ROUTES.HOME ||
+        router.pathname !== PRIVATE_ROUTES[404])
     ) {
       router.back();
     } else if (
       !!getDataFromLocalStorage(TOKEN) &&
-      (router.pathname === ROUTES.HOME || router.pathname === ROUTES[404])
+      (router.pathname === PRIVATE_ROUTES.HOME ||
+        router.pathname === PRIVATE_ROUTES[404])
     ) {
-      router.replace(ROUTES.HOME);
+      router.replace(PRIVATE_ROUTES.HOME);
     }
   }, []);
 

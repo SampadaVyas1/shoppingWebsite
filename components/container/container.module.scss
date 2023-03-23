@@ -1,4 +1,8 @@
 .container {
   padding: 1rem;
   box-sizing: border-box;
+
+  @media screen and (max-width: $md-min) {
+    padding: 0.75rem;
+  }
 }

@@ -1,7 +1,7 @@
-import { ERROR_CODES, TOKEN } from "@/common/constants";
-import ROUTES from "@/common/routes";
-import { getDataFromLocalStorage } from "@/common/utils";
 import axios from "axios";
+import { ERROR_CODES, TOKEN } from "@/common/constants";
+import { PRIVATE_ROUTES } from "@/common/routes";
+import { getDataFromLocalStorage } from "@/common/utils";
 
 const service = axios.create({
   baseURL: "http://localhost:3000",
@@ -30,7 +30,7 @@ service.interceptors.response.use(
       error.response.data = data;
       return Promise.reject(error);
     } else if (error?.response?.status === ERROR_CODES.ERROR_UNAUTHORIZED) {
-      window.location.href = ROUTES.LOGIN;
+      window.location.href = PRIVATE_ROUTES.LOGIN;
       return Promise.reject(error);
     }
     return Promise.reject(error);

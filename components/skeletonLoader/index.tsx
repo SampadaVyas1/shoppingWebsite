@@ -1,7 +1,12 @@
 import styles from "./skeletonLoader.module.scss";
+import { SKELETON_VARIANT } from "@/common/enums";
 
 interface ISkeletonLoaderProps {
-  type: "circle" | "textLarge" | "textMedium" | "textSmall";
+  type:
+    | SKELETON_VARIANT.CIRCLE
+    | SKELETON_VARIANT.TEXT_LARGE
+    | SKELETON_VARIANT.TEXT_MEDIUM
+    | SKELETON_VARIANT.TEXT_SMALL;
   customClass?: string;
 }
 

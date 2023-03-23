@@ -1,11 +1,11 @@
 @import "../../styles/variables";
+@import "../../styles/mixins";
+
 .navbar {
   max-height: 56px;
   height: 56px;
   background-color: $white;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @include flex-space-between-alignment;
   padding: 0.875rem 2rem;
   box-sizing: border-box;
   gap: 0.75rem;
@@ -14,9 +14,8 @@
     display: flex;
     gap: 1.5rem;
     .logo {
-      display: flex;
+      @include flex-align-center;
       gap: 0.75rem;
-      align-items: center;
 
       .header {
         color: $primary;

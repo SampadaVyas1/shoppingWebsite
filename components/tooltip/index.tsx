@@ -1,6 +1,6 @@
-import { TOOLTIP_POSITION } from "@/common/enums";
 import React, { useState } from "react";
 import styles from "./tooltip.module.scss";
+import { TOOLTIP_POSITION } from "@/common/enums";
 
 interface ITooltipProp {
   children: JSX.Element;

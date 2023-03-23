@@ -1,6 +1,5 @@
 import Image from "next/image";
 import loaderSpinner from "../../public/assets/icons/loader.svg";
-import ImageComponent from "../image";
 import styles from "./loader.module.scss";
 
 const Loader = () => {

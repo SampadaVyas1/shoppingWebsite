@@ -1,3 +1,4 @@
+@import "../../styles/mixins";
 @import "../../styles/variables";
 
 .button {
@@ -5,33 +6,26 @@
   height: 3rem;
   padding: 0.75rem;
   box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: $white;
   gap: 0.5rem;
   border-radius: 0.5rem;
+  @include flex-center-alignment;
 
   .iconLeading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex-center-alignment;
     max-height: 1.5rem;
     max-width: 1.5rem;
   }
 
   .iconTrailing {
     flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex-center-alignment;
     max-height: 1.5rem;
     max-width: 1.5rem;
   }
 
   .buttonLabel {
-    display: flex;
-    justify-content: center;
+    @include flex-center-alignment;
     color: inherit;
     font-weight: inherit;
     line-height: 1.5rem;
@@ -59,7 +53,7 @@
   }
 }
 
-.text {
+.buttonText {
   color: $primary;
 
   &:hover {
