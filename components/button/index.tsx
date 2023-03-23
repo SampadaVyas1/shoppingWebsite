@@ -34,11 +34,11 @@ const Button = (props: IButtonProps) => {
       {...otherProps}
       disabled={props.disabled}
     >
-      {startIcon && (
+      {!!startIcon && (
         <ImageComponent customClass={styles.iconLeading} src={startIcon} />
       )}
-      {children && <div className={styles.buttonLabel}>{children}</div>}
-      {endIcon && (
+      {!!children && <div className={styles.buttonLabel}>{children}</div>}
+      {!!endIcon && (
         <ImageComponent customClass={styles.iconTrailing} src={endIcon} />
       )}
     </button>
