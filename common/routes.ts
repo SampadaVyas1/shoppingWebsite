@@ -14,3 +14,9 @@ export const ADMIN_ROUTES = [
   ...RECRUITER_ROUTES,
   { id: 3, path: "/team", name: "Team" },
 ];
+
+export enum API_ROUTES {
+  LOGIN = "/auth/login",
+  GET_ACCESS_TOKEN = "/auth/getNewAccessToken",
+  CHECK_TOKEN = "/auth/checkToken",
+}

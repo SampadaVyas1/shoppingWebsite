@@ -1,9 +1,10 @@
 import { REFRESH_TOKEN, TOKEN } from "@/common/constants";
+import { API_ROUTES } from "@/common/routes";
 import service from "./config";
 
 export const getLoginData = async (codeResponse?: any) => {
   try {
-    const response = await service.post("/auth/login", {
+    const response = await service.post(API_ROUTES.LOGIN, {
       authorizationCode: codeResponse.code,
     });
     return { data: response.data.data, error: null };
@@ -14,7 +15,7 @@ export const getLoginData = async (codeResponse?: any) => {
 
 export const getAccessToken = async () => {
   try {
-    const response = await service.post(`/auth/getNewAccessToken`, null, {
+    const response = await service.post(API_ROUTES.GET_ACCESS_TOKEN, null, {
       params: { refreshToken: localStorage.getItem(REFRESH_TOKEN) },
     });
     return response;
@@ -25,7 +26,7 @@ export const getAccessToken = async () => {
 
 export const getDummyData = async () => {
   try {
-    const response = await service.get(`/auth/checkHealthStatus`);
+    const response = await service.get(API_ROUTES.CHECK_TOKEN);
     return response;
   } catch (error) {
     return { data: null, error: error };
