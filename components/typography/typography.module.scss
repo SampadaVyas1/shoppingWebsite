@@ -1,0 +1,102 @@
+@import "../../styles/variables";
+@import "../../styles/media";
+.headerLarge {
+  font-size: $headerLarge;
+  font-weight: 500;
+  line-height: 150%;
+  font-family: $Montserrat;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 1.5rem;
+  }
+}
+
+.headerMediumSemiBold {
+  font-size: $headerSemiBoldMedium;
+  font-weight: 600;
+  line-height: 150%;
+  font-family: $Montserrat;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 1rem;
+  }
+}
+
+.headerSmallSemiBold {
+  font-size: $headerRegular;
+  font-weight: 600;
+  line-height: 150%;
+  font-family: $Montserrat;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 0.875rem;
+  }
+}
+
+.headerSmall {
+  font-size: $headerRegular;
+  font-weight: 500;
+  line-height: 150%;
+  font-family: $Montserrat;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 0.875rem;
+  }
+}
+
+.textLargeMedium {
+  font-size: $textLarge;
+  font-weight: 500;
+  line-height: 150%;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 0.875rem;
+  }
+}
+
+.textLargeRegular {
+  font-size: $textLarge;
+  font-weight: 400;
+  line-height: 150%;
+  @media screen and (max-width: $md-min) {
+    font-size: 0.875rem;
+  }
+}
+
+.textMediumSemiBold {
+  font-size: $textMedium;
+  font-weight: 600;
+  line-height: 150%;
+
+  @media screen and (max-width: $md-min) {
+    font-size: 0.75rem;
+  }
+}
+
+.textMediumRegular {
+  font-size: $textMedium;
+  line-height: 150%;
+}
+
+.textSmallSemiBold {
+  font-size: $textSmall;
+  font-weight: 600;
+  line-height: 150%;
+}
+
+.textSmallMedium {
+  font-size: $textSmall;
+  font-weight: 500;
+  line-height: 150%;
+}
+
+.textSmallRegular {
+  font-size: $textSmall;
+  line-height: 150%;
+}
+
+.error {
+  font-size: $textSmall;
+  font-weight: 400;
+  color: $error;
+}

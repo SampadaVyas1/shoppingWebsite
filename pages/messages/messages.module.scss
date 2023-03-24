@@ -1,0 +1,27 @@
+@import "../../styles/variables";
+@import "../../styles/media";
+@import "../../styles/mixins";
+
+.messages {
+  @include flex-center-alignment;
+  flex-direction: column;
+  gap: 2rem;
+  height: 100%;
+
+  .tooltip {
+    width: 25rem;
+  }
+  .tooltipContent {
+    width: 37.5rem;
+    border-radius: 0.5rem;
+    background-color: $primary;
+    color: $white;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+  .tooltipContentLeft {
+    position: absolute;
+    top: -2rem;
+    right: 0;
+  }
+}

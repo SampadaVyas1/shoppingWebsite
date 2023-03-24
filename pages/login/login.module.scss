@@ -1,0 +1,104 @@
+@import "../../styles/variables";
+@import "../../styles/media";
+@import "../../styles/mixins";
+
+.loginPage {
+  display: flex;
+  height: 100%;
+  padding: 0;
+
+  .section {
+    flex: 1;
+    @include flex-center-alignment;
+    flex-direction: column;
+    padding: 0;
+    gap: 2rem;
+    position: relative;
+
+    .loginText {
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .appLogo {
+      gap: 1rem;
+      @include flex-align-center;
+
+      .appName {
+        color: $primary;
+      }
+    }
+    .content {
+      @include flex-center-alignment;
+      flex-direction: column;
+      width: 23.75rem;
+      gap: 1rem;
+    }
+    .loginButton {
+      width: 100%;
+      max-width: 23.75rem;
+      font-weight: 400;
+      color: $gray-900;
+      border: 0.0625rem solid $gray-300;
+    }
+    .text {
+      color: $primaryText;
+      span {
+        color: $primary;
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .footer {
+      @include flex-space-between-alignment;
+      padding: 1.5rem;
+      width: 100%;
+      box-sizing: border-box;
+      position: absolute;
+      border-top: 0.0625rem solid $gray-300;
+      bottom: 0;
+      left: 0;
+
+      .privacyPolicy {
+        color: $primary;
+
+        &:hover {
+          font-weight: 500;
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .sectionRight {
+    background-color: $loginSectionBackground;
+    .sectionImage {
+      width: 20rem;
+      height: 20.5rem;
+      object-fit: contain;
+    }
+  }
+}
+
+@media screen and (max-width: $md-max) {
+  .loginPage {
+    .section {
+      padding: 1rem;
+      box-sizing: border-box;
+      .content {
+        width: auto;
+      }
+      .footer {
+        padding: 0.5rem;
+      }
+    }
+    .sectionRight {
+      display: none;
+    }
+  }
+}

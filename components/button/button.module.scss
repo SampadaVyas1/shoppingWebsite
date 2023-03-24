@@ -1,0 +1,85 @@
+@import "../../styles/mixins";
+@import "../../styles/variables";
+
+.button {
+  border: none;
+  height: 3rem;
+  padding: 0.75rem;
+  box-sizing: border-box;
+  background-color: $white;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  @include flex-center-alignment;
+
+  .iconLeading {
+    @include flex-center-alignment;
+    max-height: 1.5rem;
+    max-width: 1.5rem;
+  }
+
+  .iconTrailing {
+    flex: 1;
+    @include flex-center-alignment;
+    max-height: 1.5rem;
+    max-width: 1.5rem;
+  }
+
+  .buttonLabel {
+    @include flex-center-alignment;
+    color: inherit;
+    font-weight: inherit;
+    line-height: 1.5rem;
+    font-size: 1rem;
+    background: transparent;
+    white-space: nowrap;
+  }
+  &:hover {
+    cursor: pointer;
+    box-shadow: $buttonHoverShadow;
+  }
+}
+
+.outlined {
+  border: 0.0625rem solid $primary;
+  color: $primary;
+  min-width: 7.5rem;
+  background-color: $white;
+
+  &:disabled {
+    color: $gray-500 !important;
+    border: 0.0625rem solid $disabledButtonColor !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+  }
+}
+
+.buttonText {
+  color: $primary;
+
+  &:hover {
+    background-color: $primaryLight;
+    padding: 0.5rem;
+    text-decoration: underline;
+    box-shadow: none;
+  }
+  &:disabled {
+    color: $gray-500 !important;
+    cursor: not-allowed !important;
+    background-color: transparent;
+    text-decoration: none;
+  }
+}
+
+.contained {
+  background-color: $primary;
+  color: $white;
+  min-width: 7.5rem;
+
+  &:disabled {
+    background-color: $disabledButtonColor !important;
+    border: 0.0625rem solid $disabledButtonColor !important;
+    color: $white !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+  }
+}

@@ -1,0 +1,57 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.navbar {
+  max-height: 3.5rem;
+  height: 3.5rem;
+  background-color: $white;
+  @include flex-space-between-alignment;
+  padding: 0.875rem 2rem;
+  box-sizing: border-box;
+  gap: 0.75rem;
+
+  .navbarLeft {
+    display: flex;
+    gap: 1.5rem;
+    .logo {
+      @include flex-align-center;
+      gap: 0.75rem;
+
+      .header {
+        color: $primary;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+    }
+    .route {
+      font-family: $Montserrat;
+      padding: 0.875rem 0.75rem;
+      box-sizing: border-box;
+      border-bottom: 0.25rem solid $white;
+      font-weight: 500;
+      line-height: 1.5rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .active {
+      color: $primary;
+      border-bottom: 0.25rem solid $primary;
+      font-weight: 600;
+    }
+  }
+
+  .navbarRight {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .icons {
+    width: 1.75rem;
+    height: 1.75rem;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

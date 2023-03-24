@@ -1,0 +1,28 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.modalBackdrop {
+  height: 100vh;
+  width: 100vw;
+  @include flex-center-alignment;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  background-color: $modalBackdropBackground;
+
+  .modal {
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+    background-color: $white;
+    box-shadow: $modalBoxShadow;
+
+    .heading {
+      font-weight: 600;
+      line-height: 1.5rem;
+      font-family: $Montserrat;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+  }
+}

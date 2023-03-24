@@ -1,0 +1,63 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.disabled {
+  box-shadow: $boxShadow !important;
+  color: $disabledButtonColor !important;
+  border: $inputBoxBorder !important;
+  cursor: not-allowed !important;
+  background-color: $listHoverColor !important;
+}
+
+.label {
+  font-size: 0.75rem;
+  line-height: 1.3125rem;
+  font-weight: 600;
+}
+.error {
+  font-size: 0.75rem;
+  color: $error;
+}
+.inputBox {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .inputWrapper {
+    @include flex-center-alignment;
+    flex: 1;
+    border: $inputBoxBorder;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    background-color: $white;
+    gap: 0.5rem;
+    .startIcon {
+      width: 1.125rem;
+      height: 1.125rem;
+    }
+
+    .inputField {
+      display: flex;
+      flex: 1;
+      background-color: inherit;
+      line-height: 1.5rem;
+      font-size: 1rem;
+      max-height: 3rem;
+      padding-left: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      border: none;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+.focus {
+  border: 0.0625rem solid $primary !important;
+  box-shadow: $inputBoxShadow;
+}

@@ -1,0 +1,21 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.imagePlaceholder {
+  box-sizing: border-box;
+  @include flex-center-alignment;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: $primary;
+  color: $white;
+  object-fit: contain;
+  object-position: center;
+  font-weight: 600;
+
+  .profileText {
+    user-select: none;
+    font: inherit;
+    color: inherit;
+  }
+}

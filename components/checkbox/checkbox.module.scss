@@ -1,0 +1,37 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.checkbox {
+  user-select: none;
+  @include flex-align-center;
+  gap: 0.5rem;
+  cursor: pointer;
+  .checkboxLabel {
+    user-select: auto;
+    font: inherit;
+  }
+}
+
+.uncheckedBox {
+  border: 0.0625rem solid $gray-500;
+  height: 1.125rem;
+  width: 1.125rem;
+  background-color: $white;
+  border-radius: 0.25rem;
+  &:hover {
+    background-color: $primaryLight;
+    border: 0.0625rem solid $primary;
+  }
+}
+.icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.checkboxDisabled {
+  pointer-events: none;
+
+  .icon {
+    opacity: 0.5;
+  }
+}
