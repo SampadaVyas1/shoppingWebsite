@@ -13,6 +13,8 @@ export const VARIANT_TYPE = {
 export const ERROR_CODES = {
   ERROR_NETWORK: "ERR_NETWORK",
   ERROR_UNAUTHORIZED: 401,
+  ERROR_FORBIDDEN: 403,
+  STATUS_OK: 200,
 };
 
 export const TOKEN = "token";

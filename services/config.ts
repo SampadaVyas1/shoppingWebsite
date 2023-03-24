@@ -1,9 +1,9 @@
-import { useRouter } from "next/router";
 import axios from "axios";
-import { getDataFromLocalStorage } from "@/common/utils";
-import useRefeshToken from "@/hooks/useRefeshToken/useRefeshToken";
+import { googleLogout } from "@react-oauth/google";
+import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
 import { ERROR_CODES, TOKEN, USER_TOKEN } from "@/common/constants";
 import { PRIVATE_ROUTES } from "@/common/routes";
+import { getAccessToken } from "./login.service";
 
 const service = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -26,23 +26,35 @@ service.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     const token = localStorage.getItem(TOKEN);
-    if (
-      error?.response?.status == 403 &&
-      token != undefined &&
-      token !== null
+    if (error.code === ERROR_CODES.ERROR_NETWORK) {
+      const data = {
+        data: null,
+        error: {
+          code: ERROR_CODES.ERROR_NETWORK,
+          message: error.message,
+        },
+      };
+      error.response.data = data;
+      return Promise.reject(error);
+    } else if (
+      error?.response?.status == ERROR_CODES.ERROR_FORBIDDEN &&
+      !!token
     ) {
       if (!originalRequest._retry) {
         originalRequest._retry = true;
-        const refresh = useRefeshToken();
-        const res = await refresh();
-        if (res.status === 200) {
-          const newToken = localStorage.getItem(TOKEN);
-          originalRequest.headers.Authorization = newToken;
+
+        const response = await getAccessToken();
+        if (response?.status === ERROR_CODES.STATUS_OK) {
+          const { data } = response.data;
+          setDataInLocalStorage(TOKEN, data);
+          originalRequest.headers.Authorization = data;
           return axios(originalRequest);
+        } else {
+          localStorage.clear();
+          window.location.href = PRIVATE_ROUTES.LOGIN;
+          googleLogout();
         }
       }
-    } else {
-      window.location.href = PRIVATE_ROUTES.LOGIN;
     }
     return Promise.reject(error);
   }

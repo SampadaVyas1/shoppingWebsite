@@ -15,7 +15,7 @@ import { PRIVATE_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
 import SectionImage from "../../public/assets/images/loginImage.svg";
 import Container from "@/components/container";
-import { getLoginData } from "@/services/login";
+import { getLoginData } from "@/services/login.service";
 
 const Login = () => {
   const context = useContext(AuthContext);
@@ -23,18 +23,15 @@ const Login = () => {
 
   const router = useRouter();
 
-  const handleClick = async (codeResponse: any) => {
-    const res = await getLoginData(codeResponse);
-    if (res) {
-      context.handleLogin(
-        res.data.data.accessToken,
-        res.data.data.refreshToken,
-        res.data.data.userToken
-      );
+  const handleClick = async (codeResponse: Object) => {
+    const response = await getLoginData(codeResponse);
+    if (!response?.error) {
+      const { accessToken, refreshToken, userToken } = response.data;
+      context.handleLogin(accessToken, refreshToken, userToken);
       router.replace(PRIVATE_ROUTES.HOME);
     }
   };
-  function onSuccess(codeResponse: any) {
+  function onSuccess(codeResponse: Object) {
     handleClick(codeResponse);
   }
   const login = useGoogleLogin({ onSuccess: onSuccess, flow: "auth-code" });
