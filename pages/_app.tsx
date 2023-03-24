@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import "@/styles/globals.scss";
 import Splash from "@/components/splash";
 import AuthProvider from "@/context/authContext";
@@ -16,14 +17,16 @@ const LoginElement = dynamic(() => import("./login"), {
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   return (
-    <AuthProvider>
-      {router.pathname === PRIVATE_ROUTES.LOGIN ? (
-        <LoginElement />
-      ) : (
-        <ProtectedRoute>
-          <Component {...pageProps} />
-        </ProtectedRoute>
-      )}
-    </AuthProvider>
+    <GoogleOAuthProvider clientId={`${process.env.NEXT_PUBLIC_CLIENT_ID}`}>
+      <AuthProvider>
+        {router.pathname === PRIVATE_ROUTES.LOGIN ? (
+          <LoginElement />
+        ) : (
+          <ProtectedRoute>
+            <Component {...pageProps} />
+          </ProtectedRoute>
+        )}
+      </AuthProvider>
+    </GoogleOAuthProvider>
   );
 }

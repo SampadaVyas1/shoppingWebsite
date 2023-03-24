@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
+import { useGoogleLogin } from "@react-oauth/google";
 import styles from "./login.module.scss";
 import { AuthContext } from "@/context/authContext";
 import Button from "@/components/button";
@@ -8,12 +9,13 @@ import ImageComponent from "@/components/image";
 import Loader from "@/components/loader";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
-import { TOKEN } from "@/common/constants";
+import { REFRESH_TOKEN, TOKEN } from "@/common/constants";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { PRIVATE_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
 import SectionImage from "../../public/assets/images/loginImage.svg";
 import Container from "@/components/container";
+import { getLoginData } from "@/services/login";
 
 const Login = () => {
   const context = useContext(AuthContext);
@@ -21,10 +23,21 @@ const Login = () => {
 
   const router = useRouter();
 
-  const handleClick = () => {
-    context.handleLogin();
-    router.replace(PRIVATE_ROUTES.HOME);
+  const handleClick = async (codeResponse: any) => {
+    const res = await getLoginData(codeResponse);
+    if (res) {
+      context.handleLogin(
+        res.data.data.accessToken,
+        res.data.data.refreshToken,
+        res.data.data.userToken
+      );
+      router.replace(PRIVATE_ROUTES.HOME);
+    }
   };
+  function onSuccess(codeResponse: any) {
+    handleClick(codeResponse);
+  }
+  const login = useGoogleLogin({ onSuccess: onSuccess, flow: "auth-code" });
 
   useEffect(() => {
     setLoggedIn(!!getDataFromLocalStorage(TOKEN));
@@ -77,7 +90,7 @@ const Login = () => {
               startIcon={Images.googleIcon}
               variant={BUTTON_VARIANT.OUTLINED}
               customStyle={styles.loginButton}
-              onClick={handleClick}
+              onClick={login}
             >
               Sign in with google
             </Button>
