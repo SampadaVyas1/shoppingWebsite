@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { TOKEN } from "@/common/constants";
+import { REFRESH_TOKEN, TOKEN } from "@/common/constants";
 import { PRIVATE_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
 import { useRouter } from "next/router";
@@ -10,7 +10,7 @@ const ProtectedRoute = ({ children }: any) => {
   const router = useRouter();
 
   const isLoggedIn =
-    !!getDataFromLocalStorage(TOKEN) ||
+    !!getDataFromLocalStorage(REFRESH_TOKEN) ||
     PRIVATE_ROUTES.hasOwnProperty(router.pathname);
 
   useEffect(() => {
