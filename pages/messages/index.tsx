@@ -18,16 +18,6 @@ const TooltipContent = ({ customClass }: any) => {
 };
 
 const Messages = () => {
-  return (
-    <div className={styles.messages}>
-      <Tooltip
-        customStyle={styles.tooltip}
-        position={TOOLTIP_POSITION.BOTTOM}
-        content={<TooltipContent />}
-      >
-        <Button>Messages</Button>
-      </Tooltip>
-    </div>
-  );
+  return <div className={styles.messages}>Messages</div>;
 };
 export default Messages;
