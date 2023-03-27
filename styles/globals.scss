@@ -26,3 +26,24 @@ a {
     color-scheme: dark;
   }
 }
+.react-tiny-popover-container {
+  filter: drop-shadow(0 0.25rem 0.375rem rgba(16, 24, 40, 0.25))
+    drop-shadow(0 0.75rem 0.375rem rgba(16, 24, 40, 0.08));
+}
+.alert-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.alert-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.alert-exit {
+  opacity: 1;
+}
+.alert-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
