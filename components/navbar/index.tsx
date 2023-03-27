@@ -48,10 +48,14 @@ const Navbar = ({ routes }: INavbarProps) => {
   const handleLogoutButtonClick = () => {
     toggleLogoutModal(!isLogoutModalOpen);
   };
+
+  const redirectHome = () => {
+    router.push(PRIVATE_ROUTES.HOME);
+  };
   return (
     <div className={styles.navbar}>
       <div className={styles.navbarLeft}>
-        <div className={styles.logo}>
+        <div className={styles.logo} onClick={redirectHome}>
           <ImageComponent src={Images.coditasIcon} width={32} height={32} />
           <Typography
             variant={TYPOGRAPHY_VARIANT.HEADER_LARGE}
@@ -103,7 +107,8 @@ const Navbar = ({ routes }: INavbarProps) => {
               >
                 <ProfileCard
                   profileImage=""
-                  name="Kiran Mehta"
+                  firstName="Kiran"
+                  lastName="Mehta"
                   designation="Associate Talent Acquisition"
                   cardBody={
                     <React.Fragment>

@@ -9,14 +9,22 @@ import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 
 interface IProfileCardProps {
   profileImage: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   designation: string;
   cardBody: React.ReactNode;
   cardFooter: React.ReactNode;
 }
 
 const ProfileCard = (props: IProfileCardProps) => {
-  const { profileImage, name, designation, cardBody, cardFooter } = props;
+  const {
+    profileImage,
+    firstName,
+    lastName,
+    designation,
+    cardBody,
+    cardFooter,
+  } = props;
 
   return (
     <div className={styles.profileCardWrapper}>
@@ -24,14 +32,14 @@ const ProfileCard = (props: IProfileCardProps) => {
         <ImageComponent
           src={profileImage}
           fallbackClass={styles.profileImage}
-          fallbackText={name.charAt(0)}
+          fallbackText={`${firstName.charAt(0)}${lastName.charAt(0)}`}
           customClass={styles.profileImage}
         />
         <Typography
           variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}
           customStyle={styles.name}
         >
-          {name}
+          {`${firstName} ${lastName}`}
         </Typography>
         <Typography
           variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
