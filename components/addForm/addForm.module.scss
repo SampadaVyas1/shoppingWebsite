@@ -3,6 +3,14 @@
 .addFormWrapper {
   display: flex;
   gap: 1rem;
+  .downloadLink {
+    color: $primary;
+    text-align: center;
+  }
+
+  .uploadForm {
+    flex: 1;
+  }
 
   .addForm {
     display: flex;

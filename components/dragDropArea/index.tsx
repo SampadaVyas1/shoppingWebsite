@@ -4,7 +4,12 @@ import Typography from "../typography";
 import styles from "./dragDropArea.module.scss";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 
-const DragDropArea = () => {
+interface IDragDropArea {
+  customStyle?: string;
+  fileType?: string[];
+}
+
+const DragDropArea = (props: IDragDropArea) => {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const [file, setFile] = useState<any>(null);
   const inputRef = useRef<any>(null);
@@ -49,7 +54,7 @@ const DragDropArea = () => {
   };
   return (
     <form
-      className={styles.formFileUpload}
+      className={`${styles.formFileUpload} ${props.customStyle}`}
       onDragEnter={handleDrag}
       onSubmit={onFormSubmit}
     >
@@ -61,9 +66,6 @@ const DragDropArea = () => {
         accept=".csv, .xlsx"
         onChange={handleChange}
       />
-      <Typography variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}>
-        From File
-      </Typography>
 
       <label
         htmlFor="inputFileUpload"

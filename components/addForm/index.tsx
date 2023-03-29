@@ -9,6 +9,8 @@ import Select, { IOptionType } from "../select";
 import styles from "./addForm.module.scss";
 import { AddFormSchema } from "./validation";
 import { REGEX, VALIDATION_ERRORS } from "@/common/constants";
+import Card from "../card";
+import React from "react";
 
 const AddForm = () => {
   const hookForm = useForm({
@@ -78,7 +80,17 @@ const AddForm = () => {
 
   return (
     <div className={styles.addFormWrapper}>
-      <DragDropArea />
+      <Card title="From File">
+        <React.Fragment>
+          <DragDropArea customStyle={styles.uploadForm} />
+          <Typography
+            variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}
+            customStyle={styles.downloadLink}
+          >
+            Download sample file
+          </Typography>
+        </React.Fragment>
+      </Card>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.addForm}>
         <Typography variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}>
           Manually
