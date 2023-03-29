@@ -1,0 +1,25 @@
+@import "../../styles/variables";
+
+.addFormWrapper {
+  display: flex;
+  gap: 1rem;
+
+  .addForm {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 29rem;
+    gap: 1rem;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    background-color: $white;
+    border: 0.0625rem solid $formBorder;
+    box-shadow: $modalBoxShadow;
+
+    .field {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+}

@@ -8,14 +8,14 @@ import Button from "@/components/button";
 import ImageComponent from "@/components/image";
 import Loader from "@/components/loader";
 import Typography from "@/components/typography";
+import Container from "@/components/container";
 import Images from "@/public/assets/icons";
 import { REFRESH_TOKEN, TOKEN } from "@/common/constants";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { PRIVATE_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
-import SectionImage from "../../public/assets/images/loginImage.svg";
-import Container from "@/components/container";
 import { getLoginData } from "@/services/login.service";
+import SectionImage from "../../public/assets/images/loginImage.svg";
 
 const Login = () => {
   const context = useContext(AuthContext);

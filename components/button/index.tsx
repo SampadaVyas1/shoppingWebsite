@@ -13,6 +13,7 @@ interface IButtonProps extends HtmlHTMLAttributes<HTMLButtonElement> {
     | BUTTON_VARIANT.CONTAINED;
   disabled?: boolean;
   customStyle?: string;
+  type?: "reset" | "button" | "submit";
 }
 
 const Button = (props: IButtonProps) => {
@@ -22,6 +23,7 @@ const Button = (props: IButtonProps) => {
     endIcon,
     children,
     customStyle,
+    type = "button",
     ...otherProps
   } = props;
 
@@ -32,6 +34,7 @@ const Button = (props: IButtonProps) => {
     <button
       className={`${styles[variant]} ${buttonClass}`}
       {...otherProps}
+      type={type}
       disabled={props.disabled}
     >
       {!!startIcon && (

@@ -8,13 +8,15 @@ import React, {
 import ImageComponent from "../image";
 import styles from "./inputBox.module.scss";
 
-interface IInputProps extends HTMLAttributes<HTMLInputElement> {
+interface IInputProps
+  extends HTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
   customClass?: string;
   label?: string;
   value?: any;
+  type?: string;
   disabled?: boolean;
   multiline?: boolean;
-  handleChange?: (value: any) => void;
+  onChange?: (value: any) => void;
   autoFocus?: boolean;
   pattern?: string;
   error?: string;
@@ -24,15 +26,16 @@ interface IInputProps extends HTMLAttributes<HTMLInputElement> {
 const InputBox = (props: IInputProps) => {
   const {
     customClass,
-    value,
+    // value,
     disabled,
     multiline,
-    handleChange,
+    onChange,
     placeholder,
     autoFocus,
     pattern,
     label,
     error,
+    type = "text",
     startIcon,
     ...otherProps
   } = props;
@@ -43,18 +46,21 @@ const InputBox = (props: IInputProps) => {
         : `${styles.inputWrapper}`
     );
 
-  const onFocus = () => {
-    setCustomInputWrapperClass(`${styles.inputWrapper} ${styles.focus}`);
-  };
-  const onBlur = () => {
-    setCustomInputWrapperClass(`${styles.inputWrapper}`);
-  };
-
-  const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+  const onFocus = (
+    event:
+      | React.FocusEvent<HTMLInputElement>
+      | React.FocusEvent<HTMLTextAreaElement>
   ) => {
-    const value = event?.target?.value;
-    props.handleChange && props.handleChange(value);
+    setCustomInputWrapperClass(`${styles.inputWrapper} ${styles.focus}`);
+    props.onFocus && props.onFocus(event);
+  };
+  const onBlur = (
+    event:
+      | React.FocusEvent<HTMLInputElement>
+      | React.FocusEvent<HTMLTextAreaElement>
+  ) => {
+    setCustomInputWrapperClass(`${styles.inputWrapper}`);
+    props.onBlur && props.onBlur(event);
   };
   const inputElement = useRef<HTMLInputElement>(null);
 
@@ -76,24 +82,25 @@ const InputBox = (props: IInputProps) => {
           <textarea
             className={styles.inputField}
             disabled={disabled}
-            value={value}
-            onChange={handleInputChange}
+            onChange={onChange}
             rows={2}
             onFocus={onFocus}
             onBlur={onBlur}
             placeholder={placeholder}
+            {...otherProps}
             autoFocus
           />
         ) : (
           <input
             className={styles.inputField}
             {...otherProps}
+            type={type}
             disabled={disabled}
-            value={value}
-            onChange={handleInputChange}
+            onChange={onChange}
             onFocus={onFocus}
             onBlur={onBlur}
             tabIndex={0}
+            autoComplete="off"
             autoFocus={autoFocus}
             pattern={pattern}
             ref={inputElement}
