@@ -1,40 +1,52 @@
+import Button from "@/components/button";
 import socket from "@/socket";
 import { useEffect, useState } from "react";
 const Candidates = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [lastData, setLastData] = useState<any>(null);
 
-  const connectSocket = () => {
-    if (socket.on) {
-      socket.on("connect", () => {
-        setIsConnected(true);
-        socket.emit("join", `917972287471`);
-      });
-      socket.on("connect_failed", function () {
-        console.log("failed connection");
-      });
-      socket.on("error", function () {
-        console.log("failed connection");
-      });
-      socket.on("connecting", function () {
-        console.log("failed connection");
-      });
-      socket.on("coditas", (data: any) => {
+  const createSession = () => {
+    if (socket.connected) {
+      socket.on("session", (data: any) => {
         setLastData(data);
-        return data;
       });
     }
   };
 
   useEffect(() => {
-    connectSocket();
-    // return socket.disconnect();
+    if (!socket.connected) {
+      socket.connect();
+      socket.on("connection", () => {
+        try {
+          console.log(`Connected : ${socket.id}`);
+        } catch (error) {
+          console.log(error);
+        }
+      });
+    }
+    return () => {
+      socket.disconnect();
+    };
   }, []);
+
+  useEffect(() => {
+    setIsConnected(socket.connected);
+  }, []);
+
+  useEffect(() => {
+    createSession();
+    return () => {
+      socket.off("session", () => {
+        console.log("closed");
+      });
+    };
+  }, []);
+
   return (
     <div>
       <p>Connected: {"" + isConnected}</p>
       <p>Last Data: {lastData?.userId || "-"}</p>
-      <button onClick={connectSocket}>Connect socket</button>
+      {/* <Button onClick={connectSocket}>Connect socket</Button> */}
     </div>
   );
 };
