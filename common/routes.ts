@@ -1,4 +1,4 @@
-const ROUTES = {
+export const PRIVATE_ROUTES = {
   HOME: "/",
   LOGIN: "/login",
   404: "/_error",
@@ -15,4 +15,8 @@ export const ADMIN_ROUTES = [
   { id: 3, path: "/team", name: "Team" },
 ];
 
-export default ROUTES;
+export enum API_ROUTES {
+  LOGIN = "/auth/login",
+  GET_ACCESS_TOKEN = "/auth/getNewAccessToken",
+  CHECK_TOKEN = "/auth/checkToken",
+}

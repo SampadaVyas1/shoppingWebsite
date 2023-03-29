@@ -1,8 +1,9 @@
 @import "../../styles/variables";
+@import "../../styles/mixins";
+
 .checkbox {
   user-select: none;
-  display: flex;
-  align-items: center;
+  @include flex-align-center;
   gap: 0.5rem;
   cursor: pointer;
   .checkboxLabel {
@@ -30,7 +31,7 @@
 .checkboxDisabled {
   pointer-events: none;
 
-  img {
+  .icon {
     opacity: 0.5;
   }
 }

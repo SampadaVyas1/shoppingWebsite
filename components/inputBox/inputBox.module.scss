@@ -1,4 +1,5 @@
 @import "../../styles/variables";
+@import "../../styles/mixins";
 
 .disabled {
   box-shadow: $boxShadow !important;
@@ -24,10 +25,8 @@
   gap: 0.5rem;
 
   .inputWrapper {
-    display: flex;
+    @include flex-center-alignment;
     flex: 1;
-    align-items: center;
-    justify-content: center;
     border: $inputBoxBorder;
     border-radius: 0.5rem;
     padding: 0.75rem 1rem;

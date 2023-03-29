@@ -15,9 +15,21 @@ export enum VARIANT {
 }
 
 export enum BUTTON_VARIANT {
-  TEXT = "text",
+  TEXT = "buttonText",
   OUTLINED = "outlined",
   CONTAINED = "contained",
+}
+
+export enum SKELETON_VARIANT {
+  CIRCLE = "circle",
+  TEXT_LARGE = "textLarge",
+  TEXT_MEDIUM = "textMedium",
+  TEXT_SMALL = "textSmall",
+}
+
+export enum ORIENTATIONS {
+  VERTICAL = "vertical",
+  HORIZONTAL = "horizontal",
 }
 
 export enum TYPOGRAPHY_VARIANT {

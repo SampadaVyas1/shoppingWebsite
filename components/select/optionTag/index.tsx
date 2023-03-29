@@ -1,8 +1,8 @@
-import { IOptionType } from "..";
 import React, { useCallback } from "react";
 import styles from "./optionTag.module.scss";
 import ImageComponent from "../../image";
 import Images from "@/public/assets/icons";
+import { IOptionType } from "..";
 
 interface IOptionTagProps {
   options: IOptionType[];
@@ -14,7 +14,7 @@ const OptionTags = (props: IOptionTagProps) => {
   const { close } = Images;
 
   const handleTagRemove = useCallback(
-    (value: IOptionType) => (event: any) => {
+    (value: IOptionType) => (event: React.MouseEvent) => {
       event.stopPropagation();
       onRemove(options.filter((option) => option.id !== value.id));
     },

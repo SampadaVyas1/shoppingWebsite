@@ -7,10 +7,11 @@ interface ICardProps {
 }
 
 const Card = (props: ICardProps) => {
+  const { title = "", children, customClass } = props;
   return (
-    <div className={` ${props.customClass} ${styles.cardWrapper}`}>
-      {props.title && <div className={styles.title}>{props.title}</div>}
-      {props.children}
+    <div className={` ${customClass} ${styles.cardWrapper}`}>
+      {title && <div className={styles.title}>{title}</div>}
+      {children}
     </div>
   );
 };

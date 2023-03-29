@@ -1,14 +1,15 @@
-import { useContext, useEffect } from "react";
-import { AuthContext } from "@/context/authContext";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { AuthContext } from "@/context/authContext";
+import styles from "../styles/app.module.scss";
 import Button from "@/components/button";
 import Typography from "@/components/typography";
 import Loader from "@/components/loader";
 import SkeletonLoader from "@/components/skeletonLoader";
-import ROUTES from "@/common/routes";
-import Images from "@/public/assets/icons";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
-import styles from "../styles/app.module.scss";
+import Select from "@/components/select";
+import { getDummyData } from "@/services/login.service";
+import { PRIVATE_ROUTES } from "@/common/routes";
+import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 
 const Home = () => {
   const context = useContext(AuthContext);
@@ -18,7 +19,12 @@ const Home = () => {
 
   const onLogout = () => {
     handleLogout();
-    router.replace(ROUTES.LOGIN);
+    router.replace(PRIVATE_ROUTES.LOGIN);
+  };
+
+  const getData = async () => {
+    const response = await getDummyData();
+    console.log(response);
   };
 
   return (
@@ -29,13 +35,22 @@ const Home = () => {
       <Button onClick={onLogout}>Logout</Button>
       {!isLoggedIn && <Loader />}
       <div className={styles.profileLoader}>
-        <SkeletonLoader type="circle" />
+        <SkeletonLoader type={SKELETON_VARIANT.CIRCLE} />
         <div className={styles.content}>
-          <SkeletonLoader type="textLarge" />
-          <SkeletonLoader type="textMedium" />
-          <SkeletonLoader type="textSmall" />
+          <SkeletonLoader type={SKELETON_VARIANT.TEXT_LARGE} />
+          <SkeletonLoader type={SKELETON_VARIANT.TEXT_MEDIUM} />
+          <SkeletonLoader type={SKELETON_VARIANT.TEXT_SMALL} />
         </div>
       </div>
+      <Button onClick={getData}>Check Token</Button>
+      <Select
+        options={[
+          { id: 1, label: "hello" },
+          { id: 2, label: "hey" },
+          { id: 3, label: "hii" },
+        ]}
+        multiSelect
+      />
     </div>
   );
 };

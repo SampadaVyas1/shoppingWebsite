@@ -1,40 +1,55 @@
-import { TOKEN } from "@/common/constants";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-import ROUTES from "@/common/routes";
-import { getDataFromLocalStorage } from "@/common/utils";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
+import { useGoogleLogin } from "@react-oauth/google";
+import styles from "./login.module.scss";
+import { AuthContext } from "@/context/authContext";
 import Button from "@/components/button";
 import ImageComponent from "@/components/image";
 import Loader from "@/components/loader";
 import Typography from "@/components/typography";
-import { AuthContext } from "@/context/authContext";
 import Images from "@/public/assets/icons";
-import { useRouter } from "next/router";
-import { useContext, useEffect, useState, useLayoutEffect } from "react";
+import { REFRESH_TOKEN, TOKEN } from "@/common/constants";
+import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { PRIVATE_ROUTES } from "@/common/routes";
+import { getDataFromLocalStorage } from "@/common/utils";
 import SectionImage from "../../public/assets/images/loginImage.svg";
-import styles from "./login.module.scss";
+import Container from "@/components/container";
+import { getLoginData } from "@/services/login.service";
+
 const Login = () => {
   const context = useContext(AuthContext);
   const [isLoggedIn, setLoggedIn] = useState<boolean>(true);
 
   const router = useRouter();
 
-  const handleClick = () => {
-    context.handleLogin();
-    router.replace(ROUTES.HOME);
+  const handleClick = async (codeResponse: Object) => {
+    const response = await getLoginData(codeResponse);
+    if (!response?.error) {
+      const { accessToken, refreshToken, userToken } = response.data;
+      context.handleLogin(accessToken, refreshToken, userToken);
+      router.replace(PRIVATE_ROUTES.HOME);
+    }
   };
+  function onSuccess(codeResponse: Object) {
+    handleClick(codeResponse);
+  }
+  const login = useGoogleLogin({ onSuccess: onSuccess, flow: "auth-code" });
 
   useEffect(() => {
     setLoggedIn(!!getDataFromLocalStorage(TOKEN));
     if (
       !!getDataFromLocalStorage(TOKEN) &&
-      (router.pathname !== ROUTES.HOME || router.pathname !== ROUTES[404])
+      (router.pathname !== PRIVATE_ROUTES.HOME ||
+        router.pathname !== PRIVATE_ROUTES[404])
     ) {
       router.back();
     } else if (
       !!getDataFromLocalStorage(TOKEN) &&
-      (router.pathname === ROUTES.HOME || router.pathname === ROUTES[404])
+      (router.pathname === PRIVATE_ROUTES.HOME ||
+        router.pathname === PRIVATE_ROUTES[404])
     ) {
-      router.replace(ROUTES.HOME);
+      router.replace(PRIVATE_ROUTES.HOME);
     }
   }, []);
 
@@ -44,8 +59,8 @@ const Login = () => {
         <Loader />
       ) : (
         <div className={styles.loginPage}>
-          <div className={styles.section}>
-            <div className={styles.appLogo}>
+          <Container customClass={styles.section}>
+            <Container customClass={styles.appLogo}>
               <ImageComponent src={Images.coditasIcon} width={48} height={48} />
               <Typography
                 variant={TYPOGRAPHY_VARIANT.HEADER_LARGE}
@@ -53,7 +68,7 @@ const Login = () => {
               >
                 Candidate Connect
               </Typography>
-            </div>
+            </Container>
             <div className={styles.content}>
               <Typography
                 variant={TYPOGRAPHY_VARIANT.HEADER_LARGE}
@@ -72,7 +87,7 @@ const Login = () => {
               startIcon={Images.googleIcon}
               variant={BUTTON_VARIANT.OUTLINED}
               customStyle={styles.loginButton}
-              onClick={handleClick}
+              onClick={login}
             >
               Sign in with google
             </Button>
@@ -83,7 +98,7 @@ const Login = () => {
               Having trouble logging in? <span> Contact Admin</span>
             </Typography>
 
-            <div className={styles.footer}>
+            <Container customClass={styles.footer}>
               <Typography
                 variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
                 customStyle={styles.text}
@@ -96,14 +111,14 @@ const Login = () => {
               >
                 Privacy Policy
               </Typography>
-            </div>
-          </div>
-          <div className={`${styles.section} ${styles.sectionRight}`}>
+            </Container>
+          </Container>
+          <Container customClass={`${styles.section} ${styles.sectionRight}`}>
             <ImageComponent
               src={SectionImage}
               customClass={styles.sectionImage}
             />
-          </div>
+          </Container>
         </div>
       )}
     </>

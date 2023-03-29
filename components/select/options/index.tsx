@@ -1,13 +1,13 @@
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
-import { debounce } from "@/common/utils";
+import React, { useState } from "react";
+import styles from "./options.module.scss";
 import Card from "@/components/card";
 import ImageComponent from "@/components/image";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
-import { useState } from "react";
 import { IOptionType } from "..";
-import styles from "./options.module.scss";
+import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { debounce } from "@/common/utils";
 
 interface IOptionsProp {
   options: IOptionType[];
@@ -63,7 +63,7 @@ const Options = (props: IOptionsProp) => {
           ) : (
             <div className={styles.noData}>
               <ImageComponent src={Images.search} customClass={styles.icon} />
-              <Typography variant={TYPOGRAPHY_VARIANT.SUBTITLE_18}>
+              <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}>
                 No results Found
               </Typography>
             </div>
@@ -73,4 +73,4 @@ const Options = (props: IOptionsProp) => {
     </Card>
   );
 };
-export default Options;
+export default React.memo(Options);

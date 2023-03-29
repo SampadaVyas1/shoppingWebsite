@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { pageContext as HomeContext } from "../index";
-import { storeDataInLocalStorage, encode } from "../../helpers/utils";
 import Loader from "@/components/loader";
 
 interface IHomeContextProps {

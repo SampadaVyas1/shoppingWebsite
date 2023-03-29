@@ -1,14 +1,14 @@
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
-import { debounce } from "@/common/utils";
+import React, { useCallback, useState } from "react";
+import styles from "./multiSelectOptions.module.scss";
 import Card from "@/components/card";
 import CheckBox from "@/components/checkbox";
 import ImageComponent from "@/components/image";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
-import { useCallback, useState } from "react";
 import { IOptionType } from "..";
-import styles from "./multiSelectOptions.module.scss";
+import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { debounce } from "@/common/utils";
 
 interface IMultiSelectOptionsProp {
   options: IOptionType[];
@@ -41,17 +41,22 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
   const { filteredOptions } = multiselectStates;
 
   const handleClick = useCallback(
-    (value: IOptionType) => (event: any, isChecked: boolean) => {
-      if (isChecked) {
-        onSelect && onSelect([...selectedValues, value]);
-      } else {
-        onSelect &&
-          onSelect(selectedValues.filter((option) => option.id !== value.id));
-      }
-    },
+    (value: IOptionType) =>
+      (event: React.SyntheticEvent<Element, Event>, isChecked: boolean) => {
+        if (isChecked) {
+          onSelect && onSelect([...selectedValues, value]);
+        } else {
+          onSelect &&
+            selectedValues.length &&
+            onSelect(selectedValues.filter((option) => option.id !== value.id));
+        }
+      },
     [onSelect, selectedValues]
   );
-  const handleSelectAll = (event: any, isChecked: boolean) => {
+  const handleSelectAll = (
+    event: React.SyntheticEvent<Element, Event>,
+    isChecked: boolean
+  ) => {
     if (isChecked) {
       onSelect && onSelect([...options]);
     } else {
@@ -99,10 +104,13 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
         <div className={styles.multiSelectOptions}>
           {filteredOptions?.length ? (
             filteredOptions?.map((option: IOptionType) => {
+              const checkboxClass = selectedValues.includes(option)
+                ? `${styles.option} ${styles.selected}`
+                : styles.option;
               return (
                 <CheckBox
                   label={option.label}
-                  customClass={styles.option}
+                  customClass={checkboxClass}
                   key={option.id}
                   checked={
                     !!selectedValues.filter((item) => item.id === option.id)
@@ -115,7 +123,7 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
           ) : (
             <div className={styles.noData}>
               <ImageComponent src={Images.search} customClass={styles.icon} />
-              <Typography variant={TYPOGRAPHY_VARIANT.SUBTITLE_18}>
+              <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}>
                 No results Found
               </Typography>
             </div>
@@ -125,4 +133,4 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
     </Card>
   );
 };
-export default MultiSelectOptions;
+export default React.memo(MultiSelectOptions);

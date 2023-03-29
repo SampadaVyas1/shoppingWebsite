@@ -1,7 +1,7 @@
-import { BUTTON_VARIANT } from "@/common/enums";
 import { HtmlHTMLAttributes } from "react";
-import ImageComponent from "../image";
 import styles from "./button.module.scss";
+import ImageComponent from "../image";
+import { BUTTON_VARIANT } from "@/common/enums";
 
 interface IButtonProps extends HtmlHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -34,11 +34,11 @@ const Button = (props: IButtonProps) => {
       {...otherProps}
       disabled={props.disabled}
     >
-      {startIcon && (
+      {!!startIcon && (
         <ImageComponent customClass={styles.iconLeading} src={startIcon} />
       )}
-      {children && <div className={styles.buttonLabel}>{children}</div>}
-      {endIcon && (
+      {!!children && <div className={styles.buttonLabel}>{children}</div>}
+      {!!endIcon && (
         <ImageComponent customClass={styles.iconTrailing} src={endIcon} />
       )}
     </button>

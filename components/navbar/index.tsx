@@ -1,6 +1,6 @@
-import styles from "./navbar.module.scss";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import styles from "./navbar.module.scss";
 import ImageComponent from "../image";
 import Images from "@/public/assets/icons";
 import Typography from "../typography";
@@ -25,17 +25,18 @@ const Navbar = ({ routes }: INavbarProps) => {
             Candidate Connect
           </Typography>
         </div>
-        {routes?.map((route) => {
-          const routeClassName =
-            route.path === router.pathname
-              ? `${styles.active} ${styles.route}`
-              : styles.route;
-          return (
-            <Link href={route.path} className={routeClassName} key={route.id}>
-              {route.name}
-            </Link>
-          );
-        })}
+        {!!routes.length &&
+          routes?.map((route) => {
+            const routeClassName =
+              route.path === router.pathname
+                ? `${styles.active} ${styles.route}`
+                : styles.route;
+            return (
+              <Link href={route.path} className={routeClassName} key={route.id}>
+                {route.name}
+              </Link>
+            );
+          })}
       </div>
       <div className={styles.navbarRight}>
         <ImageComponent

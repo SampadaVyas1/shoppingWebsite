@@ -1,8 +1,8 @@
 import React, { Fragment, ImgHTMLAttributes, useState } from "react";
+import Image from "next/image";
 import styles from "./image.module.scss";
 import Typography from "../typography";
 import Rectangle from "../../public/assets/images/rectangle.svg";
-import Image from "next/image";
 
 interface IImageProps
   extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "children"> {
@@ -50,9 +50,7 @@ const ImageComponent = (props: IImageProps) => {
         className={`${styles.imagePlaceholder} ${fallbackClass}`}
         onClick={props.onClick}
       >
-        <Typography customStyle={styles.profileText}>
-          {fallbackText.split(" ")[0][0]}
-        </Typography>
+        <Typography customStyle={styles.profileText}>{fallbackText}</Typography>
       </div>
     );
   }
@@ -62,4 +60,4 @@ const ImageComponent = (props: IImageProps) => {
     </Fragment>
   );
 };
-export default ImageComponent;
+export default React.memo(ImageComponent);

@@ -1,6 +1,7 @@
-import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
-import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
+import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
+import { REFRESH_TOKEN, TOKEN, USER_TOKEN } from "@/common/constants";
+import { googleLogout } from "@react-oauth/google";
 
 interface IAuthContextProps {
   children: any;
@@ -9,7 +10,11 @@ interface IAuthContextProps {
 export interface IAuthContextDefault {
   loginData: any;
   isLoggedIn: boolean;
-  handleLogin: () => any;
+  handleLogin: (
+    accessToken: string,
+    refreshToken: string,
+    userToken: string
+  ) => void;
   getUserInfo: () => any;
   handleLogout: () => any;
 }
@@ -34,12 +39,18 @@ const AuthProvider = (props: IAuthContextProps) => {
     loginData: {},
     isLoggedIn: false,
   });
-  const handleLogin = () => {
+  const handleLogin = (
+    accessToken: string,
+    refreshToken: string,
+    userToken: string
+  ) => {
     setAuthProviderState((prevState) => ({
       ...prevState,
       isLoggedIn: true,
     }));
-    setDataInLocalStorage("token", "kwkdgdkjgk");
+    setDataInLocalStorage(TOKEN, accessToken);
+    setDataInLocalStorage(REFRESH_TOKEN, refreshToken);
+    setDataInLocalStorage(USER_TOKEN, userToken);
   };
 
   const handleLogout = () => {
@@ -48,6 +59,7 @@ const AuthProvider = (props: IAuthContextProps) => {
       isLoggedIn: false,
     }));
     localStorage.clear();
+    googleLogout();
   };
 
   const getUserInfo = () => {
@@ -59,7 +71,7 @@ const AuthProvider = (props: IAuthContextProps) => {
   useEffect(() => {
     setAuthProviderState((prevState) => ({
       ...prevState,
-      isLoggedIn: !!getDataFromLocalStorage("token"),
+      isLoggedIn: !!getDataFromLocalStorage(TOKEN),
     }));
   }, []);
 
