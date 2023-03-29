@@ -7,12 +7,10 @@ export const AddFormSchema = yup
     firstName: yup
       .string()
       .required(VALIDATION_ERRORS.REQUIRED_ERROR)
-      .matches(/[A-Za-z]/, VALIDATION_ERRORS.SPECIAL_CHARACTER_ERROR)
       .max(30, VALIDATION_ERRORS.MAX_CHARACTER_ERROR),
     lastName: yup
       .string()
       .required(VALIDATION_ERRORS.REQUIRED_ERROR)
-      .matches(/[A-Za-z]/, VALIDATION_ERRORS.SPECIAL_CHARACTER_ERROR)
       .max(30, VALIDATION_ERRORS.MAX_CHARACTER_ERROR),
     mobileNumber: yup
       .string()

@@ -1,3 +1,4 @@
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
@@ -6,11 +7,10 @@ import DragDropArea from "../dragDropArea";
 import Typography from "../typography";
 import InputBox from "../inputBox";
 import Select, { IOptionType } from "../select";
+import Card from "../card";
 import styles from "./addForm.module.scss";
 import { AddFormSchema } from "./validation";
 import { REGEX, VALIDATION_ERRORS } from "@/common/constants";
-import Card from "../card";
-import React from "react";
 
 const AddForm = () => {
   const hookForm = useForm({

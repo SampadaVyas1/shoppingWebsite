@@ -11,8 +11,8 @@ interface IDragDropArea {
 
 const DragDropArea = (props: IDragDropArea) => {
   const [dragActive, setDragActive] = useState<boolean>(false);
-  const [file, setFile] = useState<any>(null);
-  const inputRef = useRef<any>(null);
+  const [file, setFile] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDrag = (event: React.DragEvent<HTMLElement>) => {
     event.preventDefault();
@@ -46,7 +46,7 @@ const DragDropArea = (props: IDragDropArea) => {
   };
 
   const onButtonClick = () => {
-    inputRef.current.click();
+    inputRef.current!.click();
   };
 
   const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
