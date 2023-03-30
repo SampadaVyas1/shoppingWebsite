@@ -7,14 +7,21 @@ import Typography from "@/components/typography";
 import Loader from "@/components/loader";
 import SkeletonLoader from "@/components/skeletonLoader";
 import Select from "@/components/select";
-import { getDummyData } from "@/services/login.service";
+import { getAccessToken, getDummyData } from "@/services/login.service";
 import { PRIVATE_ROUTES } from "@/common/routes";
 import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import ConfirmationModal from "@/components/confirmationModal";
+import Drawer from "@/components/drawer";
 
 const Home = () => {
   const context = useContext(AuthContext);
 
   const { isLoggedIn, handleLogout } = context;
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
+  };
   const router = useRouter();
 
   const onLogout = () => {
@@ -25,6 +32,10 @@ const Home = () => {
   const getData = async () => {
     const response = await getDummyData();
     console.log(response);
+  };
+
+  const getAccess = async () => {
+    await getDummyData();
   };
 
   return (
@@ -42,7 +53,7 @@ const Home = () => {
           <SkeletonLoader type={SKELETON_VARIANT.TEXT_SMALL} />
         </div>
       </div>
-      <Button onClick={getData}>Check Token</Button>
+      <Button onClick={toggleDrawer}>Open Drawer</Button>
       <Select
         options={[
           { id: 1, label: "hello" },
@@ -51,6 +62,18 @@ const Home = () => {
         ]}
         multiSelect
       />
+      {/* <ConfirmationModal
+        title="Delete Talent Rosser?"
+        onConfirmButtonClick={getAccess}
+        description="Are you sure you want to remove Talent Rosser from the selected candidate list?"
+      /> */}
+      <Drawer
+        isOpen={isDrawerOpen}
+        title="Notifications"
+        onClose={toggleDrawer}
+      >
+        <div>Hello</div>
+      </Drawer>
     </div>
   );
 };

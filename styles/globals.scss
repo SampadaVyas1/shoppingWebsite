@@ -26,3 +26,20 @@ a {
     color-scheme: dark;
   }
 }
+.drawer-enter {
+  transform: translateX(36.875rem);
+}
+
+.drawer-enter-active {
+  transform: translateX(0);
+  transition: transform 300ms;
+}
+
+.drawer-exit {
+  transform: translateX(0);
+  transition: transform 300ms;
+}
+
+.drawer-exit-active {
+  transform: translateX(36.875rem);
+}
