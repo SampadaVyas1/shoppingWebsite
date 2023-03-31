@@ -17,6 +17,10 @@
       @include flex-align-center;
       gap: 0.75rem;
 
+      &:hover {
+        cursor: pointer;
+      }
+
       .header {
         color: $primary;
         font-size: 1.5rem;
@@ -53,5 +57,65 @@
     &:hover {
       cursor: pointer;
     }
+  }
+  .logoutModal {
+    width: 21.5rem;
+
+    .logout {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      .text {
+        color: $gray-500;
+      }
+      .buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+      }
+    }
+  }
+}
+.email {
+  padding: 0 2.5rem;
+  color: $gray-900;
+  align-self: flex-start;
+
+  span {
+    color: $primary;
+  }
+}
+.profileBody {
+  display: table;
+  width: 100%;
+  padding: 0 3rem;
+
+  .field {
+    color: $gray-900;
+    display: table-row;
+    .title {
+      display: table-cell;
+    }
+    .colon {
+      align-self: flex-start;
+      padding-right: 1rem;
+    }
+    .fieldValue {
+      font-weight: 600;
+    }
+  }
+}
+.logoutButton {
+  width: 100%;
+  margin: 0 0.25rem;
+  font-weight: 700;
+}
+.profileFooter {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  .footerButton {
+    flex: 1;
   }
 }

@@ -1,8 +1,10 @@
 import React from "react";
+import { CSSTransition } from "react-transition-group";
 import styles from "./modal.module.scss";
 
 interface IModalProps {
-  children: any;
+  children: React.ReactNode;
+  open: boolean;
   onClose?: React.MouseEventHandler<HTMLElement>;
   customStyle?: string;
   customBackdrop?: string;
@@ -10,7 +12,8 @@ interface IModalProps {
 }
 
 const Modal = (props: IModalProps) => {
-  const { children, onClose, customStyle, header, customBackdrop } = props;
+  const { children, onClose, customStyle, header, customBackdrop, open } =
+    props;
   const backdropStyle = customBackdrop
     ? customBackdrop
     : `${styles.modalBackdrop}`;
@@ -25,12 +28,14 @@ const Modal = (props: IModalProps) => {
   };
 
   return (
-    <div className={backdropStyle} onClick={onClose}>
-      <div className={modelStyle} onClick={handleModalClick}>
-        {header && <div className={styles.heading}>{header}</div>}
-        {children}
+    <CSSTransition in={open} timeout={300} classNames="alert" unmountOnExit>
+      <div className={backdropStyle} onClick={onClose}>
+        <div className={modelStyle} onClick={handleModalClick}>
+          {header && <div className={styles.heading}>{header}</div>}
+          {children}
+        </div>
       </div>
-    </div>
+    </CSSTransition>
   );
 };
 

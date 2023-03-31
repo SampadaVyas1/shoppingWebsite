@@ -10,6 +10,7 @@ const Images = {
   coditasIcon: require("./coditasIcon.svg").default,
   profileIcon: require("./profile.svg").default,
   notificationIcon: require("./bell.svg").default,
+  logoutIcon: require("./logout.svg").default,
 };
 
 export default Images;
