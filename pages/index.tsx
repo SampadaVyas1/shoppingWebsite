@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useContext, useEffect, useState, useRef } from "react";
 import { AuthContext } from "@/context/authContext";
 import styles from "../styles/app.module.scss";
 import Button from "@/components/button";
@@ -10,11 +9,13 @@ import Select from "@/components/select";
 import { getDummyData } from "@/services/login.service";
 import { PRIVATE_ROUTES } from "@/common/routes";
 import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { useRouter } from "next/router";
 
 const Home = () => {
   const context = useContext(AuthContext);
 
   const { isLoggedIn, handleLogout } = context;
+
   const router = useRouter();
 
   const onLogout = () => {
@@ -32,7 +33,7 @@ const Home = () => {
       <Typography variant={TYPOGRAPHY_VARIANT.HEADER_MEDIUM_SEMIBOLD}>
         Welcome!!
       </Typography>
-      <Button onClick={onLogout}>Logout</Button>
+
       {!isLoggedIn && <Loader />}
       <div className={styles.profileLoader}>
         <SkeletonLoader type={SKELETON_VARIANT.CIRCLE} />
@@ -43,14 +44,6 @@ const Home = () => {
         </div>
       </div>
       <Button onClick={getData}>Check Token</Button>
-      <Select
-        options={[
-          { id: 1, label: "hello" },
-          { id: 2, label: "hey" },
-          { id: 3, label: "hii" },
-        ]}
-        multiSelect
-      />
     </div>
   );
 };

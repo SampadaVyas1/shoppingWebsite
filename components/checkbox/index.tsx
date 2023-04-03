@@ -40,7 +40,7 @@ const CheckBox = (props: props) => {
     }
   };
 
-  const handleKeyPress = (e: any) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLSpanElement>) => {
     const { disabled = false, handleClick } = props;
     if (!disabled && e.keyCode == 13) {
       setChecked(!checked);

@@ -1,0 +1,39 @@
+@import "../../styles/variables";
+
+.hoverContainer {
+  filter: $hoverCardDropShadow;
+
+  .right {
+    left: -0.875rem;
+    position: absolute;
+    top: 50%;
+    transform: rotate(275deg);
+  }
+  .left {
+    right: -0.875rem;
+    position: absolute;
+    left: auto;
+    top: 50%;
+    transform: rotate(90deg);
+  }
+  .top {
+    top: -0.875rem;
+    position: absolute;
+    left: calc(50% - 0.875rem);
+    transform: rotate(0deg);
+  }
+  .bottom {
+    bottom: -0.875rem;
+    top: auto;
+    position: absolute;
+    left: calc(50% - 0.875rem);
+    transform: rotate(180deg);
+  }
+}
+
+.hoverCardWrapper {
+  position: relative;
+  &:hover {
+    cursor: pointer;
+  }
+}

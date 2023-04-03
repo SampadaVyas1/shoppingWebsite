@@ -82,7 +82,6 @@ const InputBox = (props: IInputProps) => {
             onFocus={onFocus}
             onBlur={onBlur}
             placeholder={placeholder}
-            autoFocus
           />
         ) : (
           <input

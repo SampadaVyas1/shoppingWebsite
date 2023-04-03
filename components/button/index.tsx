@@ -4,7 +4,7 @@ import ImageComponent from "../image";
 import { BUTTON_VARIANT } from "@/common/enums";
 
 interface IButtonProps extends HtmlHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   startIcon?: string;
   endIcon?: string;
   variant?:

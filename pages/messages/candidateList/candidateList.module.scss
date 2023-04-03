@@ -1,0 +1,15 @@
+@import "../../../styles/variables";
+.list {
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $secondaryText;
+    border-radius: 0.25rem;
+  }
+}

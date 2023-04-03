@@ -3,6 +3,7 @@ import Image from "next/image";
 import styles from "./image.module.scss";
 import Typography from "../typography";
 import Rectangle from "../../public/assets/images/rectangle.svg";
+import Images from "@/public/assets/icons";
 
 interface IImageProps
   extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "children"> {
@@ -56,7 +57,14 @@ const ImageComponent = (props: IImageProps) => {
   }
   return (
     <Fragment>
-      <Rectangle className={customClass} onClick={props.onClick as any} />
+      <Image
+        src={Images.rectangle}
+        alt="image"
+        className={customClass}
+        onClick={props.onClick}
+        width={+width}
+        height={+height}
+      />
     </Fragment>
   );
 };
