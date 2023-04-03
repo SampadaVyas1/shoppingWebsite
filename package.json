@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@coditas/candidate-connet-dto": "https://gitlab.com/rahulMane-coditas/candidate-connect-package.git",
     "@next/font": "13.1.6",
     "@react-oauth/google": "^0.9.0",
     "@testing-library/jest-dom": "^5.16.5",
