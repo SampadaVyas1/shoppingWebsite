@@ -20,3 +20,10 @@ export enum API_ROUTES {
   GET_ACCESS_TOKEN = "/auth/getNewAccessToken",
   CHECK_TOKEN = "/auth/checkToken",
 }
+
+export const TEAM_ROUTES = [
+  { id: 1, path: "/team/groups", name: "Groups" },
+  { id: 2, path: "/team/recruiters", name: "Recruiters" },
+  { id: 3, path: "/team/techstacks", name: "Tech Stacks" },
+  { id: 4, path: "/team/templates", name: "Templates" },
+];

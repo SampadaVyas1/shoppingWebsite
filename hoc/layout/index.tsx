@@ -1,13 +1,15 @@
 import styles from "./layout.module.scss";
 import { AuthContext } from "@/context/authContext";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   PRIVATE_ROUTES,
   ADMIN_ROUTES,
   RECRUITER_ROUTES,
+  TEAM_ROUTES,
 } from "@/common/routes";
 import Navbar from "@/components/navbar";
+import TeamNavbar from "@/components/teamNavbar";
 import Splash from "@/components/splash";
 
 const Layout = ({ children }: any) => {
@@ -26,8 +28,15 @@ const Layout = ({ children }: any) => {
         <Splash />
       ) : (
         <div className={styles.layoutWrapper}>
-          <Navbar routes={role === 1 ? ADMIN_ROUTES : RECRUITER_ROUTES} />
-          {children}
+          <Navbar routes={role === 1 ? RECRUITER_ROUTES : ADMIN_ROUTES} />
+          {router.pathname.includes("/team") ? (
+            <React.Fragment>
+              <TeamNavbar routes={TEAM_ROUTES} />
+              {children}
+            </React.Fragment>
+          ) : (
+            children
+          )}
         </div>
       )}
     </>
