@@ -3,7 +3,7 @@
 
 .checkbox {
   @include flex-align-center;
-  flex: 1;
+  width: fit-content;
   user-select: none;
   cursor: pointer;
   input[type="checkbox"] {
@@ -12,36 +12,36 @@
     width: 1.125rem;
     height: 1.125rem;
     border-radius: 0.25rem;
-  }
-  input[type="checkbox"]:before {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 1rem;
-    height: 1rem;
-    top: -0.0625rem;
-    left: -0.0625rem;
-    border: 0.125rem solid $gray-500;
-    border-radius: 0.25rem;
-    background-color: $white;
-  }
-  input[type="checkbox"]:checked:before {
-    border: 0.125rem solid $primary;
-  }
-  input[type="checkbox"]:checked:after {
-    content: "";
-    display: block;
-    width: 0.25rem;
-    height: 0.5rem;
-    border: solid $primary;
-    border-width: 0 0.125rem 0.125rem 0;
-    transform: rotate(45deg);
-    position: absolute;
-    top: 0.15rem;
-    left: 0.375rem;
-  }
-  input[type="checkbox"]:disabled {
-    border: 0.125rem solid $gray-300;
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 1rem;
+      height: 1rem;
+      top: -0.0625rem;
+      left: -0.0625rem;
+      border: 0.125rem solid $gray-500;
+      border-radius: 0.25rem;
+      background-color: $white;
+    }
+    &:checked:before {
+      border: 0.125rem solid $primary;
+    }
+    &:checked:after {
+      content: "";
+      display: block;
+      width: 0.25rem;
+      height: 0.5rem;
+      border: solid $primary;
+      border-width: 0 0.125rem 0.125rem 0;
+      transform: rotate(45deg);
+      position: absolute;
+      top: 0.15rem;
+      left: 0.375rem;
+    }
+    &:disabled {
+      border: 0.125rem solid $gray-300;
+    }
   }
   .checkboxLabel {
     color: inherit;
