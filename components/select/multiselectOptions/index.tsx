@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from "react";
 import styles from "./multiSelectOptions.module.scss";
 import Card from "@/components/card";
-import CheckBox from "@/components/checkbox";
 import ImageComponent from "@/components/image";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
@@ -9,6 +8,7 @@ import Images from "@/public/assets/icons";
 import { IOptionType } from "..";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { debounce } from "@/common/utils";
+import CustomCheckBox from "@/components/customCheckBox";
 
 interface IMultiSelectOptionsProp {
   options: IOptionType[];
@@ -91,7 +91,7 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
           />
         )}
         {masterCheck && !searchable && (
-          <CheckBox
+          <CustomCheckBox
             label="Select All"
             customClass={styles.option}
             checked={
@@ -108,7 +108,8 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
                 ? `${styles.option} ${styles.selected}`
                 : styles.option;
               return (
-                <CheckBox
+                <CustomCheckBox
+                  id={option.id.toString()}
                   label={option.label}
                   customClass={checkboxClass}
                   key={option.id}
