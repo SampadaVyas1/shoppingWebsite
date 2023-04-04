@@ -1,19 +1,7 @@
-import { HtmlHTMLAttributes } from "react";
 import styles from "./button.module.scss";
 import ImageComponent from "../image";
 import { BUTTON_VARIANT } from "@/common/enums";
-
-interface IButtonProps extends HtmlHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
-  startIcon?: string;
-  endIcon?: string;
-  variant?:
-    | BUTTON_VARIANT.TEXT
-    | BUTTON_VARIANT.OUTLINED
-    | BUTTON_VARIANT.CONTAINED;
-  disabled?: boolean;
-  customStyle?: string;
-}
+import { IButtonProps } from "./button.types";
 
 const Button = (props: IButtonProps) => {
   const {

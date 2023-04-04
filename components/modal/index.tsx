@@ -1,7 +1,7 @@
 import React from "react";
 import TransitionWrapper from "../transitionWrapper";
 import styles from "./modal.module.scss";
-import { IModalProps } from "@/common/types";
+import { IModalProps } from "./modal.types";
 
 const Modal = (props: IModalProps) => {
   const { children, onClose, customStyle, header, customBackdrop, open } =

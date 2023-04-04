@@ -6,7 +6,7 @@ import Typography from "../typography";
 import styles from "./profileCard.module.scss";
 import Images from "@/public/assets/icons";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-import { IProfileCardProps } from "@/common/types";
+import { IProfileCardProps } from "./profileCard.types";
 
 const ProfileCard = (props: IProfileCardProps) => {
   const {

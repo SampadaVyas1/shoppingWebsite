@@ -5,23 +5,14 @@ import ImageComponent from "@/components/image";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
-import { IOptionType } from "..";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { debounce } from "@/common/utils";
 import CustomCheckBox from "@/components/customCheckBox";
-
-interface IMultiSelectOptionsProp {
-  options: IOptionType[];
-  selectedValues: IOptionType[];
-  onSelect?: (value: IOptionType[]) => void;
-  masterCheck?: boolean;
-  searchable?: boolean;
-  customStyle?: string;
-}
-
-interface IMultiSelectOptionsState {
-  filteredOptions: IOptionType[];
-}
+import { IOptionType } from "@/common/types";
+import {
+  IMultiSelectOptionsProp,
+  IMultiSelectOptionsState,
+} from "./multiselectOptions.types";
 
 const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
   const {

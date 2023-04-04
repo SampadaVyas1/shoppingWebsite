@@ -19,10 +19,7 @@ import {
 } from "@/common/enums";
 import Images from "@/public/assets/icons";
 import { PRIVATE_ROUTES } from "@/common/routes";
-
-interface INavbarProps {
-  routes: IRouteType[];
-}
+import { INavbarProps } from "./navbar.types";
 
 const Navbar = ({ routes }: INavbarProps) => {
   const router = useRouter();

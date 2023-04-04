@@ -8,22 +8,7 @@ import MultiSelectOptions from "./multiselectOptions";
 import arrowDown from "../../public/assets/icons/arrowDown.svg";
 import arrowUp from "../../public/assets/icons/arrowUp.svg";
 import { IOptionType } from "@/common/types";
-
-interface ISelectProps {
-  options: IOptionType[];
-  open?: boolean;
-  value?: IOptionType | IOptionType[];
-  placeholder?: string;
-  onSelect?: (value: IOptionType | IOptionType[]) => void;
-  multiSelect?: boolean;
-  masterCheck?: boolean;
-  searchable?: boolean;
-}
-
-interface ISelectStates {
-  selectedValue: IOptionType | IOptionType[];
-  isDropdownOpen: boolean;
-}
+import { ISelectProps, ISelectStates } from "./select.types";
 
 const Select = (props: ISelectProps) => {
   const {
