@@ -7,11 +7,7 @@ import OptionTags from "./optionTag";
 import MultiSelectOptions from "./multiselectOptions";
 import arrowDown from "../../public/assets/icons/arrowDown.svg";
 import arrowUp from "../../public/assets/icons/arrowUp.svg";
-
-export interface IOptionType {
-  id: number;
-  label: string;
-}
+import { IOptionType } from "@/common/types";
 
 interface ISelectProps {
   options: IOptionType[];

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { CSSTransition } from "react-transition-group";
 import { ArrowContainer, Popover } from "react-tiny-popover";
 import styles from "./navbar.module.scss";
@@ -10,6 +10,7 @@ import { IRouteType } from "@/common/types";
 import ProfileCard from "../profileCard";
 import Modal from "../modal";
 import Button from "../button";
+import TransitionWrapper from "../transitionWrapper";
 import { AuthContext } from "@/context/authContext";
 import {
   BUTTON_VARIANT,
@@ -18,7 +19,6 @@ import {
 } from "@/common/enums";
 import Images from "@/public/assets/icons";
 import { PRIVATE_ROUTES } from "@/common/routes";
-import React from "react";
 
 interface INavbarProps {
   routes: IRouteType[];
@@ -89,12 +89,7 @@ const Navbar = ({ routes }: INavbarProps) => {
           onClickOutside={closePopup}
           padding={10}
           content={({ position, childRect, popoverRect }) => (
-            <CSSTransition
-              in={isProfileOpen}
-              timeout={300}
-              classNames="alert"
-              unmountOnExit
-            >
+            <TransitionWrapper open={isProfileOpen}>
               <ArrowContainer
                 position={position}
                 childRect={childRect}
@@ -116,13 +111,19 @@ const Navbar = ({ routes }: INavbarProps) => {
                         variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
                         customStyle={styles.email}
                       >
-                        Email : <span>{`kiran.mehta@coditas.com`}</span>
+                        Email :{" "}
+                        <span
+                          className={styles.boldText}
+                        >{`kiran.mehta@coditas.com`}</span>
                       </Typography>
                       <Typography
                         variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
                         customStyle={styles.email}
                       >
-                        Phone : <span>{`(91) 9898775555`}</span>
+                        Phone :{" "}
+                        <span
+                          className={styles.boldText}
+                        >{`(91) 9898775555`}</span>
                       </Typography>
                     </React.Fragment>
                   }
@@ -138,7 +139,7 @@ const Navbar = ({ routes }: INavbarProps) => {
                   }
                 />
               </ArrowContainer>
-            </CSSTransition>
+            </TransitionWrapper>
           )}
         >
           <div onClick={handleProfileClick}>
