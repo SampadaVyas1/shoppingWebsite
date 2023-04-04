@@ -24,21 +24,24 @@
       border-radius: 0.25rem;
       background-color: $white;
     }
-    &:checked:before {
-      border: 0.125rem solid $primary;
+    &:checked {
+      &:before {
+        border: 0.125rem solid $primary;
+      }
+      &:after {
+        content: "";
+        display: block;
+        width: 0.25rem;
+        height: 0.5rem;
+        border: solid $primary;
+        border-width: 0 0.125rem 0.125rem 0;
+        transform: rotate(45deg);
+        position: absolute;
+        top: 0.15rem;
+        left: 0.375rem;
+      }
     }
-    &:checked:after {
-      content: "";
-      display: block;
-      width: 0.25rem;
-      height: 0.5rem;
-      border: solid $primary;
-      border-width: 0 0.125rem 0.125rem 0;
-      transform: rotate(45deg);
-      position: absolute;
-      top: 0.15rem;
-      left: 0.375rem;
-    }
+
     &:disabled {
       border: 0.125rem solid $gray-300;
     }
