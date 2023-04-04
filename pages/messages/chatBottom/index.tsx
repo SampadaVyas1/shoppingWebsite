@@ -26,19 +26,17 @@ const ChatBottom = (props: any) => {
     }
   };
 
-  const updateMessage = async (message: any) => {
-    await db?.messages?.bulkPut(message);
+  const updateMessage = async (updatedMessage: any) => {
+    await db?.messages.put(updatedMessage);
   };
 
   useEffect(() => {
     socket.on("status", async (data: any) => {
-      const updatedMessage = messageList?.map((message: any) => {
-        if (message.messageId.toString() === data.id.toString()) {
-          return { ...message, status: data.status };
-        }
-        return message;
-      });
-      await updateMessage(updatedMessage);
+      const updatedMessage = messageList?.find(
+        (message: any) => message.messageId.toString() === data.id.toString()
+      );
+      console.log(updateMessage);
+      await updateMessage({ ...updatedMessage, status: data.status });
     });
   }, [messageList]);
 
@@ -64,15 +62,20 @@ const ChatBottom = (props: any) => {
   }, [props?.userId]);
 
   const handleClick = () => {
-    socket.emit("send_personal_message", {
-      messaging_product: "whatsapp",
-      recipient_type: "individual",
-      to: `${getDataFromLocalStorage("mobile")}`, //To whom you want to send message
-      type: "text",
-      text: {
-        body: message,
+    console.log(message);
+    socket.emit(
+      "send_personal_message",
+      {
+        messaging_product: "whatsapp",
+        recipient_type: "individual",
+        to: `${getDataFromLocalStorage("mobile")}`, //To whom you want to send message
+        type: "text",
+        text: {
+          body: message,
+        },
       },
-    });
+      (error: any) => console.log("error")
+    );
     socket.on("get_message", async (data: any) => {
       const newMessage = {
         messageId: data.messages[0].id,
@@ -84,6 +87,7 @@ const ChatBottom = (props: any) => {
         from: props?.userId, //TA's employee id
       };
       await addMessage(newMessage);
+      setMessage("");
     });
   };
 
@@ -94,6 +98,7 @@ const ChatBottom = (props: any) => {
       <InputBox
         multiline
         placeholder="Enter message"
+        value={message}
         customClass={styles.input}
         handleChange={handleMessageChange}
       />

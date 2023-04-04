@@ -7,6 +7,7 @@ export class MySubClassedDexie extends Dexie {
   constructor() {
     super("ccMessages");
     this.version(1).stores({
+      users: "phone, messages",
       messages: "messageId, message, timestamp, messageType, status, to, from", // Primary key and indexed props
     });
   }

@@ -10,7 +10,7 @@ import Typography from "@/components/typography";
 import moment from "moment";
 import Images from "@/public/assets/icons";
 import socket from "@/socket";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import React from "react";
 import Loader from "@/components/loader";
 import { getDataFromLocalStorage } from "@/common/utils";
@@ -50,6 +50,17 @@ const MessageScreen = (props: any) => {
       });
     }
   }, [mobileNumber]);
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current &&
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messageList, mobile, messagesEndRef]);
 
   return (
     <div className={styles.messageScreen}>
@@ -114,6 +125,7 @@ const MessageScreen = (props: any) => {
                   </TipContainer>
                 );
               })}
+            <div ref={messagesEndRef} />
           </div>
           <ChatBottom userId={userId} />
         </React.Fragment>
