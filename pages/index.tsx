@@ -32,25 +32,7 @@ const Home = () => {
       <Typography variant={TYPOGRAPHY_VARIANT.HEADER_MEDIUM_SEMIBOLD}>
         Welcome!!
       </Typography>
-      <Button onClick={onLogout}>Logout</Button>
       {!isLoggedIn && <Loader />}
-      <div className={styles.profileLoader}>
-        <SkeletonLoader type={SKELETON_VARIANT.CIRCLE} />
-        <div className={styles.content}>
-          <SkeletonLoader type={SKELETON_VARIANT.TEXT_LARGE} />
-          <SkeletonLoader type={SKELETON_VARIANT.TEXT_MEDIUM} />
-          <SkeletonLoader type={SKELETON_VARIANT.TEXT_SMALL} />
-        </div>
-      </div>
-      <Button onClick={getData}>Check Token</Button>
-      <Select
-        options={[
-          { id: 1, label: "hello" },
-          { id: 2, label: "hey" },
-          { id: 3, label: "hii" },
-        ]}
-        multiSelect
-      />
     </div>
   );
 };
