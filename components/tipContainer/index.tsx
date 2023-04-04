@@ -16,7 +16,7 @@ const TipContainer = (props: ITipContainerProps) => {
     variant = "sent",
   } = props;
   return (
-    <div className={`${styles.tipContainer}`}>
+    <div className={`${styles.tipContainer} ${styles[variant]}`}>
       <div
         className={`${styles[position]} ${customStyles} ${styles[variant]}`}
       ></div>

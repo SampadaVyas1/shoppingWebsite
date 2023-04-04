@@ -13,14 +13,16 @@ import candidateData from "./candidates.json";
 import CandidateList from "./candidateList";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MessageScreen from "./messageScreen";
-import { ICandidateListCardProps } from "./candidateListCard";
+import React from "react";
+import { setDataInLocalStorage } from "@/common/utils";
 
 const Messages = () => {
   const [selectedCandidate, setSelectedCandidate] = useState<any>(null);
 
   const handleCandidateSelect = (candidate: any) => {
+    setDataInLocalStorage("mobile", candidate.mobile);
     setSelectedCandidate(candidate);
   };
 

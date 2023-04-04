@@ -1,7 +1,8 @@
+import { getDataFromLocalStorage } from "@/common/utils";
 import io from "socket.io-client";
-const socket = io("https://6eea-103-176-135-206.ngrok.io", {
+const socket = io("https://7f75-103-176-135-206.ngrok.io", {
   extraHeaders: {
-    to: "917972287471",
+    to: `${getDataFromLocalStorage("mobile")}`,
     phone_id: "106886972321301",
     "ngrok-skip-browser-warning": "skip-browser-warning",
     "Content-type": "application/json",

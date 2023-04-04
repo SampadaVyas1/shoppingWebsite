@@ -3,11 +3,16 @@ import InputBox from "@/components/inputBox";
 import socket from "@/socket";
 import { useEffect, useState } from "react";
 import styles from "./candidates.module.scss";
+import { db } from "@/db";
+import { useLiveQuery } from "dexie-react-hooks";
 const Candidates = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [lastData, setLastData] = useState<any>(null);
 
   const [messages, setMessages] = useState<any>([]);
+  const messageList = useLiveQuery(() => db?.messages?.toArray());
+
+  console.log(messageList);
 
   const createSession = () => {
     if (socket.connected) {
@@ -20,13 +25,6 @@ const Candidates = () => {
   useEffect(() => {
     if (!socket.connected) {
       socket.connect();
-      // socket.on("connection", () => {
-      //   try {
-      //     console.log(`Connected : ${socket.id}`);
-      //   } catch (error) {
-      //     console.log(error);
-      //   }
-      // });
     }
     return () => {
       socket.disconnect();
@@ -43,8 +41,20 @@ const Candidates = () => {
     }
   }, []);
 
+  const addMessage = async (data: any) => {
+    try {
+      await db.messages.add(data);
+    } catch (error) {
+      await db.messages.put(data);
+    }
+  };
+
+  const updateMessage = async (message: any) => {
+    await db.messages.bulkPut(message);
+  };
+
   useEffect(() => {
-    socket.on("status", (data: any) => {
+    socket.on("status", async (data: any) => {
       const messageCopy = [...messages];
       const updatedMessage = messageCopy.map((message: any) => {
         if (message.messageId.toString() === data.id.toString()) {
@@ -53,21 +63,24 @@ const Candidates = () => {
         return message;
       });
       setMessages([...updatedMessage]);
+      await updateMessage(updatedMessage);
     });
   }, [messages]);
 
   useEffect(() => {
     const receiveMessage = (data: any) => {
       const { from, wamid, messageType, timestamp, message } = data;
+      console.log(from);
       const newMessage = {
         messageId: wamid,
         message: message,
         timestamp: timestamp,
         messageType: messageType,
         to: lastData?.userId, //TA's employee id
-        from: from, //user's phone number
+        from: "918825147844", //user's phone number
       };
       setMessages([...messages, newMessage]);
+      addMessage(newMessage);
     };
     if (socket.on) {
       socket.on("personalMessage", receiveMessage);
@@ -77,33 +90,28 @@ const Candidates = () => {
     };
   }, [lastData?.userId, messages]);
 
-  console.log(
-    messages.sort(function (first: any, second: any) {
-      return parseInt(first.timestamp) - parseInt(second.timestamp);
-    })
-  );
-
   const handleClick = () => {
     socket.emit("send_personal_message", {
       messaging_product: "whatsapp",
       recipient_type: "individual",
-      to: "917972287471",
+      to: "918825147844", //To whom you want to send message
       type: "text",
       text: {
         body: message,
       },
     });
-    socket.on("get_message", (data: any) => {
+    socket.on("get_message", async (data: any) => {
       const newMessage = {
         messageId: data.messages[0].id,
         message: message,
         timestamp: data.timestamp,
         messageType: "text",
         status: "sent",
-        to: "917972287471", //user's phone number
+        to: "918825147844", //user's phone number
         from: lastData?.userId, //TA's employee id
       };
       setMessages([...messages, newMessage]);
+      await addMessage(newMessage);
     });
   };
 

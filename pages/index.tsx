@@ -10,6 +10,9 @@ import { getDummyData } from "@/services/login.service";
 import { PRIVATE_ROUTES } from "@/common/routes";
 import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { useRouter } from "next/router";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/db";
+import { AddFriendForm } from "@/components/addFriend";
 
 const Home = () => {
   const context = useContext(AuthContext);
@@ -33,17 +36,7 @@ const Home = () => {
       <Typography variant={TYPOGRAPHY_VARIANT.HEADER_MEDIUM_SEMIBOLD}>
         Welcome!!
       </Typography>
-
       {!isLoggedIn && <Loader />}
-      <div className={styles.profileLoader}>
-        <SkeletonLoader type={SKELETON_VARIANT.CIRCLE} />
-        <div className={styles.content}>
-          <SkeletonLoader type={SKELETON_VARIANT.TEXT_LARGE} />
-          <SkeletonLoader type={SKELETON_VARIANT.TEXT_MEDIUM} />
-          <SkeletonLoader type={SKELETON_VARIANT.TEXT_SMALL} />
-        </div>
-      </div>
-      <Button onClick={getData}>Check Token</Button>
     </div>
   );
 };

@@ -20,7 +20,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [isOnline, setIsOnline] = useState<boolean>(true);
   useEffect(() => {
-    console.log(navigator.onLine);
     if (!navigator.onLine) {
       setIsOnline(false);
       notify(true, "  nO INternet", 12);
