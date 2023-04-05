@@ -21,3 +21,10 @@ export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";
 export const USER_TOKEN = "userToken";
 export const TRANSITION_TIMEOUT = 300;
+
+export const TEAM_PAGE_ROUTES = {
+  groups: "/team/groups",
+  recruiters: "/team/recruiters",
+  techstacks: "/team/techstacks",
+  templates: "/team/templates",
+};

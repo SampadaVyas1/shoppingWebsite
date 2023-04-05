@@ -1,3 +1,5 @@
+import { TEAM_PAGE_ROUTES } from "./constants";
+
 export const PRIVATE_ROUTES = {
   HOME: "/",
   LOGIN: "/login",
@@ -22,8 +24,8 @@ export enum API_ROUTES {
 }
 
 export const TEAM_ROUTES = [
-  { id: 1, path: "/team/groups", name: "Groups" },
-  { id: 2, path: "/team/recruiters", name: "Recruiters" },
-  { id: 3, path: "/team/techstacks", name: "Tech Stacks" },
-  { id: 4, path: "/team/templates", name: "Templates" },
+  { id: 1, path: TEAM_PAGE_ROUTES.groups, name: "Groups" },
+  { id: 2, path: TEAM_PAGE_ROUTES.recruiters, name: "Recruiters" },
+  { id: 3, path: TEAM_PAGE_ROUTES.techstacks, name: "Tech Stacks" },
+  { id: 4, path: TEAM_PAGE_ROUTES.templates, name: "Templates" },
 ];
