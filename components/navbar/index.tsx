@@ -19,13 +19,16 @@ import {
 } from "@/common/enums";
 import Images from "@/public/assets/icons";
 import { PRIVATE_ROUTES } from "@/common/routes";
-import { INavbarProps } from "./navbar.types";
+import { INavbarProps, profileData } from "./navbar.types";
 
 const Navbar = ({ routes }: INavbarProps) => {
   const router = useRouter();
   const context = useContext(AuthContext);
   const [isProfileOpen, toggleProfile] = useState<boolean>(false);
   const [isLogoutModalOpen, toggleLogoutModal] = useState<boolean>(false);
+
+  const { firstName, lastName, profileImage, email, phone, designation } =
+    profileData;
 
   const { handleLogout } = context;
 
@@ -98,29 +101,23 @@ const Navbar = ({ routes }: INavbarProps) => {
                 arrowClassName="popover-arrow"
               >
                 <ProfileCard
-                  profileImage=""
-                  firstName="Kiran"
-                  lastName="Mehta"
-                  designation="Associate Talent Acquisition"
+                  profileImage={profileImage}
+                  firstName={firstName}
+                  lastName={lastName}
+                  designation={designation}
                   cardBody={
                     <React.Fragment>
                       <Typography
                         variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
                         customStyle={styles.email}
                       >
-                        Email :{" "}
-                        <span
-                          className={styles.boldText}
-                        >{`kiran.mehta@coditas.com`}</span>
+                        Email : <span className={styles.boldText}>{email}</span>
                       </Typography>
                       <Typography
                         variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
                         customStyle={styles.email}
                       >
-                        Phone :{" "}
-                        <span
-                          className={styles.boldText}
-                        >{`(91) 9898775555`}</span>
+                        Phone : <span className={styles.boldText}>{phone}</span>
                       </Typography>
                     </React.Fragment>
                   }
