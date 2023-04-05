@@ -7,19 +7,7 @@ import React, {
 } from "react";
 import ImageComponent from "../image";
 import styles from "./inputBox.module.scss";
-
-interface IInputProps extends HTMLAttributes<HTMLInputElement> {
-  customClass?: string;
-  label?: string;
-  value?: any;
-  disabled?: boolean;
-  multiline?: boolean;
-  handleChange?: (value: any) => void;
-  autoFocus?: boolean;
-  pattern?: string;
-  error?: string;
-  startIcon?: string;
-}
+import { IInputProps } from "./inputBox.types";
 
 const InputBox = (props: IInputProps) => {
   const {

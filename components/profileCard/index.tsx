@@ -6,15 +6,7 @@ import Typography from "../typography";
 import styles from "./profileCard.module.scss";
 import Images from "@/public/assets/icons";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-
-interface IProfileCardProps {
-  profileImage: string;
-  firstName: string;
-  lastName: string;
-  designation: string;
-  cardBody: React.ReactNode;
-  cardFooter: React.ReactNode;
-}
+import { IProfileCardProps } from "./profileCard.types";
 
 const ProfileCard = (props: IProfileCardProps) => {
   const {

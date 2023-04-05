@@ -3,3 +3,7 @@ export interface IRouteType {
   path: string;
   name: string;
 }
+export interface IOptionType {
+  id: number;
+  label: string;
+}

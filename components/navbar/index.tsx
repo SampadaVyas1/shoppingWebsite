@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { CSSTransition } from "react-transition-group";
 import { ArrowContainer, Popover } from "react-tiny-popover";
 import styles from "./navbar.module.scss";
@@ -10,6 +10,7 @@ import { IRouteType } from "@/common/types";
 import ProfileCard from "../profileCard";
 import Modal from "../modal";
 import Button from "../button";
+import TransitionWrapper from "../transitionWrapper";
 import { AuthContext } from "@/context/authContext";
 import {
   BUTTON_VARIANT,
@@ -18,17 +19,16 @@ import {
 } from "@/common/enums";
 import Images from "@/public/assets/icons";
 import { PRIVATE_ROUTES } from "@/common/routes";
-import React from "react";
-
-interface INavbarProps {
-  routes: IRouteType[];
-}
+import { INavbarProps, profileData } from "./navbar.types";
 
 const Navbar = ({ routes }: INavbarProps) => {
   const router = useRouter();
   const context = useContext(AuthContext);
   const [isProfileOpen, toggleProfile] = useState<boolean>(false);
   const [isLogoutModalOpen, toggleLogoutModal] = useState<boolean>(false);
+
+  const { firstName, lastName, profileImage, email, phone, designation } =
+    profileData;
 
   const { handleLogout } = context;
 
@@ -89,12 +89,7 @@ const Navbar = ({ routes }: INavbarProps) => {
           onClickOutside={closePopup}
           padding={10}
           content={({ position, childRect, popoverRect }) => (
-            <CSSTransition
-              in={isProfileOpen}
-              timeout={300}
-              classNames="alert"
-              unmountOnExit
-            >
+            <TransitionWrapper open={isProfileOpen}>
               <ArrowContainer
                 position={position}
                 childRect={childRect}
@@ -106,23 +101,23 @@ const Navbar = ({ routes }: INavbarProps) => {
                 arrowClassName="popover-arrow"
               >
                 <ProfileCard
-                  profileImage=""
-                  firstName="Kiran"
-                  lastName="Mehta"
-                  designation="Associate Talent Acquisition"
+                  profileImage={profileImage}
+                  firstName={firstName}
+                  lastName={lastName}
+                  designation={designation}
                   cardBody={
                     <React.Fragment>
                       <Typography
                         variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
                         customStyle={styles.email}
                       >
-                        Email : <span>{`kiran.mehta@coditas.com`}</span>
+                        Email : <span className={styles.boldText}>{email}</span>
                       </Typography>
                       <Typography
                         variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
                         customStyle={styles.email}
                       >
-                        Phone : <span>{`(91) 9898775555`}</span>
+                        Phone : <span className={styles.boldText}>{phone}</span>
                       </Typography>
                     </React.Fragment>
                   }
@@ -138,7 +133,7 @@ const Navbar = ({ routes }: INavbarProps) => {
                   }
                 />
               </ArrowContainer>
-            </CSSTransition>
+            </TransitionWrapper>
           )}
         >
           <div onClick={handleProfileClick}>
