@@ -1,18 +1,7 @@
 import React, { useState } from "react";
 import styles from "./tooltip.module.scss";
 import { TOOLTIP_POSITION } from "@/common/enums";
-
-interface ITooltipProp {
-  children: JSX.Element;
-  delay?: number;
-  position:
-    | TOOLTIP_POSITION.TOP
-    | TOOLTIP_POSITION.BOTTOM
-    | TOOLTIP_POSITION.LEFT
-    | TOOLTIP_POSITION.RIGHT;
-  content: JSX.Element;
-  customStyle?: string;
-}
+import { ITooltipProp } from "./tooltip.types";
 
 const Tooltip = (props: ITooltipProp) => {
   const {

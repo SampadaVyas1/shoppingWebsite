@@ -1,22 +1,61 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import React, { useState, useContext } from "react";
+import { CSSTransition } from "react-transition-group";
+import { ArrowContainer, Popover } from "react-tiny-popover";
 import styles from "./navbar.module.scss";
 import ImageComponent from "../image";
-import Images from "@/public/assets/icons";
 import Typography from "../typography";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { IRouteType } from "@/common/types";
-
-interface INavbarProps {
-  routes: IRouteType[];
-}
+import ProfileCard from "../profileCard";
+import Modal from "../modal";
+import Button from "../button";
+import TransitionWrapper from "../transitionWrapper";
+import { AuthContext } from "@/context/authContext";
+import {
+  BUTTON_VARIANT,
+  TOOLTIP_POSITION,
+  TYPOGRAPHY_VARIANT,
+} from "@/common/enums";
+import Images from "@/public/assets/icons";
+import { PRIVATE_ROUTES } from "@/common/routes";
+import { INavbarProps, profileData } from "./navbar.types";
 
 const Navbar = ({ routes }: INavbarProps) => {
   const router = useRouter();
+  const context = useContext(AuthContext);
+  const [isProfileOpen, toggleProfile] = useState<boolean>(false);
+  const [isLogoutModalOpen, toggleLogoutModal] = useState<boolean>(false);
+
+  const { firstName, lastName, profileImage, email, phone, designation } =
+    profileData;
+
+  const { handleLogout } = context;
+
+  const onLogout = () => {
+    handleLogout();
+    router.replace(PRIVATE_ROUTES.LOGIN);
+  };
+
+  const handleProfileClick = () => {
+    toggleProfile(!isProfileOpen);
+  };
+
+  const closePopup = () => {
+    toggleProfile(false);
+  };
+
+  const handleLogoutButtonClick = () => {
+    toggleLogoutModal(!isLogoutModalOpen);
+  };
+
+  const redirectHome = () => {
+    router.push(PRIVATE_ROUTES.HOME);
+  };
   return (
     <div className={styles.navbar}>
       <div className={styles.navbarLeft}>
-        <div className={styles.logo}>
+        <div className={styles.logo} onClick={redirectHome}>
           <ImageComponent src={Images.coditasIcon} width={32} height={32} />
           <Typography
             variant={TYPOGRAPHY_VARIANT.HEADER_LARGE}
@@ -43,8 +82,95 @@ const Navbar = ({ routes }: INavbarProps) => {
           src={Images.notificationIcon}
           customClass={styles.icons}
         />
-        <ImageComponent src={Images.profileIcon} customClass={styles.icons} />
+        <Popover
+          isOpen={true}
+          positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.LEFT]}
+          reposition={true}
+          onClickOutside={closePopup}
+          padding={10}
+          content={({ position, childRect, popoverRect }) => (
+            <TransitionWrapper open={isProfileOpen}>
+              <ArrowContainer
+                position={position}
+                childRect={childRect}
+                popoverRect={popoverRect}
+                arrowColor="white"
+                arrowSize={12}
+                arrowStyle={{ opacity: 1, zIndex: 2, top: "0.25rem" }}
+                className="popover-arrow-container"
+                arrowClassName="popover-arrow"
+              >
+                <ProfileCard
+                  profileImage={profileImage}
+                  firstName={firstName}
+                  lastName={lastName}
+                  designation={designation}
+                  cardBody={
+                    <React.Fragment>
+                      <Typography
+                        variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
+                        customStyle={styles.email}
+                      >
+                        Email : <span className={styles.boldText}>{email}</span>
+                      </Typography>
+                      <Typography
+                        variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
+                        customStyle={styles.email}
+                      >
+                        Phone : <span className={styles.boldText}>{phone}</span>
+                      </Typography>
+                    </React.Fragment>
+                  }
+                  cardFooter={
+                    <Button
+                      variant={BUTTON_VARIANT.OUTLINED}
+                      startIcon={Images.logoutIcon}
+                      customStyle={styles.logoutButton}
+                      onClick={handleLogoutButtonClick}
+                    >
+                      Log Out
+                    </Button>
+                  }
+                />
+              </ArrowContainer>
+            </TransitionWrapper>
+          )}
+        >
+          <div onClick={handleProfileClick}>
+            <ImageComponent
+              src={Images.profileIcon}
+              customClass={styles.icons}
+            />
+          </div>
+        </Popover>
       </div>
+
+      <Modal
+        open={isLogoutModalOpen}
+        header="Log Out"
+        onClose={handleLogoutButtonClick}
+        customStyle={styles.logoutModal}
+      >
+        <div className={styles.logout}>
+          <Typography
+            variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
+            customStyle={styles.text}
+          >
+            Are you sure you want to Log Out from the application?
+          </Typography>
+          <div className={styles.buttons}>
+            <Button
+              variant={BUTTON_VARIANT.OUTLINED}
+              onClick={handleLogoutButtonClick}
+            >
+              Cancel
+            </Button>
+            <Button variant={BUTTON_VARIANT.CONTAINED} onClick={onLogout}>
+              Log Out
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

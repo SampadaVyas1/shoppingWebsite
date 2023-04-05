@@ -7,27 +7,8 @@ import OptionTags from "./optionTag";
 import MultiSelectOptions from "./multiselectOptions";
 import arrowDown from "../../public/assets/icons/arrowDown.svg";
 import arrowUp from "../../public/assets/icons/arrowUp.svg";
-
-export interface IOptionType {
-  id: number;
-  label: string;
-}
-
-interface ISelectProps {
-  options: IOptionType[];
-  open?: boolean;
-  value?: IOptionType | IOptionType[];
-  placeholder?: string;
-  onSelect?: (value: IOptionType | IOptionType[]) => void;
-  multiSelect?: boolean;
-  masterCheck?: boolean;
-  searchable?: boolean;
-}
-
-interface ISelectStates {
-  selectedValue: IOptionType | IOptionType[];
-  isDropdownOpen: boolean;
-}
+import { IOptionType } from "@/common/types";
+import { ISelectProps, ISelectStates } from "./select.types";
 
 const Select = (props: ISelectProps) => {
   const {
