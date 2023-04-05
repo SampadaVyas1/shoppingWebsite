@@ -24,8 +24,8 @@ export enum API_ROUTES {
 }
 
 export const TEAM_ROUTES = [
-  { id: 1, path: TEAM_PAGE_ROUTES.groups, name: "Groups" },
-  { id: 2, path: TEAM_PAGE_ROUTES.recruiters, name: "Recruiters" },
-  { id: 3, path: TEAM_PAGE_ROUTES.techstacks, name: "Tech Stacks" },
-  { id: 4, path: TEAM_PAGE_ROUTES.templates, name: "Templates" },
+  { id: 1, path: TEAM_PAGE_ROUTES.GROUPS, name: "Groups" },
+  { id: 2, path: TEAM_PAGE_ROUTES.RECRUITERS, name: "Recruiters" },
+  { id: 3, path: TEAM_PAGE_ROUTES.TECHSTACKS, name: "Tech Stacks" },
+  { id: 4, path: TEAM_PAGE_ROUTES.TEMPLATES, name: "Templates" },
 ];

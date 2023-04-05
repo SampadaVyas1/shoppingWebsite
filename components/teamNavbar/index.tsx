@@ -1,13 +1,8 @@
+import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "./teamNavbar.module.scss";
-import { IRouteType } from "@/common/types";
-
-import React from "react";
-
-interface INavbarProps {
-  routes: IRouteType[];
-}
+import { INavbarProps } from "@/common/types";
 
 const TeamNavbar = ({ routes }: INavbarProps) => {
   const router = useRouter();
