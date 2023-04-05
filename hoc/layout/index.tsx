@@ -30,7 +30,7 @@ const Layout = ({ children }: any) => {
         <Splash />
       ) : (
         <div className={styles.layoutWrapper}>
-          <Navbar routes={role === 1 ? RECRUITER_ROUTES : ADMIN_ROUTES} />
+          <Navbar routes={role === 1 ? ADMIN_ROUTES : RECRUITER_ROUTES} />
           {router.pathname.includes(TEAM_PAGE_ROUTES.TEAM) ? (
             <React.Fragment>
               <TeamNavbar routes={TEAM_ROUTES} />
