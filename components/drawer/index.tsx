@@ -1,7 +1,7 @@
 import Images from "@/public/assets/icons";
 import styles from "./drawer.module.scss";
 import ImageComponent from "../image";
-import { CSSTransition } from "react-transition-group";
+import TransitionWrapper from "../transitionWrapper";
 
 interface IDrawerProps {
   title?: JSX.Element | string;
@@ -26,7 +26,7 @@ const Drawer = (props: IDrawerProps) => {
     event.stopPropagation();
   };
   return (
-    <CSSTransition in={isOpen} timeout={300} classNames="drawer" unmountOnExit>
+    <TransitionWrapper animationClassName="drawer">
       <div className={styles.drawerBackdrop} onClick={onClose}>
         <div
           className={`${styles.drawer} ${customDrawerStyle}`}
@@ -44,7 +44,7 @@ const Drawer = (props: IDrawerProps) => {
           <div className={styles.drawerBody}>{children}</div>
         </div>
       </div>
-    </CSSTransition>
+    </TransitionWrapper>
   );
 };
 export default Drawer;

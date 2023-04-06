@@ -9,8 +9,6 @@ import Select from "@/components/select";
 import { getAccessToken, getDummyData } from "@/services/login.service";
 import { PRIVATE_ROUTES } from "@/common/routes";
 import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-import ConfirmationModal from "@/components/confirmationModal";
-import Drawer from "@/components/drawer";
 
 const Home = () => {
   const context = useContext(AuthContext);

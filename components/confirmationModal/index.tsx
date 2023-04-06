@@ -7,12 +7,12 @@ import styles from "./confirmationModal.module.scss";
 
 interface IConfirmationModalProps {
   title: JSX.Element | string;
-  description: string;
+  description: JSX.Element | string;
   cancelButtonText?: string;
   confirmButtonText?: string;
   onCancelButtonClick?: () => void;
   onConfirmButtonClick?: () => void;
-  open?: string;
+  open?: boolean;
 }
 
 const ConfirmationModal = (props: IConfirmationModalProps) => {
@@ -26,7 +26,7 @@ const ConfirmationModal = (props: IConfirmationModalProps) => {
     onConfirmButtonClick,
   } = props;
   return (
-    <Modal onClose={onCancelButtonClick}>
+    <Modal onClose={onCancelButtonClick} open={open}>
       <Container customClass={styles.confirmationModal}>
         <Typography
           variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}
