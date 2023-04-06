@@ -1,11 +1,13 @@
 import { HTMLAttributes } from "react";
-export interface IInputProps extends HTMLAttributes<HTMLInputElement> {
+export interface IInputProps
+  extends HTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
   customClass?: string;
   label?: string;
   value?: any;
+  type?: string;
   disabled?: boolean;
   multiline?: boolean;
-  handleChange?: (value: any) => void;
+  onChange?: (value: any) => void;
   autoFocus?: boolean;
   pattern?: string;
   error?: string;

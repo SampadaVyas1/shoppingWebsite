@@ -1,16 +1,21 @@
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import {
+  BUTTON_TYPES,
+  BUTTON_VARIANT,
+  TYPOGRAPHY_VARIANT,
+} from "@/common/enums";
 import Button from "../button";
 import DragDropArea from "../dragDropArea";
 import Typography from "../typography";
 import InputBox from "../inputBox";
-import Select, { IOptionType } from "../select";
+import Select from "../select";
 import Card from "../card";
 import styles from "./addForm.module.scss";
 import { AddFormSchema } from "./validation";
 import { REGEX, VALIDATION_ERRORS } from "@/common/constants";
+import { IOptionType } from "@/common/types";
 
 const AddForm = () => {
   const hookForm = useForm({
@@ -196,7 +201,7 @@ const AddForm = () => {
           variant={BUTTON_VARIANT.CONTAINED}
           onClick={handleSubmit(onSubmit)}
           disabled={submitButtonDisableCondition}
-          type="submit"
+          type={BUTTON_TYPES.SUBMIT}
         >
           Submit
         </Button>

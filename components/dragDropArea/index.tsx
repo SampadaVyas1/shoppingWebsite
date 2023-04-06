@@ -2,12 +2,8 @@ import { useRef, useState } from "react";
 import Button from "../button";
 import Typography from "../typography";
 import styles from "./dragDropArea.module.scss";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-
-interface IDragDropArea {
-  customStyle?: string;
-  fileType?: string[];
-}
+import { BUTTON_VARIANT, EVENT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { IDragDropArea } from "./dragDropArea.types";
 
 const DragDropArea = (props: IDragDropArea) => {
   const [dragActive, setDragActive] = useState<boolean>(false);
@@ -17,9 +13,9 @@ const DragDropArea = (props: IDragDropArea) => {
   const handleDrag = (event: React.DragEvent<HTMLElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    if (event.type === "dragenter" || event.type === "dragover") {
+    if (event.type === EVENT.DRAG_ENTER || event.type === EVENT.DRAG_OVER) {
       setDragActive(true);
-    } else if (event.type === "dragleave") {
+    } else if (event.type === EVENT.DRAG_LEAVE) {
       setDragActive(false);
     }
   };

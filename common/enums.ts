@@ -4,6 +4,9 @@ export enum EVENT {
   MOUSE_UP = "mouseup",
   POINTER_DOWN = "pointerdown",
   POINTER_UP = "pointerup",
+  DRAG_ENTER = "dragenter",
+  DRAG_OVER = "dragover",
+  DRAG_LEAVE = "dragleave",
 }
 
 export enum VARIANT {
@@ -52,4 +55,10 @@ export enum TOOLTIP_POSITION {
   RIGHT = "right",
   TOP = "top",
   BOTTOM = "bottom",
+}
+
+export enum BUTTON_TYPES {
+  RESET = "reset",
+  SUBMIT = "submit",
+  BUTTON = "button",
 }
