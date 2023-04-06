@@ -4,19 +4,15 @@
 .drawerBackdrop {
   height: 100vh;
   width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
+  @include flex-justify-align(flex-end, flex-start);
   position: absolute;
   top: 0;
   right: 0;
   z-index: 5;
 
   .drawer {
-    flex: 1;
+    @include flex-direction(column, 1);
     position: fixed;
-    flex-direction: column;
-    display: flex;
     top: 0;
     right: 0;
     width: 100vw;
@@ -44,9 +40,8 @@
     }
 
     .drawerBody {
-      display: flex;
+      @include flex-direction(column);
       height: 100%;
-      flex-direction: column;
       overflow: hidden;
     }
   }

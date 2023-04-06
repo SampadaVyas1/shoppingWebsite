@@ -2,15 +2,7 @@ import Images from "@/public/assets/icons";
 import styles from "./drawer.module.scss";
 import ImageComponent from "../image";
 import TransitionWrapper from "../transitionWrapper";
-
-interface IDrawerProps {
-  title?: JSX.Element | string;
-  onClose?: () => void;
-  children: React.ReactNode;
-  isOpen?: boolean;
-  customDrawerStyle?: string;
-  customHeaderStyle?: string;
-}
+import { IDrawerProps } from "./drawer.types";
 
 const Drawer = (props: IDrawerProps) => {
   const {

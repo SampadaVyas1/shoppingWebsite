@@ -4,22 +4,12 @@ import { AuthContext } from "@/context/authContext";
 import styles from "../styles/app.module.scss";
 import Typography from "@/components/typography";
 import Loader from "@/components/loader";
-import SkeletonLoader from "@/components/skeletonLoader";
-import Select from "@/components/select";
-import { getAccessToken, getDummyData } from "@/services/login.service";
-import { PRIVATE_ROUTES } from "@/common/routes";
-import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 
 const Home = () => {
   const context = useContext(AuthContext);
 
   const { isLoggedIn, handleLogout } = context;
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
-
-  const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
-  };
-  const router = useRouter();
 
   return (
     <div className={styles.components}>

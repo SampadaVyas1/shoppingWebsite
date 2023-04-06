@@ -1,7 +1,8 @@
 @import "../../styles/variables";
+@import "../../styles/mixins";
+
 .confirmationModal {
-  display: flex;
-  flex-direction: column;
+  @include flex-direction(column);
   gap: 1rem;
   padding: 0 !important;
   width: 21.5rem;
