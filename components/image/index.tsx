@@ -3,14 +3,7 @@ import Image from "next/image";
 import styles from "./image.module.scss";
 import Typography from "../typography";
 import Rectangle from "../../public/assets/images/rectangle.svg";
-
-interface IImageProps
-  extends Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "children"> {
-  src: string | null;
-  fallbackText?: string;
-  customClass?: string;
-  fallbackClass?: string;
-}
+import { IImageProps } from "./image.types";
 
 const ImageComponent = (props: IImageProps) => {
   const {

@@ -1,20 +1,8 @@
 import React, { useRef, useCallback, useEffect, HTMLAttributes } from "react";
-import { EVENT } from "@/common/enums";
 import { EVENT_TYPE } from "../../common/constants";
+import { IClickAwayProps } from "./clickAway.types";
 
-interface props extends HTMLAttributes<HTMLDivElement> {
-  event?:
-    | EVENT.CLICK
-    | EVENT.MOUSE_DOWN
-    | EVENT.MOUSE_UP
-    | EVENT.POINTER_DOWN
-    | EVENT.POINTER_UP;
-  children: React.ReactNode;
-  handleClose: () => void;
-  customClass?: string;
-}
-
-const ClickAwayListener = (props: props) => {
+const ClickAwayListener = (props: IClickAwayProps) => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
   const { event, children, customClass, handleClose, ...otherProps } = props;
 

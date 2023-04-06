@@ -2,15 +2,7 @@ import { useCallback, useState } from "react";
 import styles from "./buttonGroup.module.scss";
 import Button from "../button";
 import { ORIENTATIONS } from "@/common/enums";
-
-interface IButtonGroupProps {
-  buttons: string[];
-  orientation?: ORIENTATIONS.VERTICAL | ORIENTATIONS.HORIZONTAL;
-  onButtonClick?: (event: any) => void;
-  containerClassName?: string;
-  buttonClassName?: string;
-  activeButtonClassName?: string;
-}
+import { IButtonGroupProps } from "./buttonGroup.types";
 
 const ButtonGroup = (props: IButtonGroupProps) => {
   const {

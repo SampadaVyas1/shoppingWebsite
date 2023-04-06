@@ -32,3 +32,4 @@ export const REGEX = {
   ONLY_ALPHABETS: /^[A-Za-z]+$/,
   ONLY_NUMBERS: /^\d+$/,
 };
+export const TRANSITION_TIMEOUT = 300;

@@ -17,11 +17,9 @@ const Candidates = () => {
       <Button variant={BUTTON_VARIANT.CONTAINED} onClick={toggleModal}>
         Add Candidate
       </Button>
-      {isModalOpen && (
-        <Modal header="Add Candidate" onClose={toggleModal}>
-          <AddForm />
-        </Modal>
-      )}
+      <Modal header="Add Candidate" onClose={toggleModal} open={isModalOpen}>
+        <AddForm />
+      </Modal>
     </Container>
   );
 };

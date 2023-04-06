@@ -3,35 +3,14 @@ import { Popover } from "react-tiny-popover";
 import styles from "./select.module.scss";
 import Options from "./options";
 import ImageComponent from "../image";
+import Typography from "../typography";
 import OptionTags from "./optionTag";
 import MultiSelectOptions from "./multiselectOptions";
 import arrowDown from "../../public/assets/icons/arrowDown.svg";
 import arrowUp from "../../public/assets/icons/arrowUp.svg";
-import Typography from "../typography";
+import { IOptionType } from "@/common/types";
+import { ISelectProps, ISelectStates } from "./select.types";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
-
-export interface IOptionType {
-  id: number;
-  label: string;
-}
-
-interface ISelectProps {
-  options: IOptionType[];
-  label?: string;
-  error?: string;
-  open?: boolean;
-  value?: IOptionType | IOptionType[];
-  placeholder?: string;
-  onSelect?: (value: IOptionType | IOptionType[]) => void;
-  multiSelect?: boolean;
-  masterCheck?: boolean;
-  searchable?: boolean;
-}
-
-interface ISelectStates {
-  selectedValue: IOptionType | IOptionType[];
-  isDropdownOpen: boolean;
-}
 
 const Select = (props: ISelectProps) => {
   const {

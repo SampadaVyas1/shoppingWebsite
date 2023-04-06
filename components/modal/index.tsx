@@ -1,16 +1,9 @@
 import Images from "@/public/assets/icons";
 import React from "react";
 import ImageComponent from "../image";
+import TransitionWrapper from "../transitionWrapper";
 import styles from "./modal.module.scss";
-
-interface IModalProps {
-  children: React.ReactNode;
-  onClose?: React.MouseEventHandler<HTMLElement>;
-  customStyle?: string;
-  customBackdrop?: string;
-  header?: string;
-  showCloseIcon?: boolean;
-}
+import { IModalProps } from "./modal.types";
 
 const Modal = (props: IModalProps) => {
   const {
@@ -19,7 +12,8 @@ const Modal = (props: IModalProps) => {
     customStyle,
     header,
     customBackdrop,
-    showCloseIcon = true,
+    open,
+    showCloseIcon,
   } = props;
   const backdropStyle = customBackdrop
     ? customBackdrop
@@ -35,23 +29,25 @@ const Modal = (props: IModalProps) => {
   };
 
   return (
-    <div className={backdropStyle} onClick={onClose}>
-      <div className={modelStyle} onClick={handleModalClick}>
-        {header && (
-          <div className={styles.heading}>
-            {header}
-            {showCloseIcon && (
-              <ImageComponent
-                src={Images.close}
-                customClass={styles.closeIcon}
-                onClick={onClose}
-              />
-            )}
-          </div>
-        )}
-        {children}
+    <TransitionWrapper open={open}>
+      <div className={backdropStyle} onClick={onClose}>
+        <div className={modelStyle} onClick={handleModalClick}>
+          {header && (
+            <div className={styles.heading}>
+              {header}
+              {showCloseIcon && (
+                <ImageComponent
+                  src={Images.close}
+                  customClass={styles.closeIcon}
+                  onClick={onClose}
+                />
+              )}
+            </div>
+          )}
+          {children}
+        </div>
       </div>
-    </div>
+    </TransitionWrapper>
   );
 };
 

@@ -1,12 +1,7 @@
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import Typography from "../typography";
 import styles from "./card.module.scss";
-
-interface ICardProps {
-  title?: string;
-  children: JSX.Element;
-  customClass?: string;
-}
+import { ICardProps } from "./card.types";
 
 const Card = (props: ICardProps) => {
   const { title = "", children, customClass } = props;

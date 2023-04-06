@@ -26,7 +26,6 @@ interface IInputProps
 const InputBox = (props: IInputProps) => {
   const {
     customClass,
-    // value,
     disabled,
     multiline,
     onChange,
