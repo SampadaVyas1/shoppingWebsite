@@ -10,10 +10,12 @@ import Typography from "@/components/typography";
 import moment from "moment";
 import Images from "@/public/assets/icons";
 import socket from "@/socket";
+import io from "socket.io-client";
 import { useState, useEffect, useRef } from "react";
 import React from "react";
 import Loader from "@/components/loader";
 import { getDataFromLocalStorage } from "@/common/utils";
+import ChatBody from "../chatBody";
 
 const MessageScreen = (props: any) => {
   const {
@@ -32,104 +34,40 @@ const MessageScreen = (props: any) => {
   const mobileNumber = getDataFromLocalStorage("mobile");
 
   useEffect(() => {
+    if (socket.connected) {
+      setIsConnected(true);
+    }
     if (!socket.connected) {
       socket.connect();
+      socket.on("connect", () => {
+        setIsConnected(true);
+        console.log(socket.id);
+      });
+      socket.on("disconnect", () => {
+        setIsConnected(false);
+        console.log("disconnected");
+      });
     }
     return () => {
       setIsConnected(false);
       socket.disconnect();
     };
-  }, [mobileNumber]);
-
-  useEffect(() => {
-    if (socket.on) {
-      socket.on("session", (data: any) => {
-        setIsConnected(true);
-        setUserId(data);
-        socket.emit("join", `${data.mobile}${data.userId}`);
-      });
-    }
-  }, [mobileNumber]);
-
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current &&
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messageList, mobile, messagesEndRef]);
+  }, [mobile]);
 
   return (
     <div className={styles.messageScreen}>
-      {!isConnected || getDataFromLocalStorage("mobile") !== mobile ? (
-        <Loader />
-      ) : (
-        <React.Fragment>
-          <ChatHeader
-            name={name}
-            designation={designation}
-            techStack={techStack}
-            interviewStatus={interviewStatus}
-            profileImage={profileImage}
-          />
-          <div className={styles.messageBody}>
-            {messageList
-              ?.sort(function (first: any, second: any) {
-                return parseInt(first.timestamp) - parseInt(second.timestamp);
-              })
-              ?.map((messageData: any, index: number) => {
-                const messageType = messageData?.status ? "sent" : "received";
-                const icon =
-                  messageData?.status === "sent"
-                    ? Images.sentIcon
-                    : messageData.status === "delivered"
-                    ? Images.deliveredIcon
-                    : Images.readIcon;
-                return (
-                  <TipContainer
-                    position={
-                      messageData?.status
-                        ? TOOLTIP_POSITION.RIGHT
-                        : TOOLTIP_POSITION.LEFT
-                    }
-                    key={index}
-                    variant={messageType}
-                    customStyles={styles[messageType]}
-                  >
-                    <div className={styles.messageContent}>
-                      <Typography
-                        variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
-                      >
-                        {messageData.message}
-                      </Typography>
-                      <div className={styles.time}>
-                        <Typography
-                          variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
-                          customStyle={styles.hint}
-                        >
-                          {moment
-                            .unix(parseInt(messageData?.timestamp))
-                            .format("hh:mm A")}
-                        </Typography>
-                        {messageData.status && (
-                          <ImageComponent
-                            src={icon}
-                            customClass={styles.icon}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  </TipContainer>
-                );
-              })}
-            <div ref={messagesEndRef} />
-          </div>
-          <ChatBottom userId={userId} />
-        </React.Fragment>
-      )}
+      <React.Fragment>
+        <ChatHeader
+          name={name}
+          designation={designation}
+          techStack={techStack}
+          interviewStatus={interviewStatus}
+          profileImage={profileImage}
+          isLoading={!isConnected}
+        />
+        <ChatBody messageList={messageList} isLoading={!isConnected} />
+        <ChatBottom userId={userId} mobile={mobile} isLoading={!isConnected} />
+      </React.Fragment>
     </div>
   );
 };

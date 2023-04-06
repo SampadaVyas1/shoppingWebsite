@@ -1,7 +1,8 @@
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import ImageComponent from "@/components/image";
 import Typography from "@/components/typography";
 import styles from "./chatHeader.module.scss";
+import SkeletonLoader from "@/components/skeletonLoader";
 
 interface IChatHeaderProps {
   name: string;
@@ -9,10 +10,12 @@ interface IChatHeaderProps {
   designation: string;
   techStack: string;
   interviewStatus: string;
+  isLoading: boolean;
 }
 
 const ChatHeader = (props: IChatHeaderProps) => {
-  return (
+  const { isLoading } = props;
+  return !isLoading ? (
     <div className={styles.chatHeader}>
       <div className={styles.profile}>
         <ImageComponent
@@ -46,6 +49,25 @@ const ChatHeader = (props: IChatHeaderProps) => {
         >
           {props.interviewStatus}
         </Typography>
+      </div>
+    </div>
+  ) : (
+    <div className={styles.chatHeader}>
+      <div className={styles.profile}>
+        <SkeletonLoader
+          type={SKELETON_VARIANT.CIRCLE}
+          customClass={styles.image}
+        />
+        <div className={styles.detailSkeleton}>
+          <SkeletonLoader
+            type={SKELETON_VARIANT.TEXT_SMALL}
+            customClass={styles.skeletonText}
+          />
+          <SkeletonLoader
+            type={SKELETON_VARIANT.TEXT_MEDIUM}
+            customClass={styles.skeletonText}
+          />
+        </div>
       </div>
     </div>
   );

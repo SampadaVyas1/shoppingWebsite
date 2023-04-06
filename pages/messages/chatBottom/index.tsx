@@ -8,6 +8,8 @@ import socket from "@/socket";
 import messages from "..";
 import { useLiveQuery } from "dexie-react-hooks";
 import { getDataFromLocalStorage } from "@/common/utils";
+import { SKELETON_VARIANT } from "@/common/enums";
+import SkeletonLoader from "@/components/skeletonLoader";
 
 const ChatBottom = (props: any) => {
   const [message, setMessage] = useState<string>("");
@@ -32,11 +34,12 @@ const ChatBottom = (props: any) => {
 
   useEffect(() => {
     socket.on("status", async (data: any) => {
+      console.log(data.id);
       const updatedMessage = messageList?.find(
         (message: any) => message.messageId.toString() === data.id.toString()
       );
-      console.log(updateMessage);
-      await updateMessage({ ...updatedMessage, status: data.status });
+      if (updatedMessage !== undefined)
+        await updateMessage({ ...updatedMessage, status: data.status });
     });
   }, [messageList]);
 
@@ -49,7 +52,7 @@ const ChatBottom = (props: any) => {
         timestamp: timestamp,
         messageType: messageType,
         to: props.userId, //TA's employee id
-        from: `${getDataFromLocalStorage("mobile")}`, //user's phone number
+        from: props.phone, //user's phone number
       };
       addMessage(newMessage);
     };
@@ -59,7 +62,7 @@ const ChatBottom = (props: any) => {
     return () => {
       socket.off("personalMessage", receiveMessage);
     };
-  }, [props?.userId]);
+  }, [props.phone, props.userId]);
 
   const handleClick = () => {
     console.log(message);
@@ -68,7 +71,7 @@ const ChatBottom = (props: any) => {
       {
         messaging_product: "whatsapp",
         recipient_type: "individual",
-        to: `${getDataFromLocalStorage("mobile")}`, //To whom you want to send message
+        to: props.mobile, //To whom you want to send message
         type: "text",
         text: {
           body: message,
@@ -76,23 +79,41 @@ const ChatBottom = (props: any) => {
       },
       (error: any) => console.log("error")
     );
-    socket.on("get_message", async (data: any) => {
-      const newMessage = {
-        messageId: data.messages[0].id,
-        message: message,
-        timestamp: data.timestamp,
-        messageType: "text",
-        status: "sent",
-        to: `${getDataFromLocalStorage("mobile")}`, //user's phone number
-        from: props?.userId, //TA's employee id
-      };
-      await addMessage(newMessage);
-      setMessage("");
-    });
   };
-
-  return (
+  socket.on("get_message", async (data: any) => {
+    const newMessage = {
+      messageId: data.messages[0].id,
+      message: message,
+      timestamp: data.timestamp,
+      messageType: "text",
+      status: "sent",
+      to: props.mobile, //user's phone number
+      from: props?.userId, //TA's employee id
+    };
+    await addMessage(newMessage);
+    setMessage("");
+  });
+  return props.isLoading ? (
     <div className={styles.chatBottom}>
+      <SkeletonLoader
+        type={SKELETON_VARIANT.TEXT_SMALL}
+        customClass={styles.skeletonIcon}
+      />
+      <SkeletonLoader
+        type={SKELETON_VARIANT.TEXT_SMALL}
+        customClass={styles.skeletonIcon}
+      />
+      <SkeletonLoader
+        type={SKELETON_VARIANT.TEXT_LARGE}
+        customClass={styles.skeletonBox}
+      />
+      <SkeletonLoader
+        type={SKELETON_VARIANT.TEXT_SMALL}
+        customClass={styles.skeletonIcon}
+      />
+    </div>
+  ) : (
+    <form onKeyDown={handleClick} className={styles.chatBottom}>
       <ImageComponent src={Images.templateIcon} customClass={styles.icon} />
       <ImageComponent src={Images.attachmentIcon} customClass={styles.icon} />
       <InputBox
@@ -107,7 +128,7 @@ const ChatBottom = (props: any) => {
         customClass={styles.icon}
         onClick={handleClick}
       />
-    </div>
+    </form>
   );
 };
 export default ChatBottom;

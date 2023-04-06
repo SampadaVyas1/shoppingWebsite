@@ -31,15 +31,15 @@ const Candidates = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (socket.on) {
-      socket.on("session", (data: any) => {
-        setIsConnected(true);
-        setLastData(data);
-        socket.emit("join", `${data.mobile}${data.userId}`);
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (socket.on) {
+  //     socket.on("session", (data: any) => {
+  //       setIsConnected(true);
+  //       setLastData(data);
+  //       socket.emit("join", `${data.mobile}${data.userId}`);
+  //     });
+  //   }
+  // }, []);
 
   const addMessage = async (data: any) => {
     try {

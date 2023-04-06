@@ -13,3 +13,26 @@
     border-radius: 0.25rem;
   }
 }
+.listSkeleton {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 1.25rem;
+  padding: 0 2.5rem;
+  .userSkeleton {
+    display: flex;
+    gap: 1rem;
+    .contentSkeleton {
+      display: flex;
+      flex: 1;
+      gap: 0.5rem;
+      flex-direction: column;
+      padding: 0.5rem;
+      justify-content: space-around;
+      .skeletonBox {
+        flex: 1;
+        border-radius: 0.25rem;
+      }
+    }
+  }
+}

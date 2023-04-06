@@ -29,4 +29,13 @@
       font-weight: 600;
     }
   }
+  .detailSkeleton {
+    width: 25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    .skeletonText {
+      height: 1rem;
+    }
+  }
 }

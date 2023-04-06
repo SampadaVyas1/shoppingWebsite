@@ -16,7 +16,7 @@ import Typography from "@/components/typography";
 import { useEffect, useState } from "react";
 import MessageScreen from "./messageScreen";
 import React from "react";
-import { setDataInLocalStorage } from "@/common/utils";
+import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
 
 const Messages = () => {
   const [selectedCandidate, setSelectedCandidate] = useState<any>(null);
@@ -42,6 +42,7 @@ const Messages = () => {
             candidateData={candidateData}
             selectedData={selectedCandidate}
             onSelect={handleCandidateSelect}
+            isLoading={false}
           />
         ) : (
           <div className={styles.emptyCandidateList}>
