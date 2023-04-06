@@ -17,6 +17,7 @@ const Drawer = (props: IDrawerProps) => {
   const handleDrawerClick = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
+
   return (
     <TransitionWrapper animationClassName="drawer">
       <div className={styles.drawerBackdrop} onClick={onClose}>
