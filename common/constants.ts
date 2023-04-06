@@ -20,3 +20,4 @@ export const ERROR_CODES = {
 export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";
 export const USER_TOKEN = "userToken";
+export const TRANSITION_TIMEOUT = 300;

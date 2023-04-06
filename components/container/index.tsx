@@ -1,10 +1,5 @@
-import { ReactNode } from "react";
 import styles from "./container.module.scss";
-
-interface IContainerProps {
-  children: ReactNode;
-  customClass?: string;
-}
+import { IContainerProps } from "./container.types";
 
 const Container = (props: IContainerProps) => {
   const { children, customClass } = props;
