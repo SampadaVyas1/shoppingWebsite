@@ -12,25 +12,25 @@ import {
   RECRUITER_ROUTES,
   TEAM_ROUTES,
 } from "@/common/routes";
-import { TEAM_PAGE_ROUTES } from "@/common/constants";
+import { TEAM_PAGE_ROUTES } from "@/common/routes";
 
 const Layout = ({ children }: any) => {
   const context = useContext(AuthContext);
 
   //static data for role based routing
-  const role = Math.random();
+  const role = "admin";
   const { isLoggedIn } = context;
   const router = useRouter();
 
   return (
     <>
-      {router.pathname === PRIVATE_ROUTES[404] ? (
+      {router.pathname === PRIVATE_ROUTES.NOT_FOUND_ROUTE ? (
         children
       ) : !isLoggedIn ? (
         <Splash />
       ) : (
         <div className={styles.layoutWrapper}>
-          <Navbar routes={role === 1 ? ADMIN_ROUTES : RECRUITER_ROUTES} />
+          <Navbar routes={role === "admin" ? ADMIN_ROUTES : RECRUITER_ROUTES} />
           {router.pathname.includes(TEAM_PAGE_ROUTES.TEAM) ? (
             <React.Fragment>
               <TeamNavbar routes={TEAM_ROUTES} />
