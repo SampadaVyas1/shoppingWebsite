@@ -11,6 +11,8 @@ export default function Document() {
           rel="stylesheet"
         />
       </Head>
+      <title>Candidate Connect</title>
+
       <body>
         <Main />
         <NextScript />

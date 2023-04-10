@@ -1,0 +1,48 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.drawerBackdrop {
+  height: 100vh;
+  width: 100%;
+  @include flex-justify-align(flex-end, flex-start);
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+
+  .drawer {
+    @include flex-direction(column, 1);
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100vw;
+    max-width: 36.875rem;
+    height: 100vh;
+    box-sizing: border-box;
+    border-radius: 0.5rem 0 0 0.5rem;
+    background-color: $white;
+    box-shadow: $modalBoxShadow;
+    overflow: hidden;
+    .title {
+      display: flex;
+      padding: 1.5rem;
+      font-weight: 600;
+      position: relative;
+
+      .closeIcon {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+
+    .drawerBody {
+      @include flex-direction(column);
+      height: 100%;
+      overflow: hidden;
+    }
+  }
+}
