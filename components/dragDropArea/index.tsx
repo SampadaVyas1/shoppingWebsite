@@ -5,6 +5,7 @@ import styles from "./dragDropArea.module.scss";
 import {
   BUTTON_VARIANT,
   EVENT,
+  FILE_EXTENSION,
   FILE_TYPES,
   TYPOGRAPHY_VARIANT,
 } from "@/common/enums";
@@ -34,7 +35,8 @@ const DragDropArea = (props: IDragDropArea) => {
     if (
       file &&
       fileData &&
-      (fileData.type === "text/csv" || fileData.type === "text/xlsx")
+      (fileData.type === FILE_TYPES.TYPE_CSV ||
+        fileData.type === FILE_TYPES.TYPE_XLSX)
     ) {
       setFile(fileData.name);
     }
@@ -42,8 +44,9 @@ const DragDropArea = (props: IDragDropArea) => {
 
   const handleChange = (event: any) => {
     event.preventDefault();
-    if (event.target.files && event.target.files[0]) {
-      setFile(event.target.files[0].name);
+    const [fileData, ...otherData] = event.target.files;
+    if (event.target.files && fileData) {
+      setFile(fileData.name);
     }
   };
 
@@ -65,7 +68,7 @@ const DragDropArea = (props: IDragDropArea) => {
         type="file"
         className={styles.inputFileUpload}
         multiple={true}
-        accept={`${FILE_TYPES.XLSX},${FILE_TYPES.CSV}`}
+        accept={`${FILE_EXTENSION.XLSX},${FILE_EXTENSION.CSV}`}
         onChange={handleChange}
       />
 

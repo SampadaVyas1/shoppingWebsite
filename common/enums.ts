@@ -63,7 +63,12 @@ export enum BUTTON_TYPES {
   BUTTON = "button",
 }
 
-export enum FILE_TYPES {
+export enum FILE_EXTENSION {
   XLSX = ".xlsx",
   CSV = ".csv",
+}
+
+export enum FILE_TYPES {
+  TYPE_XLSX = "types/xlsx",
+  TYPE_CSV = "types/csv",
 }

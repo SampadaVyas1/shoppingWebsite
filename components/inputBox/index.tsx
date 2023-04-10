@@ -1,48 +1,22 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/display-name */
 import React, {
-  MouseEvent,
   ChangeEvent,
-  InputHTMLAttributes,
   useRef,
   forwardRef,
   useImperativeHandle,
   RefObject,
-  TextareaHTMLAttributes,
   useCallback,
   useState,
   FocusEvent,
 } from "react";
 import styles from "./inputBox.module.scss";
-import {
-  HTMLInputTextareaProps,
-  HTMLInputProps,
-  HTMLTextareaProps,
-} from "@/common/types";
 import ImageComponent from "../image";
-import { INPUT_PLACEHOLDER } from "@/common/constants";
 import Typography from "../typography";
+import { INPUT_PLACEHOLDER } from "@/common/constants";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
-interface inputProps extends HTMLInputTextareaProps {
-  customClass?: string;
-  startIcon?: string;
-  endIcon?: string;
-  multiline?: boolean;
-  label?: string;
-  error?: string;
-  onChange?: (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  onStartIconClick?: (event: MouseEvent<HTMLDivElement>) => void;
-  onEndIconClick?: (event: MouseEvent<HTMLDivElement>) => void;
-  rows?: number;
-  wrap?: "hard" | "soft";
-  inputProps?: HTMLInputProps;
-  textAreaProps?: HTMLTextareaProps;
-  onFocus?: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-  onBlur?: (event: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-}
-const InputBox = forwardRef((props: inputProps, ref) => {
+import { IInputProps } from "./inputBox.types";
+
+const InputBox = React.forwardRef((props: IInputProps, ref) => {
   const inputRef: RefObject<HTMLInputElement> | RefObject<HTMLTextAreaElement> =
     useRef(null);
   useImperativeHandle(ref, () => inputRef.current, []);
@@ -69,21 +43,15 @@ const InputBox = forwardRef((props: inputProps, ref) => {
     ...otherProps
   } = props;
 
-  const handleInputChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      const { onChange, disabled } = props;
-      !disabled && onChange && onChange(event);
-    },
-    [props.onChange]
-  );
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { onChange, disabled } = props;
+    !disabled && onChange && onChange(event);
+  };
 
-  const handleTextAreaChange = useCallback(
-    (event: ChangeEvent<HTMLTextAreaElement>) => {
-      const { onChange, disabled } = props;
-      !disabled && onChange && onChange(event);
-    },
-    [props.onChange]
-  );
+  const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const { onChange, disabled } = props;
+    !disabled && onChange && onChange(event);
+  };
 
   const handleInputFocus = (event: FocusEvent<HTMLInputElement>) => {
     const { onFocus } = props;
@@ -163,5 +131,5 @@ const InputBox = forwardRef((props: inputProps, ref) => {
 InputBox.defaultProps = {
   row: 2,
   placeholder: INPUT_PLACEHOLDER,
-} as inputProps;
+} as IInputProps;
 export default InputBox;
