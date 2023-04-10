@@ -13,12 +13,13 @@ import {
   TEAM_ROUTES,
 } from "@/common/routes";
 import { TEAM_PAGE_ROUTES } from "@/common/routes";
+import { ROLES } from "@/common/constants";
 
 const Layout = ({ children }: any) => {
   const context = useContext(AuthContext);
 
   //static data for role based routing
-  const role = "admin";
+  const role = ROLES.ADMIN;
   const { isLoggedIn } = context;
   const router = useRouter();
 
@@ -30,7 +31,9 @@ const Layout = ({ children }: any) => {
         <Splash />
       ) : (
         <div className={styles.layoutWrapper}>
-          <Navbar routes={role === "admin" ? ADMIN_ROUTES : RECRUITER_ROUTES} />
+          <Navbar
+            routes={role === ROLES.ADMIN ? ADMIN_ROUTES : RECRUITER_ROUTES}
+          />
           {router.pathname.includes(TEAM_PAGE_ROUTES.TEAM) ? (
             <React.Fragment>
               <TeamNavbar routes={TEAM_ROUTES} />

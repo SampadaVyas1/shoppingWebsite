@@ -17,6 +17,11 @@ export const ERROR_CODES = {
   STATUS_OK: 200,
 };
 
+export const ROLES = {
+  ADMIN: "admin",
+  RECRUITER: "recruiter",
+};
+
 export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";
 export const USER_TOKEN = "userToken";
