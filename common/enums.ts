@@ -62,3 +62,8 @@ export enum BUTTON_TYPES {
   SUBMIT = "submit",
   BUTTON = "button",
 }
+
+export enum FILE_TYPES {
+  XLSX = ".xlsx",
+  CSV = ".csv",
+}

@@ -16,16 +16,19 @@ import styles from "./addForm.module.scss";
 import { AddFormSchema } from "./validation";
 import { REGEX, VALIDATION_ERRORS } from "@/common/constants";
 import { IOptionType } from "@/common/types";
+import { experienceLevels, techStackOptions } from "./addForm.constants";
+
+const defaultFormValues = {
+  firstName: "",
+  lastName: "",
+  mobileNumber: "",
+  experience: {} as IOptionType,
+  techStack: {} as IOptionType,
+};
 
 const AddForm = () => {
   const hookForm = useForm({
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      mobileNumber: "",
-      experience: {} as IOptionType,
-      techStack: {} as IOptionType,
-    },
+    defaultValues: defaultFormValues,
     mode: "onChange",
     reValidateMode: "onChange",
     resolver: yupResolver(AddFormSchema),
@@ -46,19 +49,6 @@ const AddForm = () => {
     !hookForm.watch("experience.id") ||
     !hookForm.watch("techStack.id");
 
-  const firstNameValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    if (REGEX.ONLY_ALPHABETS.test(value) || value.length === 0) {
-      setValue("firstName", `${value}`);
-    }
-  };
-
-  const mobileNumberValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    if (REGEX.ONLY_NUMBERS.test(value) || value.length === 0) {
-      setValue("mobileNumber", `${value}`);
-    }
-  };
   const experienceValue = (value: IOptionType | IOptionType[]) => {
     if (!Array.isArray(value)) setValue("experience", value);
     clearErrors(["experience"]);
@@ -69,12 +59,6 @@ const AddForm = () => {
     clearErrors(["techStack"]);
   };
 
-  const lastNameValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    if (REGEX.ONLY_ALPHABETS.test(value) || value.length === 0) {
-      setValue("lastName", `${value}`);
-    }
-  };
   const onSubmit = (value: any) => {
     if (!value.techStack.label) {
       setError("techStack", { message: VALIDATION_ERRORS.REQUIRED_ERROR });
@@ -104,13 +88,9 @@ const AddForm = () => {
           <Controller
             control={control}
             name="firstName"
-            render={({}) => (
+            render={() => (
               <InputBox
-                {...register("firstName", {
-                  required: true,
-                  onChange: firstNameValue,
-                })}
-                value={hookForm.watch("firstName")}
+                {...register("firstName")}
                 label="First name"
                 type="text"
                 placeholder={"Enter first name"}
@@ -122,13 +102,9 @@ const AddForm = () => {
           <Controller
             control={control}
             name="lastName"
-            render={({}) => (
+            render={(props) => (
               <InputBox
-                {...register("lastName", {
-                  required: true,
-                  onChange: lastNameValue,
-                })}
-                value={hookForm.watch("lastName")}
+                {...register("lastName")}
                 placeholder={"Enter Last name"}
                 error={errors.lastName?.message}
                 label="Last name"
@@ -142,10 +118,7 @@ const AddForm = () => {
           name="mobileNumber"
           render={({}) => (
             <InputBox
-              {...register("mobileNumber", {
-                required: true,
-                onChange: mobileNumberValue,
-              })}
+              {...register("mobileNumber")}
               value={hookForm.watch("mobileNumber")}
               placeholder={"Enter 10 digit mobile number"}
               error={errors.mobileNumber?.message}
@@ -159,17 +132,10 @@ const AddForm = () => {
           name="experience"
           render={({}) => (
             <Select
-              {...register("experience", {
-                required: true,
-                onChange: experienceValue,
-              })}
-              placeholder=""
+              {...register("experience")}
               onSelect={experienceValue}
-              options={[
-                { id: 1, label: "0-2 Years" },
-                { id: 2, label: "2-5 Years" },
-                { id: 3, label: "10+ Years" },
-              ]}
+              placeholder=""
+              options={experienceLevels}
               error={errors.experience?.message}
               label="Experience Level"
             />
@@ -183,15 +149,10 @@ const AddForm = () => {
             <Select
               {...register("techStack", {
                 required: true,
-                onChange: techStackValue,
               })}
               placeholder=""
               onSelect={techStackValue}
-              options={[
-                { id: 1, label: "Java" },
-                { id: 2, label: "C" },
-                { id: 3, label: "Javascript" },
-              ]}
+              options={techStackOptions}
               error={errors.techStack?.message}
               label="Tech stack"
             />

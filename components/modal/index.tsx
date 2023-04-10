@@ -50,5 +50,7 @@ const Modal = (props: IModalProps) => {
     </TransitionWrapper>
   );
 };
-
+Modal.defaultProps = {
+  header: "",
+} as IModalProps;
 export default Modal;

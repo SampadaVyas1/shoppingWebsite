@@ -22,6 +22,7 @@ export const VALIDATION_ERRORS = {
   VALID_CONTACT_ERROR: "Mobile number should contain 10 digits",
   MAX_CHARACTER_ERROR: "Maximum length must be 30",
   SPECIAL_CHARACTER_ERROR: "Special characters and numbers are not allowed",
+  NOT_NUMBER_ERROR: "Only digits allowed",
 };
 
 export const TOKEN = "token";
@@ -33,3 +34,4 @@ export const REGEX = {
   ONLY_NUMBERS: /^\d+$/,
 };
 export const TRANSITION_TIMEOUT = 300;
+export const INPUT_PLACEHOLDER = "Enter text here";

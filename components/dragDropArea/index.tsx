@@ -2,7 +2,12 @@ import { useRef, useState } from "react";
 import Button from "../button";
 import Typography from "../typography";
 import styles from "./dragDropArea.module.scss";
-import { BUTTON_VARIANT, EVENT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import {
+  BUTTON_VARIANT,
+  EVENT,
+  FILE_TYPES,
+  TYPOGRAPHY_VARIANT,
+} from "@/common/enums";
 import { IDragDropArea } from "./dragDropArea.types";
 
 const DragDropArea = (props: IDragDropArea) => {
@@ -25,12 +30,13 @@ const DragDropArea = (props: IDragDropArea) => {
     event.stopPropagation();
     setDragActive(false);
     const file = event.dataTransfer.files;
+    const [fileData, ...otherData] = file;
     if (
       file &&
-      file[0] &&
-      (file[0].type === "text/csv" || file[0].type === "text/xlsx")
+      fileData &&
+      (fileData.type === "text/csv" || fileData.type === "text/xlsx")
     ) {
-      setFile(event.dataTransfer.files[0].name);
+      setFile(fileData.name);
     }
   };
 
@@ -59,7 +65,7 @@ const DragDropArea = (props: IDragDropArea) => {
         type="file"
         className={styles.inputFileUpload}
         multiple={true}
-        accept=".csv, .xlsx"
+        accept={`${FILE_TYPES.XLSX},${FILE_TYPES.CSV}`}
         onChange={handleChange}
       />
 
