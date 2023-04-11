@@ -32,37 +32,37 @@ const ChatBottom = (props: any) => {
     await db?.messages.put(updatedMessage);
   };
 
-  useEffect(() => {
-    socket.on("status", async (data: any) => {
-      console.log(data.id);
-      const updatedMessage = messageList?.find(
-        (message: any) => message.messageId.toString() === data.id.toString()
-      );
-      if (updatedMessage !== undefined)
-        await updateMessage({ ...updatedMessage, status: data.status });
-    });
-  }, [messageList]);
+  // useEffect(() => {
+  //   socket.on("status", async (data: any) => {
+  //     console.log(data.id);
+  //     const updatedMessage = messageList?.find(
+  //       (message: any) => message.messageId.toString() === data.id.toString()
+  //     );
+  //     if (updatedMessage !== undefined)
+  //       await updateMessage({ ...updatedMessage, status: data.status });
+  //   });
+  // }, [messageList]);
 
-  useEffect(() => {
-    const receiveMessage = (data: any) => {
-      const { from, wamid, messageType, timestamp, message } = data;
-      const newMessage = {
-        messageId: wamid,
-        message: message,
-        timestamp: timestamp,
-        messageType: messageType,
-        to: props.userId, //TA's employee id
-        from: props.phone, //user's phone number
-      };
-      addMessage(newMessage);
-    };
-    if (socket.on) {
-      socket.on("personalMessage", receiveMessage);
-    }
-    return () => {
-      socket.off("personalMessage", receiveMessage);
-    };
-  }, [props.phone, props.userId]);
+  // useEffect(() => {
+  //   const receiveMessage = (data: any) => {
+  //     const { from, wamid, messageType, timestamp, message } = data;
+  //     const newMessage = {
+  //       messageId: wamid,
+  //       message: message,
+  //       timestamp: timestamp,
+  //       messageType: messageType,
+  //       to: props.userId, //TA's employee id
+  //       from: props.phone, //user's phone number
+  //     };
+  //     addMessage(newMessage);
+  //   };
+  //   if (socket.on) {
+  //     socket.on("personalMessage", receiveMessage);
+  //   }
+  //   return () => {
+  //     socket.off("personalMessage", receiveMessage);
+  //   };
+  // }, [props.phone, props.userId]);
 
   const handleClick = () => {
     console.log(message);
@@ -77,22 +77,22 @@ const ChatBottom = (props: any) => {
           body: message,
         },
       },
-      (error: any) => console.log("error")
+      (error: any) => console.log(error)
     );
   };
-  socket.on("get_message", async (data: any) => {
-    const newMessage = {
-      messageId: data.messages[0].id,
-      message: message,
-      timestamp: data.timestamp,
-      messageType: "text",
-      status: "sent",
-      to: props.mobile, //user's phone number
-      from: props?.userId, //TA's employee id
-    };
-    await addMessage(newMessage);
-    setMessage("");
-  });
+  // socket.on("get_message", async (data: any) => {
+  //   const newMessage = {
+  //     messageId: data.messages[0].id,
+  //     message: message,
+  //     timestamp: data.timestamp,
+  //     messageType: "text",
+  //     status: "sent",
+  //     to: props.mobile, //user's phone number
+  //     from: props?.userId, //TA's employee id
+  //   };
+  //   await addMessage(newMessage);
+  //   setMessage("");
+  // });
   return props.isLoading ? (
     <div className={styles.chatBottom}>
       <SkeletonLoader
@@ -113,7 +113,7 @@ const ChatBottom = (props: any) => {
       />
     </div>
   ) : (
-    <form onKeyDown={handleClick} className={styles.chatBottom}>
+    <form className={styles.chatBottom}>
       <ImageComponent src={Images.templateIcon} customClass={styles.icon} />
       <ImageComponent src={Images.attachmentIcon} customClass={styles.icon} />
       <InputBox

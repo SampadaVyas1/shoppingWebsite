@@ -3,17 +3,9 @@ import { useLiveQuery } from "dexie-react-hooks";
 import ChatBottom from "../chatBottom";
 import ChatHeader from "../chatHeader";
 import styles from "./messageScreen.module.scss";
-import TipContainer from "@/components/tipContainer";
-import ImageComponent from "@/components/image";
-import { TOOLTIP_POSITION, TYPOGRAPHY_VARIANT } from "@/common/enums";
-import Typography from "@/components/typography";
-import moment from "moment";
-import Images from "@/public/assets/icons";
 import socket from "@/socket";
-import io from "socket.io-client";
 import { useState, useEffect, useRef } from "react";
 import React from "react";
-import Loader from "@/components/loader";
 import { getDataFromLocalStorage } from "@/common/utils";
 import ChatBody from "../chatBody";
 
@@ -28,31 +20,16 @@ const MessageScreen = (props: any) => {
   } = props.candidateData;
   const messageList = useLiveQuery(() => db?.messages?.toArray());
 
-  const [isConnected, setIsConnected] = useState<boolean>(false);
   const [userId, setUserId] = useState<string>("");
 
-  const mobileNumber = getDataFromLocalStorage("mobile");
+  console.log(socket.id);
 
   useEffect(() => {
-    if (socket.connected) {
-      setIsConnected(true);
+    if (props.isConnected) {
+      socket.emit("joinRoom", { to: mobile, userId: "11098" });
     }
-    if (!socket.connected) {
-      socket.connect();
-      socket.on("connect", () => {
-        setIsConnected(true);
-        console.log(socket.id);
-      });
-      socket.on("disconnect", () => {
-        setIsConnected(false);
-        console.log("disconnected");
-      });
-    }
-    return () => {
-      setIsConnected(false);
-      socket.disconnect();
-    };
-  }, [mobile]);
+    console.log("messages", props.isConnected);
+  }, [mobile, props.isConnected]);
 
   return (
     <div className={styles.messageScreen}>
@@ -63,10 +40,14 @@ const MessageScreen = (props: any) => {
           techStack={techStack}
           interviewStatus={interviewStatus}
           profileImage={profileImage}
-          isLoading={!isConnected}
+          isLoading={!props.isConnected}
         />
-        <ChatBody messageList={messageList} isLoading={!isConnected} />
-        <ChatBottom userId={userId} mobile={mobile} isLoading={!isConnected} />
+        <ChatBody messageList={messageList} isLoading={!props.isConnected} />
+        <ChatBottom
+          userId={userId}
+          mobile={mobile}
+          isLoading={!props.isConnected}
+        />
       </React.Fragment>
     </div>
   );

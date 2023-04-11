@@ -17,14 +17,34 @@ import { useEffect, useState } from "react";
 import MessageScreen from "./messageScreen";
 import React from "react";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
+import socket from "@/socket";
 
 const Messages = () => {
   const [selectedCandidate, setSelectedCandidate] = useState<any>(null);
 
   const handleCandidateSelect = (candidate: any) => {
-    setDataInLocalStorage("mobile", candidate.mobile);
     setSelectedCandidate(candidate);
   };
+
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!socket.connected) {
+      socket.connect();
+      socket.emit("credentials", { phoneId: "106886972321301" });
+
+      socket.on("connect", () => {
+        setIsConnected(true);
+      });
+      socket.on("disconnect", () => {
+        console.log("disconnect");
+        setIsConnected(false);
+      });
+    }
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   return (
     <div className={styles.messagesPage}>
@@ -74,7 +94,10 @@ const Messages = () => {
             customClass={styles.messagePlaceholder}
           />
         ) : (
-          <MessageScreen candidateData={selectedCandidate} />
+          <MessageScreen
+            candidateData={selectedCandidate}
+            isConnected={isConnected}
+          />
         )}
       </div>
     </div>
