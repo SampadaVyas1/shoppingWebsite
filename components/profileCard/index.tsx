@@ -1,14 +1,22 @@
 import { useState } from "react";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-import Images from "@/public/assets/icons";
 import Button from "../button";
 import ImageComponent from "../image";
 import Modal from "../modal";
 import Typography from "../typography";
 import styles from "./profileCard.module.scss";
+import Images from "@/public/assets/icons";
+import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { IProfileCardProps } from "./profileCard.types";
 
-const ProfileCard = (props: any) => {
-  const { profileImage, name, designation, email, phone } = props;
+const ProfileCard = (props: IProfileCardProps) => {
+  const {
+    profileImage,
+    firstName,
+    lastName,
+    designation,
+    cardBody,
+    cardFooter,
+  } = props;
 
   return (
     <div className={styles.profileCardWrapper}>
@@ -16,14 +24,14 @@ const ProfileCard = (props: any) => {
         <ImageComponent
           src={profileImage}
           fallbackClass={styles.profileImage}
-          fallbackText={name.charAt(0)}
+          fallbackText={`${firstName.charAt(0)}${lastName.charAt(0)}`}
           customClass={styles.profileImage}
         />
         <Typography
           variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}
           customStyle={styles.name}
         >
-          {name}
+          {`${firstName} ${lastName}`}
         </Typography>
         <Typography
           variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
@@ -31,31 +39,9 @@ const ProfileCard = (props: any) => {
         >
           {designation}
         </Typography>
-        <Typography
-          variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
-          customStyle={styles.email}
-        >
-          <>
-            Email : <span>{email}</span>
-          </>
-        </Typography>
-        <Typography
-          variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
-          customStyle={styles.email}
-        >
-          <>
-            Phone : <span>{phone}</span>
-          </>
-        </Typography>
+        {cardBody}
       </div>
-      <Button
-        variant={BUTTON_VARIANT.OUTLINED}
-        startIcon={Images.logoutIcon}
-        customStyle={styles.logoutButton}
-        onClick={props.onLogoutClick}
-      >
-        Log Out
-      </Button>
+      {cardFooter}
     </div>
   );
 };

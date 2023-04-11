@@ -2,12 +2,8 @@ import React, { useCallback } from "react";
 import styles from "./optionTag.module.scss";
 import ImageComponent from "../../image";
 import Images from "@/public/assets/icons";
-import { IOptionType } from "..";
-
-interface IOptionTagProps {
-  options: IOptionType[];
-  onRemove: (values: IOptionType[]) => void;
-}
+import { IOptionTagProps } from "./optionTag.types";
+import { IOptionType } from "@/common/types";
 
 const OptionTags = (props: IOptionTagProps) => {
   const { options, onRemove } = props;

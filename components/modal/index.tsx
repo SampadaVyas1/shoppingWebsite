@@ -1,15 +1,7 @@
 import React from "react";
+import TransitionWrapper from "../transitionWrapper";
 import styles from "./modal.module.scss";
-import { CSSTransition } from "react-transition-group";
-
-interface IModalProps {
-  children: JSX.Element;
-  onClose?: React.MouseEventHandler<HTMLElement>;
-  customStyle?: string;
-  customBackdrop?: string;
-  header?: string;
-  open?: boolean;
-}
+import { IModalProps } from "./modal.types";
 
 const Modal = (props: IModalProps) => {
   const { children, onClose, customStyle, header, customBackdrop, open } =
@@ -28,14 +20,14 @@ const Modal = (props: IModalProps) => {
   };
 
   return (
-    <CSSTransition in={open} timeout={300} classNames="alert" unmountOnExit>
+    <TransitionWrapper open={open}>
       <div className={backdropStyle} onClick={onClose}>
         <div className={modelStyle} onClick={handleModalClick}>
           {header && <div className={styles.heading}>{header}</div>}
           {children}
         </div>
       </div>
-    </CSSTransition>
+    </TransitionWrapper>
   );
 };
 

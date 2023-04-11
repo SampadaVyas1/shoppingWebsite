@@ -1,28 +1,25 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import React, { useState, useContext } from "react";
+import { CSSTransition } from "react-transition-group";
+import { ArrowContainer, Popover } from "react-tiny-popover";
 import styles from "./navbar.module.scss";
 import ImageComponent from "../image";
-import { useState, useContext } from "react";
-import Images from "@/public/assets/icons";
 import Typography from "../typography";
+import { IRouteType } from "@/common/types";
+import ProfileCard from "../profileCard";
+import Modal from "../modal";
+import Button from "../button";
+import TransitionWrapper from "../transitionWrapper";
+import { AuthContext } from "@/context/authContext";
 import {
   BUTTON_VARIANT,
   TOOLTIP_POSITION,
   TYPOGRAPHY_VARIANT,
 } from "@/common/enums";
-import { IRouteType } from "@/common/types";
-import { ArrowContainer, Popover } from "react-tiny-popover";
-import TemplateCard from "../templateCard";
-import { CSSTransition } from "react-transition-group";
-import ProfileCard from "../profileCard";
-import Modal from "../modal";
-import Button from "../button";
-import { AuthContext } from "@/context/authContext";
-import ROUTES from "@/common/routes";
-
-interface INavbarProps {
-  routes: IRouteType[];
-}
+import Images from "@/public/assets/icons";
+import { PRIVATE_ROUTES } from "@/common/routes";
+import { INavbarProps, profileData } from "./navbar.types";
 
 const Navbar = ({ routes }: INavbarProps) => {
   const router = useRouter();
@@ -30,11 +27,14 @@ const Navbar = ({ routes }: INavbarProps) => {
   const [isProfileOpen, toggleProfile] = useState<boolean>(false);
   const [isLogoutModalOpen, toggleLogoutModal] = useState<boolean>(false);
 
+  const { firstName, lastName, profileImage, email, phone, designation } =
+    profileData;
+
   const { handleLogout } = context;
 
   const onLogout = () => {
     handleLogout();
-    router.replace(ROUTES.LOGIN);
+    router.replace(PRIVATE_ROUTES.LOGIN);
   };
 
   const handleProfileClick = () => {
@@ -48,10 +48,14 @@ const Navbar = ({ routes }: INavbarProps) => {
   const handleLogoutButtonClick = () => {
     toggleLogoutModal(!isLogoutModalOpen);
   };
+
+  const redirectHome = () => {
+    router.push(PRIVATE_ROUTES.HOME);
+  };
   return (
     <div className={styles.navbar}>
       <div className={styles.navbarLeft}>
-        <div className={styles.logo}>
+        <div className={styles.logo} onClick={redirectHome}>
           <ImageComponent src={Images.coditasIcon} width={32} height={32} />
           <Typography
             variant={TYPOGRAPHY_VARIANT.HEADER_LARGE}
@@ -85,12 +89,7 @@ const Navbar = ({ routes }: INavbarProps) => {
           onClickOutside={closePopup}
           padding={10}
           content={({ position, childRect, popoverRect }) => (
-            <CSSTransition
-              in={isProfileOpen}
-              timeout={300}
-              classNames="alert"
-              unmountOnExit
-            >
+            <TransitionWrapper open={isProfileOpen}>
               <ArrowContainer
                 position={position}
                 childRect={childRect}
@@ -101,18 +100,40 @@ const Navbar = ({ routes }: INavbarProps) => {
                 className="popover-arrow-container"
                 arrowClassName="popover-arrow"
               >
-                <div className={`${styles.hoverContainer}`}>
-                  <ProfileCard
-                    profileImage=""
-                    name="Kiran Mehta"
-                    designation="Associate Talent Acquisition"
-                    email="kiran.mehta@coditas.com"
-                    phone="(91) 9898775555"
-                    onLogoutClick={handleLogoutButtonClick}
-                  />
-                </div>
+                <ProfileCard
+                  profileImage={profileImage}
+                  firstName={firstName}
+                  lastName={lastName}
+                  designation={designation}
+                  cardBody={
+                    <React.Fragment>
+                      <Typography
+                        variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
+                        customStyle={styles.email}
+                      >
+                        Email : <span className={styles.boldText}>{email}</span>
+                      </Typography>
+                      <Typography
+                        variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
+                        customStyle={styles.email}
+                      >
+                        Phone : <span className={styles.boldText}>{phone}</span>
+                      </Typography>
+                    </React.Fragment>
+                  }
+                  cardFooter={
+                    <Button
+                      variant={BUTTON_VARIANT.OUTLINED}
+                      startIcon={Images.logoutIcon}
+                      customStyle={styles.logoutButton}
+                      onClick={handleLogoutButtonClick}
+                    >
+                      Log Out
+                    </Button>
+                  }
+                />
               </ArrowContainer>
-            </CSSTransition>
+            </TransitionWrapper>
           )}
         >
           <div onClick={handleProfileClick}>
@@ -132,7 +153,7 @@ const Navbar = ({ routes }: INavbarProps) => {
       >
         <div className={styles.logout}>
           <Typography
-            variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}
+            variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
             customStyle={styles.text}
           >
             Are you sure you want to Log Out from the application?

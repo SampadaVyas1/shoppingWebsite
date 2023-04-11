@@ -13,3 +13,7 @@ export interface ISentMessage {
   to: string;
   from: string;
 }
+export interface IOptionType {
+  id: number;
+  label: string;
+}

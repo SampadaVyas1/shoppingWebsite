@@ -1,21 +1,20 @@
 @import "../../styles/variables";
+@import "../../styles/mixins";
 
 .profileCardWrapper {
-  display: flex;
+  @include flex-align-center;
   flex-direction: column;
   padding: 1rem;
   box-sizing: border-box;
   gap: 1rem;
-  align-items: center;
   border-radius: 0.5rem;
   background-color: $white;
 
   .profileData {
-    display: flex;
+    @include flex-align-center;
     flex-direction: column;
     padding: 0.75rem;
     width: 18rem;
-    align-items: center;
     box-sizing: border-box;
     gap: 0.25rem;
     border-bottom: 0.0625rem solid $secondaryTextLight;
@@ -36,19 +35,5 @@
       margin-bottom: 0.5rem;
       border-bottom: 0.0625rem solid $secondaryTextLight;
     }
-    .email {
-      padding: 0 2rem;
-      color: $gray-900;
-      align-self: flex-start;
-
-      span {
-        color: $primary;
-      }
-    }
-  }
-  .logoutButton {
-    width: 100%;
-    margin: 0 0.25rem;
-    font-weight: 700;
   }
 }
