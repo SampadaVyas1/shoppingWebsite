@@ -1,7 +1,7 @@
 export const PRIVATE_ROUTES = {
   HOME: "/",
   LOGIN: "/login",
-  404: "/_error",
+  NOT_FOUND_ROUTE: "/_error",
 };
 
 export const RECRUITER_ROUTES = [
@@ -20,3 +20,18 @@ export enum API_ROUTES {
   GET_ACCESS_TOKEN = "/auth/getNewAccessToken",
   CHECK_TOKEN = "/auth/checkToken",
 }
+
+export const TEAM_PAGE_ROUTES = {
+  TEAM: "/team",
+  GROUPS: "/team/groups",
+  RECRUITERS: "/team/recruiters",
+  TECHSTACKS: "/team/techstacks",
+  TEMPLATES: "/team/templates",
+};
+
+export const TEAM_ROUTES = [
+  { id: 1, path: TEAM_PAGE_ROUTES.GROUPS, name: "Groups" },
+  { id: 2, path: TEAM_PAGE_ROUTES.RECRUITERS, name: "Recruiters" },
+  { id: 3, path: TEAM_PAGE_ROUTES.TECHSTACKS, name: "Tech Stacks" },
+  { id: 4, path: TEAM_PAGE_ROUTES.TEMPLATES, name: "Templates" },
+];

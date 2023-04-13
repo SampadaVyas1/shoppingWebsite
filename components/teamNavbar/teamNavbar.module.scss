@@ -1,0 +1,30 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.teamNavbarContainer {
+  max-height: 3.5rem;
+  height: 3.5rem;
+  @include flex-space-between-alignment;
+  padding: 0.875rem 2rem;
+  box-sizing: border-box;
+  gap: 0.75rem;
+
+  .teanNavbarContent {
+    .route {
+      font-family: $Montserrat;
+      padding: 0.875rem 0.75rem;
+      box-sizing: border-box;
+      font-weight: 500;
+      line-height: 1.5rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    .active {
+      color: $primary;
+      border-bottom: 0.25rem solid $primary;
+      font-weight: 600;
+    }
+  }
+}

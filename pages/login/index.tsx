@@ -41,13 +41,13 @@ const Login = () => {
     if (
       !!getDataFromLocalStorage(TOKEN) &&
       (router.pathname !== PRIVATE_ROUTES.HOME ||
-        router.pathname !== PRIVATE_ROUTES[404])
+        router.pathname !== PRIVATE_ROUTES.NOT_FOUND_ROUTE)
     ) {
       router.back();
     } else if (
       !!getDataFromLocalStorage(TOKEN) &&
       (router.pathname === PRIVATE_ROUTES.HOME ||
-        router.pathname === PRIVATE_ROUTES[404])
+        router.pathname === PRIVATE_ROUTES.NOT_FOUND_ROUTE)
     ) {
       router.replace(PRIVATE_ROUTES.HOME);
     }
