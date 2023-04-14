@@ -21,6 +21,9 @@ export const ROLES = {
   ADMIN: "admin",
   RECRUITER: "recruiter",
 };
+export const DATE_FORMAT={
+  DDMMYYYY:"DD-MM-YYYY"
+  }
 
 export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";
