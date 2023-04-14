@@ -24,6 +24,10 @@ export const VALIDATION_ERRORS = {
   SPECIAL_CHARACTER_ERROR: "Special characters and numbers are not allowed",
   NOT_NUMBER_ERROR: "Only digits allowed",
 };
+export const ROLES = {
+  ADMIN: "admin",
+  RECRUITER: "recruiter",
+};
 
 export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";

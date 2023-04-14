@@ -21,3 +21,6 @@ export type HTMLTextareaProps = Omit<
 export type HTMLProps = InputHTMLAttributes<HTMLInputElement> &
   TextareaHTMLAttributes<HTMLTextAreaElement>;
 export type HTMLInputTextareaProps = Omit<HTMLProps, HTMLPropOmit>;
+export interface INavbarProps {
+  routes: IRouteType[];
+}

@@ -97,7 +97,7 @@ const Navbar = ({ routes }: INavbarProps) => {
                 arrowColor="white"
                 arrowSize={12}
                 arrowStyle={{ opacity: 1, zIndex: 2, top: "0.25rem" }}
-                className="popover-arrow-container"
+                className={styles["popover-arrow-container"]}
                 arrowClassName="popover-arrow"
               >
                 <ProfileCard
