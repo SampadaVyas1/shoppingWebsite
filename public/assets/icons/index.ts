@@ -12,6 +12,7 @@ const Images = {
   notificationIcon: require("./bell.svg").default,
   logoutIcon: require("./logout.svg").default,
   filterIcon: require("./filter.svg").default,
+  emptyStateImage: require("./emptyStateImg.svg").default,
 };
 
 export default Images;

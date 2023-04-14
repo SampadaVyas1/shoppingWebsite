@@ -10,3 +10,10 @@ export interface IOptionType {
 export interface INavbarProps {
   routes: IRouteType[];
 }
+
+export interface IEmptyStateType {
+  title: string;
+  image: string;
+  subTitle?: string;
+  customImageStyle?: string;
+}

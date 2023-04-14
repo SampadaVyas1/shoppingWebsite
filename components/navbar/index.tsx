@@ -18,7 +18,7 @@ import {
   TYPOGRAPHY_VARIANT,
 } from "@/common/enums";
 import Images from "@/public/assets/icons";
-import { PRIVATE_ROUTES } from "@/common/routes";
+import { PRIVATE_ROUTES, TEAM_PAGE_ROUTES } from "@/common/routes";
 import { INavbarProps, profileData } from "./navbar.types";
 
 const Navbar = ({ routes }: INavbarProps) => {
@@ -67,7 +67,9 @@ const Navbar = ({ routes }: INavbarProps) => {
         {!!routes.length &&
           routes?.map((route) => {
             const routeClassName =
-              route.path === router.pathname
+              route.path === router.pathname ||
+              (router.pathname.includes(TEAM_PAGE_ROUTES.TEAM) &&
+                route.path === TEAM_PAGE_ROUTES.TEAM)
                 ? `${styles.active} ${styles.route}`
                 : styles.route;
             return (
