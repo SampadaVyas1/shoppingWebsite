@@ -57,6 +57,7 @@ const ImageComponent = (props: IImageProps) => {
         onClick={props.onClick}
         width={+width}
         height={+height}
+        priority={true}
       />
     </Fragment>
   );

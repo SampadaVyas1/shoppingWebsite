@@ -1,14 +1,21 @@
 import Dexie, { Table } from "dexie";
 import { ISentMessage } from "./common/types";
 
+// interface IUserMessages {
+//   [key: string]: IMessage;
+// }
+export interface IMessage {
+  id: string;
+  messages: ISentMessage[];
+  ta: string;
+}
 export class MySubClassedDexie extends Dexie {
-  messages!: Table<ISentMessage>;
+  conversations!: Table<IMessage>;
 
   constructor() {
     super("ccMessages");
-    this.version(1).stores({
-      users: "phone, messages",
-      messages: "messageId, message, timestamp, messageType, status, to, from", // Primary key and indexed props
+    this.version(2).stores({
+      conversations: "id, ta, messages",
     });
   }
 }

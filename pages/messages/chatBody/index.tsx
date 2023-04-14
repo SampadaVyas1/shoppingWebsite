@@ -26,8 +26,8 @@ const ChatBody = (props: IChatBodyProps) => {
   };
 
   useEffect(() => {
-    isLoading && scrollToBottom();
-  }, [isLoading, messageList, messagesEndRef]);
+    scrollToBottom();
+  }, [messageList, messagesEndRef]);
   return isLoading ? (
     <div className={styles.messageBodySkeleton}>
       {skeletonArray.map((element: any, index: number) => (
@@ -58,73 +58,68 @@ const ChatBody = (props: IChatBodyProps) => {
     </div>
   ) : (
     <div className={styles.messageBody}>
-      {messageList
-        ?.sort(function (first: any, second: any) {
-          return parseInt(first.timestamp) - parseInt(second.timestamp);
-        })
-        ?.map((messageData: any, index: number) => {
-          const messageType = messageData?.status ? "sent" : "received";
-          const icon =
-            messageData?.status === "sent"
-              ? Images.sentIcon
-              : messageData.status === "delivered"
-              ? Images.deliveredIcon
-              : Images.readIcon;
+      {messageList?.map((messageData: any, index: number) => {
+        const messageType = messageData?.status ? "sent" : "received";
+        const icon =
+          messageData?.status === "read"
+            ? Images.readIcon
+            : messageData.status === "delivered"
+            ? Images.deliveredIcon
+            : Images.sentIcon;
 
-          return (
-            <React.Fragment key={index}>
-              {!moment(
-                moment.unix(messageData?.timestamp).format("DD/MM/YYYY")
-              ).isSame(
-                moment
-                  .unix(messageList[index - 1]?.timestamp)
-                  .format("DD/MM/YYYY")
-              ) && (
-                <div className={styles.date}>
-                  {moment.unix(messageData?.timestamp).calendar(null, {
-                    sameDay: "[Today]",
-                    nextDay: "[Tomorrow]",
-                    nextWeek: "dddd",
-                    lastDay: "[Yesterday]",
-                    lastWeek: "DD MMM YYYY",
-                    sameElse: "DD MMM YYYY",
-                  })}
-                </div>
-              )}
-              <TipContainer
-                position={
-                  messageData?.status
-                    ? TOOLTIP_POSITION.RIGHT
-                    : TOOLTIP_POSITION.LEFT
-                }
-                variant={messageType}
-                customStyles={styles[messageType]}
-              >
-                <div className={styles.messageContent}>
-                  <Typography variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}>
-                    {messageData.message}
+        return (
+          <React.Fragment key={index}>
+            {!(
+              moment.unix(messageData?.timestamp).format("DD/MM/YYYY") ===
+              moment
+                .unix(messageList[index - 1]?.timestamp)
+                .format("DD/MM/YYYY")
+            ) && (
+              <div className={styles.date}>
+                {moment.unix(messageData?.timestamp).calendar(null, {
+                  sameDay: "[Today]",
+                  nextDay: "[Tomorrow]",
+                  nextWeek: "dddd",
+                  lastDay: "[Yesterday]",
+                  lastWeek: "DD MMM YYYY",
+                  sameElse: "DD MMM YYYY",
+                })}
+              </div>
+            )}
+            <TipContainer
+              position={
+                messageData?.status
+                  ? TOOLTIP_POSITION.RIGHT
+                  : TOOLTIP_POSITION.LEFT
+              }
+              variant={messageType}
+              customStyles={styles[messageType]}
+            >
+              <div className={styles.messageContent}>
+                <Typography variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}>
+                  {messageData.message}
+                </Typography>
+                <div className={styles.time}>
+                  <Typography
+                    variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
+                    customStyle={styles.hint}
+                  >
+                    {moment.unix(messageData?.timestamp).format("hh:mm A")}
                   </Typography>
-                  <div className={styles.time}>
-                    <Typography
-                      variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
-                      customStyle={styles.hint}
-                    >
-                      {moment.unix(messageData?.timestamp).format("hh:mm A")}
-                    </Typography>
-                    {messageData.status && (
-                      <ImageComponent
-                        src={icon}
-                        customClass={styles.icon}
-                        width={20}
-                        height={20}
-                      />
-                    )}
-                  </div>
+                  {messageData.status && (
+                    <ImageComponent
+                      src={icon}
+                      customClass={styles.icon}
+                      width={20}
+                      height={20}
+                    />
+                  )}
                 </div>
-              </TipContainer>
-            </React.Fragment>
-          );
-        })}
+              </div>
+            </TipContainer>
+          </React.Fragment>
+        );
+      })}
       <div ref={messagesEndRef} />
     </div>
   );

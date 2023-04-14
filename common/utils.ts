@@ -17,3 +17,7 @@ export const debounce = (callback: Function, wait: number = 100) => {
     }, wait);
   };
 };
+
+export const getTimeStamp = () => {
+  return Math.round(new Date().getTime() / 1000);
+};

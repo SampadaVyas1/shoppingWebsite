@@ -9,7 +9,7 @@ export interface ISentMessage {
   message: string;
   timestamp: string;
   messageType: string;
-  status: string;
+  status?: string;
   to: string;
   from: string;
 }
