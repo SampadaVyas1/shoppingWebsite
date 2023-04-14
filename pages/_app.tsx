@@ -1,13 +1,13 @@
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
+import { Provider } from "react-redux";
+import { store } from "@/redux/store";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "@/styles/globals.scss";
 import Splash from "@/components/splash";
 import ProtectedRoute from "@/hoc/protectedRoute";
 import { PRIVATE_ROUTES } from "@/common/routes";
-import { Provider } from "react-redux";
-import { store } from "@/redux/store";
 
 const LoginElement = dynamic(() => import("./login"), {
   loading: () => <Splash />,
