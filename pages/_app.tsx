@@ -4,9 +4,10 @@ import dynamic from "next/dynamic";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "@/styles/globals.scss";
 import Splash from "@/components/splash";
-import AuthProvider from "@/context/authContext";
 import ProtectedRoute from "@/hoc/protectedRoute";
 import { PRIVATE_ROUTES } from "@/common/routes";
+import { Provider } from "react-redux";
+import { store } from "@/redux/store";
 
 const LoginElement = dynamic(() => import("./login"), {
   loading: () => <Splash />,
@@ -18,7 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   return (
     <GoogleOAuthProvider clientId={`${process.env.NEXT_PUBLIC_CLIENT_ID}`}>
-      <AuthProvider>
+      <Provider store={store}>
         {router.pathname === PRIVATE_ROUTES.LOGIN ? (
           <LoginElement />
         ) : (
@@ -26,7 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
             <Component {...pageProps} />
           </ProtectedRoute>
         )}
-      </AuthProvider>
+      </Provider>
     </GoogleOAuthProvider>
   );
 }

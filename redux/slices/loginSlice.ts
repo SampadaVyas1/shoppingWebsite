@@ -1,58 +1,33 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { LOGIN } from "../constants";
+import { setDataInLocalStorage } from "@/common/utils";
+import { REFRESH_TOKEN, TOKEN, USER_TOKEN } from "@/common/constants";
+import { googleLogout } from "@react-oauth/google";
 
-interface ILoginStates {
+export interface ILoginStates {
   isLoggedIn: boolean;
+  count: number;
 }
 
-const initialState = {
-  isLoading: false,
-  role: [],
-};
+interface ITokens {
+  accessToken: string;
+  refreshToken: string;
+  userToken: string;
+}
 
-export const handleLogin = createAsyncThunk(
-  LOGIN,
-  async function onLogin(response: any) {
-    // const data = await authService(response.credential);
-    // if (data?.error?.length > 0) {
-    //   return data;
-    // } else {
-    //   const accessToken = data.data.accessToken;
-    //   storeDataInSession("access-token", encode(accessToken));
-    //   return data;
-    // }
-    // setAuthProviderState((prevState) => ({
-    //     ...prevState,
-    //     isLoggedIn: true,
-    //   }));
-    //   setDataInLocalStorage(TOKEN, accessToken);
-    //   setDataInLocalStorage(REFRESH_TOKEN, refreshToken);
-    //   setDataInLocalStorage(USER_TOKEN, userToken);
-  }
-);
+const initialState: ILoginStates = {
+  isLoggedIn: false,
+  count: 0,
+};
 
 export const loginSlice = createSlice({
   name: LOGIN,
   initialState,
   reducers: {
-    toggleLoader: (state) => {
-      state.isLoading = !state.isLoading;
+    printNumber: (state, action: PayloadAction<number>) => {
+      state.count = action.payload;
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(handleLogin.fulfilled, (state, { payload }) => {
-      return {
-        ...state,
-        isLoading: false,
-        role: payload?.data?.roles,
-      };
-    });
-    builder.addCase(handleLogin.pending, (state) => {
-      return {
-        ...state,
-        isLoading: true,
-      };
-    });
   },
 });
 export default loginSlice.reducer;
+export const { printNumber } = loginSlice.actions;
