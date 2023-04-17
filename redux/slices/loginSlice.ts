@@ -1,11 +1,12 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, isPending, createSlice } from "@reduxjs/toolkit";
 import { googleLogout } from "@react-oauth/google";
 import { LOGIN } from "../constants";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
 import { REFRESH_TOKEN, TOKEN, USER_TOKEN } from "@/common/constants";
-import service from "@/services/config";
+
 export interface ILoginStates {
   isLoggedIn: boolean;
+  isLoading: any;
 }
 interface ITokens {
   accessToken: string;
@@ -13,7 +14,8 @@ interface ITokens {
   userToken: string;
 }
 const initialState: ILoginStates = {
-  isLoggedIn: !!getDataFromLocalStorage(TOKEN),
+  isLoggedIn: !!getDataFromLocalStorage(REFRESH_TOKEN),
+  isLoading: false,
 };
 
 export const loginSlice = createSlice({
@@ -23,6 +25,7 @@ export const loginSlice = createSlice({
     handleLogin: (state, action: PayloadAction<ITokens>) => {
       const { accessToken, refreshToken, userToken } = action.payload;
       state.isLoggedIn = true;
+      state.isLoading = false;
       setDataInLocalStorage(TOKEN, accessToken);
       setDataInLocalStorage(REFRESH_TOKEN, refreshToken);
       setDataInLocalStorage(USER_TOKEN, userToken);
@@ -32,7 +35,10 @@ export const loginSlice = createSlice({
       localStorage.clear();
       googleLogout();
     },
+    toggleLoading: (state) => {
+      state.isLoading = true;
+    },
   },
 });
 export default loginSlice.reducer;
-export const { handleLogin, handleLogout } = loginSlice.actions;
+export const { handleLogin, handleLogout, toggleLoading } = loginSlice.actions;

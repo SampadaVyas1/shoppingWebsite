@@ -9,26 +9,24 @@ import Loader from "@/components/loader";
 import Typography from "@/components/typography";
 import Container from "@/components/container";
 import Images from "@/public/assets/icons";
+import { sagaActions } from "@/redux/constants";
+import { useAppSelector } from "@/redux/hooks";
 import { TOKEN } from "@/common/constants";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-import { PRIVATE_ROUTES } from "@/common/routes";
+import { PRIVATE_ROUTES, RECRUITER_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
 import SectionImage from "../../public/assets/images/loginImage.svg";
-import { getLoginData } from "@/services/login.service";
-import { handleLogin } from "@/redux/slices/loginSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const [isLoggedIn, setLoggedIn] = useState<boolean>(true);
   const router = useRouter();
+  const { isLoggedIn, isLoading } = useAppSelector((state) => state.login);
 
   const handleClick = async (codeResponse: Object) => {
-    const response = await getLoginData(codeResponse);
-    if (!response?.error) {
-      const { accessToken, refreshToken, userToken } = response.data;
-      dispatch(handleLogin({ accessToken, refreshToken, userToken }));
-      router.replace(PRIVATE_ROUTES.HOME);
-    }
+    dispatch({
+      type: sagaActions.GET_LOGIN_DATA,
+      token: codeResponse,
+    });
   };
   function onSuccess(codeResponse: Object) {
     handleClick(codeResponse);
@@ -36,25 +34,24 @@ const Login = () => {
   const login = useGoogleLogin({ onSuccess: onSuccess, flow: "auth-code" });
 
   useEffect(() => {
-    setLoggedIn(!!getDataFromLocalStorage(TOKEN));
     if (
       !!getDataFromLocalStorage(TOKEN) &&
       (router.pathname !== PRIVATE_ROUTES.HOME ||
         router.pathname !== PRIVATE_ROUTES.NOT_FOUND_ROUTE)
     ) {
       router.back();
-    } else if (
-      !!getDataFromLocalStorage(TOKEN) &&
-      (router.pathname === PRIVATE_ROUTES.HOME ||
-        router.pathname === PRIVATE_ROUTES.NOT_FOUND_ROUTE)
-    ) {
-      router.replace(PRIVATE_ROUTES.HOME);
     }
-  }, []);
+  }, [router]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.replace(RECRUITER_ROUTES[1].path);
+    }
+  }, [isLoggedIn, router]);
 
   return (
     <>
-      {isLoggedIn ? (
+      {isLoggedIn || isLoading ? (
         <Loader />
       ) : (
         <div className={styles.loginPage}>
