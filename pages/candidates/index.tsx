@@ -39,6 +39,26 @@ const sortbuttonData = {
   recruiter: { upKeyDisabled: false, downKeyDisabled: false },
   status: { upKeyDisabled: false, downKeyDisabled: false },
 };
+interface IHeaderTitleProps {
+  id: string;
+  title: string;
+  sort?: boolean | false;
+}
+interface IDataProps {
+  id: number;
+  name: string;
+  designation: string;
+  mobileNumber: string;
+  experienceLevel: string;
+  techStack: string;
+  createdTime: string;
+  time: string;
+  recruiter: string;
+  status: string;
+  color?: string;
+  font?: string;
+  movie?: string;
+}
 
 const Candidates = () => {
   const [data, setData] = useState<IData[] | null>(null);
@@ -49,26 +69,17 @@ const Candidates = () => {
     downArrowDisabled,
     downArrowEnabled,
   } = Images;
-  {
-    fakeData.map((column: any) => console.log(column));
-  }
+
   const handlePageChange = () => {
     fakeData.push(...fakeData);
     setData([...fakeData]);
     setButtonState(sortbuttonData);
   };
-  function onChange(checked: any, record: any) {
-    console.log(`checked = ${checked}, record = ${JSON.stringify(record)}`);
-  }
 
-  function CheckboxCell({ record }: any) {
-    return <CustomCheckBox checked={record.checked} />;
-  }
-
-  const generateColumns = (HeaderTitle: any) => {
+  const generateColumns = (HeaderTitle: IHeaderTitleProps[]) => {
     return (
       !!HeaderTitle &&
-      HeaderTitle?.map((column: any) => {
+      HeaderTitle?.map((column: IHeaderTitleProps) => {
         function toCamelCase(str: string) {
           let words = str.toLowerCase().split(/[\s-]+/);
           for (let i = 1; i < words.length; i++) {
@@ -104,27 +115,36 @@ const Candidates = () => {
                 )}
               </div>
             }
-            dataIndex={column.dataIndex}
-            key={column.key}
-            render={(text:any, record: any) =>
+            dataIndex={dataIndex}
+            key={dataIndex}
+            render={(text: string, record: any) =>
               column.title == "checkbox" ? (
-                <CheckboxCell record={record} />
+                <CustomCheckBox checked={record.checked} />
               ) : (
                 <div className={styles.cell}>
                   <div>
                     {dataIndex === "createdTime" ? (
-                      <>
+                      <div>
                         {dayjs(record["createdTime"]).format(
-                          DATE_FORMAT.DDMMYYYY
+                          DATE_FORMAT.DD_MM_YYYY
                         )}
-                      </>
+                      </div>
                     ) : (
                       <> {record[dataIndex]} </>
                     )}
                   </div>
                   {dataIndex === "name" ? (
-                    <div>{record["designation"]}</div>
+                    <div className={styles.designation}>
+                      {record["designation"]}
+                    </div>
                   ) : null}
+                  {
+                    dataIndex === "createdTime" ? (
+                      <div className={styles.time}>
+                        {record["time"]}
+                      </div>
+                    ) : null
+                  }
                 </div>
               )
             }

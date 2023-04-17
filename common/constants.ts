@@ -22,7 +22,7 @@ export const ROLES = {
   RECRUITER: "recruiter",
 };
 export const DATE_FORMAT={
-  DDMMYYYY:"DD-MM-YYYY"
+  DD_MM_YYYY:"DD-MM-YYYY"
   }
 
 export const TOKEN = "token";
