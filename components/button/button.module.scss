@@ -1,27 +1,39 @@
 @import "../../styles/mixins";
 @import "../../styles/variables";
 
+.large {
+  height: 3rem;
+}
+.medium {
+  height: 2.5rem;
+}
+.small {
+  height: 2.25rem;
+}
 .button {
   border: none;
-  height: 2.5rem;
   padding: 0.75rem;
   box-sizing: border-box;
   background-color: $white;
   gap: 0.5rem;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   @include flex-center-alignment;
+
+  &:focus {
+    border: 0.0625rem solid $primary;
+  }
 
   .iconLeading {
     @include flex-center-alignment;
-    max-height: 1.5rem;
-    max-width: 1.5rem;
+    max-height: 1rem;
+    max-width: 1rem;
   }
 
   .iconTrailing {
     flex: 1;
     @include flex-center-alignment;
-    max-height: 1.5rem;
-    max-width: 1.5rem;
+    max-height: 1rem;
+    max-width: 1rem;
   }
 
   .buttonLabel {
@@ -35,21 +47,26 @@
   }
   &:hover {
     cursor: pointer;
-    box-shadow: $buttonHoverShadow;
   }
 }
 
 .outlined {
-  border: 0.0625rem solid $primary;
+  background-color: $secondaryButtonBackground;
   color: $primary;
   min-width: 7.5rem;
-  background-color: $white;
 
   &:disabled {
-    color: $gray-500 !important;
-    border: 0.0625rem solid $disabledButtonColor !important;
+    color: $disabledText !important;
+    background: $disabledButtonColor !important;
     cursor: not-allowed !important;
     box-shadow: none !important;
+  }
+  &:active {
+    color: $primaryDark;
+    background: $buttonPressedBackground;
+  }
+  &:hover {
+    background: $buttonPressedBackground;
   }
 }
 
@@ -63,10 +80,17 @@
     box-shadow: none;
   }
   &:disabled {
-    color: $gray-500 !important;
+    color: $disabledText !important;
     cursor: not-allowed !important;
     background-color: transparent;
     text-decoration: none;
+  }
+  &:active {
+    color: $primaryDark;
+    background: $buttonPressedBackground;
+  }
+  &:hover {
+    background: $buttonPressedBackground;
   }
 }
 
@@ -76,10 +100,14 @@
   min-width: 7.5rem;
 
   &:disabled {
-    background-color: $disabledButtonColor !important;
-    border: 0.0625rem solid $disabledButtonColor !important;
-    color: $white !important;
+    color: $disabledText !important;
+    background: $disabledButtonColor !important;
     cursor: not-allowed !important;
     box-shadow: none !important;
+  }
+  &:active,
+  &:hover {
+    background: $primaryDark;
+    color: $white;
   }
 }
