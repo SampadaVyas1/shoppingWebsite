@@ -6,7 +6,7 @@ const Team = () => {
   const router = useRouter();
   useEffect(() => {
     router.replace(TEAM_PAGE_ROUTES.RECRUITERS);
-  });
+  },[]);
   return <>Team</>;
 };
 export default Team;

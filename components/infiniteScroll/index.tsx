@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
+import React, {useRef, useState} from "react";
 import {
   InfiniteScrollProps,
   InfiniteScrollState,
@@ -15,7 +15,7 @@ const InfiniteScroll = ({
 
   const handleDebounce = () => {
     const scroller = scrollRef?.current;
-    if (scroller && Math.round(scroller?.scrollHeight - scroller?.scrollTop) ===scroller?.clientHeight && nextPage) 
+    if (scroller && Math.round(scroller?.scrollHeight - scroller?.scrollTop) <=scroller?.clientHeight && nextPage) 
     {
       updateState((state) => ({ ...state, loading: true }));
       handlePageChange();
@@ -23,13 +23,14 @@ const InfiniteScroll = ({
       updateState((state) => ({ ...state, loading: false }));
     }
   };
-  const scrollRef = useRef<HTMLDivElement>(null);
   const handleScroll = debounce(handleDebounce);
-
+  const scrollRef = useRef<HTMLDivElement>(null);
   return (
-    <div ref={scrollRef} onScroll={handleScroll} className={customClass}>
+    <div ref={scrollRef} onScroll={handleDebounce} className={customClass}>
       {children}
     </div>
   );
 };
 export default InfiniteScroll;
+
+

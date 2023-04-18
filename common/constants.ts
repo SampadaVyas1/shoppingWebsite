@@ -25,6 +25,11 @@ export const DATE_FORMAT={
   DD_MM_YYYY:"DD-MM-YYYY"
   }
 
+export const TABLE_CONSTANTS = {
+    TIME:"time",
+    DESIGNATION:"designation",
+  }
+
 export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";
 export const USER_TOKEN = "userToken";
