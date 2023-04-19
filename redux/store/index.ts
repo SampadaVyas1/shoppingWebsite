@@ -1,7 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import loginSlice from "../slices/loginSlice";
-import rootSaga from "../sagas/rootSaga";
+import rootSaga from "../sagas";
 
 const rootReducer = combineReducers({
   login: loginSlice,

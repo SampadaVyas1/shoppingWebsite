@@ -44,9 +44,7 @@ const Login = () => {
   }, [router]);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      router.replace(RECRUITER_ROUTES[1].path);
-    }
+    isLoggedIn && router.replace(RECRUITER_ROUTES[1].path);
   }, [isLoggedIn, router]);
 
   return (
