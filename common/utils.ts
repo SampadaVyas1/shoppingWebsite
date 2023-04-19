@@ -29,7 +29,7 @@ export const debounce = (callback: Function, wait: number = 100) => {
   };
 };
 
-export const handleSort = (
+export const sortDataByField  = (
   data: IData[],
   field: string,
   ascending: boolean = true
@@ -50,11 +50,11 @@ export const handleSort = (
   );
 };
 
-export const handleAscendingSort = (
+export const ascendingSort = (
   field: string,
   setButtonState: any,
   data: IData[],
-  setData: any
+ 
 ) => {
   setButtonState((buttonState: IButtonState) => ({
     ...buttonState,
@@ -64,15 +64,14 @@ export const handleAscendingSort = (
       downKeyDisabled: false,
     },
   }));
-  const newData = !!data && handleSort(data, field, true);
-  setData(newData);
+  const newData = !!data && sortDataByField (data, field, true);
+  return newData
 };
 
-export const handleDescendingSort = (
+export const descendingSort = (
   field: string,
   setButtonState: any,
   data: IData[],
-  setData: any
 ) => {
   setButtonState((buttonState: IButtonState) => ({
     ...buttonState,
@@ -82,8 +81,8 @@ export const handleDescendingSort = (
       downKeyDisabled: true,
     },
   }));
-  const newData =!!data && handleSort(data, field, false);
-  setData(newData);
+  const newData =!!data && sortDataByField (data, field, false);
+  return newData
 };
 
 export const checkMaster = (selectedRow: number[], data: IData[] | null) => {
@@ -150,4 +149,12 @@ export const handleRowEachSelect = (
       onSelectedRowChange([...selectedrow]);
     }
   }
+};
+
+export const toCamelCase = (str: string) => {
+  let words = str.toLowerCase().split(/[\s-]+/);
+  for (let i = 1; i < words.length; i++) {
+    words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+  }
+  return words.join("");
 };

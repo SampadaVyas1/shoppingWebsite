@@ -12,10 +12,11 @@ const InfiniteScroll = ({
   customClass,
 }: InfiniteScrollProps) => {
   const [state, updateState] = useState<InfiniteScrollState>({loading: false});
-
+  const scrollRef = useRef<HTMLDivElement>(null);
   const handleDebounce = () => {
     const scroller = scrollRef?.current;
-    if (scroller && Math.round(scroller?.scrollHeight - scroller?.scrollTop) <=scroller?.clientHeight && nextPage) 
+    const atBottom=!!scroller && Math.round(scroller?.scrollHeight - scroller?.scrollTop) <=scroller?.clientHeight
+    if (scroller && atBottom && nextPage) 
     {
       updateState((state) => ({ ...state, loading: true }));
       handlePageChange();
@@ -23,14 +24,16 @@ const InfiniteScroll = ({
       updateState((state) => ({ ...state, loading: false }));
     }
   };
+
   const handleScroll = debounce(handleDebounce);
-  const scrollRef = useRef<HTMLDivElement>(null);
   return (
-    <div ref={scrollRef} onScroll={handleDebounce} className={customClass}>
+    <div ref={scrollRef} onScroll={handleScroll} className={customClass}>
       {children}
     </div>
   );
 };
 export default InfiniteScroll;
+
+
 
 

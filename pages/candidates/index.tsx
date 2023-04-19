@@ -15,11 +15,13 @@ import {
   checkMaster,
   checkRow,
   handleAllRowSelect,
-  handleAscendingSort,
-  handleDescendingSort,
+  descendingSort,
+  ascendingSort,
   handleRowEachSelect,
-  handleSort,
+  sortDataByField,
+  toCamelCase,
 } from "@/common/utils";
+import TableCells from "@/components/tableCells";
 interface IButtonState {
   [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
 }
@@ -68,11 +70,11 @@ const Candidates = () => {
 
   const handleUpArrowClick = (field: string) => {
     !buttonState[field].upKeyDisabled &&
-      handleAscendingSort(field, setButtonState, data, setData);
+      setData(ascendingSort(field, setButtonState, data));
   };
   const handleDownArrowClick = (field: string) => {
     !buttonState[field].downKeyDisabled &&
-      handleDescendingSort(field, setButtonState, data, setData);
+      setData(descendingSort(field, setButtonState, data));
   };
 
   const handlePageChange = () => {
@@ -93,7 +95,7 @@ const Candidates = () => {
   );
 
   useEffect(() => {
-    const newData = handleSort(fakeData, "name", true);
+    const newData = sortDataByField(fakeData, "name", true);
     setData(newData);
     setButtonState({
       ...buttonState,
@@ -109,13 +111,6 @@ const Candidates = () => {
     return (
       !!HeaderTitle &&
       HeaderTitle?.map((column: IHeaderTitleProps) => {
-        function toCamelCase(str: string) {
-          let words = str.toLowerCase().split(/[\s-]+/);
-          for (let i = 1; i < words.length; i++) {
-            words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
-          }
-          return words.join("");
-        }
         const dataIndex = toCamelCase(column.title);
         return (
           <Column
@@ -174,27 +169,7 @@ const Candidates = () => {
                   customClass={styles.checkBoxStyling}
                 />
               ) : (
-                <div className={styles.cell}>
-                  <div>
-                    {dataIndex === "createdTime" ? (
-                      <div>
-                        {dayjs(data[index]["createdTime"]).format(
-                          DATE_FORMAT.DD_MM_YYYY
-                        )}
-                      </div>
-                    ) : (
-                      <> {data[index][dataIndex]} </>
-                    )}
-                  </div>
-                  {dataIndex === "name" ? (
-                    <div className={styles.designation}>
-                      {data[index][TABLE_CONSTANTS.DESIGNATION]}
-                    </div>
-                  ) : null}
-                  {dataIndex === "createdTime" ? (
-                    <div className={styles.time}>{data[index][TABLE_CONSTANTS.TIME]}</div>
-                  ) : null}
-                </div>
+                <TableCells dataIndex={dataIndex} data={data} index={index} />
               )
             }
           />

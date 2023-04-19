@@ -61,7 +61,7 @@
     }
   }
 }
-.cell {
+.tableCell {
   @include flex-justify-align(flex-start, flex-start);
   flex-direction: column;
 }
