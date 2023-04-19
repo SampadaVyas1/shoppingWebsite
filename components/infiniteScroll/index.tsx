@@ -15,7 +15,8 @@ const InfiniteScroll = ({
 
   const handleDebounce = () => {
     const scroller = scrollRef?.current;
-    if (scroller && Math.round(scroller?.scrollHeight - scroller?.scrollTop) ===scroller?.clientHeight && nextPage) 
+    const atBottom =!!scroller &&  Math.round(scroller?.scrollHeight - scroller?.scrollTop) === scroller?.clientHeight;
+    if (scroller && atBottom && nextPage) 
     {
       updateState((state) => ({ ...state, loading: true }));
       handlePageChange();

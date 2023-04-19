@@ -24,6 +24,13 @@ export const ROLES = {
 export const DATE_FORMAT={
   DD_MM_YYYY:"DD-MM-YYYY"
   }
+  export const TABLE_CONSTANTS = {
+    TIME:"time",
+    DESIGNATION:"designation",
+    CREATEDTIME:"createdTime",
+    CHECKBOX:"checkbox",
+    NAME:"name",
+  }
 
 export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";

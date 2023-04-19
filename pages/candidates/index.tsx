@@ -1,35 +1,17 @@
-import React, { CSSProperties } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, CSSProperties } from "react";
 import styles from "./candidates.module.scss";
 import ImageComponent from "@/components/image";
 import InfiniteScroll from "@/components/infiniteScroll";
-import dayjs from "dayjs";
 import Table, { Column } from "rc-table";
-import { DATE_FORMAT } from "@/common/constants";
 import fakeData from "./mockData.json";
 import Images from "@/public/assets/icons";
 import HeaderTitle from "./tableHeaderData.json";
 import CustomCheckBox from "@/components/customCheckBox";
+import TableCells from "@/components/tableCells";
+import { IButtonState, IData, IHeaderTitleProps } from "./candidates.types";
+import { toCamelCase } from "@/common/utils";
+import { TABLE_CONSTANTS } from "@/common/constants";
 
-interface IButtonState {
-  [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
-}
-
-interface IData {
-  [key: string]: any;
-}
-
-interface ITableColumnprops {
-  customClassName: string;
-  title: string;
-  key: string;
-  rowclassName: string;
-  rowcreatorclass: string;
-  sort?: boolean;
-  moreIcon?: boolean;
-  componentCustomClass?: string;
-  component?: string;
-}
 const sortbuttonData = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
   experienceLevel: { upKeyDisabled: false, downKeyDisabled: false },
@@ -39,26 +21,6 @@ const sortbuttonData = {
   recruiter: { upKeyDisabled: false, downKeyDisabled: false },
   status: { upKeyDisabled: false, downKeyDisabled: false },
 };
-interface IHeaderTitleProps {
-  id: string;
-  title: string;
-  sort?: boolean | false;
-}
-interface IDataProps {
-  id: number;
-  name: string;
-  designation: string;
-  mobileNumber: string;
-  experienceLevel: string;
-  techStack: string;
-  createdTime: string;
-  time: string;
-  recruiter: string;
-  status: string;
-  color?: string;
-  font?: string;
-  movie?: string;
-}
 
 const Candidates = () => {
   const [data, setData] = useState<IData[] | null>(null);
@@ -80,13 +42,6 @@ const Candidates = () => {
     return (
       !!HeaderTitle &&
       HeaderTitle?.map((column: IHeaderTitleProps) => {
-        function toCamelCase(str: string) {
-          let words = str.toLowerCase().split(/[\s-]+/);
-          for (let i = 1; i < words.length; i++) {
-            words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
-          }
-          return words.join("");
-        }
         const dataIndex = toCamelCase(column.title);
         return (
           <Column
@@ -118,34 +73,10 @@ const Candidates = () => {
             dataIndex={dataIndex}
             key={dataIndex}
             render={(text: string, record: any) =>
-              column.title == "checkbox" ? (
+              column.title == TABLE_CONSTANTS.CHECKBOX ? (
                 <CustomCheckBox checked={record.checked} />
               ) : (
-                <div className={styles.cell}>
-                  <div>
-                    {dataIndex === "createdTime" ? (
-                      <div>
-                        {dayjs(record["createdTime"]).format(
-                          DATE_FORMAT.DD_MM_YYYY
-                        )}
-                      </div>
-                    ) : (
-                      <> {record[dataIndex]} </>
-                    )}
-                  </div>
-                  {dataIndex === "name" ? (
-                    <div className={styles.designation}>
-                      {record["designation"]}
-                    </div>
-                  ) : null}
-                  {
-                    dataIndex === "createdTime" ? (
-                      <div className={styles.time}>
-                        {record["time"]}
-                      </div>
-                    ) : null
-                  }
-                </div>
+                <TableCells dataIndex={dataIndex} record={record} />
               )
             }
           />
@@ -160,7 +91,7 @@ const Candidates = () => {
       handlePageChange={handlePageChange}
       customClass={styles.scroll}
     >
-      <Table data={fakeData} className={styles["rc-table"]}>
+      <Table data={fakeData} className={styles.rcTable}>
         {generateColumns(HeaderTitle)}
       </Table>
     </InfiniteScroll>
