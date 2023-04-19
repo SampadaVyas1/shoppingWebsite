@@ -14,7 +14,9 @@ const ChatBottom = (props: any) => {
     event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>
   ) => {
     event.preventDefault();
-    props.onSend(message);
+    if (message.length) {
+      props.onSend(message);
+    }
   };
 
   return props.isLoading ? (
@@ -48,7 +50,9 @@ const ChatBottom = (props: any) => {
       />
       <ImageComponent
         src={Images.sendIcon}
-        customClass={styles.icon}
+        customClass={
+          message.length ? `${styles.icon} ${styles.active}` : styles.icon
+        }
         onClick={handleClick}
       />
     </form>

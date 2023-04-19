@@ -1,0 +1,24 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.searchBarContainer {
+  @include flex-space-between-alignment;
+  padding: 0.875rem 2rem;
+}
+.icons {
+  width: 1.75rem;
+  height: 1.75rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+.searchBar {
+  background: $white;
+  border: $inputBoxBorder;
+  box-shadow: $inputBoxShadow;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+  width: 30.12rem;
+  height: 2.5rem;
+}

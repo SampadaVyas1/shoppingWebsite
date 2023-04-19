@@ -88,7 +88,6 @@ const MessageScreen = (props: IMessageScreenProps) => {
 
       const updatedId = currentMessage?.messages?.map((message) => {
         if (message.messageId === data.messageId) {
-          console.log("matched");
           return { ...message, messageId: data.messages[0].id };
         } else {
           return message;

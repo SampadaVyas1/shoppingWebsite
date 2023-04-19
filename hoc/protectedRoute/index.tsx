@@ -14,7 +14,7 @@ const ProtectedRoute = ({ children }: any) => {
     PRIVATE_ROUTES.hasOwnProperty(router.pathname);
 
   useEffect(() => {
-    if (!isLoggedIn && router.pathname !== PRIVATE_ROUTES[404]) {
+    if (!isLoggedIn && router.pathname !== PRIVATE_ROUTES.NOT_FOUND_ROUTE) {
       router.replace(PRIVATE_ROUTES.LOGIN);
     } else if (isLoggedIn && router.pathname === PRIVATE_ROUTES.LOGIN) {
       router.back();

@@ -7,7 +7,12 @@ export const addMessage = async (data: ISentMessage, mobile: string) => {
     if (result !== undefined) {
       try {
         const prevMessages = [...result.messages, data];
-        await db?.conversations.put({ ...result, messages: prevMessages });
+        const uniqueMessages = [
+          ...new Map(
+            prevMessages.map((item) => [item.messageId, item])
+          ).values(),
+        ];
+        await db?.conversations.put({ ...result, messages: uniqueMessages });
       } catch (error) {
         console.log(error);
       }

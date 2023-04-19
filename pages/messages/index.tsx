@@ -38,7 +38,10 @@ const Messages = () => {
   useEffect(() => {
     if (!socket.connected) {
       socket.connect();
-      socket.emit(SOCKET_ROUTES.CREDENTIALS, { phoneId: "106886972321301" });
+      socket.emit(SOCKET_ROUTES.CREDENTIALS, {
+        phoneId: "106886972321301",
+        userId: "11098",
+      });
 
       socket.on(SOCKET_ROUTES.CONNECT, () => {
         setIsConnected(true);

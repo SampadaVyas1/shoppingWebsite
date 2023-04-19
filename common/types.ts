@@ -17,3 +17,6 @@ export interface IOptionType {
   id: number;
   label: string;
 }
+export interface INavbarProps {
+  routes: IRouteType[];
+}
