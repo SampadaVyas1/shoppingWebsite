@@ -11,3 +11,17 @@ export interface IHeaderTitleProps {
     title: string;
     sort?: boolean | false;
   }
+
+ export interface IRecordProps {
+    id: number;
+    name: string;
+    designation: string;
+    mobileNumber: string;
+    experienceLevel: string;
+    createdTime: string;
+    status: string;
+    recruiter: string;
+    techStack: string;
+    time: string;
+    checked: boolean;
+  }

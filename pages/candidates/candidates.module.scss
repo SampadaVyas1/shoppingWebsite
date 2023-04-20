@@ -15,9 +15,6 @@
   gap: 0.625rem;
   .title {
     font-weight: 500;
-    font-size: 0.875rem;
-    font-style: normal;
-    line-height: 1.269rem;
     color: $blue;
     height: 1.25rem;
     letter-spacing: 0.031rem;
@@ -31,23 +28,8 @@
 
     .ascendingicon {
       cursor: pointer;
-    }
+    }    cursor: pointer;
   }
-}
-.tableCell {
-  @include flex-justify-align(flex-start, flex-start);
-  flex-direction: column;
-}
-.designation {
-  color: $primaryText;
-  width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  font-weight: 400;
-  font-size: 0.875rem;
-  height: 1.25rem;
-  line-height: 1.225rem;
 }
 .scroll {
   height: 43.75rem;

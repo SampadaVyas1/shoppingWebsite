@@ -6,12 +6,9 @@
 }
 .designation {
   color: $primaryText;
-  width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   font-weight: 400;
-  font-size: 0.875rem;
   height: 1.25rem;
-  line-height: 1.225rem;
 }

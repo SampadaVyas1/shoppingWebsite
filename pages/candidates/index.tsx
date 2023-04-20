@@ -7,10 +7,16 @@ import fakeData from "./mockData.json";
 import Images from "@/public/assets/icons";
 import HeaderTitle from "./tableHeaderData.json";
 import CustomCheckBox from "@/components/customCheckBox";
-import TableCells from "@/components/tableCells";
-import { IButtonState, IData, IHeaderTitleProps } from "./candidates.types";
+import TableCells from "@/components/table";
+import {
+  IButtonState,
+  IData,
+  IHeaderTitleProps,
+  IRecordProps,
+} from "./candidates.types";
 import { toCamelCase } from "@/common/utils";
-import { TABLE_CONSTANTS } from "@/common/constants";
+import Typography from "@/components/typography";
+import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 
 const sortbuttonData = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
@@ -50,7 +56,11 @@ const Candidates = () => {
                 {column.title === "checkbox" ? (
                   <CustomCheckBox />
                 ) : (
-                  <div className={styles.title}>{column.title}</div>
+                  <Typography
+                    variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
+                    children={column.title}
+                    customStyle={styles.title}
+                  />
                 )}
                 {!!column.sort && (
                   <div className={styles.sortIcon}>
@@ -72,8 +82,8 @@ const Candidates = () => {
             }
             dataIndex={dataIndex}
             key={dataIndex}
-            render={(text: string, record: any) =>
-              column.title == TABLE_CONSTANTS.CHECKBOX ? (
+            render={(text: string, record: IRecordProps) =>
+              column.title == "checkbox" ? (
                 <CustomCheckBox checked={record.checked} />
               ) : (
                 <TableCells dataIndex={dataIndex} record={record} />
