@@ -1,4 +1,4 @@
-import ImageComponent from "@/components/image";
+import ImageComponent from "@/components/imageComponent";
 import Images from "@/public/assets/icons";
 import React from "react";
 import { toast, TypeOptions } from "react-toastify";

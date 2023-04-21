@@ -1,4 +1,4 @@
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import styles from "./searchBar.module.scss";
 import Images from "@/public/assets/icons";
 const Search = () => {

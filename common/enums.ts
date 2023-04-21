@@ -54,3 +54,10 @@ export enum TOOLTIP_POSITION {
   BOTTOM = "bottom",
   CENTER = "center",
 }
+
+export enum MESSAGE_STATUS {
+  SENT = "SENT",
+  RECEIVED = "RECEIVED",
+  DELIVERED = "DELIVERED",
+  READ = "READ",
+}

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { Popover } from "react-tiny-popover";
 import styles from "./select.module.scss";
 import Options from "./options";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import OptionTags from "./optionTag";
 import MultiSelectOptions from "./multiselectOptions";
 import arrowDown from "../../public/assets/icons/arrowDown.svg";

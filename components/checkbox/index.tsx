@@ -1,6 +1,6 @@
 import React, { useState, useEffect, SyntheticEvent } from "react";
 import styles from "./checkbox.module.scss";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import Typography from "../typography";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import checkedIcon from "../../public/assets/icons/checked.svg";

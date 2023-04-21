@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./options.module.scss";
 import Card from "@/components/card";
-import ImageComponent from "@/components/image";
+import ImageComponent from "@/components/imageComponent";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";

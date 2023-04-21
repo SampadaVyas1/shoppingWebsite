@@ -4,7 +4,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import styles from "./login.module.scss";
 import Button from "@/components/button";
-import ImageComponent from "@/components/image";
+import ImageComponent from "@/components/imageComponent";
 import Loader from "@/components/loader";
 import Typography from "@/components/typography";
 import Container from "@/components/container";

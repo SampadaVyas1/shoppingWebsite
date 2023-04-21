@@ -1,12 +1,22 @@
 import Images from "@/public/assets/icons";
-import CandidateListCard, {
-  ICandidateListCardProps,
-} from "../candidateListCard";
 import styles from "./candidateList.module.scss";
 import { skeletonArray } from "../chatBody/chatBody.constants";
 import SkeletonLoader from "@/components/skeletonLoader";
-import { SKELETON_VARIANT } from "@/common/enums";
+import { MESSAGE_STATUS, SKELETON_VARIANT } from "@/common/enums";
+import { db } from "@/db";
+import { useLiveQuery } from "dexie-react-hooks";
+import { getMessages, sortMessages } from "@/common/dbUtils";
+import moment from "moment";
+import { ICandidateListCardProps } from "../candidateListCard/candidateListCard.types";
+import CandidateListCard from "../candidateListCard";
 const CandidateList = (props: any) => {
+  const conversations = useLiveQuery(() => {
+    return db.conversations.toArray();
+  });
+
+  const messageListData = useLiveQuery(() => {
+    return db.messages.toArray();
+  });
   return props.isLoading ? (
     <div className={styles.listSkeleton}>
       {skeletonArray.map((element: number, index: number) => {
@@ -30,19 +40,42 @@ const CandidateList = (props: any) => {
   ) : (
     <div className={styles.list}>
       {props.candidateData.map(
-        (candidate: ICandidateListCardProps, index: number) => (
-          <CandidateListCard
-            key={index}
-            name={candidate.name}
-            status={candidate.status}
-            onClick={() => props.onSelect(candidate)}
-            isSelected={props?.selectedData?.id === candidate?.id}
-            time={candidate.time}
-            profilePhoto={candidate.profilePhoto}
-            message={candidate.message}
-            unreadCount={candidate.unreadCount}
-          />
-        )
+        (candidate: ICandidateListCardProps, index: number) => {
+          const { name, mobile, id, profilePhoto } = candidate;
+          const currentCandidateData = conversations?.find(
+            (data) => data.id === mobile
+          );
+          const currentMessages = messageListData?.filter(
+            (message) => message.phone === mobile
+          );
+          const sortedMessages = sortMessages(currentMessages!);
+          const lastMessage =
+            !!sortedMessages && sortedMessages[sortedMessages.length - 1];
+          return (
+            <CandidateListCard
+              key={index}
+              name={candidate.name}
+              status={
+                lastMessage?.status
+                  ? lastMessage.status
+                  : MESSAGE_STATUS.RECEIVED
+              }
+              onClick={() => props.onSelect(candidate)}
+              isSelected={props?.selectedData?.id === candidate?.id}
+              time={
+                lastMessage?.timestamp
+                  ? moment
+                      .unix(parseInt(lastMessage?.timestamp))
+                      .format("hh:mm A")
+                  : ""
+              }
+              profilePhoto={candidate.profilePhoto}
+              message={lastMessage?.message}
+              mobile={candidate.mobile}
+              unreadCount={currentCandidateData?.unreadCount}
+            />
+          );
+        }
       )}
     </div>
   );

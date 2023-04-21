@@ -47,6 +47,9 @@
         color: $gray-500;
       }
     }
+    .messageText {
+      white-space: pre-line;
+    }
   }
 }
 .messageBodySkeleton {

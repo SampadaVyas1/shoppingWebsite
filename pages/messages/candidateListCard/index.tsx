@@ -1,30 +1,26 @@
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
-import ImageComponent from "@/components/image";
+import { MESSAGE_STATUS, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import ImageComponent from "@/components/imageComponent";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
 import styles from "./candidateListCard.module.scss";
-
-export interface ICandidateListCardProps {
-  id?: string;
-  status: "SENT" | "DELIVERED" | "READ" | "RECEIVED";
-  time: string;
-  profilePhoto: string;
-  name: string;
-  message: string;
-  unreadCount?: number;
-  onClick?: () => void;
-  isSelected?: boolean;
-}
+import { ICandidateListCardProps } from "./candidateListCard.types";
 
 const CandidateListCard = (props: ICandidateListCardProps) => {
-  const { status, time, profilePhoto, name, message, unreadCount, isSelected } =
-    props;
+  const {
+    status = MESSAGE_STATUS.RECEIVED,
+    time,
+    profilePhoto,
+    name,
+    message,
+    unreadCount,
+    isSelected,
+  } = props;
 
   const { readIcon, deliveredIcon, sentIcon } = Images;
   const statusImage =
-    status === "READ"
+    status === MESSAGE_STATUS.READ
       ? readIcon
-      : status === "DELIVERED"
+      : status === MESSAGE_STATUS.DELIVERED
       ? deliveredIcon
       : sentIcon;
   return (
@@ -58,18 +54,18 @@ const CandidateListCard = (props: ICandidateListCardProps) => {
           </Typography>
         </div>
         <div className={styles.message}>
-          {status !== "RECEIVED" && (
+          {status !== MESSAGE_STATUS.RECEIVED && (
             <ImageComponent src={statusImage} customClass={styles.status} />
           )}
           <Typography
             variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
             customStyle={
-              status !== "RECEIVED"
+              status !== MESSAGE_STATUS.RECEIVED
                 ? styles.messageText
                 : `${styles.messageText} ${styles.unread}`
             }
           >
-            {message}
+            {message || "Start conversation"}
           </Typography>
           {!!unreadCount && <div className={styles.badge}>{unreadCount}</div>}
         </div>

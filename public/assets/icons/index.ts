@@ -23,6 +23,8 @@ const Images = {
   logoutIcon: require("./logout.svg").default,
   crossIcon: require("./cross.svg").default,
   rectangle: require("../images/rectangle.svg").default,
+  docsAttachmentIcon: require("./docs.svg").default,
+  imageAttachmentIcon: require("./gallery.svg").default,
 };
 
 export default Images;

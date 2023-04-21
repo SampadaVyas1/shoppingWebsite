@@ -1,5 +1,5 @@
 import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-import ImageComponent from "@/components/image";
+import ImageComponent from "@/components/imageComponent";
 import Typography from "@/components/typography";
 import styles from "./chatHeader.module.scss";
 import SkeletonLoader from "@/components/skeletonLoader";

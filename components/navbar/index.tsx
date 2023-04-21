@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ArrowContainer, Popover } from "react-tiny-popover";
 import { useDispatch } from "react-redux";
 import styles from "./navbar.module.scss";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import Typography from "../typography";
 import ProfileCard from "../profileCard";
 import Modal from "../modal";

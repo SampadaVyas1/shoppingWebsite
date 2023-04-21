@@ -1,4 +1,4 @@
 export interface IChatBodyProps {
-  messageList: any;
   isLoading: boolean;
+  phone: string;
 }

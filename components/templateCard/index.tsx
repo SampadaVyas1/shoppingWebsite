@@ -1,6 +1,6 @@
 import { TOOLTIP_POSITION, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import Container from "../container";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import Typography from "../typography";
 import styles from "./templateCard.module.scss";
 import TemplateImage from "../../public/assets/images/templateFirst.svg";

@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const encodeToken = (data: string) => window.btoa(data);
 
 export const decodeToken = (data: string) => window.atob(data);
@@ -20,4 +22,26 @@ export const debounce = (callback: Function, wait: number = 100) => {
 
 export const getTimeStamp = () => {
   return Math.round(new Date().getTime() / 1000);
+};
+
+export const isSameDay = (currentDay: string, previousDay: string) => {
+  return (
+    moment.unix(parseInt(currentDay)).format("DD/MM/YYYY") ===
+    moment.unix(parseInt(previousDay)).format("DD/MM/YYYY")
+  );
+};
+
+export const getCurrentDay = (timestamp: string) => {
+  return moment.unix(parseInt(timestamp)).calendar(null, {
+    sameDay: "[Today]",
+    nextDay: "[Tomorrow]",
+    nextWeek: "dddd",
+    lastDay: "[Yesterday]",
+    lastWeek: "DD MMM YYYY",
+    sameElse: "DD MMM YYYY",
+  });
+};
+
+export const formatTime = (timestamp: string) => {
+  return moment.unix(parseInt(timestamp)).format("hh:mm A");
 };

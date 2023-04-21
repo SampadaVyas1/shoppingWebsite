@@ -1,5 +1,5 @@
 import styles from "./button.module.scss";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import { BUTTON_VARIANT } from "@/common/enums";
 import { IButtonProps } from "./button.types";
 

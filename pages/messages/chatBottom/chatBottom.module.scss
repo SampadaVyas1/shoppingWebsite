@@ -6,7 +6,7 @@
   box-sizing: border-box;
   align-items: center;
   gap: 0.75rem;
-
+  position: relative;
   .icon {
     width: 1.75rem;
     height: 1.75rem;
@@ -20,7 +20,6 @@
   }
   .input {
     height: 2.5rem;
-    border: none !important;
     padding: 0.875rem 0.75rem !important;
     box-shadow: none;
   }

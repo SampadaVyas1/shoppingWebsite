@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "../button";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import Modal from "../modal";
 import Typography from "../typography";
 import styles from "./profileCard.module.scss";

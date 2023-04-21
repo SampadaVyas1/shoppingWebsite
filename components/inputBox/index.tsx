@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import styles from "./inputBox.module.scss";
 import { IInputProps } from "./inputBox.types";
 
