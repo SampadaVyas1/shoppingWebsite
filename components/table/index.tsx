@@ -1,14 +1,15 @@
-import React, { Fragment } from "react";
+import React, { Fragment, ReactNode } from "react";
 import dayjs from "dayjs";
-import styles from "./tableCells.module.scss";
-import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
-import { ITableCells } from "./table.types";
+import styles from "./table.module.scss";
+import { DATE_FORMAT } from "@/common/constants";
+import { IExtraField, ITable } from "./table.types";
 import Typography from "../typography";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
-const TableCells = (props: ITableCells) => {
+
+export const Table  = (props: ITable) => {
   const { dataIndex, record, field, colspans } = props;
   return (
-    <div className={styles.tableCell}>
+    <div className={styles.table}>
       <div>
         {dataIndex === field.time ? (
           <div>{dayjs(record[dataIndex]).format(DATE_FORMAT.DD_MM_YYYY)}</div>
@@ -17,7 +18,7 @@ const TableCells = (props: ITableCells) => {
         )}
       </div>
       {!!colspans &&
-        colspans.map((extraField: any) => {
+        colspans.map((extraField:IExtraField) => {
           return (
             <Fragment>
               {dataIndex === extraField.colspan ? (
@@ -34,4 +35,3 @@ const TableCells = (props: ITableCells) => {
   );
 };
 
-export default TableCells;

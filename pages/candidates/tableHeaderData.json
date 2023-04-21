@@ -1,47 +1,45 @@
 [
   {
-    "id":"6",
-    "title":"checkbox"
-   
+    "id": 8,
+    "title": "checkbox"
   },
   {
-    "id": "1",
+    "id": 1,
     "title": "Name",
-   
-    "sort":true
-  },
-  {
-    "id": "2",
-    "title": "Mobile number",
-    "sort":false
-  },
-  {
-    "id": "3",
-    "title": "Experience level",
-    "sort":false
-  },
-  {
-    "id": "4",
-    "title": "Tech stack",
-    "sort":false
-  },
-  {
-    "id": "5",
-    "title": "Created time",
-  
-    "sort":true
 
+    "sort": true
   },
   {
-    "id": "6",
+    "id": 2,
+    "title": "Mobile number",
+    "sort": false
+  },
+  {
+    "id": 3,
+    "title": "Experience level",
+    "sort": false
+  },
+  {
+    "id": 4,
+    "title": "Tech stack",
+    "sort": false
+  },
+  {
+    "id": 5,
+    "title": "Created time",
+
+    "sort": true
+  },
+  {
+    "id": 6,
     "title": "Recruiter",
-  
-    "sort":false
+
+    "sort": false
   },
   {
-    "id": "5",
+    "id": 7,
     "title": "Status",
-    
-    "sort":false
+
+    "sort": false
   }
 ]

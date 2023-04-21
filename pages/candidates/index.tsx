@@ -5,8 +5,9 @@ import InfiniteScroll from "@/components/infiniteScroll";
 import { toCamelCase } from "@/common/utils";
 import Typography from "@/components/typography";
 import CustomCheckBox from "@/components/customCheckBox";
-import TableCells from "@/components/table";
-import Table, { Column } from "rc-table";
+import { Table as TableCells } from "../../components/table/index";
+import Table from "rc-table";
+import { Column } from "rc-table";
 import fakeData from "./mockData.json";
 import Images from "@/public/assets/icons";
 import HeaderTitle from "./tableHeaderData.json";
@@ -44,7 +45,14 @@ const Candidates = () => {
     setData([...fakeData]);
     setButtonState(sortbuttonData);
   };
-
+  const colspans = [
+    {
+      colspan: "name",
+      colspanValue: "designation",
+      customStyle: styles.designation,
+    },
+    { colspan: "createdTime", colspanValue: "time" },
+  ];
   const generateColumns = (HeaderTitle: IHeaderTitleProps[]) => {
     return (
       !!HeaderTitle &&
@@ -91,14 +99,7 @@ const Candidates = () => {
                   dataIndex={dataIndex}
                   record={record}
                   field={{ time: "createdTime" }}
-                  colspans={[
-                    {
-                      colspan: "name",
-                      colspanValue: "designation",
-                      customStyle: styles.designation,
-                    },
-                    { colspan: "createdTime", colspanValue: "time" },
-                  ]}
+                  colspans={colspans}
                 />
               )
             }

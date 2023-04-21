@@ -1,6 +1,7 @@
 @import "../../styles/mixins";
 @import "../../styles/variables";
-.tableCell {
+
+.table {
   @include flex-justify-align(flex-start, flex-start);
   flex-direction: column;
 }
