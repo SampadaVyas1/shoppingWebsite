@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import dayjs from "dayjs";
 import styles from "./tableCells.module.scss";
 import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
@@ -6,28 +6,30 @@ import { ITableCells } from "./table.types";
 import Typography from "../typography";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 const TableCells = (props: ITableCells) => {
-  const { dataIndex, record } = props;
+  const { dataIndex, record, field, colspans } = props;
   return (
     <div className={styles.tableCell}>
       <div>
-        {dataIndex === "createdTime" ? (
-          <div>
-            {dayjs(record["createdTime"]).format(DATE_FORMAT.DD_MM_YYYY)}
-          </div>
+        {dataIndex === field.time ? (
+          <div>{dayjs(record[dataIndex]).format(DATE_FORMAT.DD_MM_YYYY)}</div>
         ) : (
-          <> {record[dataIndex]} </>
+          <Fragment>{record[dataIndex]}</Fragment>
         )}
       </div>
-      {dataIndex === "name" ? (
-        <Typography
-          children={record["designation"]}
-          variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
-          customStyle={styles.designation}
-        />
-      ) : null}
-      {dataIndex === "createdTime" ? (
-        <Typography children={record[TABLE_CONSTANTS.TIME]} />
-      ) : null}
+      {!!colspans &&
+        colspans.map((extraField: any) => {
+          return (
+            <Fragment>
+              {dataIndex === extraField.colspan ? (
+                <Typography
+                  children={record[extraField.colspanValue]}
+                  variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
+                  customStyle={`${extraField.customStyle}? ${extraField.customStyle} :${styles.colSpan}`}
+                />
+              ) : null}
+            </Fragment>
+          );
+        })}
     </div>
   );
 };

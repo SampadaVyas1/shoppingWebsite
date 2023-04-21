@@ -12,12 +12,12 @@
   height: 2.25rem;
   @include flex-align-center;
   padding: 0.5rem 0rem;
-  gap: 0.625rem;
+  gap: 0.5rem;
   .title {
     font-weight: 500;
     color: $blue;
     height: 1.25rem;
-    letter-spacing: 0.031rem;
+    letter-spacing: 0.03rem;
   }
   .sortIcon {
     @include flex-center-alignment;
@@ -28,9 +28,19 @@
 
     .ascendingicon {
       cursor: pointer;
-    }    cursor: pointer;
+    }
+    cursor: pointer;
   }
 }
+.designation {
+  color: $primaryText;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: 400;
+  height: 1.25rem;
+}
+
 .scroll {
   height: 43.75rem;
   overflow-x: hidden;
@@ -38,7 +48,7 @@
   position: relative;
   margin: 1.5rem;
   &::-webkit-scrollbar {
-    width: 0.313rem;
+    width: 0.3rem;
   }
   &::-webkit-scrollbar-track {
     background: $white;
@@ -48,9 +58,9 @@
     border-radius: 1rem;
   }
   &::-webkit-scrollbar-track-piece:end {
-    margin-bottom: 0.625rem;
+    margin-bottom: 0.5rem;
   }
   &::-webkit-scrollbar-track-piece:start {
-    margin-top: 0.625rem;
+    margin-top: 0.5rem;
   }
 }

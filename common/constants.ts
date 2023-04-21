@@ -25,7 +25,7 @@ export const DATE_FORMAT = {
   DD_MM_YYYY: "DD-MM-YYYY",
 };
 export const TABLE_CONSTANTS = {
-  TIME: "time",
+  CHECKBOX: "checkbox",
 };
 
 export const TOKEN = "token";

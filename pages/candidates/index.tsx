@@ -2,21 +2,22 @@ import { useEffect, useState, CSSProperties } from "react";
 import styles from "./candidates.module.scss";
 import ImageComponent from "@/components/image";
 import InfiniteScroll from "@/components/infiniteScroll";
+import { toCamelCase } from "@/common/utils";
+import Typography from "@/components/typography";
+import CustomCheckBox from "@/components/customCheckBox";
+import TableCells from "@/components/table";
 import Table, { Column } from "rc-table";
 import fakeData from "./mockData.json";
 import Images from "@/public/assets/icons";
 import HeaderTitle from "./tableHeaderData.json";
-import CustomCheckBox from "@/components/customCheckBox";
-import TableCells from "@/components/table";
 import {
   IButtonState,
   IData,
   IHeaderTitleProps,
   IRecordProps,
 } from "./candidates.types";
-import { toCamelCase } from "@/common/utils";
-import Typography from "@/components/typography";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TABLE_CONSTANTS } from "@/common/constants";
 
 const sortbuttonData = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
@@ -53,7 +54,7 @@ const Candidates = () => {
           <Column
             title={
               <div className={styles.header}>
-                {column.title === "checkbox" ? (
+                {column.title === TABLE_CONSTANTS.CHECKBOX ? (
                   <CustomCheckBox />
                 ) : (
                   <Typography
@@ -86,7 +87,19 @@ const Candidates = () => {
               column.title == "checkbox" ? (
                 <CustomCheckBox checked={record.checked} />
               ) : (
-                <TableCells dataIndex={dataIndex} record={record} />
+                <TableCells
+                  dataIndex={dataIndex}
+                  record={record}
+                  field={{ time: "createdTime" }}
+                  colspans={[
+                    {
+                      colspan: "name",
+                      colspanValue: "designation",
+                      customStyle: styles.designation,
+                    },
+                    { colspan: "createdTime", colspanValue: "time" },
+                  ]}
+                />
               )
             }
           />
