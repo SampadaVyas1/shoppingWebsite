@@ -84,7 +84,7 @@ const Candidates = () => {
             dataIndex={dataIndex}
             key={dataIndex}
             render={(text: string, record: IRecordProps) =>
-              column.title == "checkbox" ? (
+              column.title == TABLE_CONSTANTS.CHECKBOX ? (
                 <CustomCheckBox checked={record.checked} />
               ) : (
                 <TableCells
