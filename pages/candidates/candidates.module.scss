@@ -17,7 +17,7 @@
     font-weight: 500;
     color: $blue;
     height: 1.25rem;
-    letter-spacing: 0.03rem;
+    letter-spacing: 0.030rem;
   }
   .sortIcon {
     @include flex-center-alignment;
@@ -48,7 +48,7 @@
   position: relative;
   margin: 1.5rem;
   &::-webkit-scrollbar {
-    width: 0.3rem;
+    width: 0.30rem;
   }
   &::-webkit-scrollbar-track {
     background: $white;
