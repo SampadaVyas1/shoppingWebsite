@@ -4,9 +4,8 @@ import styles from "./candidates.module.scss";
 import ImageComponent from "@/components/image";
 import InfiniteScroll from "@/components/infiniteScroll";
 import CustomCheckBox from "@/components/customCheckBox";
-import dayjs from "dayjs";
 import Table, { Column } from "rc-table";
-import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
+import {TABLE_CONSTANTS } from "@/common/constants";
 import fakeData from "./mockData.json";
 import Images from "@/public/assets/icons";
 import HeaderTitle from "./tableHeaderData.json";
@@ -21,27 +20,11 @@ import {
   sortDataByField,
   toCamelCase,
 } from "@/common/utils";
-import TableCells from "@/components/tableCells";
-interface IButtonState {
-  [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
-}
+import TableCells from "@/components/table";
+import Typography from "@/components/typography";
+import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { IButtonState, IData, IHeaderTitleProps, IRecordProps } from "./candidates.types";
 
-interface IData {
-  [key: string]: any;
-}
-
-interface IRecordProps {
-  id: number;
-  name: string;
-  designation: string;
-  mobileNumber: string;
-  experienceLevel: string;
-  createdTime: string;
-  status: string;
-  recruiter: string;
-  techStack: string;
-  time: string;
-}
 const sortbuttonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
   experienceLevel: { upKeyDisabled: false, downKeyDisabled: false },
@@ -51,11 +34,6 @@ const sortbuttonData: IButtonState = {
   recruiter: { upKeyDisabled: false, downKeyDisabled: false },
   status: { upKeyDisabled: false, downKeyDisabled: false },
 };
-interface IHeaderTitleProps {
-  id: string;
-  title: string;
-  sort?: boolean | false;
-}
 
 const Candidates = () => {
   const [selectedRow, setSelectedRow] = useState<number[]>([]);
@@ -95,12 +73,12 @@ const Candidates = () => {
   );
 
   useEffect(() => {
-    const newData = sortDataByField(fakeData, "name", true);
+    const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
     setData(newData);
     setButtonState({
       ...buttonState,
       name: {
-        ...buttonState["name"],
+        ...buttonState[ TABLE_CONSTANTS.NAME],
         upKeyDisabled: true,
         downKeyDisabled: false,
       },
@@ -116,7 +94,7 @@ const Candidates = () => {
           <Column
             title={
               <div className={styles.header}>
-                {column.title === "checkbox" ? (
+                {column.title === TABLE_CONSTANTS.CHECKBOX ? (
                   <CustomCheckBox
                     ideal={checkIdeal(selectedRow, data)}
                     checked={checkMaster(selectedRow, data)}
@@ -128,7 +106,11 @@ const Candidates = () => {
                     customClass={styles.checkBoxStyling}
                   />
                 ) : (
-                  <div className={styles.title}>{column.title}</div>
+                  <Typography
+                    variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}
+                    children={column.title}
+                    customStyle={styles.title}
+                  />
                 )}
                 {!!column.sort && (
                   <div className={styles.sortIcon}>
@@ -161,7 +143,7 @@ const Candidates = () => {
             dataIndex={dataIndex}
             key={dataIndex}
             render={(text: string, record: IRecordProps, index: number) =>
-              column.title == "checkbox" ? (
+              column.title == TABLE_CONSTANTS.CHECKBOX ? (
                 <CustomCheckBox
                   id={data[index]["id"]}
                   handleClick={handleCheckBoxClick(data[index]["id"])}
@@ -169,7 +151,21 @@ const Candidates = () => {
                   customClass={styles.checkBoxStyling}
                 />
               ) : (
-                <TableCells dataIndex={dataIndex} data={data} index={index} />
+                // <TableCells dataIndex={dataIndex} data={data} index={index} />
+                <TableCells
+                  dataIndex={dataIndex}
+                  data={data}
+                  index={index}
+                  field={{ time: "createdTime" }}
+                  colspans={[
+                    {
+                      colspan: "name",
+                      colspanValue: "designation",
+                      customStyle: styles.designation,
+                    },
+                    { colspan: "createdTime", colspanValue: "time" },
+                  ]}
+                />
               )
             }
           />
@@ -184,7 +180,7 @@ const Candidates = () => {
       handlePageChange={handlePageChange}
       customClass={styles.scroll}
     >
-      <Table data={data} className={styles["rc-table"]}>
+      <Table data={data} className={styles.rcTable}>
         {generateColumns(HeaderTitle)}
       </Table>
     </InfiniteScroll>
