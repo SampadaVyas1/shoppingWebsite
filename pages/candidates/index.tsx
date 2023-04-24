@@ -5,7 +5,7 @@ import InfiniteScroll from "@/components/infiniteScroll";
 import { toCamelCase } from "@/common/utils";
 import Typography from "@/components/typography";
 import CustomCheckBox from "@/components/customCheckBox";
-import { Table as TableCells } from "../../components/table/index";
+import { Table as Tables } from "../../components/table/index";
 import Table from "rc-table";
 import { Column } from "rc-table";
 import fakeData from "./mockData.json";
@@ -47,11 +47,11 @@ const Candidates = () => {
   };
   const colspans = [
     {
-      colspan: "name",
-      colspanValue: "designation",
+      colspan: TABLE_CONSTANTS.NAME,
+      colspanValue: TABLE_CONSTANTS.DESIGNATION,
       customStyle: styles.designation,
     },
-    { colspan: "createdTime", colspanValue: "time" },
+    { colspan: TABLE_CONSTANTS.CREATEDTIME, colspanValue: TABLE_CONSTANTS.TIME },
   ];
   const generateColumns = (HeaderTitle: IHeaderTitleProps[]) => {
     return (
@@ -95,10 +95,10 @@ const Candidates = () => {
               column.title == TABLE_CONSTANTS.CHECKBOX ? (
                 <CustomCheckBox checked={record.checked} />
               ) : (
-                <TableCells
+                <Tables
                   dataIndex={dataIndex}
                   record={record}
-                  field={{ time: "createdTime" }}
+                  field={{ time: TABLE_CONSTANTS.CREATEDTIME }}
                   colspans={colspans}
                 />
               )
