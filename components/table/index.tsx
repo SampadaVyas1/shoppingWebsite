@@ -1,37 +1,98 @@
-import React, { Fragment, ReactNode } from "react";
-import dayjs from "dayjs";
+import React, { useState } from "react";
+import Table from "rc-table";
 import styles from "./table.module.scss";
-import { DATE_FORMAT } from "@/common/constants";
-import { IExtraField, ITable } from "./table.types";
+import {
+  IHeaderTitleProps,
+  IRecordProps,
+  ITableComponent,
+} from "./table.types";
+import { toCamelCase } from "@/common/utils";
+import { TABLE_CONSTANTS } from "@/common/constants";
+import CustomCheckBox from "../customCheckBox";
 import Typography from "../typography";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import ImageComponent from "@/components/image";
+import { Column } from "rc-table";
+import Images from "@/public/assets/icons";
+import TableCell from "./tableCell";
 
-export const Table  = (props: ITable) => {
-  const { dataIndex, record, field, colspans } = props;
-  return (
-    <div className={styles.table}>
-      <div>
-        {dataIndex === field.time ? (
-          <div>{dayjs(record[dataIndex]).format(DATE_FORMAT.DD_MM_YYYY)}</div>
-        ) : (
-          <Fragment>{record[dataIndex]}</Fragment>
-        )}
-      </div>
-      {!!colspans &&
-        colspans.map((extraField:IExtraField) => {
-          return (
-            <Fragment>
-              {dataIndex === extraField.colspan ? (
-                <Typography
-                  children={record[extraField.colspanValue]}
-                  variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
-                  customStyle={`${extraField.customStyle}? ${extraField.customStyle} :${styles.colSpan}`}
+export const TableComponent = (props: ITableComponent) => {
+  const {
+    data,
+    columnHeaderTitle,
+    additionalValue,
+    fieldforDateFormat,
+    sortbuttonData,
+    dataFormatType,
+    customStyle,
+  } = props;
+
+  const generateColumns = (columnHeaderTitle: IHeaderTitleProps[]) => {
+    const {
+      upArrowDisabled,
+      upArrowEnabled,
+      downArrowDisabled,
+      downArrowEnabled,
+    } = Images;
+    return (
+      !!columnHeaderTitle &&
+      columnHeaderTitle?.map((column: IHeaderTitleProps) => {
+        const dataIndex = toCamelCase(column.title);
+        return (
+          <Column
+            title={
+              <div className={styles.header}>
+                {column.title === TABLE_CONSTANTS.CHECKBOX ? (
+                  <CustomCheckBox />
+                ) : (
+                  <Typography
+                    variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
+                    children={column.title}
+                    customStyle={styles.title}
+                  />
+                )}
+                {!!column.sort && (
+                  <div className={styles.sortIcon}>
+                    <ImageComponent
+                      src={upArrowEnabled}
+                      width={10}
+                      height={10}
+                      className={styles.ascendingicon}
+                    />
+                    <ImageComponent
+                      src={downArrowEnabled}
+                      width={10}
+                      height={10}
+                      className={styles.ascendingicon}
+                    />
+                  </div>
+                )}
+              </div>
+            }
+            dataIndex={dataIndex}
+            key={dataIndex}
+            render={(text: string, record: IRecordProps) =>
+              column.title == TABLE_CONSTANTS.CHECKBOX ? (
+                <CustomCheckBox checked={record.checked} />
+              ) : (
+                <TableCell
+                  dataIndex={dataIndex}
+                  record={record}
+                  field={fieldforDateFormat}
+                  additionalValue={additionalValue}
+                  dataFormatType={dataFormatType}
                 />
-              ) : null}
-            </Fragment>
-          );
-        })}
-    </div>
+              )
+            }
+          />
+        );
+      })
+    );
+  };
+
+  return (
+    <Table data={data} className={styles.rcTable} components={customStyle}>
+      {generateColumns(columnHeaderTitle)}
+    </Table>
   );
 };
-

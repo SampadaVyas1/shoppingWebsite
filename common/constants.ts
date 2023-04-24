@@ -22,16 +22,14 @@ export const ROLES = {
   RECRUITER: "recruiter",
 };
 export const DATE_FORMAT = {
-  DD_MM_YYYY: "DD-MM-YYYY",
+  DD_MM_YYYY: "DD/MM/YYYY",
 };
 export const TABLE_CONSTANTS = {
   CHECKBOX: "checkbox",
-  CREATEDTIME:"createdTime",
-  NAME:"name",
-  DESIGNATION:"designation",
-  TIME:"time"
-
-
+  CREATEDTIME: "createdTime",
+  NAME: "name",
+  DESIGNATION: "designation",
+  TIME: "time",
 };
 
 export const TOKEN = "token";

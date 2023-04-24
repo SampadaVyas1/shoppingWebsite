@@ -1,37 +1,6 @@
 @import "../../styles/variables";
 @import "../../styles/mixins";
 
-.rcTable {
-  table {
-    width: 100%;
-    background-color: $white;
-    border-collapse: collapse;
-  }
-}
-.header {
-  height: 2.25rem;
-  @include flex-align-center;
-  padding: 0.5rem 0rem;
-  gap: 0.5rem;
-  .title {
-    font-weight: 500;
-    color: $blue;
-    height: 1.25rem;
-    letter-spacing: 0.030rem;
-  }
-  .sortIcon {
-    @include flex-center-alignment;
-    flex-direction: column;
-    .descendingicon {
-      cursor: pointer;
-    }
-
-    .ascendingicon {
-      cursor: pointer;
-    }
-    cursor: pointer;
-  }
-}
 .designation {
   color: $primaryText;
   text-overflow: ellipsis;
@@ -39,6 +8,10 @@
   white-space: nowrap;
   font-weight: 400;
   height: 1.25rem;
+}
+.customHeaderStyle
+{
+  background-color: $tableHeader;
 }
 
 .scroll {
