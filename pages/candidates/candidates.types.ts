@@ -15,5 +15,5 @@ export interface IHeaderTitleProps {
 export interface IAdditionalValue {
   colspan: string;
   colspanValue: string;
-  customStyle?: string;
+  customStyle?: string
 }

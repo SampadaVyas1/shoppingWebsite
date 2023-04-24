@@ -2,18 +2,17 @@ import React, { Fragment, ReactNode } from "react";
 import dayjs from "dayjs";
 import styles from "./tableCell.module.scss";
 import { DATE_FORMAT } from "@/common/constants";
-import { IExtraField, ITable } from "./tablecell.types";
+import { IExtraField, ITable } from "./tableCell.types";
 import Typography from "../../typography/index";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 
  const TableCell  = (props: ITable) => {
   const { dataIndex, record, field, additionalValue,dataFormatType } = props;
-  console.log(dataFormatType)
   return (
     <div className={styles.table}>
       <div>
         {dataIndex === field.time ? (
-          <div>{dayjs(record[dataIndex]).format(dataFormatType)}</div>
+          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}>{dayjs(record[dataIndex]).format(dataFormatType)}</Typography>
         ) : 
         (
           <Fragment>{record[dataIndex]}</Fragment>

@@ -38,7 +38,7 @@ const Candidates = () => {
   ];
   const customStyle = {
     header: {
-      row: (props: any[]) => (
+      row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => (
         <tr {...props} className={styles.customHeaderStyle} />
       ),
     },

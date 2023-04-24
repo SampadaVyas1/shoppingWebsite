@@ -22,7 +22,6 @@ export const TableComponent = (props: ITableComponent) => {
     columnHeaderTitle,
     additionalValue,
     fieldforDateFormat,
-    sortbuttonData,
     dataFormatType,
     customStyle,
   } = props;

@@ -1,3 +1,5 @@
+import { IAdditionalValue } from "@/pages/candidates/candidates.types";
+
 export interface IButtonState {
   [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
 }
@@ -27,9 +29,7 @@ export interface IRecordProps {
 }
 
 export interface ITableComponent {
-  additionalValue: [
-    { colspan: string; colspanValue: string; customStyle?: string }
-  ];
+  additionalValue: IAdditionalValue[];
   data: any;
   columnHeaderTitle: {
     id: number;
@@ -41,5 +41,9 @@ export interface ITableComponent {
   };
   dataFormatType: string;
   fieldforDateFormat: { time: string };
-  customStyle?: any;
+  customStyle?: {
+    header: {
+      row: (props: any[]) => JSX.Element;
+    };
+  };
 }
