@@ -9,11 +9,9 @@
   font-weight: 400;
   height: 1.25rem;
 }
-.customHeaderStyle
-{
+.customHeaderStyle {
   background-color: $tableHeader;
 }
-
 .scroll {
   height: 43.75rem;
   overflow-x: hidden;
@@ -21,7 +19,7 @@
   position: relative;
   margin: 1.5rem;
   &::-webkit-scrollbar {
-    width: 0.30rem;
+    width: 0.3rem;
   }
   &::-webkit-scrollbar-track {
     background: $white;
@@ -33,7 +31,7 @@
   &::-webkit-scrollbar-track-piece:end {
     margin-bottom: 0.5rem;
   }
-  &::-webkit-scrollbar-track-piece:start {
-    margin-top: 0.5rem;
-  }
+}
+.customRowStyling:hover {
+  background-color:$tableHover;
 }

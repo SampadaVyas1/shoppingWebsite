@@ -16,6 +16,7 @@ const Images = {
   upArrowEnabled:require("./upArrowEnabled.svg").default,
   downArrowDisabled:require("./downArrowDisabled.svg").default,
   downArrowEnabled:require("./downArrowEnabled.svg").default,
+  moreVerticalcon:require("./moreVerticalcon.svg").default,
 };
 
 export default Images;

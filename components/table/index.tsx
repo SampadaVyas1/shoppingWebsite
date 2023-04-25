@@ -24,14 +24,16 @@ export const TableComponent = (props: ITableComponent) => {
     fieldforDateFormat,
     dataFormatType,
     customStyle,
+    customRowStyling,
+    moreverticalIcon,
   } = props;
-
   const {
     upArrowDisabled,
     upArrowEnabled,
     downArrowDisabled,
     downArrowEnabled,
   } = Images;
+
   const generateColumns = (columnHeaderTitle: IHeaderTitleProps[]) => {
     return (
       !!columnHeaderTitle &&
@@ -90,7 +92,12 @@ export const TableComponent = (props: ITableComponent) => {
   };
 
   return (
-    <Table data={data} className={styles.rcTable} components={customStyle}>
+    <Table
+      data={!!data && data}
+      className={styles.rcTable}
+      components={customStyle}
+      rowClassName={customRowStyling}
+    >
       {generateColumns(columnHeaderTitle)}
     </Table>
   );

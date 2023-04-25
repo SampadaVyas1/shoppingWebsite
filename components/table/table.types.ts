@@ -29,21 +29,23 @@ export interface IRecordProps {
 }
 
 export interface ITableComponent {
-  additionalValue: IAdditionalValue[];
+  additionalValue?: IAdditionalValue[];
   data: any;
+  customRowStyling:string;
   columnHeaderTitle: {
     id: number;
     title: string;
     sort?: boolean | false;
   }[];
-  sortbuttonData: {
+  sortbuttonData?: {
     [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
   };
-  dataFormatType: string;
-  fieldforDateFormat: { time: string };
+  dataFormatType?: string;
+  fieldforDateFormat?: { time: string };
   customStyle?: {
     header: {
       row: (props: any[]) => JSX.Element;
     };
   };
+  moreverticalIcon:boolean,
 }

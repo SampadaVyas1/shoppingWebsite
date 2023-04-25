@@ -3,18 +3,20 @@ import dayjs from "dayjs";
 import styles from "./tableCell.module.scss";
 import { IExtraField, ITable } from "./tableCell.types";
 import Typography from "../../typography/index";
+import ImageComponent from "../../image/index"
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import Images from "@/public/assets/icons";
 
  const TableCell  = (props: ITable) => {
   const { dataIndex, record, field, additionalValue,dataFormatType } = props;
   return (
     <div className={styles.table}>
       <div>
-        {dataIndex === field.time ? (
+        {!!field && dataIndex === field.time ? (
           <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}>{dayjs(record[dataIndex]).format(dataFormatType)}</Typography>
         ) : 
         (
-          <Fragment>{record[dataIndex]}</Fragment>
+          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}>{record[dataIndex]}</Typography>
         )}
       </div>
       {!!additionalValue &&
@@ -31,6 +33,7 @@ import { TYPOGRAPHY_VARIANT } from "@/common/enums";
             </Fragment>
           );
         })}
+        
     </div>
   );
 };

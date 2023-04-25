@@ -42,6 +42,7 @@ const Candidates = () => {
         <tr {...props} className={styles.customHeaderStyle} />
       ),
     },
+    
   };
 
   return (
@@ -58,6 +59,9 @@ const Candidates = () => {
         fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
         dataFormatType={DATE_FORMAT.DD_MM_YYYY}
         customStyle={customStyle}
+        customRowStyling={styles.customRowStyling}
+        moreverticalIcon={true}
+
       />
     </InfiniteScroll>
   );
