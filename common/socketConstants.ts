@@ -10,4 +10,6 @@ export const SOCKET_ROUTES = {
   DISCONNECT: "disconnect",
   CREDENTIALS: "credentials",
   SEND_PERSONAL_MESSAGE: "send_personal_message",
+  SEND_MEDIA: "sendMedia",
+  GET_MEDIA: "getMedia",
 };

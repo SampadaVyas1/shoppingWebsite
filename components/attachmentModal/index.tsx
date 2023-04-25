@@ -1,27 +1,43 @@
-import Images from "@/public/assets/icons";
-import ImageComponent from "../imageComponent";
-import styles from "./attachmentModal.module.scss";
 import { useRef } from "react";
+import ImageComponent from "../imageComponent";
 import TransitionWrapper from "../transitionWrapper";
+import styles from "./attachmentModal.module.scss";
+import Images from "@/public/assets/icons";
+import { IAttachmentModalProps } from "./attachmentModal.types";
 
-const AttachmentModal = ({ open }: any) => {
-  const imageRef = useRef<any>(null);
-  const fileRef = useRef<any>(null);
+const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
+  const imageRef = useRef<HTMLInputElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const handleImageSelection = () => {
-    imageRef.current.click();
+    imageRef.current && imageRef.current.click();
   };
   const handleFileSelection = () => {
-    fileRef.current.click();
+    fileRef.current && fileRef.current.click();
+  };
+
+  const onImageSelect = (event: any) => {
+    const file = event.target.files[0];
+    file && onSelection(event.target.files[0]);
+  };
+
+  const onFileSelect = (event: any) => {
+    const file = event.target.files[0];
+    file && onSelection(event.target.files[0]);
   };
 
   return (
     <TransitionWrapper open={open}>
       <div className={styles.attachmentModal}>
         <div className={styles.imageAttachment} onClick={handleImageSelection}>
-          <input type="file" ref={imageRef} className={styles.fileInput} />
+          <input
+            type="file"
+            ref={imageRef}
+            className={styles.fileInput}
+            onChange={onImageSelect}
+          />
           <ImageComponent
-            src={Images.docsAttachmentIcon}
+            src={Images.imageAttachmentIcon}
             width={52}
             height={52}
           />
@@ -29,9 +45,10 @@ const AttachmentModal = ({ open }: any) => {
         <div className={styles.imageAttachment} onClick={handleFileSelection}>
           <input type="file" ref={fileRef} className={styles.fileInput} />
           <ImageComponent
-            src={Images.imageAttachmentIcon}
+            src={Images.docsAttachmentIcon}
             width={52}
             height={52}
+            onChange={onFileSelect}
           />
         </div>
       </div>

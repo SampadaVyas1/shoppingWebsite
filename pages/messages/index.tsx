@@ -10,6 +10,7 @@ import styles from "./messages.module.scss";
 import MessagePlaceholder from "../../public/assets/images/messagePlaceholder.svg";
 import Images from "@/public/assets/icons";
 import candidateData from "./candidates.json";
+import levelData from "../../helpers/levelsData.json";
 import CandidateList from "./candidateList";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
@@ -24,6 +25,7 @@ import {
   increaseUnreadCount,
   updateMessage,
 } from "@/common/dbUtils";
+import Tag from "@/components/tag";
 
 const Messages = () => {
   const [selectedCandidate, setSelectedCandidate] = useState<any>(null);
@@ -90,14 +92,22 @@ const Messages = () => {
   return (
     <div className={styles.messagesPage}>
       <div className={styles.candidateList}>
+        <div className={styles.searchBar}>
+          <InputBox startIcon={Images.search} placeholder="Search" />
+        </div>
         <div className={styles.searchFilter}>
-          <InputBox
-            startIcon={Images.search}
-            placeholder="Search"
-            customClass={styles.searchBar}
-          />
+          <div className={styles.levelFilter}>
+            {levelData.map((levels, index) => (
+              <Tag
+                tagValue={{ id: levels.id, label: levels.level }}
+                // active
+                key={index}
+              />
+            ))}
+          </div>
           <ImageComponent src={Images.filterIcon} customClass={styles.filter} />
         </div>
+
         {candidateData.length ? (
           <CandidateList
             candidateData={candidateData}

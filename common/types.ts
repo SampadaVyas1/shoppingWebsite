@@ -11,11 +11,7 @@ export interface ISentMessage {
   message: string;
   timestamp: string;
   messageType: string;
-  status?:
-    | MESSAGE_STATUS.DELIVERED
-    | MESSAGE_STATUS.READ
-    | MESSAGE_STATUS.RECEIVED
-    | MESSAGE_STATUS.SENT;
+  status?: MESSAGE_STATUS;
   to: string;
   from: string;
   phone?: string;

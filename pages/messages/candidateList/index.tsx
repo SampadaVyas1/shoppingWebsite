@@ -1,15 +1,18 @@
-import Images from "@/public/assets/icons";
+import moment from "moment";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/db";
+import CandidateListCard from "../candidateListCard";
+import SkeletonLoader from "@/components/skeletonLoader";
 import styles from "./candidateList.module.scss";
 import { skeletonArray } from "../chatBody/chatBody.constants";
-import SkeletonLoader from "@/components/skeletonLoader";
 import { MESSAGE_STATUS, SKELETON_VARIANT } from "@/common/enums";
-import { db } from "@/db";
-import { useLiveQuery } from "dexie-react-hooks";
-import { getMessages, sortMessages } from "@/common/dbUtils";
-import moment from "moment";
+import { sortMessages } from "@/common/dbUtils";
 import { ICandidateListCardProps } from "../candidateListCard/candidateListCard.types";
-import CandidateListCard from "../candidateListCard";
-const CandidateList = (props: any) => {
+import { ICandidateListProps } from "./candidateList.types";
+import { useCallback } from "react";
+
+const CandidateList = (props: ICandidateListProps) => {
+  const { isLoading, selectedData, candidateData, onSelect } = props;
   const conversations = useLiveQuery(() => {
     return db.conversations.toArray();
   });
@@ -17,7 +20,13 @@ const CandidateList = (props: any) => {
   const messageListData = useLiveQuery(() => {
     return db.messages.toArray();
   });
-  return props.isLoading ? (
+
+  const handleCandidateSelect = useCallback(
+    (candidate: ICandidateListCardProps) => () => onSelect(candidate),
+    [onSelect]
+  );
+
+  return isLoading ? (
     <div className={styles.listSkeleton}>
       {skeletonArray.map((element: number, index: number) => {
         return (
@@ -39,7 +48,7 @@ const CandidateList = (props: any) => {
     </div>
   ) : (
     <div className={styles.list}>
-      {props.candidateData.map(
+      {candidateData.map(
         (candidate: ICandidateListCardProps, index: number) => {
           const { name, mobile, id, profilePhoto } = candidate;
           const currentCandidateData = conversations?.find(
@@ -55,13 +64,8 @@ const CandidateList = (props: any) => {
             <CandidateListCard
               key={index}
               name={candidate.name}
-              status={
-                lastMessage?.status
-                  ? lastMessage.status
-                  : MESSAGE_STATUS.RECEIVED
-              }
-              onClick={() => props.onSelect(candidate)}
-              isSelected={props?.selectedData?.id === candidate?.id}
+              onClick={handleCandidateSelect(candidate)}
+              isSelected={selectedData?.id === candidate?.id}
               time={
                 lastMessage?.timestamp
                   ? moment
@@ -69,6 +73,7 @@ const CandidateList = (props: any) => {
                       .format("hh:mm A")
                   : ""
               }
+              status={lastMessage.status}
               profilePhoto={candidate.profilePhoto}
               message={lastMessage?.message}
               mobile={candidate.mobile}

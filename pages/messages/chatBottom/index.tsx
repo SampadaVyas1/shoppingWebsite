@@ -8,10 +8,17 @@ import { SKELETON_VARIANT } from "@/common/enums";
 import SkeletonLoader from "@/components/skeletonLoader";
 import AttachmentModal from "@/components/attachmentModal";
 import ClickAwayListener from "@/components/clickAway";
+import { SOCKET_ROUTES } from "@/common/socketConstants";
+import socket from "@/socket";
+import { useDispatch } from "react-redux";
+import { sendMedia } from "@/services/common.service";
+import { sagaActions } from "@/redux/constants";
 
 const ChatBottom = (props: any) => {
   const { mobile, message, handleMessageChange } = props;
   const [showAttachmentModal, toggleAttachmentModal] = useState<boolean>(false);
+
+  const dispatch = useDispatch();
 
   const handleClick = (
     event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>
@@ -20,6 +27,32 @@ const ChatBottom = (props: any) => {
     if (message.length) {
       props.onSend(message);
     }
+  };
+
+  const handleFileSelection = async (fileData: any) => {
+    const fileBuffer = await fileData.arrayBuffer();
+    const newMessage = {
+      caption: message,
+      type: "Image",
+      recipient_type: "Individual",
+      file: fileData,
+      fileName: fileData?.name,
+      to: mobile,
+    };
+    console.log(fileData);
+    // socket.on(SOCKET_ROUTES.GET_MEDIA, (data) => console.log(data));
+    const formData = new FormData();
+    formData.append("file", fileData);
+    formData.append("type", "Image");
+    formData.append("recipient_type", "Individual");
+    formData.append("fileName", fileData?.name);
+    formData.append("caption", message);
+    formData.append("to", mobile);
+    socket.emit(SOCKET_ROUTES.SEND_MEDIA, fileData);
+    // dispatch({
+    //   type: sagaActions.SEND_MEDIA_SAGA,
+    //   formData: formData,
+    // });
   };
 
   const handleAttachmentClick = () => {
@@ -62,7 +95,10 @@ const ChatBottom = (props: any) => {
           }
           onClick={handleAttachmentClick}
         />
-        <AttachmentModal open={showAttachmentModal} />
+        <AttachmentModal
+          open={showAttachmentModal}
+          onSelection={handleFileSelection}
+        />
       </ClickAwayListener>
       <InputBox
         placeholder="Enter message"

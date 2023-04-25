@@ -19,6 +19,17 @@
     border-radius: 0.25rem;
   }
 
+  .failedError {
+    align-self: flex-end;
+
+    .retry {
+      font-weight: 500;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
   .date {
     display: flex;
     align-self: center;

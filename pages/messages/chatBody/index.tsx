@@ -1,4 +1,5 @@
 import {
+  BUTTON_VARIANT,
   MESSAGE_STATUS,
   SKELETON_VARIANT,
   TOOLTIP_POSITION,
@@ -8,10 +9,9 @@ import TipContainer from "@/components/tipContainer";
 import Typography from "@/components/typography";
 import ImageComponent from "@/components/imageComponent";
 import Images from "@/public/assets/icons";
-import moment from "moment";
 import styles from "./chatBody.module.scss";
 import { IChatBodyProps } from "./chatBody.types";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import React from "react";
 import SkeletonLoader from "@/components/skeletonLoader";
 import { skeletonArray } from "./chatBody.constants";
@@ -19,10 +19,15 @@ import { db } from "@/db";
 import { useLiveQuery } from "dexie-react-hooks";
 import { getMessages, sortMessages } from "@/common/dbUtils";
 import { ISentMessage } from "@/common/types";
-import { formatTime, getCurrentDay, isSameDay } from "@/common/utils";
+import {
+  formatTime,
+  getCurrentDay,
+  getStatusImage,
+  isSameDay,
+} from "@/common/utils";
 
 const ChatBody = (props: IChatBodyProps) => {
-  const { phone } = props;
+  const { phone, onRetry } = props;
 
   const messageListData = useLiveQuery(() => {
     return db.messages.where("phone").equals(phone).toArray();
@@ -35,25 +40,27 @@ const ChatBody = (props: IChatBodyProps) => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleRetry = useCallback(
+    (message: string, messageId: string) => () => {
+      onRetry(message, messageId);
+    },
+    [onRetry]
+  );
+
   useEffect(() => {
     scrollToBottom();
   }, [messageListData, messagesEndRef]);
 
-  const { readIcon, sentIcon, deliveredIcon } = Images;
+  const { readIcon, sentIcon, deliveredIcon, errorIcon } = Images;
 
   return (
     <div className={styles.messageBody}>
       {!!messageListData &&
         sortMessages(messageListData)?.map(
           (messageData: ISentMessage, index: number) => {
-            const { status, timestamp, message } = messageData;
+            const { status, timestamp, message, messageId } = messageData;
             const messageType = status ? "sent" : "received";
-            const icon =
-              status === MESSAGE_STATUS.READ
-                ? readIcon
-                : status === MESSAGE_STATUS.DELIVERED
-                ? deliveredIcon
-                : sentIcon;
+            const icon = getStatusImage(status!);
 
             return (
               <React.Fragment key={index}>
@@ -97,6 +104,20 @@ const ChatBody = (props: IChatBodyProps) => {
                     </div>
                   </div>
                 </TipContainer>
+                {status === MESSAGE_STATUS.FAILED && (
+                  <Typography
+                    variant={TYPOGRAPHY_VARIANT.ERROR}
+                    customStyle={styles.failedError}
+                  >
+                    Failed to send.
+                    <span
+                      className={styles.retry}
+                      onClick={handleRetry(message, messageId)}
+                    >
+                      Tap to retry.
+                    </span>
+                  </Typography>
+                )}
               </React.Fragment>
             );
           }

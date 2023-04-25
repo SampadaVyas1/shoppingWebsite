@@ -33,7 +33,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
     setMessage(value);
   };
 
-  const handleClick = async (message: string) => {
+  const handleClick = async (message: string, whatsappId: string = "") => {
     const timestamp = getTimeStamp();
     const messageId = `${uuid()}${timestamp}`;
     const newMessage = {
@@ -46,6 +46,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
       from: "11098",
     };
     setMessage("");
+    whatsappId.length && db.messages.delete(whatsappId);
     await updateMessage({ ...newMessage, phone: mobile });
     socket.emit(SOCKET_ROUTES.SEND_PERSONAL_MESSAGE, {
       messaging_product: "whatsapp",
@@ -138,6 +139,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
         ) : (
           <ChatBody
             phone={mobile}
+            onRetry={handleClick}
             isLoading={!props.isConnected || !isRoomJoined}
           />
         )}

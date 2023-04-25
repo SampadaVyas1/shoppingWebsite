@@ -4,6 +4,7 @@ import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
 import styles from "./candidateListCard.module.scss";
 import { ICandidateListCardProps } from "./candidateListCard.types";
+import { getStatusImage } from "@/common/utils";
 
 const CandidateListCard = (props: ICandidateListCardProps) => {
   const {
@@ -16,13 +17,8 @@ const CandidateListCard = (props: ICandidateListCardProps) => {
     isSelected,
   } = props;
 
-  const { readIcon, deliveredIcon, sentIcon } = Images;
-  const statusImage =
-    status === MESSAGE_STATUS.READ
-      ? readIcon
-      : status === MESSAGE_STATUS.DELIVERED
-      ? deliveredIcon
-      : sentIcon;
+  const { readIcon, deliveredIcon, sentIcon, errorIcon } = Images;
+  const statusImage = getStatusImage(status!);
   return (
     <div
       className={

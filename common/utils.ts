@@ -1,4 +1,6 @@
+import Images from "@/public/assets/icons";
 import moment from "moment";
+import { MESSAGE_STATUS } from "./enums";
 
 export const encodeToken = (data: string) => window.btoa(data);
 
@@ -44,4 +46,18 @@ export const getCurrentDay = (timestamp: string) => {
 
 export const formatTime = (timestamp: string) => {
   return moment.unix(parseInt(timestamp)).format("hh:mm A");
+};
+
+export const getStatusImage = (status: string) => {
+  const { readIcon, sentIcon, deliveredIcon, errorIcon, rectangle } = Images;
+  const icon =
+    status === MESSAGE_STATUS.READ
+      ? readIcon
+      : status === MESSAGE_STATUS.DELIVERED
+      ? deliveredIcon
+      : status === MESSAGE_STATUS.FAILED
+      ? errorIcon
+      : sentIcon;
+
+  return icon;
 };

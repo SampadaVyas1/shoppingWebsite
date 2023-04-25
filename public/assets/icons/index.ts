@@ -25,6 +25,7 @@ const Images = {
   rectangle: require("../images/rectangle.svg").default,
   docsAttachmentIcon: require("./docs.svg").default,
   imageAttachmentIcon: require("./gallery.svg").default,
+  errorIcon: require("./error.svg").default,
 };
 
 export default Images;

@@ -1,7 +1,7 @@
 @import "../../../styles/variables";
+@import "../../../styles/mixins";
 .list {
-  display: flex;
-  flex-direction: column;
+  @include flex-direction(column);
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -14,8 +14,7 @@
   }
 }
 .listSkeleton {
-  display: flex;
-  flex-direction: column;
+  @include flex-direction(column);
   overflow: hidden;
   gap: 1.25rem;
   padding: 0 2.5rem;
@@ -23,10 +22,8 @@
     display: flex;
     gap: 1rem;
     .contentSkeleton {
-      display: flex;
-      flex: 1;
+      @include flex-direction(column, 1);
       gap: 0.5rem;
-      flex-direction: column;
       padding: 0.5rem;
       justify-content: space-around;
       .skeletonBox {
