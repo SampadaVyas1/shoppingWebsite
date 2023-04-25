@@ -26,13 +26,13 @@ export const TableComponent = (props: ITableComponent) => {
     customStyle,
   } = props;
 
+  const {
+    upArrowDisabled,
+    upArrowEnabled,
+    downArrowDisabled,
+    downArrowEnabled,
+  } = Images;
   const generateColumns = (columnHeaderTitle: IHeaderTitleProps[]) => {
-    const {
-      upArrowDisabled,
-      upArrowEnabled,
-      downArrowDisabled,
-      downArrowEnabled,
-    } = Images;
     return (
       !!columnHeaderTitle &&
       columnHeaderTitle?.map((column: IHeaderTitleProps) => {

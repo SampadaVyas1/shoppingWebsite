@@ -1,7 +1,6 @@
 import React, { Fragment, ReactNode } from "react";
 import dayjs from "dayjs";
 import styles from "./tableCell.module.scss";
-import { DATE_FORMAT } from "@/common/constants";
 import { IExtraField, ITable } from "./tableCell.types";
 import Typography from "../../typography/index";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
