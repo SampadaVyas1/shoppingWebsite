@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import Table from "rc-table";
 import styles from "./table.module.scss";
 import {
@@ -25,7 +24,6 @@ export const TableComponent = (props: ITableComponent) => {
     dataFormatType,
     customStyle,
     customRowStyling,
-    moreverticalIcon,
   } = props;
   const {
     upArrowDisabled,
@@ -37,57 +35,58 @@ export const TableComponent = (props: ITableComponent) => {
   const generateColumns = (columnHeaderTitle: IHeaderTitleProps[]) => {
     return (
       !!columnHeaderTitle &&
-      columnHeaderTitle?.map((column: IHeaderTitleProps) => {
-        const dataIndex = toCamelCase(column.title);
-        return (
-          <Column
-            title={
-              <div className={styles.header}>
-                {column.title === TABLE_CONSTANTS.CHECKBOX ? (
-                  <CustomCheckBox />
+      columnHeaderTitle
+        ?.map((column: IHeaderTitleProps) => {
+          const dataIndex = toCamelCase(column.title);
+          return (
+            <Column
+              title={
+                <div className={styles.header}>
+                  {column.title === TABLE_CONSTANTS.CHECKBOX ? (
+                    <CustomCheckBox />
+                  ) : (
+                    <Typography
+                      variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
+                      children={column.title}
+                      customStyle={styles.title}
+                    />
+                  )}
+                  {!!column.sort && (
+                    <div className={styles.sortIcon}>
+                      <ImageComponent
+                        src={upArrowEnabled}
+                        width={10}
+                        height={10}
+                        className={styles.ascendingicon}
+                      />
+                      <ImageComponent
+                        src={downArrowEnabled}
+                        width={10}
+                        height={10}
+                        className={styles.ascendingicon}
+                      />
+                    </div>
+                  )}
+                </div>
+              }
+              dataIndex={dataIndex}
+              key={dataIndex}
+              render={(text: string, record: IRecordProps) =>
+                column.title == TABLE_CONSTANTS.CHECKBOX ? (
+                  <CustomCheckBox checked={record.checked} />
                 ) : (
-                  <Typography
-                    variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
-                    children={column.title}
-                    customStyle={styles.title}
+                  <TableCell
+                    dataIndex={dataIndex}
+                    record={record}
+                    field={fieldforDateFormat}
+                    additionalValue={additionalValue}
+                    dataFormatType={dataFormatType}
                   />
-                )}
-                {!!column.sort && (
-                  <div className={styles.sortIcon}>
-                    <ImageComponent
-                      src={upArrowEnabled}
-                      width={10}
-                      height={10}
-                      className={styles.ascendingicon}
-                    />
-                    <ImageComponent
-                      src={downArrowEnabled}
-                      width={10}
-                      height={10}
-                      className={styles.ascendingicon}
-                    />
-                  </div>
-                )}
-              </div>
-            }
-            dataIndex={dataIndex}
-            key={dataIndex}
-            render={(text: string, record: IRecordProps) =>
-              column.title == TABLE_CONSTANTS.CHECKBOX ? (
-                <CustomCheckBox checked={record.checked} />
-              ) : (
-                <TableCell
-                  dataIndex={dataIndex}
-                  record={record}
-                  field={fieldforDateFormat}
-                  additionalValue={additionalValue}
-                  dataFormatType={dataFormatType}
-                />
-              )
-            }
-          />
-        );
-      })
+                )
+              }
+            />
+          );
+        })
     );
   };
 

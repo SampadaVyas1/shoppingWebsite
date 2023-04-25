@@ -3,9 +3,7 @@ import dayjs from "dayjs";
 import styles from "./tableCell.module.scss";
 import { IExtraField, ITable } from "./tableCell.types";
 import Typography from "../../typography/index";
-import ImageComponent from "../../image/index"
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
-import Images from "@/public/assets/icons";
 
  const TableCell  = (props: ITable) => {
   const { dataIndex, record, field, additionalValue,dataFormatType } = props;

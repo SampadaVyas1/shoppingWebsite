@@ -31,7 +31,7 @@ export interface IRecordProps {
 export interface ITableComponent {
   additionalValue?: IAdditionalValue[];
   data: any;
-  customRowStyling:string;
+  customRowStyling?: string;
   columnHeaderTitle: {
     id: number;
     title: string;
@@ -47,5 +47,5 @@ export interface ITableComponent {
       row: (props: any[]) => JSX.Element;
     };
   };
-  moreverticalIcon:boolean,
+  moreverticalIcon?: boolean;
 }
