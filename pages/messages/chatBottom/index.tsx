@@ -48,11 +48,10 @@ const ChatBottom = (props: any) => {
     formData.append("fileName", fileData?.name);
     formData.append("caption", message);
     formData.append("to", mobile);
-    socket.emit(SOCKET_ROUTES.SEND_MEDIA, fileData);
-    // dispatch({
-    //   type: sagaActions.SEND_MEDIA_SAGA,
-    //   formData: formData,
-    // });
+    socket.emit(SOCKET_ROUTES.SEND_MEDIA, {
+      file: fileData,
+      fileName: fileData.name,
+    });
   };
 
   const handleAttachmentClick = () => {

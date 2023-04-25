@@ -1,26 +1,26 @@
 [
   {
     "id": "1",
-    "level": "Screening"
+    "label": "Screening"
   },
   {
     "id": "2",
-    "level": "L1 Interview"
+    "label": "L1 Interview"
   },
   {
     "id": "3",
-    "level": "L2 Interview"
+    "label": "L2 Interview"
   },
   {
     "id": "4",
-    "level": "HM Interview"
+    "label": "HM Interview"
   },
   {
     "id": "5",
-    "level": "Selected"
+    "label": "Selected"
   },
   {
     "id": "6",
-    "level": "Rejected"
+    "label": "Rejected"
   }
 ]

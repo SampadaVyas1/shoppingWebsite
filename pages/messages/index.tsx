@@ -14,7 +14,7 @@ import levelData from "../../helpers/levelsData.json";
 import CandidateList from "./candidateList";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MessageScreen from "./messageScreen";
 import React from "react";
 import socket from "@/socket";
@@ -26,12 +26,25 @@ import {
   updateMessage,
 } from "@/common/dbUtils";
 import Tag from "@/components/tag";
+import { ITagType } from "@/components/tag/tag.types";
 
 const Messages = () => {
   const [selectedCandidate, setSelectedCandidate] = useState<any>(null);
+  const [selectedLevels, setSelectedLevels] = useState<ITagType[]>([]);
 
   const handleCandidateSelect = (candidate: any) => {
     setSelectedCandidate(candidate);
+  };
+  const handleTagSelect = (tag: ITagType) => {
+    console.log(selectedLevels);
+    const isSelected = selectedLevels.length && selectedLevels.includes(tag);
+    if (isSelected) {
+      setSelectedLevels(
+        selectedLevels.filter((levels) => levels.id !== tag.id)
+      );
+    } else {
+      setSelectedLevels([...selectedLevels, tag]);
+    }
   };
 
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -99,8 +112,9 @@ const Messages = () => {
           <div className={styles.levelFilter}>
             {levelData.map((levels, index) => (
               <Tag
-                tagValue={{ id: levels.id, label: levels.level }}
-                // active
+                tagValue={{ id: levels.id, label: levels.label }}
+                active={selectedLevels.includes(levels)}
+                onClick={() => handleTagSelect(levels)}
                 key={index}
               />
             ))}

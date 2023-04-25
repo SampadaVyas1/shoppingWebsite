@@ -63,3 +63,9 @@ export enum MESSAGE_STATUS {
   FAILED = "FAILED",
   SENDING="SENDING"
 }
+
+export enum BUTTON_SIZES {
+  LARGE = "large",
+  MEDIUM = "medium",
+  SMALL = "small",
+}
