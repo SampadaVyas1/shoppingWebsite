@@ -4,6 +4,9 @@ export enum EVENT {
   MOUSE_UP = "mouseup",
   POINTER_DOWN = "pointerdown",
   POINTER_UP = "pointerup",
+  DRAG_ENTER = "dragenter",
+  DRAG_OVER = "dragover",
+  DRAG_LEAVE = "dragleave",
 }
 
 export enum VARIANT {
@@ -39,9 +42,9 @@ export enum TYPOGRAPHY_VARIANT {
   HEADER_SMALL = "headerSmall",
   TEXT_LARGE_MEDIUM = "textLargeMedium",
   TEXT_LARGE_REGULAR = "textLargeRegular",
-  TEXT_MEDIUM_SEMIBOLD = "textMediumSemiBold ",
+  TEXT_MEDIUM_SEMIBOLD = "textMediumSemiBold",
   TEXT_MEDIUM_REGULAR = "textMediumRegular",
-  TEXT_SMALL_SEMIBOLD = "textSmallSemiBold ",
+  TEXT_SMALL_SEMIBOLD = "textSmallSemiBold",
   TEXT_SMALL_MEDIUM = "textSmallMedium",
   TEXT_SMALL_REGULAR = "textSmallRegular",
   ERROR = "error",
@@ -68,4 +71,20 @@ export enum BUTTON_SIZES {
   LARGE = "large",
   MEDIUM = "medium",
   SMALL = "small",
+}
+
+export enum BUTTON_TYPES {
+  RESET = "reset",
+  SUBMIT = "submit",
+  BUTTON = "button",
+}
+
+export enum FILE_EXTENSION {
+  XLSX = ".xlsx",
+  CSV = ".csv",
+}
+
+export enum FILE_TYPES {
+  TYPE_XLSX = "types/xlsx",
+  TYPE_CSV = "types/csv",
 }

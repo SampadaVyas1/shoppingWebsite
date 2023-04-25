@@ -1,20 +1,24 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Popover } from "react-tiny-popover";
 import styles from "./select.module.scss";
 import Options from "./options";
 import ImageComponent from "../imageComponent";
+import Typography from "../typography";
 import OptionTags from "./optionTag";
 import MultiSelectOptions from "./multiselectOptions";
 import arrowDown from "../../public/assets/icons/arrowDown.svg";
 import arrowUp from "../../public/assets/icons/arrowUp.svg";
 import { IOptionType } from "@/common/types";
 import { ISelectProps, ISelectStates } from "./select.types";
+import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 
 const Select = (props: ISelectProps) => {
   const {
     options,
     open = false,
     value,
+    label,
+    error,
     placeholder = "Select",
     onSelect,
     multiSelect = false,
@@ -57,6 +61,7 @@ const Select = (props: ISelectProps) => {
 
   return (
     <div className={styles.selectOuterWrapper} ref={selectRef}>
+      {label && <div className={styles.label}>{label}</div>}
       <Popover
         isOpen={isDropdownOpen}
         positions={["bottom", "top"]}
@@ -91,7 +96,14 @@ const Select = (props: ISelectProps) => {
           );
         }}
       >
-        <div className={styles.selectBox} onClick={toggleOptions}>
+        <div
+          className={
+            isDropdownOpen
+              ? `${styles.focused} ${styles.selectBox}`
+              : styles.selectBox
+          }
+          onClick={toggleOptions}
+        >
           {!Array.isArray(selectedValue) ? (
             <div
               className={
@@ -112,6 +124,9 @@ const Select = (props: ISelectProps) => {
           />
         </div>
       </Popover>
+      {error && (
+        <Typography variant={TYPOGRAPHY_VARIANT.ERROR}>{error}</Typography>
+      )}
     </div>
   );
 };

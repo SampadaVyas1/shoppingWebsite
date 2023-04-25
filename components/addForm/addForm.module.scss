@@ -1,0 +1,33 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.addFormWrapper {
+  display: flex;
+  gap: 1rem;
+  .downloadLink {
+    color: $primary;
+    text-align: center;
+  }
+
+  .uploadForm {
+    flex: 1;
+  }
+
+  .addForm {
+    @include flex-justify-align(center);
+    width: 29rem;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-sizing: border-box;
+    background-color: $white;
+    border: 0.0625rem solid $formBorder;
+    box-shadow: $modalBoxShadow;
+
+    .field {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+}

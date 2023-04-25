@@ -2,22 +2,34 @@
 .selectOuterWrapper {
   display: flex;
   flex: 1;
+  gap: 0.25rem;
+  width: 100%;
   flex-direction: column;
   position: relative;
   border-radius: 0.5rem;
   background-color: $white;
 
+  .focused {
+    border: 0.0625rem solid $primary !important;
+    box-shadow: $inputBoxShadow;
+  }
+  .label {
+    font-size: 0.75rem;
+    line-height: 1.3125rem;
+    font-weight: 600;
+  }
   .selectBox {
     display: flex;
     min-width: 7.5rem;
-    padding: 0.75rem;
+    padding: 0.625rem;
     box-sizing: border-box;
-    font-size: 1rem;
-    line-height: 1.5rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
     border: $inputBoxBorder;
     border-radius: 0.5rem;
+    height: 2.5rem;
     max-height: 4.5rem;
-    overflow-y: scroll;
+    overflow-y: auto;
     &::-webkit-scrollbar {
       width: 0.25rem;
     }

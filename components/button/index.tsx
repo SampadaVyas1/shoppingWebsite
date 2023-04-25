@@ -1,7 +1,8 @@
 import styles from "./button.module.scss";
 import { BUTTON_SIZES, BUTTON_VARIANT } from "@/common/enums";
+import ImageComponent from "../image";
+import { BUTTON_TYPES } from "@/common/enums";
 import { IButtonProps } from "./button.types";
-import ImageComponent from "../imageComponent";
 
 const Button = (props: IButtonProps) => {
   const {
@@ -11,6 +12,7 @@ const Button = (props: IButtonProps) => {
     endIcon,
     children,
     customStyle,
+    type = BUTTON_TYPES.BUTTON,
     ...otherProps
   } = props;
 
@@ -21,6 +23,7 @@ const Button = (props: IButtonProps) => {
     <button
       className={`${styles[variant]} ${buttonClass} ${styles[size]}`}
       {...otherProps}
+      type={type}
       disabled={props.disabled}
     >
       {!!startIcon && (

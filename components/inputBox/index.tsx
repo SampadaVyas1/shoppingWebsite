@@ -1,96 +1,139 @@
+/* eslint-disable react/display-name */
 import React, {
   ChangeEvent,
-  HTMLAttributes,
-  useEffect,
   useRef,
+  forwardRef,
+  useImperativeHandle,
+  RefObject,
+  useCallback,
   useState,
+  FocusEvent,
 } from "react";
+<<<<<<< HEAD
 import ImageComponent from "../imageComponent";
+=======
+>>>>>>> 438fa97f0f0cd6afca557fd3ff305e028aa82e60
 import styles from "./inputBox.module.scss";
+import ImageComponent from "../image";
+import Typography from "../typography";
+import { INPUT_PLACEHOLDER } from "@/common/constants";
+import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { IInputProps } from "./inputBox.types";
 
-const InputBox = (props: IInputProps) => {
-  const {
-    customClass,
-    value,
-    disabled,
-    multiline,
-    handleChange,
-    placeholder,
-    autoFocus,
-    pattern,
-    label,
-    error,
-    startIcon,
-    ...otherProps
-  } = props;
+const InputBox = React.forwardRef((props: IInputProps, ref) => {
+  const inputRef: RefObject<HTMLInputElement> | RefObject<HTMLTextAreaElement> =
+    useRef(null);
+  useImperativeHandle(ref, () => inputRef.current, []);
   const [customInputWrapperClass, setCustomInputWrapperClass] =
     useState<string>(
       props.disabled
         ? `${styles.inputWrapper} ${styles.disabled}`
-        : `${styles.inputWrapper}`
+        : styles.inputWrapper
     );
+  const {
+    customClass,
+    startIcon,
+    onStartIconClick,
+    multiline,
+    endIcon,
+    onEndIconClick,
+    rows,
+    wrap,
+    onChange,
+    inputProps,
+    textAreaProps,
+    label,
+    error,
+    ...otherProps
+  } = props;
 
-  const onFocus = () => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { onChange, disabled } = props;
+    !disabled && onChange && onChange(event);
+  };
+
+  const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const { onChange, disabled } = props;
+    !disabled && onChange && onChange(event);
+  };
+
+  const handleInputFocus = (event: FocusEvent<HTMLInputElement>) => {
+    const { onFocus } = props;
     setCustomInputWrapperClass(`${styles.inputWrapper} ${styles.focus}`);
+    onFocus && onFocus(event);
   };
-  const onBlur = () => {
+
+  const handleTextAreaFocus = (event: FocusEvent<HTMLTextAreaElement>) => {
+    const { onFocus } = props;
+    setCustomInputWrapperClass(`${styles.inputWrapper} ${styles.focus}`);
+    onFocus && onFocus(event);
+  };
+
+  const handleTextAreaBlur = (event: FocusEvent<HTMLTextAreaElement>) => {
+    const { onBlur } = props;
     setCustomInputWrapperClass(`${styles.inputWrapper}`);
+    onBlur && onBlur(event);
   };
 
-  const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    const value = event?.target?.value;
-    props.handleChange && props.handleChange(value);
+  const handleInputBlur = (event: FocusEvent<HTMLInputElement>) => {
+    console.log("hello");
+    const { onBlur } = props;
+    setCustomInputWrapperClass(`${styles.inputWrapper}`);
+    onBlur && onBlur(event);
   };
-  const inputElement = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (autoFocus) {
-      inputElement.current?.focus();
-    }
-  }, [autoFocus]);
 
   return (
-    <div className={styles.inputBox}>
-      {label && <div className={styles.label}>{label}</div>}
-
+    <div className={styles.inputOuter}>
+      {label && (
+        <Typography variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_SEMIBOLD}>
+          {label}
+        </Typography>
+      )}
       <div className={`${customClass} ${customInputWrapperClass}`}>
         {startIcon && (
-          <ImageComponent src={startIcon} customClass={styles.startIcon} />
+          <div className={styles.startIcon} onClick={onStartIconClick}>
+            <ImageComponent src={startIcon} className={styles.icon} />
+          </div>
         )}
         {multiline ? (
           <textarea
+            {...otherProps}
+            {...textAreaProps}
+            ref={inputRef as RefObject<HTMLTextAreaElement>}
             className={styles.inputField}
-            disabled={disabled}
-            value={value}
-            onChange={handleInputChange}
-            rows={2}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            placeholder={placeholder}
+            rows={rows}
+            wrap={wrap}
+            onChange={handleTextAreaChange}
+            onFocus={handleTextAreaFocus}
+            onBlur={handleTextAreaBlur}
+            autoComplete="off"
           />
         ) : (
           <input
-            className={styles.inputField}
             {...otherProps}
-            disabled={disabled}
-            value={value}
+            {...inputProps}
+            ref={inputRef as RefObject<HTMLInputElement>}
+            className={styles.inputField}
             onChange={handleInputChange}
-            onFocus={onFocus}
-            onBlur={onBlur}
-            tabIndex={0}
-            autoFocus={autoFocus}
-            pattern={pattern}
-            ref={inputElement}
-            placeholder={placeholder}
+            onFocus={handleInputFocus}
+            onBlur={handleInputBlur}
+            autoComplete="off"
           />
         )}
+        {endIcon && (
+          <div className={styles.endIcon} onClick={onEndIconClick}>
+            <ImageComponent src={endIcon} />
+          </div>
+        )}
       </div>
-      {error && <div className={styles.error}>{error}</div>}
+      {error && (
+        <Typography variant={TYPOGRAPHY_VARIANT.ERROR}>{error}</Typography>
+      )}
     </div>
   );
-};
-
+});
+InputBox.defaultProps = {
+  row: 2,
+  placeholder: INPUT_PLACEHOLDER,
+} as IInputProps;
 export default InputBox;

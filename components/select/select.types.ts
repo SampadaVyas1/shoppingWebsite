@@ -9,6 +9,8 @@ export interface ISelectProps {
   multiSelect?: boolean;
   masterCheck?: boolean;
   searchable?: boolean;
+  label?: string;
+  error?: string;
 }
 
 export interface ISelectStates {

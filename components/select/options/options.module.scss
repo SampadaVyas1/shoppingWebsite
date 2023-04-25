@@ -26,7 +26,7 @@
   .singleSelectOptions {
     display: flex;
     max-height: 11.25rem;
-    overflow-y: scroll;
+    overflow-y: auto;
     flex-direction: column;
     &::-webkit-scrollbar {
       width: 0.25rem;
