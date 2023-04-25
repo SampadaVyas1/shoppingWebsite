@@ -93,7 +93,6 @@ export const TableComponent = (props: ITableComponent) => {
   return (
     <Table
       data={!!data && data}
-      className={styles.rcTable}
       components={customStyle}
       rowClassName={customRowStyling}
     >

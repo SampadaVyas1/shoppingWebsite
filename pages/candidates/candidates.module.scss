@@ -12,6 +12,12 @@
 .customHeaderStyle {
   background-color: $tableHeader;
 }
+
+.table {
+  width: 100%;
+    background-color: $white;
+    border-collapse: collapse;
+}
 .scroll {
   height: 43.75rem;
   overflow-x: hidden;
@@ -33,5 +39,5 @@
   }
 }
 .customRowStyling:hover {
-  background-color:$tableHover;
+  background-color: $tableHover;
 }

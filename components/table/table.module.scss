@@ -1,14 +1,6 @@
 @import "../../styles/mixins";
 @import "../../styles/variables";
 
-.rcTable {
-  table {
-    width: 100%;
-    background-color: $white;
-    border-collapse: collapse;
-  }
-}
-
 .header {
   height: 2.25rem;
   @include flex-align-center;

@@ -20,6 +20,7 @@ const sortbuttonData = {
 const Candidates = () => {
   const [data, setData] = useState<IData[] | null>(null);
   const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
+  
   const handlePageChange = () => {
     fakeData.push(...fakeData);
     setData([...fakeData]);
@@ -36,7 +37,11 @@ const Candidates = () => {
       colspanValue: TABLE_CONSTANTS.TIME,
     },
   ];
+
   const customStyle = {
+    table: ({ ...props }) => {
+      return <table {...props} className={styles.table} />;
+    },
     header: {
       row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => (
         <tr {...props} className={styles.customHeaderStyle} />
