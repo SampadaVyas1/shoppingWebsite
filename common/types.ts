@@ -9,13 +9,15 @@ export interface IRouteType {
 
 export interface ISentMessage {
   messageId: string;
-  message: string;
+  message?: string;
   timestamp: string;
   messageType: string;
+  mediaUrl?: string | File | null;
   status?: MESSAGE_STATUS;
   to: string;
   from: string;
   phone?: string;
+  caption?: string;
 }
 export interface IOptionType {
   id: number;

@@ -26,6 +26,7 @@ const Images = {
   docsAttachmentIcon: require("./docs.svg").default,
   imageAttachmentIcon: require("./gallery.svg").default,
   errorIcon: require("./error.svg").default,
+  crossIconBlack: require("./crossIcon.svg").default,
 };
 
 export default Images;

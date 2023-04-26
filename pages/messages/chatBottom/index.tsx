@@ -1,57 +1,42 @@
 import React from "react";
+import { FormEvent, useState } from "react";
+import { v4 as uuid } from "uuid";
 import ImageComponent from "@/components/imageComponent";
 import InputBox from "@/components/inputBox";
-import Images from "@/public/assets/icons";
-import styles from "./chatBottom.module.scss";
-import { FormEvent, useState } from "react";
-import { SKELETON_VARIANT } from "@/common/enums";
 import SkeletonLoader from "@/components/skeletonLoader";
 import AttachmentModal from "@/components/attachmentModal";
 import ClickAwayListener from "@/components/clickAway";
-import { SOCKET_ROUTES } from "@/common/socketConstants";
-import socket from "@/socket";
-import { useDispatch } from "react-redux";
-import { sendMedia } from "@/services/common.service";
-import { sagaActions } from "@/redux/constants";
+import Tag from "@/components/tag";
+import styles from "./chatBottom.module.scss";
+import Images from "@/public/assets/icons";
+import { IChatBottomProps } from "./chatBottom.types";
+import { SKELETON_VARIANT } from "@/common/enums";
 
-const ChatBottom = (props: any) => {
-  const { mobile, message, handleMessageChange } = props;
+const ChatBottom = (props: IChatBottomProps) => {
+  const {
+    mobile,
+    message,
+    handleMessageChange,
+    selectedFile,
+    onFileSelection,
+    onSend,
+    onFileRemoval,
+  } = props;
+
   const [showAttachmentModal, toggleAttachmentModal] = useState<boolean>(false);
-
-  const dispatch = useDispatch();
 
   const handleClick = (
     event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>
   ) => {
     event.preventDefault();
-    if (message.length) {
-      props.onSend(message);
+    if (message.length || selectedFile?.file?.name) {
+      onSend(message);
     }
   };
 
-  const handleFileSelection = async (fileData: any) => {
-    const fileBuffer = await fileData.arrayBuffer();
-    const newMessage = {
-      caption: message,
-      type: "Image",
-      recipient_type: "Individual",
-      file: fileData,
-      fileName: fileData?.name,
-      to: mobile,
-    };
-    console.log(fileData);
-    // socket.on(SOCKET_ROUTES.GET_MEDIA, (data) => console.log(data));
-    const formData = new FormData();
-    formData.append("file", fileData);
-    formData.append("type", "Image");
-    formData.append("recipient_type", "Individual");
-    formData.append("fileName", fileData?.name);
-    formData.append("caption", message);
-    formData.append("to", mobile);
-    socket.emit(SOCKET_ROUTES.SEND_MEDIA, {
-      file: fileData,
-      fileName: fileData.name,
-    });
+  const handleFileSelection = async (fileData: any, type: string) => {
+    onFileSelection(fileData, type);
+    handleCloseAttachmentModal();
   };
 
   const handleAttachmentClick = () => {
@@ -99,16 +84,26 @@ const ChatBottom = (props: any) => {
           onSelection={handleFileSelection}
         />
       </ClickAwayListener>
+      {selectedFile?.file?.name && (
+        <Tag
+          active
+          tagValue={{ id: uuid(), label: selectedFile.file.name }}
+          onDelete={onFileRemoval}
+          customClass={styles.fileName}
+        />
+      )}
       <InputBox
         placeholder="Enter message"
         value={message}
         customClass={styles.input}
-        handleChange={handleMessageChange}
+        onChange={handleMessageChange}
       />
       <ImageComponent
         src={Images.sendIcon}
         customClass={
-          message.length ? `${styles.icon} ${styles.active}` : styles.icon
+          message?.length || selectedFile?.file?.name
+            ? `${styles.icon} ${styles.active}`
+            : styles.icon
         }
         onClick={handleClick}
       />

@@ -17,7 +17,6 @@ const CandidateListCard = (props: ICandidateListCardProps) => {
     isSelected,
   } = props;
 
-  const { readIcon, deliveredIcon, sentIcon, errorIcon } = Images;
   const statusImage = getStatusImage(status!);
   return (
     <div

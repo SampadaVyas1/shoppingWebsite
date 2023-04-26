@@ -1,73 +1,95 @@
-import {
-  BUTTON_VARIANT,
-  TOOLTIP_POSITION,
-  TYPOGRAPHY_VARIANT,
-} from "@/common/enums";
+import React from "react";
+import { useEffect, useState } from "react";
+import socket from "@/socket";
+import { db } from "@/db";
 import Button from "@/components/button";
 import ImageComponent from "@/components/imageComponent";
-import Tooltip from "@/components/tooltip";
-import styles from "./messages.module.scss";
-import MessagePlaceholder from "../../public/assets/images/messagePlaceholder.svg";
-import Images from "@/public/assets/icons";
-import candidateData from "./candidates.json";
-import levelData from "../../helpers/levelsData.json";
 import CandidateList from "./candidateList";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
-import { useCallback, useEffect, useState } from "react";
 import MessageScreen from "./messageScreen";
-import React from "react";
-import socket from "@/socket";
-import { db } from "@/db";
-import { SOCKET_ROUTES } from "@/common/socketConstants";
-import {
-  addMessage,
-  increaseUnreadCount,
-  updateMessage,
-} from "@/common/dbUtils";
 import Tag from "@/components/tag";
+import styles from "./messages.module.scss";
+import Images from "@/public/assets/icons";
+import candidateData from "./candidates.json";
+import levelData from "../../helpers/levelsData.json";
+import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
+import { increaseUnreadCount, updateMessage } from "@/common/dbUtils";
+import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import MessagePlaceholder from "@/public/assets/images/messagePlaceholder.svg";
 import { ITagType } from "@/components/tag/tag.types";
+import { IMessagesStates } from "./messages.types";
+import { ICandidateListCardProps } from "./candidateListCard/candidateListCard.types";
+import { useAppSelector } from "@/redux/hooks";
 
 const Messages = () => {
-  const [selectedCandidate, setSelectedCandidate] = useState<any>(null);
-  const [selectedLevels, setSelectedLevels] = useState<ITagType[]>([]);
+  const [messagePageState, setMessagePageState] = useState<IMessagesStates>({
+    selectedCandidate: {} as ICandidateListCardProps,
+    selectedLevels: [],
+    isConnected: false,
+    searchValue: "",
+  });
+  const { phone } = useAppSelector((state) => state.messages);
+  const { selectedLevels, selectedCandidate, isConnected, searchValue } =
+    messagePageState;
 
   const handleCandidateSelect = (candidate: any) => {
-    setSelectedCandidate(candidate);
+    setMessagePageState((prevState) => ({
+      ...prevState,
+      selectedCandidate: candidate,
+    }));
   };
   const handleTagSelect = (tag: ITagType) => {
-    console.log(selectedLevels);
     const isSelected = selectedLevels.length && selectedLevels.includes(tag);
-    if (isSelected) {
-      setSelectedLevels(
-        selectedLevels.filter((levels) => levels.id !== tag.id)
-      );
-    } else {
-      setSelectedLevels([...selectedLevels, tag]);
-    }
+
+    setMessagePageState((prevState) => ({
+      ...prevState,
+      selectedLevels: isSelected
+        ? selectedLevels.filter((levels) => levels.id !== tag.id)
+        : [...selectedLevels, tag],
+    }));
   };
 
-  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const handleSearch = (event: any) => {
+    setMessagePageState((prevState) => ({
+      ...prevState,
+      searchValue: event.target.value,
+    }));
+  };
+
+  const handleClearSearch = () => {
+    searchValue &&
+      setMessagePageState((prevState) => ({
+        ...prevState,
+        searchValue: "",
+      }));
+  };
 
   useEffect(() => {
     if (!socket.connected) {
       socket.connect();
       socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-        phoneId: "106886972321301",
-        userId: "11098",
+        phoneId: SOCKET_CONSTANTS.PHONE_ID,
+        userId: SOCKET_CONSTANTS.USER_ID,
       });
 
       socket.on(SOCKET_ROUTES.CONNECT, () => {
         socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-          phoneId: "106886972321301",
-          userId: "11098",
+          phoneId: SOCKET_CONSTANTS.PHONE_ID,
+          userId: SOCKET_CONSTANTS.USER_ID,
         });
-        setIsConnected(true);
+        setMessagePageState((prevState) => ({
+          ...prevState,
+          isConnected: true,
+        }));
       });
 
       socket.on(SOCKET_ROUTES.DISCONNECT, () => {
         console.log("disconnect");
-        setIsConnected(false);
+        setMessagePageState((prevState) => ({
+          ...prevState,
+          isConnected: false,
+        }));
       });
     }
     return () => {
@@ -81,8 +103,10 @@ const Messages = () => {
         .where("messageId")
         .equals(data.id)
         .first();
-      if (matchedResult)
+      if (matchedResult) {
+        console.log(matchedResult, data.status);
         await updateMessage({ ...matchedResult, status: data.status });
+      }
     });
   }, []);
 
@@ -97,16 +121,22 @@ const Messages = () => {
         to: "11098",
         from: from,
       };
-      await increaseUnreadCount(from);
+      await increaseUnreadCount(from, phone);
       await updateMessage({ ...newMessage, phone: from });
     });
-  }, []);
+  }, [phone]);
 
   return (
     <div className={styles.messagesPage}>
       <div className={styles.candidateList}>
         <div className={styles.searchBar}>
-          <InputBox startIcon={Images.search} placeholder="Search" />
+          <InputBox
+            endIcon={searchValue ? Images.crossIconBlack : Images.search}
+            placeholder="Search..."
+            value={searchValue}
+            onEndIconClick={handleClearSearch}
+            onChange={handleSearch}
+          />
         </div>
         <div className={styles.searchFilter}>
           <div className={styles.levelFilter}>
@@ -153,7 +183,7 @@ const Messages = () => {
         ></Button>
       </div>
       <div className={styles.messageScreen}>
-        {!selectedCandidate ? (
+        {!selectedCandidate?.mobile ? (
           <ImageComponent
             src={MessagePlaceholder}
             customClass={styles.messagePlaceholder}
@@ -161,7 +191,7 @@ const Messages = () => {
         ) : (
           <MessageScreen
             candidateData={selectedCandidate}
-            userId="11098"
+            userId={SOCKET_CONSTANTS.USER_ID}
             isConnected={isConnected}
           />
         )}

@@ -1,19 +1,26 @@
-import { db } from "@/db";
-import { useLiveQuery } from "dexie-react-hooks";
+import { useState, useEffect, useCallback, ChangeEvent } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
 import { v4 as uuid } from "uuid";
+import { db } from "@/db";
+import socket from "@/socket";
+import ChatBodySkeleton from "../chatBody/chatBodySkeleton";
 import ChatBottom from "../chatBottom";
 import ChatHeader from "../chatHeader";
-import styles from "./messageScreen.module.scss";
-import socket from "@/socket";
-import { useState, useEffect, useCallback } from "react";
-import React from "react";
 import ChatBody from "../chatBody";
+import styles from "./messageScreen.module.scss";
 import { IMessageScreenProps } from "./messageScreen.types";
 import { getTimeStamp } from "@/common/utils";
-import { SOCKET_ROUTES } from "@/common/socketConstants";
-import { resetUnreadCount, updateMessage } from "@/common/dbUtils";
-import ChatBodySkeleton from "../chatBody/chatBodySkeleton";
+import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
+import {
+  getSentMessageData,
+  resetUnreadCount,
+  updateMessage,
+} from "@/common/dbUtils";
 import { MESSAGE_STATUS } from "@/common/enums";
+import { setPhone } from "@/redux/slices/messageSlice";
+import { ISelectedFile } from "../messages.types";
+import { useAppSelector } from "@/redux/hooks";
 
 const MessageScreen = (props: IMessageScreenProps) => {
   const {
@@ -27,37 +34,68 @@ const MessageScreen = (props: IMessageScreenProps) => {
 
   const [isRoomJoined, setRoomJoined] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-  const [userId, setUserId] = useState<string>("11098");
+  const [selectedFile, setSelectedFile] = useState<ISelectedFile | null>(null);
 
-  const handleMessageChange = (value: string) => {
-    setMessage(value);
+  const dispatch = useDispatch();
+
+  const handleMessageChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setMessage(event.target.value);
+  };
+
+  const handleFileSelect = (fileData: any, type: string) => {
+    setSelectedFile({ file: fileData, type });
+  };
+  const handleFileRemoval = () => {
+    setSelectedFile(null);
   };
 
   const handleClick = async (message: string, whatsappId: string = "") => {
-    const timestamp = getTimeStamp();
+    const timestamp = getTimeStamp().toString();
     const messageId = `${uuid()}${timestamp}`;
-    const newMessage = {
-      messageId: messageId,
-      message: message,
-      timestamp: `${timestamp}`,
-      messageType: "text",
-      status: MESSAGE_STATUS.SENT,
-      to: mobile,
-      from: "11098",
-    };
+    const newMessage = !selectedFile?.file?.name
+      ? getSentMessageData({
+          messageId,
+          message,
+          timestamp,
+          messageType: "text",
+          status: MESSAGE_STATUS.SENT,
+          to: mobile,
+          from: SOCKET_CONSTANTS.USER_ID,
+        })
+      : getSentMessageData({
+          messageId,
+          mediaUrl: selectedFile.file,
+          timestamp,
+          caption: message,
+          messageType: selectedFile.type,
+          status: MESSAGE_STATUS.SENDING,
+          to: mobile,
+          from: SOCKET_CONSTANTS.USER_ID,
+        });
     setMessage("");
+    selectedFile?.file?.name && setSelectedFile(null);
     whatsappId.length && db.messages.delete(whatsappId);
     await updateMessage({ ...newMessage, phone: mobile });
-    socket.emit(SOCKET_ROUTES.SEND_PERSONAL_MESSAGE, {
-      messaging_product: "whatsapp",
-      recipient_type: "individual",
-      to: mobile,
-      type: "text",
-      messageId: messageId,
-      text: {
-        body: message,
-      },
-    });
+    !selectedFile?.file?.name
+      ? socket.emit(SOCKET_ROUTES.SEND_PERSONAL_MESSAGE, {
+          messaging_product: SOCKET_CONSTANTS.MESSAGING_PRODUCT,
+          recipient_type: SOCKET_CONSTANTS.RECIPEINT_TYPE,
+          to: mobile,
+          type: "text",
+          messageId: messageId,
+          text: {
+            body: message,
+          },
+        })
+      : socket.emit(SOCKET_ROUTES.SEND_MEDIA, {
+          file: selectedFile?.file,
+          fileName: selectedFile.file.name,
+          caption: message,
+          messageId: messageId,
+          type: selectedFile.type,
+        });
   };
 
   useEffect(() => {
@@ -78,14 +116,43 @@ const MessageScreen = (props: IMessageScreenProps) => {
   }, []);
 
   useEffect(() => {
+    socket.on(SOCKET_ROUTES.GET_MEDIA, async (data: any) => {
+      const { id, receiverNumber, messageId, mediaUrl } = data;
+      const result = await db.messages
+        .where("messageId")
+        .equals(messageId)
+        .first();
+      if (result) {
+        await db.messages.update(messageId, {
+          ...result,
+          message: result?.message,
+          messageId: id,
+          mediaUrl: mediaUrl,
+        });
+      }
+    });
+  }, [mobile, props.isConnected]);
+
+  useEffect(() => {
     const receiveMessage = async (data: any) => {
-      const { from, wamid, messageType, timestamp, message } = data;
+      const {
+        from,
+        wamid,
+        messageType,
+        timestamp,
+        message,
+        imageId,
+        documentId,
+        caption,
+      } = data;
       const newMessage = {
         messageId: wamid,
         message: message,
         timestamp: timestamp,
         messageType: messageType,
-        to: "11098",
+        mediaUrl: imageId || documentId,
+        to: SOCKET_CONSTANTS.USER_ID,
+        caption: caption,
         from: from,
       };
       await updateMessage({ ...newMessage, phone: from });
@@ -114,14 +181,18 @@ const MessageScreen = (props: IMessageScreenProps) => {
         };
         console.log(syncObject);
       });
-      socket.emit(SOCKET_ROUTES.JOIN_ROOM, { to: mobile, userId: "11098" });
+      socket.emit(SOCKET_ROUTES.JOIN_ROOM, {
+        to: mobile,
+        userId: SOCKET_CONSTANTS.USER_ID,
+      });
+      dispatch(setPhone(mobile));
       localStorage.setItem("phone", mobile);
       socket.on(SOCKET_ROUTES.ROOM_STATUS, (data) => {
         setRoomJoined(true);
       });
       resetUnreadCount(mobile);
     }
-  }, [mobile, props.isConnected]);
+  }, [dispatch, mobile, props.isConnected]);
 
   return (
     <div className={styles.messageScreen}>
@@ -144,10 +215,12 @@ const MessageScreen = (props: IMessageScreenProps) => {
           />
         )}
         <ChatBottom
-          userId={userId}
           onSend={handleClick}
+          onFileSelection={handleFileSelect}
+          selectedFile={selectedFile}
           handleMessageChange={handleMessageChange}
           message={message}
+          onFileRemoval={handleFileRemoval}
           mobile={mobile}
           isLoading={!props.isConnected || !isRoomJoined}
         />

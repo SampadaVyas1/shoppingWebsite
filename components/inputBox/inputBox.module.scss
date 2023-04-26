@@ -1,69 +1,6 @@
 @import "../../styles/variables";
 @import "../../styles/mixins";
 
-// .disabled {
-//   box-shadow: $boxShadow !important;
-//   color: $disabledButtonColor !important;
-//   border: $inputBoxBorder !important;
-//   cursor: not-allowed !important;
-//   background-color: $listHoverColor !important;
-// }
-
-// .label {
-//   font-size: 0.75rem;
-//   line-height: 1.3125rem;
-//   font-weight: 600;
-// }
-// .error {
-//   font-size: 0.75rem;
-//   color: $error;
-// }
-// .inputBox {
-//   display: flex;
-//   flex: 1;
-//   flex-direction: column;
-//   gap: 0.25rem;
-
-//   .inputWrapper {
-//     @include flex-center-alignment;
-//     flex: 1;
-//     border: $inputBoxBorder;
-//     border-radius: 0.5rem;
-//     box-sizing: border-box;
-//     padding: 0.625rem 0.5rem;
-//     background-color: $white;
-//     max-height: 2.5rem;
-//     gap: 0.5rem;
-//     .startIcon {
-//       width: 1.125rem;
-//       height: 1.125rem;
-//     }
-
-//     .inputField {
-//       display: flex;
-//       flex: 1;
-//       background-color: inherit;
-//       line-height: 1.25rem;
-//       font-size: 0.875rem;
-//       box-sizing: border-box;
-//       padding-left: 0;
-//       overflow: hidden;
-//       white-space: nowrap;
-//       text-overflow: ellipsis;
-//       border: none;
-
-//       &:focus {
-//         outline: none;
-//       }
-//     }
-//   }
-// }
-
-// .focus {
-//   border: 0.0625rem solid $primary !important;
-//   box-shadow: $inputBoxShadow;
-// }
-
 .inputOuter {
   @include flex-direction(column);
   gap: 0.25rem;
@@ -79,16 +16,21 @@
 
 .inputWrapper {
   @include flex-center-alignment;
-  max-height: 2.5rem;
+  max-height: 3rem;
   flex: 1;
   border: $inputBoxBorder;
-  box-shadow: $inputBoxShadow;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
+  gap: 0.5rem;
   padding: 0.75rem 1rem;
   background-color: $white;
 
-  .startIcon {
-    padding-right: 0.5rem;
+  .startIcon,
+  .endIcon {
+    display: flex;
+    align-items: center;
+    width: 1.125rem;
+    height: 1.125rem;
+    justify-content: center;
   }
 
   .inputField {
@@ -96,10 +38,16 @@
     flex: 1;
     font-family: $Roboto;
     background-color: inherit;
-    font-size: 0.875rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
     padding-left: 0;
     border: none;
     resize: none;
+
+    &::placeholder {
+      font-family: $Roboto;
+      color: $placeholderText;
+    }
     &:focus {
       outline: none;
     }
@@ -116,6 +64,5 @@
 }
 
 .focus {
-  border: 0.0625rem solid $primary;
-  box-shadow: $inputBoxShadow;
+  border: 0.125rem solid $primary;
 }

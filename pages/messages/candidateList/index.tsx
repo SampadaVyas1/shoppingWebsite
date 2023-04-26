@@ -1,15 +1,15 @@
+import { useCallback } from "react";
 import moment from "moment";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/db";
 import CandidateListCard from "../candidateListCard";
 import SkeletonLoader from "@/components/skeletonLoader";
 import styles from "./candidateList.module.scss";
-import { skeletonArray } from "../chatBody/chatBody.constants";
-import { MESSAGE_STATUS, SKELETON_VARIANT } from "@/common/enums";
+import { SKELETON_VARIANT } from "@/common/enums";
 import { sortMessages } from "@/common/dbUtils";
 import { ICandidateListCardProps } from "../candidateListCard/candidateListCard.types";
 import { ICandidateListProps } from "./candidateList.types";
-import { useCallback } from "react";
+import { skeletonArray } from "../chatBody/chatBody.constants";
 
 const CandidateList = (props: ICandidateListProps) => {
   const { isLoading, selectedData, candidateData, onSelect } = props;
@@ -60,6 +60,7 @@ const CandidateList = (props: ICandidateListProps) => {
           const sortedMessages = sortMessages(currentMessages!);
           const lastMessage =
             !!sortedMessages && sortedMessages[sortedMessages.length - 1];
+
           return (
             <CandidateListCard
               key={index}
@@ -75,7 +76,9 @@ const CandidateList = (props: ICandidateListProps) => {
               }
               status={lastMessage.status}
               profilePhoto={candidate.profilePhoto}
-              message={lastMessage?.message}
+              message={
+                lastMessage?.message || lastMessage.caption || "file sent"
+              }
               mobile={candidate.mobile}
               unreadCount={currentCandidateData?.unreadCount}
             />

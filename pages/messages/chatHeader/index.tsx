@@ -1,38 +1,37 @@
-import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import ImageComponent from "@/components/imageComponent";
 import Typography from "@/components/typography";
-import styles from "./chatHeader.module.scss";
 import SkeletonLoader from "@/components/skeletonLoader";
-
-interface IChatHeaderProps {
-  name: string;
-  profileImage: string;
-  designation: string;
-  techStack: string;
-  interviewStatus: string;
-  isLoading: boolean;
-}
+import styles from "./chatHeader.module.scss";
+import { IChatHeaderProps } from "./chatHeader.types";
+import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 
 const ChatHeader = (props: IChatHeaderProps) => {
-  const { isLoading } = props;
+  const {
+    isLoading,
+    name,
+    designation,
+    techStack,
+    interviewStatus,
+    profileImage,
+  } = props;
   return !isLoading ? (
     <div className={styles.chatHeader}>
       <div className={styles.profile}>
         <ImageComponent
-          src={props?.profileImage}
+          src={profileImage}
           fallbackClass={styles.image}
           customClass={styles.image}
-          fallbackText={props?.name?.charAt(0)}
+          fallbackText={name?.charAt(0)}
         />
         <div className={styles.detail}>
           <Typography variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}>
-            {props.name}
+            {name}
           </Typography>
           <Typography
             variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
             customStyle={styles.hint}
           >
-            {props.designation}
+            {designation}
           </Typography>
         </div>
       </div>
@@ -41,13 +40,13 @@ const ChatHeader = (props: IChatHeaderProps) => {
           variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
           customStyle={styles.hint}
         >
-          {props.techStack}
+          {techStack}
         </Typography>
         <Typography
           variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_SEMIBOLD}
           customStyle={styles.status}
         >
-          {props.interviewStatus}
+          {interviewStatus}
         </Typography>
       </div>
     </div>

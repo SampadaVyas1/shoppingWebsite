@@ -18,12 +18,13 @@ const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
 
   const onImageSelect = (event: any) => {
     const file = event.target.files[0];
-    file && onSelection(event.target.files[0]);
+    file && onSelection(event.target.files[0], "image");
   };
 
   const onFileSelect = (event: any) => {
     const file = event.target.files[0];
-    file && onSelection(event.target.files[0]);
+    console.log(file);
+    file && onSelection(event.target.files[0], "document");
   };
 
   return (
@@ -35,6 +36,7 @@ const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
             ref={imageRef}
             className={styles.fileInput}
             onChange={onImageSelect}
+            accept="image/png, image/jpg, image/jpeg"
           />
           <ImageComponent
             src={Images.imageAttachmentIcon}
@@ -43,12 +45,18 @@ const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
           />
         </div>
         <div className={styles.imageAttachment} onClick={handleFileSelection}>
-          <input type="file" ref={fileRef} className={styles.fileInput} />
+          <input
+            type="file"
+            ref={fileRef}
+            accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+            text/plain, application/pdf"
+            className={styles.fileInput}
+            onChange={onFileSelect}
+          />
           <ImageComponent
             src={Images.docsAttachmentIcon}
             width={52}
             height={52}
-            onChange={onFileSelect}
           />
         </div>
       </div>

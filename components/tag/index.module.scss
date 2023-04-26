@@ -4,7 +4,6 @@
   padding: 0.375rem 0.75rem;
   line-height: 1.25rem;
   font-size: 0.875rem;
-  font-weight: 500;
   border-radius: 1rem;
   display: flex;
   align-items: center;
@@ -14,6 +13,9 @@
   letter-spacing: 0.25px;
   &:hover {
     cursor: pointer;
+  }
+  .tagText {
+    width: 100%;
   }
 }
 .active {

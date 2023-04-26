@@ -1,12 +1,10 @@
 import { REFRESH_TOKEN } from "@/common/constants";
 import axios from "axios";
 
-const sendMedia = async () => {
+export const getMedia = async (imageId: string) => {
   try {
-    const response = await axios.post(
-      "https://08ed-103-176-135-206.ngrok-free.app//whatsapp/sendMedia",
-      null,
-      {}
+    const response = await axios.get(
+      `https://graph.facebook.com/v15.0/${imageId}`
     );
     return response;
   } catch (error) {

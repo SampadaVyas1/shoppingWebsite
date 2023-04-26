@@ -40,7 +40,9 @@
       box-shadow: $inputBoxShadow;
     }
     .searchBar {
-      margin: 1.25rem 1.25rem 0 3rem;
+      margin-left: 3rem;
+      margin-right: 1.5rem;
+      margin-top: 1.5rem;
     }
     .searchFilter {
       display: flex;

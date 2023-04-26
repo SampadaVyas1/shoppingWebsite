@@ -1,4 +1,4 @@
 export interface IAttachmentModalProps {
   open?: boolean;
-  onSelection: (fileData: any) => void;
+  onSelection: (fileData: any, fileType: string) => void;
 }

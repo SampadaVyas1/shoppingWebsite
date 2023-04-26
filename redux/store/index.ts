@@ -1,12 +1,14 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import loginSlice from "../slices/loginSlice";
-import rootSaga from "../sagas/rootSaga";
 import commonSlice from "../slices/commonSlice";
+import rootSaga from "../sagas";
+import messageSlice from "../slices/messageSlice";
 
 const rootReducer = combineReducers({
   login: loginSlice,
   common: commonSlice,
+  messages: messageSlice,
 });
 
 const sagaMiddleware = createSagaMiddleware();
