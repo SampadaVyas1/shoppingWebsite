@@ -1,42 +1,77 @@
+// @import "../../styles/variables";
+// @import "../../styles/mixins";
+
+// .rcTable {
+//   table {
+//     width: 100%;
+//     background-color: $white;
+//     border-collapse: collapse;
+//   }
+// }
+// .header {
+//   height: 2.25rem;
+//   @include flex-align-center;
+//   padding: 0.5rem 0rem;
+//   gap: 0.5rem;
+
+//   .title {
+//     font-size: 1rem;
+//     font-weight: 500;
+//     color: $blue;
+//     height: 1.25rem;
+//     letter-spacing: 0.03rem;
+//   }
+//   .sortIcon {
+//     @include flex-center-alignment;
+//     flex-direction: column;
+//     .descendingicon {
+//       cursor: pointer;
+//     }
+
+//     .ascendingicon {
+//       cursor: pointer;
+//     }
+//   }
+// }
+// .tableCell {
+//   @include flex-justify-align(flex-start, flex-start);
+//   flex-direction: column;
+// }
+// .designation {
+//   color: $primaryText;
+//   text-overflow: ellipsis;
+//   overflow: hidden;
+//   white-space: nowrap;
+//   font-weight: 400;
+//   height: 1.25rem;
+// }
+// .scroll {
+//   height: 43.75rem;
+//   overflow-x: hidden;
+//   overflow-y: auto;
+//   position: relative;
+//   margin: 1.5rem;
+//   &::-webkit-scrollbar {
+//     width: 0.3rem;
+//   }
+//   &::-webkit-scrollbar-track {
+//     background: $white;
+//   }
+//   &::-webkit-scrollbar-thumb {
+//     background-color: $secondaryText;
+//     border-radius: 1rem;
+//   }
+//   &::-webkit-scrollbar-track-piece:end {
+//     margin-bottom: 0.5rem;
+//   }
+//   &::-webkit-scrollbar-track-piece:start {
+//     margin-top: 0.5rem;
+//   }
+// }
+
 @import "../../styles/variables";
 @import "../../styles/mixins";
 
-.rcTable {
-  table {
-    width: 100%;
-    background-color: $white;
-    border-collapse: collapse;
-  }
-}
-.header {
-  height: 2.25rem;
-  @include flex-align-center;
-  padding: 0.5rem 0rem;
-  gap: 0.5rem;
-
-  .title {
-    font-size: 1rem;
-    font-weight: 500;
-    color: $blue;
-    height: 1.25rem;
-    letter-spacing: 0.03rem;
-  }
-  .sortIcon {
-    @include flex-center-alignment;
-    flex-direction: column;
-    .descendingicon {
-      cursor: pointer;
-    }
-
-    .ascendingicon {
-      cursor: pointer;
-    }
-  }
-}
-.tableCell {
-  @include flex-justify-align(flex-start, flex-start);
-  flex-direction: column;
-}
 .designation {
   color: $primaryText;
   text-overflow: ellipsis;
@@ -44,6 +79,15 @@
   white-space: nowrap;
   font-weight: 400;
   height: 1.25rem;
+}
+.customHeaderStyle {
+  background-color: $tableHeader;
+}
+
+.table {
+  width: 100%;
+  background-color: $white;
+  border-collapse: collapse;
 }
 .scroll {
   height: 43.75rem;
@@ -64,7 +108,7 @@
   &::-webkit-scrollbar-track-piece:end {
     margin-bottom: 0.5rem;
   }
-  &::-webkit-scrollbar-track-piece:start {
-    margin-top: 0.5rem;
-  }
+}
+.customRowStyling:hover {
+  background-color: $tableHover;
 }

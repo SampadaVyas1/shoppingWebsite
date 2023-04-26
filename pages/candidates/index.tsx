@@ -1,29 +1,17 @@
-import React, { useCallback } from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./candidates.module.scss";
-import ImageComponent from "@/components/image";
 import InfiniteScroll from "@/components/infiniteScroll";
-import CustomCheckBox from "@/components/customCheckBox";
-import Table, { Column } from "rc-table";
-import {TABLE_CONSTANTS } from "@/common/constants";
 import fakeData from "./mockData.json";
-import Images from "@/public/assets/icons";
+import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
+import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
+import { TableComponent } from "@/components/table";
 import HeaderTitle from "./tableHeaderData.json";
 import {
-  checkIdeal,
-  checkMaster,
-  checkRow,
-  handleAllRowSelect,
-  descendingSort,
   ascendingSort,
+  descendingSort,
   handleRowEachSelect,
   sortDataByField,
-  toCamelCase,
 } from "@/common/utils";
-import TableCells from "@/components/table";
-import Typography from "@/components/typography";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
-import { IButtonState, IData, IHeaderTitleProps, IRecordProps } from "./candidates.types";
 
 const sortbuttonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
@@ -39,12 +27,6 @@ const Candidates = () => {
   const [selectedRow, setSelectedRow] = useState<number[]>([]);
   const [data, setData] = useState<IData[]>([]);
   const [buttonState, setButtonState] = useState(sortbuttonData);
-  const {
-    upArrowDisabled,
-    upArrowEnabled,
-    downArrowDisabled,
-    downArrowEnabled,
-  } = Images;
 
   const handleUpArrowClick = (field: string) => {
     !buttonState[field].upKeyDisabled &&
@@ -78,111 +60,56 @@ const Candidates = () => {
     setButtonState({
       ...buttonState,
       name: {
-        ...buttonState[ TABLE_CONSTANTS.NAME],
+        ...buttonState[TABLE_CONSTANTS.NAME],
         upKeyDisabled: true,
         downKeyDisabled: false,
       },
     });
   }, []);
 
-  const generateColumns = (HeaderTitle: IHeaderTitleProps[]) => {
-    return (
-      !!HeaderTitle &&
-      HeaderTitle?.map((column: IHeaderTitleProps) => {
-        const dataIndex = toCamelCase(column.title);
-        return (
-          <Column
-            title={
-              <div className={styles.header}>
-                {column.title === TABLE_CONSTANTS.CHECKBOX ? (
-                  <CustomCheckBox
-                    ideal={checkIdeal(selectedRow, data)}
-                    checked={checkMaster(selectedRow, data)}
-                    handleClick={handleAllRowSelect(
-                      data,
-                      selectedRow,
-                      handleRowSelect
-                    )}
-                    customClass={styles.checkBoxStyling}
-                  />
-                ) : (
-                  <Typography
-                    variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}
-                    children={column.title}
-                    customStyle={styles.title}
-                  />
-                )}
-                {!!column.sort && (
-                  <div className={styles.sortIcon}>
-                    <ImageComponent
-                      src={
-                        buttonState[dataIndex].upKeyDisabled
-                          ? upArrowDisabled
-                          : upArrowEnabled
-                      }
-                      width={10}
-                      height={10}
-                      onClick={() => handleUpArrowClick(dataIndex)}
-                      className={styles.ascendingicon}
-                    />
-                    <ImageComponent
-                      src={
-                        buttonState[dataIndex].downKeyDisabled
-                          ? downArrowDisabled
-                          : downArrowEnabled
-                      }
-                      width={10}
-                      height={10}
-                      onClick={() => handleDownArrowClick(dataIndex)}
-                      className={styles.ascendingicon}
-                    />
-                  </div>
-                )}
-              </div>
-            }
-            dataIndex={dataIndex}
-            key={dataIndex}
-            render={(text: string, record: IRecordProps, index: number) =>
-              column.title == TABLE_CONSTANTS.CHECKBOX ? (
-                <CustomCheckBox
-                  id={data[index]["id"]}
-                  handleClick={handleCheckBoxClick(data[index]["id"])}
-                  checked={checkRow(data[index]["id"], selectedRow)}
-                  customClass={styles.checkBoxStyling}
-                />
-              ) : (
-                // <TableCells dataIndex={dataIndex} data={data} index={index} />
-                <TableCells
-                  dataIndex={dataIndex}
-                  data={data}
-                  index={index}
-                  field={{ time: "createdTime" }}
-                  colspans={[
-                    {
-                      colspan: "name",
-                      colspanValue: "designation",
-                      customStyle: styles.designation,
-                    },
-                    { colspan: "createdTime", colspanValue: "time" },
-                  ]}
-                />
-              )
-            }
-          />
-        );
-      })
-    );
+  const additionalValue: IAdditionalValue[] = [
+    {
+      colspan: TABLE_CONSTANTS.NAME,
+      colspanValue: TABLE_CONSTANTS.DESIGNATION,
+      customStyle: styles.designation,
+    },
+    {
+      colspan: TABLE_CONSTANTS.CREATEDTIME,
+      colspanValue: TABLE_CONSTANTS.TIME,
+    },
+  ];
+  const customStyle = {
+    table: ({ ...props }) => {
+      return <table {...props} className={styles.table} />;
+    },
+    header: {
+      row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => (
+        <tr {...props} className={styles.customHeaderStyle} />
+      ),
+    },
   };
-
   return (
     <InfiniteScroll
       nextPage={true}
       handlePageChange={handlePageChange}
       customClass={styles.scroll}
     >
-      <Table data={data} className={styles.rcTable}>
-        {generateColumns(HeaderTitle)}
-      </Table>
+      <TableComponent
+        data={data}
+        columnHeaderTitle={HeaderTitle}
+        sortbuttonData={sortbuttonData}
+        additionalValue={additionalValue}
+        fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
+        dataFormatType={DATE_FORMAT.DD_MM_YYYY}
+        customStyle={customStyle}
+        customRowStyling={styles.customRowStyling}
+        buttonState={buttonState}
+        handleUpArrowClick={handleUpArrowClick}
+        handleDownArrowClick={handleDownArrowClick}
+        selectedRow={selectedRow}
+        handleRowSelect={handleRowSelect}
+        handleCheckBoxClick={handleCheckBoxClick}
+      />
     </InfiniteScroll>
   );
 };

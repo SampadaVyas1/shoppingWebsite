@@ -27,8 +27,12 @@ export const DATE_FORMAT = {
 
 export const TABLE_CONSTANTS = {
   CHECKBOX: "checkbox",
-  NAME:"name"
+  CREATEDTIME: "createdTime",
+  NAME: "name",
+  DESIGNATION: "designation",
+  TIME: "time",
 };
+
 export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";
 export const USER_TOKEN = "userToken";
