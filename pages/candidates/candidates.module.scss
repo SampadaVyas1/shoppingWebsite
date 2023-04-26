@@ -27,6 +27,7 @@
   margin: 1.5rem;
   &::-webkit-scrollbar {
     width: 0.3rem;
+    width: 0.3rem;
   }
   &::-webkit-scrollbar-track {
     background: $white;
@@ -37,7 +38,11 @@
   }
   &::-webkit-scrollbar-track-piece:end {
     margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
   }
+}
+.customRowStyling:hover {
+  background-color: $tableHover;
 }
 .customRowStyling:hover {
   background-color: $tableHover;
