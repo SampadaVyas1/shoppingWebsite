@@ -1,59 +1,31 @@
+import {
+  IAdditionalValue,
+  IButtonState,
+  IHeaderTitleProps,
+} from "@/pages/candidates/candidates.types";
 
-import { IAdditionalValue } from "@/pages/candidates/candidates.types";
-
-export interface IButtonState {
-  [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
+interface ICustomStyle {
+  header: {
+    row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => JSX.Element;
+  };
 }
-
-export interface IData {
-  [key: string]: any;
+export interface IHandleRowSelect {
+  (value: number[]) : void
 }
-
-export interface IHeaderTitleProps {
-  id: number;
-  title: string;
-  sort?: boolean | false;
-}
-
-export interface IRecordProps {
-  id: number;
-  name: string;
-  designation: string;
-  mobileNumber: string;
-  experienceLevel: string;
-  createdTime: string;
-  status: string;
-  recruiter: string;
-  techStack: string;
-  time: string;
-  checked: boolean;
-}
-
 export interface ITableComponent {
   additionalValue?: IAdditionalValue[];
-  data: any;
+  data: any[];
   customRowStyling?: string;
-  columnHeaderTitle: {
-    id: number;
-    title: string;
-    sort?: boolean | false;
-  }[];
-  sortbuttonData?: {
-    [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
-  };
+  columnHeaderTitle: IHeaderTitleProps[];
+  sortbuttonData?: IButtonState;
   dataFormatType?: string;
   fieldforDateFormat?: { time: string };
-  customStyle?: {
-    header: {
-      row: (props: any[]) => JSX.Element;
-    };
-  };
+  customStyle?: ICustomStyle;
   moreverticalIcon?: boolean;
-  buttonState?:any;
-  handleUpArrowClick?:any,
-  handleDownArrowClick:any,
-  selectedRow:any,
-  handleRowSelect:any
-  handleCheckBoxClick:any
+  buttonState?: IButtonState;
+  handleUpArrowClick?: (field: string) => void;
+  handleDownArrowClick?: (field: string) => void;
+  selectedRow: number[];
+  handleRowSelect: IHandleRowSelect;
+  handleCheckBoxClick: (id: number) => void;
 }
-

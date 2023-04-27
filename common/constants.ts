@@ -31,6 +31,7 @@ export const TABLE_CONSTANTS = {
   NAME: "name",
   DESIGNATION: "designation",
   TIME: "time",
+  ID:"id"
 };
 
 export const TOKEN = "token";

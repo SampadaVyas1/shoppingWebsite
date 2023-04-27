@@ -28,10 +28,34 @@ const Candidates = () => {
   const [data, setData] = useState<IData[]>([]);
   const [buttonState, setButtonState] = useState(sortbuttonData);
 
+  const additionalValue: IAdditionalValue[] = [
+    {
+      colspan: TABLE_CONSTANTS.NAME,
+      colspanValue: TABLE_CONSTANTS.DESIGNATION,
+      customStyle: styles.designation,
+    },
+    {
+      colspan: TABLE_CONSTANTS.CREATEDTIME,
+      colspanValue: TABLE_CONSTANTS.TIME,
+    },
+  ];
+
+  const customStyle = {
+    table: ({ ...props }) => {
+      return <table {...props} className={styles.table} />;
+    },
+    header: {
+      row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => (
+        <tr {...props} className={styles.customHeaderStyle} />
+      ),
+    },
+  };
+
   const handleUpArrowClick = (field: string) => {
     !buttonState[field].upKeyDisabled &&
       setData(ascendingSort(field, setButtonState, data));
   };
+  
   const handleDownArrowClick = (field: string) => {
     !buttonState[field].downKeyDisabled &&
       setData(descendingSort(field, setButtonState, data));
@@ -47,13 +71,10 @@ const Candidates = () => {
     setSelectedRow(value);
   };
 
-  const handleCheckBoxClick = useCallback(
-    (id: number) => () => {
+  const handleCheckBoxClick = (id: number)  => {
       handleRowEachSelect(id, selectedRow, handleRowSelect);
-    },
-    [selectedRow]
-  );
-
+    }
+   
   useEffect(() => {
     const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
     setData(newData);
@@ -66,28 +87,6 @@ const Candidates = () => {
       },
     });
   }, []);
-
-  const additionalValue: IAdditionalValue[] = [
-    {
-      colspan: TABLE_CONSTANTS.NAME,
-      colspanValue: TABLE_CONSTANTS.DESIGNATION,
-      customStyle: styles.designation,
-    },
-    {
-      colspan: TABLE_CONSTANTS.CREATEDTIME,
-      colspanValue: TABLE_CONSTANTS.TIME,
-    },
-  ];
-  const customStyle = {
-    table: ({ ...props }) => {
-      return <table {...props} className={styles.table} />;
-    },
-    header: {
-      row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => (
-        <tr {...props} className={styles.customHeaderStyle} />
-      ),
-    },
-  };
   return (
     <InfiniteScroll
       nextPage={true}

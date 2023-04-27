@@ -1,5 +1,3 @@
-import { useCallback } from "react";
-
 interface IData {
   [key: string]: any;
 }
@@ -7,7 +5,6 @@ interface IData {
 interface IButtonState {
   [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
 }
-
 
 export const encodeToken = (data: string) => window.btoa(data);
 
@@ -29,7 +26,7 @@ export const debounce = (callback: Function, wait: number = 100) => {
   };
 };
 
-export const sortDataByField  = (
+export const sortDataByField = (
   data: IData[],
   field: string,
   ascending: boolean = true
@@ -53,8 +50,7 @@ export const sortDataByField  = (
 export const ascendingSort = (
   field: string,
   setButtonState: any,
-  data: IData[],
- 
+  data: IData[]
 ) => {
   setButtonState((buttonState: IButtonState) => ({
     ...buttonState,
@@ -64,14 +60,14 @@ export const ascendingSort = (
       downKeyDisabled: false,
     },
   }));
-  const newData = !!data && sortDataByField (data, field, true);
-  return newData
+  const newData = !!data && sortDataByField(data, field, true);
+  return newData;
 };
 
 export const descendingSort = (
   field: string,
   setButtonState: any,
-  data: IData[],
+  data: IData[]
 ) => {
   setButtonState((buttonState: IButtonState) => ({
     ...buttonState,
@@ -81,8 +77,8 @@ export const descendingSort = (
       downKeyDisabled: true,
     },
   }));
-  const newData =!!data && sortDataByField (data, field, false);
-  return newData
+  const newData = !!data && sortDataByField(data, field, false);
+  return newData;
 };
 
 export const checkMaster = (selectedRow: number[], data: IData[] | null) => {
@@ -106,12 +102,10 @@ export const checkIdeal = (selectedRow: number[], data: IData[]) => {
     : false;
 };
 
-export function handleAllRowSelect(
+export const  handleAllRowSelect=(
   data: IData[],
   selectedRow: number[],
-  onSelectedRowChange: any
-) {
-  const handleSelect = useCallback(() => {
+  onSelectedRowChange: any)=> {
     const filteredArray = selectedRow?.filter(
       (id: number) => !!data && !data?.map((row: any) => row.id).includes(id)
     );
@@ -123,10 +117,9 @@ export function handleAllRowSelect(
             ...data.map((row: { [key: string]: any }) => row.id),
           ]);
     }
-  }, [selectedRow, data]);
+  }
+  
 
-  return handleSelect;
-}
 
 export function checkRow(id: number, selectedRow: number[]) {
   return selectedRow?.includes(id);
