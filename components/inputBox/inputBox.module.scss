@@ -2,8 +2,10 @@
 @import "../../styles/mixins";
 
 .inputOuter {
-  @include flex-direction(column);
+  display: flex;
+  flex-direction: column;
   gap: 0.25rem;
+  width: 100%;
 }
 
 .disabled {

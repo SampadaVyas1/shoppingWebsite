@@ -162,7 +162,7 @@ const Messages = () => {
         return newMessage;
       });
 
-      db.messages.bulkPut(updatedData);
+      // db.messages.bulkAdd(updatedData);
     });
   }, []);
 
@@ -188,7 +188,8 @@ const Messages = () => {
         caption: caption,
         from: from,
       };
-      await increaseUnreadCount(from, phone);
+
+      from !== phone && (await increaseUnreadCount(from, phone));
       await updateMessage({ ...newMessage, phone: from });
     });
   }, [phone]);
