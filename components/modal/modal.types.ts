@@ -5,4 +5,5 @@ export interface IModalProps {
   customStyle?: string;
   customBackdrop?: string;
   header?: string;
+  showCloseIcon?: boolean;
 }
