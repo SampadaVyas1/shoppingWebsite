@@ -23,15 +23,13 @@ export enum API_ROUTES {
 
 export const TEAM_PAGE_ROUTES = {
   TEAM: "/team",
-  GROUPS: "/team/groups",
   RECRUITERS: "/team/recruiters",
   TECHSTACKS: "/team/techstacks",
   TEMPLATES: "/team/templates",
 };
 
 export const TEAM_ROUTES = [
-  { id: 1, path: TEAM_PAGE_ROUTES.GROUPS, name: "Groups" },
-  { id: 2, path: TEAM_PAGE_ROUTES.RECRUITERS, name: "Recruiters" },
-  { id: 3, path: TEAM_PAGE_ROUTES.TECHSTACKS, name: "Tech Stacks" },
-  { id: 4, path: TEAM_PAGE_ROUTES.TEMPLATES, name: "Templates" },
+  { id: 1, path: TEAM_PAGE_ROUTES.RECRUITERS, name: "Recruiters" },
+  { id: 2, path: TEAM_PAGE_ROUTES.TECHSTACKS, name: "Tech Stacks" },
+  { id: 3, path: TEAM_PAGE_ROUTES.TEMPLATES, name: "Templates" },
 ];

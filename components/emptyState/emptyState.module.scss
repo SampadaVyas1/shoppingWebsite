@@ -1,0 +1,20 @@
+@import "../../styles/mixins";
+@import "../../styles/variables";
+
+.emptyStateContainer {
+  @include flex-direction(column);
+  @include flex-center-alignment;
+}
+
+.notFoundImage {
+  width: 4.8rem;
+  height: 12.5rem;
+}
+.title {
+  color: $primaryTextDark;
+  margin-top: 1rem;
+}
+.subTitle {
+  color: $secondaryTextLight;
+  margin-top: 0.125rem;
+}
