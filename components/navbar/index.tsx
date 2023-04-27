@@ -1,39 +1,37 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState, useContext } from "react";
-import { CSSTransition } from "react-transition-group";
+import React, { useState } from "react";
 import { ArrowContainer, Popover } from "react-tiny-popover";
+import { useDispatch } from "react-redux";
 import styles from "./navbar.module.scss";
 import ImageComponent from "../image";
 import Typography from "../typography";
-import { IRouteType } from "@/common/types";
 import ProfileCard from "../profileCard";
 import Modal from "../modal";
 import Button from "../button";
 import TransitionWrapper from "../transitionWrapper";
-import { AuthContext } from "@/context/authContext";
 import {
   BUTTON_VARIANT,
   TOOLTIP_POSITION,
   TYPOGRAPHY_VARIANT,
 } from "@/common/enums";
 import Images from "@/public/assets/icons";
-import { PRIVATE_ROUTES } from "@/common/routes";
+import { PRIVATE_ROUTES, TEAM_PAGE_ROUTES } from "@/common/routes";
 import { INavbarProps, profileData } from "./navbar.types";
+import { handleLogout } from "@/redux/slices/loginSlice";
 
 const Navbar = ({ routes }: INavbarProps) => {
   const router = useRouter();
-  const context = useContext(AuthContext);
   const [isProfileOpen, toggleProfile] = useState<boolean>(false);
   const [isLogoutModalOpen, toggleLogoutModal] = useState<boolean>(false);
 
   const { firstName, lastName, profileImage, email, phone, designation } =
     profileData;
 
-  const { handleLogout } = context;
+  const dispatch = useDispatch();
 
   const onLogout = () => {
-    handleLogout();
+    dispatch(handleLogout());
     router.replace(PRIVATE_ROUTES.LOGIN);
   };
 
@@ -67,7 +65,9 @@ const Navbar = ({ routes }: INavbarProps) => {
         {!!routes.length &&
           routes?.map((route) => {
             const routeClassName =
-              route.path === router.pathname
+              route.path === router.pathname ||
+              (router.pathname.includes(TEAM_PAGE_ROUTES.TEAM) &&
+                route.path === TEAM_PAGE_ROUTES.TEAM)
                 ? `${styles.active} ${styles.route}`
                 : styles.route;
             return (

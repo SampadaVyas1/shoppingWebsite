@@ -1,0 +1,10 @@
+@import "../../../styles/mixins.scss";
+@import "../../../styles/variables";
+
+.table {
+  @include flex-justify-align(flex-start, flex-start);
+  flex-direction: column;
+}
+.colSpan {
+  letter-spacing: 0.030;
+}

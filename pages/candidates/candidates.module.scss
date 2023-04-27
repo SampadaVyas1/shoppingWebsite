@@ -1,5 +1,43 @@
+@import "../../styles/variables";
 @import "../../styles/mixins";
-.candidates {
-  @include flex-center-alignment;
-  flex: 1;
+
+.designation {
+  color: $primaryText;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: 400;
+  height: 1.25rem;
+}
+.customHeaderStyle {
+  background-color: $tableHeader;
+}
+
+.table {
+  width: 100%;
+    background-color: $white;
+    border-collapse: collapse;
+}
+.scroll {
+  height: 43.75rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  margin: 1.5rem;
+  &::-webkit-scrollbar {
+    width: 0.3rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: $white;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: $secondaryText;
+    border-radius: 1rem;
+  }
+  &::-webkit-scrollbar-track-piece:end {
+    margin-bottom: 0.5rem;
+  }
+}
+.customRowStyling:hover {
+  background-color: $tableHover;
 }

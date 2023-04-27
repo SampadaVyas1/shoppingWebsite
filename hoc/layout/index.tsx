@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { AuthContext } from "@/context/authContext";
 
 import Navbar from "@/components/navbar";
 import TeamNavbar from "@/components/teamNavbar";
@@ -13,15 +12,17 @@ import {
   TEAM_ROUTES,
 } from "@/common/routes";
 import { TEAM_PAGE_ROUTES } from "@/common/routes";
-import { ROLES } from "@/common/constants";
+import { ROLES, TOKEN } from "@/common/constants";
+import { getDataFromLocalStorage } from "@/common/utils";
 
 const Layout = ({ children }: any) => {
-  const context = useContext(AuthContext);
-
-  //static data for role based routing
   const role = ROLES.ADMIN;
-  const { isLoggedIn } = context;
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setLoggedIn(!!getDataFromLocalStorage(TOKEN));
+  }, []);
 
   return (
     <>
