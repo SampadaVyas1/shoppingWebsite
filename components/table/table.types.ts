@@ -1,6 +1,7 @@
 import {
   IAdditionalValue,
   IButtonState,
+  IData,
   IHeaderTitleProps,
 } from "@/pages/candidates/candidates.types";
 
@@ -10,11 +11,16 @@ interface ICustomStyle {
   };
 }
 export interface IHandleRowSelect {
-  (value: number[]) : void
+  (value: number[]): void;
+}
+export interface IHandleRowEachSelect {
+  row: number;
+  selectedRow: number[];
+  onSelectedRowChange: (value: number[]) => void;
 }
 export interface ITableComponent {
   additionalValue?: IAdditionalValue[];
-  data: any[];
+  data: IData[];
   customRowStyling?: string;
   columnHeaderTitle: IHeaderTitleProps[];
   sortbuttonData?: IButtonState;
@@ -27,7 +33,5 @@ export interface ITableComponent {
   handleDownArrowClick?: (field: string) => void;
   selectedRow: number[];
   handleRowSelect: IHandleRowSelect;
-  handleRowEachSelect: ( row: number,
-  selectedRow: number[],
-  onSelectedRowChange: any)=>void
+  handleRowEachSelect: (row: number,selectedRow: number[],onSelectedRowChange: (value: number[]) => void)=>void;
 }

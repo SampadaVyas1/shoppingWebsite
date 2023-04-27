@@ -47,44 +47,10 @@ export const sortDataByField = (
   );
 };
 
-export const ascendingSort = (
-  field: string,
-  setButtonState: any,
-  data: IData[]
-) => {
-  setButtonState((buttonState: IButtonState) => ({
-    ...buttonState,
-    [field]: {
-      ...buttonState[field],
-      upKeyDisabled: true,
-      downKeyDisabled: false,
-    },
-  }));
-  const newData = !!data && sortDataByField(data, field, true);
-  return newData;
-};
-
-export const descendingSort = (
-  field: string,
-  setButtonState: any,
-  data: IData[]
-) => {
-  setButtonState((buttonState: IButtonState) => ({
-    ...buttonState,
-    [field]: {
-      ...buttonState[field],
-      upKeyDisabled: false,
-      downKeyDisabled: true,
-    },
-  }));
-  const newData = !!data && sortDataByField(data, field, false);
-  return newData;
-};
-
 export const checkMaster = (selectedRow: number[], data: IData[] | null) => {
   return (
     !!selectedRow.length &&
-    selectedRow?.filter((id) => data?.map((row: any) => row?.id).includes(id))
+    selectedRow?.filter((id) => data?.map((row) => row?.id).includes(id))
       .length === data?.length
   );
 };
@@ -92,7 +58,7 @@ export const checkMaster = (selectedRow: number[], data: IData[] | null) => {
 export const checkIdeal = (selectedRow: number[], data: IData[]) => {
   const newdata =
     !!data &&
-    data?.filter((item: any) =>
+    data?.filter((item) =>
       selectedRow?.find((param) => param === item?.id)
     );
   return !checkMaster(selectedRow, data) &&

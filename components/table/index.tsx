@@ -45,7 +45,7 @@ export const TableComponent = (props: ITableComponent) => {
   const handleCheckBoxClick = (id: number) => {
     handleRowEachSelect(id, selectedRow, handleRowSelect);
   };
-  
+
   const handleCheckBoxClicks = useCallback(
     (id: number) => () => {
       !!handleCheckBoxClick && handleCheckBoxClick(id);

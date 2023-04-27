@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import fakeData from "./mockData.json";
@@ -6,16 +6,11 @@ import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
 import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "@/components/table";
 import HeaderTitle from "./tableHeaderData.json";
-import { ascendingSort, descendingSort, sortDataByField } from "@/common/utils";
+import { sortDataByField } from "@/common/utils";
 
 const sortbuttonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
-  experienceLevel: { upKeyDisabled: false, downKeyDisabled: false },
   createdTime: { upKeyDisabled: false, downKeyDisabled: false },
-  mobileNumber: { upKeyDisabled: false, downKeyDisabled: false },
-  techStack: { upKeyDisabled: false, downKeyDisabled: false },
-  recruiter: { upKeyDisabled: false, downKeyDisabled: false },
-  status: { upKeyDisabled: false, downKeyDisabled: false },
 };
 
 const Candidates = () => {
@@ -46,14 +41,37 @@ const Candidates = () => {
     },
   };
 
+  const ascendingSort = (field: string, data: IData[]) => {
+    setButtonState((buttonState: IButtonState) => ({
+      ...buttonState,
+      [field]: {
+        ...buttonState[field],
+        upKeyDisabled: true,
+        downKeyDisabled: false,
+      },
+    }));
+    const newData = !!data && sortDataByField(data, field, true);
+    return newData;
+  };
+
+  const descendingSort = (field: string, data: IData[]) => {
+    setButtonState((buttonState: IButtonState) => ({
+      ...buttonState,
+      [field]: {
+        ...buttonState[field],
+        upKeyDisabled: false,
+        downKeyDisabled: true,
+      },
+    }));
+    const newData = !!data && sortDataByField(data, field, false);
+    return newData;
+  };
   const handleUpArrowClick = (field: string) => {
-    !buttonState[field].upKeyDisabled &&
-      setData(ascendingSort(field, setButtonState, data));
+    !buttonState[field].upKeyDisabled && setData(ascendingSort(field, data));
   };
 
   const handleDownArrowClick = (field: string) => {
-    !buttonState[field].downKeyDisabled &&
-      setData(descendingSort(field, setButtonState, data));
+    !buttonState[field].downKeyDisabled && setData(descendingSort(field, data));
   };
 
   const handlePageChange = () => {

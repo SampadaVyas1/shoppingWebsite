@@ -1,4 +1,3 @@
-
 export interface IButtonState {
   [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
 }
