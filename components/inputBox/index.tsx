@@ -72,7 +72,6 @@ const InputBox = React.forwardRef((props: IInputProps, ref) => {
   };
 
   const handleInputBlur = (event: FocusEvent<HTMLInputElement>) => {
-    console.log("hello");
     const { onBlur } = props;
     setCustomInputWrapperClass(`${styles.inputWrapper}`);
     onBlur && onBlur(event);

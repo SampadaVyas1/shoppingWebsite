@@ -64,7 +64,6 @@ const AddForm = () => {
       setError("techStack", { message: VALIDATION_ERRORS.REQUIRED_ERROR });
       return;
     }
-    console.log(value);
   };
 
   return (
@@ -102,7 +101,7 @@ const AddForm = () => {
           <Controller
             control={control}
             name="lastName"
-            render={(props) => (
+            render={() => (
               <InputBox
                 {...register("lastName")}
                 placeholder={"Enter Last name"}
