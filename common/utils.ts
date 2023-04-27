@@ -102,24 +102,23 @@ export const checkIdeal = (selectedRow: number[], data: IData[]) => {
     : false;
 };
 
-export const  handleAllRowSelect=(
+export const handleAllRowSelect = (
   data: IData[],
   selectedRow: number[],
-  onSelectedRowChange: any)=> {
-    const filteredArray = selectedRow?.filter(
-      (id: number) => !!data && !data?.map((row: any) => row.id).includes(id)
-    );
-    if (onSelectedRowChange) {
-      selectedRow?.length - filteredArray?.length === data?.length
-        ? onSelectedRowChange([...filteredArray])
-        : onSelectedRowChange([
-            ...filteredArray,
-            ...data.map((row: { [key: string]: any }) => row.id),
-          ]);
-    }
+  onSelectedRowChange: (value: number[]) => void
+) => {
+  const filteredArray = selectedRow?.filter(
+    (id: number) => !!data && !data?.map((row) => row.id).includes(id)
+  );
+  if (onSelectedRowChange) {
+    selectedRow?.length - filteredArray?.length === data?.length
+      ? onSelectedRowChange([...filteredArray])
+      : onSelectedRowChange([
+          ...filteredArray,
+          ...data.map((row: { [key: string]: any }) => row.id),
+        ]);
   }
-  
-
+};
 
 export function checkRow(id: number, selectedRow: number[]) {
   return selectedRow?.includes(id);

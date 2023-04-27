@@ -13,6 +13,7 @@ const ImageComponent = (props: IImageProps) => {
     fallbackClass,
     width = 24,
     height = 24,
+    placeholder,
     ...otherProps
   } = props;
   const [imagePlaceholder, setImagePlaceholder] = useState<boolean>(false);
@@ -34,6 +35,7 @@ const ImageComponent = (props: IImageProps) => {
           width={+width}
           height={+height}
           onError={handleError}
+          {...otherProps}
         />
       </Fragment>
     );
@@ -49,7 +51,7 @@ const ImageComponent = (props: IImageProps) => {
   }
   return (
     <Fragment>
-      <Rectangle className={customClass} onClick={props.onClick as any} />
+      <Rectangle className={customClass} onClick={props.onClick} />
     </Fragment>
   );
 };

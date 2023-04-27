@@ -1,4 +1,3 @@
-
 @import "../../styles/variables";
 @import "../../styles/mixins";
 
@@ -27,17 +26,15 @@
   margin: 1.5rem;
   &::-webkit-scrollbar {
     width: 0.3rem;
-    width: 0.3rem;
   }
   &::-webkit-scrollbar-track {
     background: $white;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: $secondaryText;
+    background-color: $scrollbar;
     border-radius: 1rem;
   }
   &::-webkit-scrollbar-track-piece:end {
-    margin-bottom: 0.5rem;
     margin-bottom: 0.5rem;
   }
 }
