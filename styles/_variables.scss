@@ -1,9 +1,11 @@
 $primary: #2c74d6;
+$primaryDark: #1c3b96;
 $primaryLight: #eef7fe;
 $secondary: #f4f8ff;
 $white: #ffffff;
 $primaryButtonHover: #2444a4;
 $selectMessage: #deebfe;
+$disabledText: #777777;
 $primaryTextDark: #09172b;
 $primaryText: #2e2f30;
 $disabledText: #8c8c8c;
@@ -22,7 +24,9 @@ $cardBackground: linear-gradient(
 );
 $shimmerBackground: #d2dbe2;
 $listHoverColor: #f9fafc;
-$disabledButtonColor: #98a2b3;
+$disabledButtonColor: #dddddd;
+$secondaryButtonBackground: #e4eaf2;
+$buttonPressedBackground: #cbd8fe;
 $modalBackdropBackground: rgba(52, 64, 84, 0.7);
 $shimmerAnimationBackground: linear-gradient(
   100deg,
