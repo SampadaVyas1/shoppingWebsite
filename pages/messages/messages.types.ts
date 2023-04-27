@@ -6,6 +6,7 @@ export interface IMessagesStates {
   selectedLevels: ITagType[];
   isConnected: boolean;
   searchValue: string;
+  isFilterOpen: boolean;
 }
 
 export interface ISelectedFile {

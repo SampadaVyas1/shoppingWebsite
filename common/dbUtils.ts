@@ -39,13 +39,11 @@ export const increaseUnreadCount = async (
   currentRoomNumber: string
 ) => {
   const result = await db.conversations.where("id").equals(mobile).first();
-  if (result !== undefined) {
+  console.log(mobile, currentRoomNumber);
+  if (result !== undefined && currentRoomNumber === mobile) {
     await db?.conversations.put({
       ...result,
-      unreadCount:
-        currentRoomNumber === mobile
-          ? result.unreadCount
-          : result.unreadCount + 1,
+      unreadCount: result.unreadCount + 1,
     });
   }
 };

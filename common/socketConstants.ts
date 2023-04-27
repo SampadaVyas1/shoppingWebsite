@@ -12,6 +12,7 @@ export const SOCKET_ROUTES = {
   SEND_PERSONAL_MESSAGE: "send_personal_message",
   SEND_MEDIA: "sendMedia",
   GET_MEDIA: "getMedia",
+  PENDING_MESSAGES: "pendingMessages",
 };
 
 export enum MESSAGE_STATUS_VARIANT {

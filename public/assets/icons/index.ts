@@ -27,6 +27,7 @@ const Images = {
   imageAttachmentIcon: require("./gallery.svg").default,
   errorIcon: require("./error.svg").default,
   crossIconBlack: require("./crossIcon.svg").default,
+  rightChevron: require("./rightChevron.svg").default,
 };
 
 export default Images;

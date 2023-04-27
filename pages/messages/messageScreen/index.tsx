@@ -95,6 +95,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           caption: message,
           messageId: messageId,
           type: selectedFile.type,
+          contentType: selectedFile.file.type,
         });
   };
 

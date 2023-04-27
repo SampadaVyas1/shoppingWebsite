@@ -53,7 +53,7 @@
 .outlined {
   background-color: $secondaryButtonBackground;
   color: $primary;
-  min-width: 7.5rem;
+  min-width: 6.375rem;
 
   &:disabled {
     color: $disabledText !important;
@@ -97,7 +97,7 @@
 .contained {
   background-color: $primary;
   color: $white;
-  min-width: 7.5rem;
+  min-width: 6.375rem;
 
   &:disabled {
     color: $disabledText !important;

@@ -1,5 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { Popover } from "react-tiny-popover";
+import Image from "next/image";
 import socket from "@/socket";
 import { db } from "@/db";
 import Button from "@/components/button";
@@ -9,13 +11,19 @@ import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import MessageScreen from "./messageScreen";
 import Tag from "@/components/tag";
+import TransitionWrapper from "@/components/transitionWrapper";
+import MessageFilter from "./messageFilter";
 import styles from "./messages.module.scss";
 import Images from "@/public/assets/icons";
 import candidateData from "./candidates.json";
 import levelData from "../../helpers/levelsData.json";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
 import { increaseUnreadCount, updateMessage } from "@/common/dbUtils";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import {
+  BUTTON_VARIANT,
+  TOOLTIP_POSITION,
+  TYPOGRAPHY_VARIANT,
+} from "@/common/enums";
 import MessagePlaceholder from "@/public/assets/images/messagePlaceholder.svg";
 import { ITagType } from "@/components/tag/tag.types";
 import { IMessagesStates } from "./messages.types";
@@ -28,6 +36,7 @@ const Messages = () => {
     selectedLevels: [],
     isConnected: false,
     searchValue: "",
+    isFilterOpen: false,
   });
   const { phone } = useAppSelector((state) => state.messages);
   const { selectedLevels, selectedCandidate, isConnected, searchValue } =
@@ -39,6 +48,22 @@ const Messages = () => {
       selectedCandidate: candidate,
     }));
   };
+
+  const closeFilter = () => {
+    setMessagePageState((prevState) => ({
+      ...prevState,
+      isFilterOpen: false,
+    }));
+  };
+
+  const toggleFilter = (event: any) => {
+    event.stopPropagation();
+    setMessagePageState((prevState) => ({
+      ...prevState,
+      isFilterOpen: !prevState.isFilterOpen,
+    }));
+  };
+
   const handleTagSelect = (tag: ITagType) => {
     const isSelected = selectedLevels.length && selectedLevels.includes(tag);
 
@@ -111,14 +136,56 @@ const Messages = () => {
   }, []);
 
   useEffect(() => {
+    socket.on(SOCKET_ROUTES.PENDING_MESSAGES, async (data: any) => {
+      console.log("pending", data);
+      const updatedData = data.map((singleMessage: any) => {
+        const {
+          from,
+          wamid,
+          messageType,
+          timestamp,
+          message,
+          imageId,
+          documentId,
+          caption,
+        } = singleMessage;
+        const newMessage = {
+          messageId: wamid,
+          message: message,
+          timestamp: timestamp,
+          messageType: messageType,
+          mediaUrl: imageId || documentId,
+          to: SOCKET_CONSTANTS.USER_ID,
+          caption: caption,
+          from: from,
+        };
+        return newMessage;
+      });
+
+      db.messages.bulkPut(updatedData);
+    });
+  }, []);
+
+  useEffect(() => {
     socket.on(SOCKET_ROUTES.NOTIFICATION, async (data: any) => {
-      const { from, wamid, messageType, timestamp, message } = data;
+      const {
+        from,
+        wamid,
+        messageType,
+        timestamp,
+        message,
+        imageId,
+        documentId,
+        caption,
+      } = data;
       const newMessage = {
         messageId: wamid,
         message: message,
         timestamp: timestamp,
         messageType: messageType,
-        to: "11098",
+        mediaUrl: imageId || documentId,
+        to: SOCKET_CONSTANTS.USER_ID,
+        caption: caption,
         from: from,
       };
       await increaseUnreadCount(from, phone);
@@ -149,7 +216,26 @@ const Messages = () => {
               />
             ))}
           </div>
-          <ImageComponent src={Images.filterIcon} customClass={styles.filter} />
+          <Popover
+            isOpen={true}
+            positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
+            reposition={true}
+            align="start"
+            onClickOutside={closeFilter}
+            padding={16}
+            content={
+              <TransitionWrapper open={messagePageState.isFilterOpen}>
+                <MessageFilter onClose={closeFilter} />
+              </TransitionWrapper>
+            }
+          >
+            <Image
+              src={Images.filterIcon}
+              onClick={toggleFilter}
+              alt="filter"
+              className={styles.filter}
+            />
+          </Popover>
         </div>
 
         {candidateData.length ? (
