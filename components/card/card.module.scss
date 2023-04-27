@@ -5,9 +5,9 @@
   gap: 1rem;
   background-color: $white;
   box-shadow: $cardBoxShadow;
-  border: $cardBorder;
+  border: 0.0625rem solid $formBorder;
   border-radius: 0.5rem;
-  padding: 1rem;
+  padding: 1.5rem;
   box-sizing: border-box;
 
   .title {

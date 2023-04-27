@@ -20,7 +20,7 @@ const sortbuttonData = {
 const Candidates = () => {
   const [data, setData] = useState<IData[] | null>(null);
   const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
-  
+
   const handlePageChange = () => {
     fakeData.push(...fakeData);
     setData([...fakeData]);

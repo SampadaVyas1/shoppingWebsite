@@ -1,4 +1,4 @@
-import { BUTTON_VARIANT } from "@/common/enums";
+import { BUTTON_TYPES, BUTTON_VARIANT } from "@/common/enums";
 import { HtmlHTMLAttributes } from "react";
 
 export interface IButtonProps extends HtmlHTMLAttributes<HTMLButtonElement> {
@@ -11,4 +11,5 @@ export interface IButtonProps extends HtmlHTMLAttributes<HTMLButtonElement> {
     | BUTTON_VARIANT.CONTAINED;
   disabled?: boolean;
   customStyle?: string;
+  type?: BUTTON_TYPES.RESET | BUTTON_TYPES.SUBMIT | BUTTON_TYPES.BUTTON;
 }
