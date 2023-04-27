@@ -13,6 +13,10 @@ const Images = {
   logoutIcon: require("./logout.svg").default,
   filterIcon: require("./filter.svg").default,
   emptyStateImage: require("./emptyStateImg.svg").default,
+  upArrowDisabled: require("./upArrowDisabled.svg").default,
+  upArrowEnabled: require("./upArrowEnabled.svg").default,
+  downArrowDisabled: require("./downArrowDisabled.svg").default,
+  downArrowEnabled: require("./downArrowEnabled.svg").default,
 };
 
 export default Images;
