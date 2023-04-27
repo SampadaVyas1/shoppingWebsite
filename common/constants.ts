@@ -28,6 +28,16 @@ export const ROLES = {
   ADMIN: "admin",
   RECRUITER: "recruiter",
 };
+export const DATE_FORMAT = {
+  DD_MM_YYYY: "DD/MM/YYYY",
+};
+export const TABLE_CONSTANTS = {
+  CHECKBOX: "checkbox",
+  CREATEDTIME: "createdTime",
+  NAME: "name",
+  DESIGNATION: "designation",
+  TIME: "time",
+};
 
 export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";

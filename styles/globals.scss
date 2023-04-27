@@ -1,3 +1,4 @@
+@import "../styles/variables";
 * {
   box-sizing: border-box;
   padding: 0;
@@ -105,4 +106,29 @@ a {
 }
 .toast-close-button:hover {
   cursor: pointer;
+}
+
+.rc-table-thead {
+  width: auto;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: $white;
+  padding: 0.5rem 0.75rem;
+}
+.rc-table-cell {
+  padding: 0.5rem 0.75rem;
+}
+.rc-table-tbody {
+  width: auto;
+  height: 32rem;
+}
+.rc-table-row {
+  height: 3.75rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 0.06rem solid $gray-100;
+}
+.rc-table-cell {
+  padding: 0.5rem 0.75rem;
+  height: 3.75rem;
 }

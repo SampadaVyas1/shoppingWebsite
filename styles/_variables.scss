@@ -5,11 +5,13 @@ $secondary: #f4f8ff;
 $white: #ffffff;
 $primaryButtonHover: #2444a4;
 $selectMessage: #deebfe;
-$primaryTextDark: #101828;
-$primaryText: #667085;
 $disabledText: #777777;
-$secondaryTextLight: #eaecf0;
-$secondaryText: #d0d5dd;
+$primaryTextDark: #09172b;
+$primaryText: #2e2f30;
+$disabledText: #8c8c8c;
+$secondaryTextLight: #d1d1d1;
+$grayLight: #f3f3f3;
+$secondaryText: #545454;
 $success: #04bfa4;
 $warning: #f39b17;
 $error: #dc362e;
@@ -17,6 +19,7 @@ $loginSectionBackground: #f1f1f1;
 $selectedContentBackground: #c8deff;
 $sentMessageBackground: #d9d9d9;
 $formBorder: #d1d6df;
+$blue: #09172b;
 $cardBackground: linear-gradient(
   180deg,
   rgba(238, 247, 254, 0) 0%,
@@ -44,6 +47,9 @@ $gray-700: #344054;
 $gray-500: #667085;
 $gray-300: #d0d5dd;
 $gray-200: #eaecf0;
+$gray-100: #f3f3f3;
+$tableHeader: #dddddd;
+$tableHover: #d5e3f7;
 
 $Montserrat: "Montserrat";
 $Roboto: "Roboto";

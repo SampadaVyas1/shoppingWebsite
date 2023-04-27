@@ -64,15 +64,14 @@ export enum MESSAGE_STATUS {
   DELIVERED = "DELIVERED",
   READ = "READ",
   FAILED = "FAILED",
-  SENDING="SENDING"
+  SENDING = "SENDING",
 }
 
 export enum BUTTON_SIZES {
-  LARGE = "large",
-  MEDIUM = "medium",
-  SMALL = "small",
+  LARGE = "buttonLarge",
+  MEDIUM = "buttonMedium",
+  SMALL = "buttonSmall",
 }
-
 export enum BUTTON_TYPES {
   RESET = "reset",
   SUBMIT = "submit",

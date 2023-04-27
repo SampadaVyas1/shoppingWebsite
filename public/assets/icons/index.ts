@@ -28,6 +28,11 @@ const Images = {
   errorIcon: require("./error.svg").default,
   crossIconBlack: require("./crossIcon.svg").default,
   rightChevron: require("./rightChevron.svg").default,
+  emptyStateImage: require("./emptyStateImg.svg").default,
+  upArrowDisabled: require("./upArrowDisabled.svg").default,
+  upArrowEnabled: require("./upArrowEnabled.svg").default,
+  downArrowDisabled: require("./downArrowDisabled.svg").default,
+  downArrowEnabled: require("./downArrowEnabled.svg").default,
 };
 
 export default Images;
