@@ -33,7 +33,7 @@ export const TableComponent = (props: ITableComponent) => {
     handleDownArrowClick,
     selectedRow,
     handleRowSelect,
-    handleCheckBoxClick,
+    handleRowEachSelect,
   } = props;
   const {
     upArrowDisabled,
@@ -41,6 +41,18 @@ export const TableComponent = (props: ITableComponent) => {
     downArrowDisabled,
     downArrowEnabled,
   } = Images;
+
+  const handleCheckBoxClick = (id: number) => {
+    handleRowEachSelect(id, selectedRow, handleRowSelect);
+  };
+  
+  const handleCheckBoxClicks = useCallback(
+    (id: number) => () => {
+      !!handleCheckBoxClick && handleCheckBoxClick(id);
+    },
+    [selectedRow]
+  );
+
   const handleAscendingArrowClick = useCallback(
     (dataIndex: string) => () => {
       !!handleUpArrowClick && handleUpArrowClick(dataIndex);
@@ -53,19 +65,12 @@ export const TableComponent = (props: ITableComponent) => {
     },
     [buttonState]
   );
-  console.log(handleRowSelect);
   const handleAllRowSelects = useCallback(
     (data: IData[], selectedRow: number[], handleRowSelect: IHandleRowSelect) =>
       () => {
         handleAllRowSelect(data, selectedRow, handleRowSelect);
       },
     [data, selectedRow, handleAllRowSelect]
-  );
-  const handleCheckBoxClicks = useCallback(
-    (id: number) => () => {
-      !!handleCheckBoxClick && handleCheckBoxClick(id);
-    },
-    [selectedRow]
   );
 
   const generateColumns = (columnHeaderTitle: IHeaderTitleProps[]) => {

@@ -34,12 +34,12 @@ export const sortDataByField = (
   const modifier = ascending ? 1 : -1;
   return data?.sort(
     (column1: { [key: string]: any }, column2: { [key: string]: any }) => {
-      const nameA = column1[field].toUpperCase();
-      const nameB = column2[field].toUpperCase();
-      if (nameA < nameB) {
+      const element1 = column1[field].toUpperCase();
+      const element2 = column2[field].toUpperCase();
+      if (element1 < element2) {
         return -1 * modifier;
       }
-      if (nameA > nameB) {
+      if (element1 > element2) {
         return 1 * modifier;
       }
       return 0;
@@ -124,25 +124,6 @@ export const  handleAllRowSelect=(
 export function checkRow(id: number, selectedRow: number[]) {
   return selectedRow?.includes(id);
 }
-
-export const handleRowEachSelect = (
-  row: number,
-  selectedRow: number[],
-  onSelectedRowChange: any
-) => {
-  const filteredRow = selectedRow?.filter((singleRow: number) => {
-    return singleRow !== row;
-  });
-  if (onSelectedRowChange) {
-    if (filteredRow?.length !== selectedRow?.length) {
-      onSelectedRowChange([...filteredRow]);
-    } else {
-      const selectedrow = [...selectedRow];
-      selectedrow.push(row);
-      onSelectedRowChange([...selectedrow]);
-    }
-  }
-};
 
 export const toCamelCase = (str: string) => {
   let words = str.toLowerCase().split(/[\s-]+/);

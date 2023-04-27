@@ -6,12 +6,7 @@ import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
 import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "@/components/table";
 import HeaderTitle from "./tableHeaderData.json";
-import {
-  ascendingSort,
-  descendingSort,
-  handleRowEachSelect,
-  sortDataByField,
-} from "@/common/utils";
+import { ascendingSort, descendingSort, sortDataByField } from "@/common/utils";
 
 const sortbuttonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
@@ -55,7 +50,7 @@ const Candidates = () => {
     !buttonState[field].upKeyDisabled &&
       setData(ascendingSort(field, setButtonState, data));
   };
-  
+
   const handleDownArrowClick = (field: string) => {
     !buttonState[field].downKeyDisabled &&
       setData(descendingSort(field, setButtonState, data));
@@ -71,10 +66,25 @@ const Candidates = () => {
     setSelectedRow(value);
   };
 
-  const handleCheckBoxClick = (id: number)  => {
-      handleRowEachSelect(id, selectedRow, handleRowSelect);
+  const handleRowEachSelect = (
+    row: number,
+    selectedRow: number[],
+    onSelectedRowChange: (value: number[]) => void
+  ) => {
+    const filteredRow = selectedRow?.filter((singleRow: number) => {
+      return singleRow !== row;
+    });
+    if (onSelectedRowChange) {
+      if (filteredRow?.length !== selectedRow?.length) {
+        onSelectedRowChange([...filteredRow]);
+      } else {
+        const selectedrow = [...selectedRow];
+        selectedrow.push(row);
+        onSelectedRowChange([...selectedrow]);
+      }
     }
-   
+  };
+
   useEffect(() => {
     const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
     setData(newData);
@@ -87,6 +97,7 @@ const Candidates = () => {
       },
     });
   }, []);
+
   return (
     <InfiniteScroll
       nextPage={true}
@@ -107,7 +118,7 @@ const Candidates = () => {
         handleDownArrowClick={handleDownArrowClick}
         selectedRow={selectedRow}
         handleRowSelect={handleRowSelect}
-        handleCheckBoxClick={handleCheckBoxClick}
+        handleRowEachSelect={handleRowEachSelect}
       />
     </InfiniteScroll>
   );

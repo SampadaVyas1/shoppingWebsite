@@ -27,5 +27,7 @@ export interface ITableComponent {
   handleDownArrowClick?: (field: string) => void;
   selectedRow: number[];
   handleRowSelect: IHandleRowSelect;
-  handleCheckBoxClick: (id: number) => void;
+  handleRowEachSelect: ( row: number,
+  selectedRow: number[],
+  onSelectedRowChange: any)=>void
 }
