@@ -2305,7 +2305,7 @@ rc-resize-observer@^1.1.0:
 
 rc-table@^7.31.1:
   version "7.31.1"
-  resolved "https://registry.yarnpkg.com/rc-table/-/rc-table-7.31.1.tgz#85487b25d98559d6e684b3348e893da1d1f48232"
+  resolved "https://registry.npmjs.org/rc-table/-/rc-table-7.31.1.tgz#85487b25d98559d6e684b3348e893da1d1f48232"
   integrity sha512-KZPi35aGpv2VaL1Jbc58FBJo063HtKyVjhOFWX4AkBV7tjHHQokMdUoua5E+GPJh6QZUpK/a8PjKa9IZzPLIEA==
   dependencies:
     "@babel/runtime" "^7.10.1"

@@ -47,6 +47,7 @@ a {
 .react-tiny-popover-container {
   filter: drop-shadow(0 0.25rem 0.375rem rgba(16, 24, 40, 0.25))
     drop-shadow(0 0.75rem 0.375rem rgba(16, 24, 40, 0.08));
+  z-index: 3;
 }
 .alert-enter {
   opacity: 0;
@@ -84,7 +85,7 @@ a {
 .rc-table-row {
   height: 3.75rem;
   padding: 0.5rem 0.75rem;
-  border-bottom: 0.060rem solid $gray-100;
+  border-bottom: 0.06rem solid $gray-100;
 }
 .rc-table-cell {
   padding: 0.5rem 0.75rem;

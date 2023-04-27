@@ -55,7 +55,7 @@ export enum TOOLTIP_POSITION {
 }
 
 export enum BUTTON_SIZES {
-  LARGE = "large",
-  MEDIUM = "medium",
-  SMALL = "small",
+  LARGE = "buttonLarge",
+  MEDIUM = "buttonMedium",
+  SMALL = "buttonSmall",
 }
