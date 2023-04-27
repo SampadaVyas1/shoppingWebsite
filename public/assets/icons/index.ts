@@ -12,6 +12,10 @@ const Images = {
   notificationIcon: require("./bell.svg").default,
   logoutIcon: require("./logout.svg").default,
   filterIcon: require("./filter.svg").default,
+  upArrowDisabled:require("./upArrowDisabled.svg").default,
+  upArrowEnabled:require("./upArrowEnabled.svg").default,
+  downArrowDisabled:require("./downArrowDisabled.svg").default,
+  downArrowEnabled:require("./downArrowEnabled.svg").default,
 };
 
 export default Images;
