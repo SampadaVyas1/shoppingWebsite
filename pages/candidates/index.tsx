@@ -3,7 +3,7 @@ import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import fakeData from "./mockData.json";
 import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
-import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
+import { DATE_FORMAT, SORT_Type, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "@/components/table";
 import HeaderTitle from "./tableHeaderData.json";
 import { sortDataByField } from "@/common/utils";
@@ -41,37 +41,32 @@ const Candidates = () => {
     },
   };
 
-  const ascendingSort = (field: string, data: IData[]) => {
+  const toggleSortButton = (
+    field: string,
+    data: IData[],
+    upKeyDisabled: boolean,
+    downKeyDisabled: boolean
+  ) => {
     setButtonState((buttonState: IButtonState) => ({
       ...buttonState,
       [field]: {
         ...buttonState[field],
-        upKeyDisabled: true,
-        downKeyDisabled: false,
+        upKeyDisabled: upKeyDisabled,
+        downKeyDisabled: downKeyDisabled,
       },
     }));
-    const newData = !!data && sortDataByField(data, field, true);
+    const newData = !!data && sortDataByField(data, field, upKeyDisabled);
     return newData;
   };
 
-  const descendingSort = (field: string, data: IData[]) => {
-    setButtonState((buttonState: IButtonState) => ({
-      ...buttonState,
-      [field]: {
-        ...buttonState[field],
-        upKeyDisabled: false,
-        downKeyDisabled: true,
-      },
-    }));
-    const newData = !!data && sortDataByField(data, field, false);
-    return newData;
-  };
-  const handleUpArrowClick = (field: string) => {
-    !buttonState[field].upKeyDisabled && setData(ascendingSort(field, data));
-  };
-
-  const handleDownArrowClick = (field: string) => {
-    !buttonState[field].downKeyDisabled && setData(descendingSort(field, data));
+  const handleSortButtonClick = (field: string, sortType: string) => {
+    sortType === SORT_Type.ASCENDING
+      ? !buttonState[field].upKeyDisabled &&
+        setData(toggleSortButton(field, data, true, false))
+      : sortType === SORT_Type.DESCENDING
+      ? !buttonState[field].downKeyDisabled &&
+        setData(toggleSortButton(field, data, false, true))
+      : null;
   };
 
   const handlePageChange = () => {
@@ -132,8 +127,7 @@ const Candidates = () => {
         customStyle={customStyle}
         customRowStyling={styles.customRowStyling}
         buttonState={buttonState}
-        handleUpArrowClick={handleUpArrowClick}
-        handleDownArrowClick={handleDownArrowClick}
+        handleSortArrowClick={handleSortButtonClick}
         selectedRow={selectedRow}
         handleRowSelect={handleRowSelect}
         handleRowEachSelect={handleRowEachSelect}

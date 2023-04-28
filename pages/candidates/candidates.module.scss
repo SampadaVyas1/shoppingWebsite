@@ -20,7 +20,7 @@
 }
 .scroll {
   height: 43.75rem;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
   position: relative;
   margin: 1.5rem;
@@ -37,9 +37,6 @@
   &::-webkit-scrollbar-track-piece:end {
     margin-bottom: 0.5rem;
   }
-}
-.customRowStyling:hover {
-  background-color: $tableHover;
 }
 .customRowStyling:hover {
   background-color: $tableHover;

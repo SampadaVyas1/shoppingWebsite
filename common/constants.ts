@@ -40,6 +40,10 @@ export const TABLE_CONSTANTS = {
   TIME: "time",
   ID:"id"
 };
+export const SORT_Type={
+ASCENDING: "ascending",
+DESCENDING: "descending",
+}
 
 export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";

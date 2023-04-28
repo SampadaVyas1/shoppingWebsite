@@ -8,7 +8,7 @@ import {
   handleAllRowSelect,
   toCamelCase,
 } from "@/common/utils";
-import { TABLE_CONSTANTS } from "@/common/constants";
+import { SORT_Type, TABLE_CONSTANTS } from "@/common/constants";
 import CustomCheckBox from "../customCheckBox";
 import Typography from "../typography";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
@@ -29,8 +29,7 @@ export const TableComponent = (props: ITableComponent) => {
     customStyle,
     customRowStyling,
     buttonState,
-    handleUpArrowClick,
-    handleDownArrowClick,
+    handleSortArrowClick,
     selectedRow,
     handleRowSelect,
     handleRowEachSelect,
@@ -55,13 +54,13 @@ export const TableComponent = (props: ITableComponent) => {
 
   const handleAscendingArrowClick = useCallback(
     (dataIndex: string) => () => {
-      !!handleUpArrowClick && handleUpArrowClick(dataIndex);
+      !!handleSortArrowClick && handleSortArrowClick(dataIndex,SORT_Type.ASCENDING)
     },
     [buttonState]
   );
   const handleDescendingArrowClick = useCallback(
     (dataIndex: string) => () => {
-      !!handleDownArrowClick && handleDownArrowClick(dataIndex);
+      !!handleSortArrowClick && handleSortArrowClick(dataIndex,SORT_Type.DESCENDING)
     },
     [buttonState]
   );

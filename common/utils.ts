@@ -2,10 +2,6 @@ interface IData {
   [key: string]: any;
 }
 
-interface IButtonState {
-  [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
-}
-
 export const encodeToken = (data: string) => window.btoa(data);
 
 export const decodeToken = (data: string) => window.atob(data);
@@ -58,9 +54,7 @@ export const checkMaster = (selectedRow: number[], data: IData[] | null) => {
 export const checkIdeal = (selectedRow: number[], data: IData[]) => {
   const newdata =
     !!data &&
-    data?.filter((item) =>
-      selectedRow?.find((param) => param === item?.id)
-    );
+    data?.filter((item) => selectedRow?.find((param) => param === item?.id));
   return !checkMaster(selectedRow, data) &&
     ((!!newdata.length && newdata.length < newdata?.length) ||
       selectedRow?.length)
