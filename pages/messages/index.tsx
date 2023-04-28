@@ -6,13 +6,13 @@ import socket from "@/socket";
 import { db } from "@/db";
 import Button from "@/components/button";
 import ImageComponent from "@/components/imageComponent";
-import CandidateList from "./candidateList";
+import CandidateList from "../../pageComponents/messages/candidateList";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
-import MessageScreen from "./messageScreen";
 import Tag from "@/components/tag";
 import TransitionWrapper from "@/components/transitionWrapper";
-import MessageFilter from "./messageFilter";
+import MessageFilter from "@/pageComponents/messages/messageFilter";
+import MessageScreen from "@/pageComponents/messages/messageScreen";
 import styles from "./messages.module.scss";
 import Images from "@/public/assets/icons";
 import candidateData from "./candidates.json";
@@ -27,8 +27,8 @@ import {
 import MessagePlaceholder from "@/public/assets/images/messagePlaceholder.svg";
 import { ITagType } from "@/components/tag/tag.types";
 import { IMessagesStates } from "./messages.types";
-import { ICandidateListCardProps } from "./candidateListCard/candidateListCard.types";
 import { useAppSelector } from "@/redux/hooks";
+import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
 
 const Messages = () => {
   const [messagePageState, setMessagePageState] = useState<IMessagesStates>({
@@ -129,7 +129,6 @@ const Messages = () => {
         .equals(data.id)
         .first();
       if (matchedResult) {
-        console.log(matchedResult, data.status);
         await updateMessage({ ...matchedResult, status: data.status });
       }
     });
@@ -137,32 +136,35 @@ const Messages = () => {
 
   useEffect(() => {
     socket.on(SOCKET_ROUTES.PENDING_MESSAGES, async (data: any) => {
-      console.log("pending", data);
-      const updatedData = data.map((singleMessage: any) => {
-        const {
-          from,
-          wamid,
-          messageType,
-          timestamp,
-          message,
-          imageId,
-          documentId,
-          caption,
-        } = singleMessage;
-        const newMessage = {
-          messageId: wamid,
-          message: message,
-          timestamp: timestamp,
-          messageType: messageType,
-          mediaUrl: imageId || documentId,
-          to: SOCKET_CONSTANTS.USER_ID,
-          caption: caption,
-          from: from,
-        };
-        return newMessage;
-      });
+      const messageTypes = ["text", "document", "image"];
 
-      // db.messages.bulkAdd(updatedData);
+      const updatedData = Promise.all(
+        data.map(async (singleMessage: any) => {
+          const {
+            from,
+            wamid,
+            messageType,
+            timestamp,
+            message,
+            mediaUrl,
+            caption,
+          } = singleMessage;
+          const newMessage = {
+            messageId: wamid,
+            message: message,
+            timestamp: timestamp,
+            messageType: messageType,
+            mediaUrl: mediaUrl,
+            to: SOCKET_CONSTANTS.USER_ID,
+            caption: caption,
+            from: from,
+          };
+          if (messageTypes.includes(singleMessage?.messageType)) {
+            await increaseUnreadCount(from);
+            await updateMessage({ ...newMessage, phone: from });
+          }
+        })
+      );
     });
   }, []);
 
@@ -174,8 +176,7 @@ const Messages = () => {
         messageType,
         timestamp,
         message,
-        imageId,
-        documentId,
+        mediaUrl,
         caption,
       } = data;
       const newMessage = {
@@ -183,16 +184,16 @@ const Messages = () => {
         message: message,
         timestamp: timestamp,
         messageType: messageType,
-        mediaUrl: imageId || documentId,
+        mediaUrl: mediaUrl,
         to: SOCKET_CONSTANTS.USER_ID,
         caption: caption,
         from: from,
       };
-
-      from !== phone && (await increaseUnreadCount(from, phone));
+      from !== localStorage.getItem("phone") &&
+        (await increaseUnreadCount(from));
       await updateMessage({ ...newMessage, phone: from });
     });
-  }, [phone]);
+  }, []);
 
   return (
     <div className={styles.messagesPage}>

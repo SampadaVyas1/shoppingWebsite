@@ -22,6 +22,7 @@ import {
   TYPOGRAPHY_VARIANT,
 } from "@/common/enums";
 import { MESSAGE_STATUS_VARIANT } from "@/common/socketConstants";
+import Tag from "@/components/tag";
 
 const ChatBody = (props: IChatBodyProps) => {
   const { phone, onRetry } = props;
@@ -83,19 +84,41 @@ const ChatBody = (props: IChatBodyProps) => {
                   customStyles={styles[messageType]}
                 >
                   <div className={styles.messageContent}>
-                    {mediaUrl && type !== "document" && (
+                    {mediaUrl && type === "image" && (
                       <ImageComponent
                         src={
                           typeof mediaUrl !== "string"
                             ? URL.createObjectURL(mediaUrl)
-                            : Images.rectangle
+                            : mediaUrl
                         }
+                        fallbackText="Image"
+                        customClass={styles.chatImage}
                         width={200}
                         height={200}
                       />
                     )}
                     {typeof mediaUrl !== "string" && type === "document" && (
-                      <div>{mediaUrl?.name!}</div>
+                      <Tag
+                        tagValue={{
+                          id: "1",
+                          label: mediaUrl?.name!,
+                        }}
+                      />
+                    )}
+                    {typeof mediaUrl === "string" && type === "document" && (
+                      // <a href={mediaUrl} target="_blank" rel="noreferrer">
+                      <Tag
+                        tagValue={{
+                          id: "1",
+                          label: mediaUrl!.substring(
+                            mediaUrl.lastIndexOf("/") + 1
+                          ),
+                        }}
+                        onClick={() =>
+                          window.open(mediaUrl, "_blank", "noreferrer")
+                        }
+                      />
+                      // </a>
                     )}
                     <Typography
                       variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}

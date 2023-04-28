@@ -48,7 +48,7 @@ const CandidateList = (props: ICandidateListProps) => {
     </div>
   ) : (
     <div className={styles.list}>
-      {candidateData.map(
+      {candidateData?.map(
         (candidate: ICandidateListCardProps, index: number) => {
           const { name, mobile, id, profilePhoto } = candidate;
           const currentCandidateData = conversations?.find(
@@ -74,10 +74,12 @@ const CandidateList = (props: ICandidateListProps) => {
                       .format("hh:mm A")
                   : ""
               }
-              status={lastMessage.status}
+              status={lastMessage?.status}
               profilePhoto={candidate.profilePhoto}
               message={
-                lastMessage?.message || lastMessage.caption || "file sent"
+                lastMessage?.message ||
+                lastMessage?.caption ||
+                (lastMessage?.mediaUrl ? "File" : "")
               }
               mobile={candidate.mobile}
               unreadCount={currentCandidateData?.unreadCount}

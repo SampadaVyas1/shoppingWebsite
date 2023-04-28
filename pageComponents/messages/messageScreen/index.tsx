@@ -19,8 +19,8 @@ import {
 } from "@/common/dbUtils";
 import { MESSAGE_STATUS } from "@/common/enums";
 import { setPhone } from "@/redux/slices/messageSlice";
-import { ISelectedFile } from "../messages.types";
 import { useAppSelector } from "@/redux/hooks";
+import { ISelectedFile } from "@/pages/messages/messages.types";
 
 const MessageScreen = (props: IMessageScreenProps) => {
   const {
@@ -129,6 +129,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           message: result?.message,
           messageId: id,
           mediaUrl: mediaUrl,
+          status: MESSAGE_STATUS.SENT,
         });
       }
     });
@@ -142,8 +143,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
         messageType,
         timestamp,
         message,
-        imageId,
-        documentId,
+        mediaUrl,
         caption,
       } = data;
       const newMessage = {
@@ -151,7 +151,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
         message: message,
         timestamp: timestamp,
         messageType: messageType,
-        mediaUrl: imageId || documentId,
+        mediaUrl: mediaUrl,
         to: SOCKET_CONSTANTS.USER_ID,
         caption: caption,
         from: from,
@@ -186,7 +186,6 @@ const MessageScreen = (props: IMessageScreenProps) => {
         to: mobile,
         userId: SOCKET_CONSTANTS.USER_ID,
       });
-      dispatch(setPhone(mobile));
       localStorage.setItem("phone", mobile);
       socket.on(SOCKET_ROUTES.ROOM_STATUS, (data) => {
         setRoomJoined(true);

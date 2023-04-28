@@ -11,6 +11,7 @@ import styles from "./chatBottom.module.scss";
 import Images from "@/public/assets/icons";
 import { IChatBottomProps } from "./chatBottom.types";
 import { SKELETON_VARIANT } from "@/common/enums";
+import Container from "@/components/container";
 
 const ChatBottom = (props: IChatBottomProps) => {
   const {
@@ -85,12 +86,25 @@ const ChatBottom = (props: IChatBottomProps) => {
         />
       </ClickAwayListener>
       {selectedFile?.file?.name && (
-        <Tag
-          active
-          tagValue={{ id: uuid(), label: selectedFile.file.name }}
-          onDelete={onFileRemoval}
-          customClass={styles.fileName}
-        />
+        <Container customClass={styles.imagePreview}>
+          {selectedFile.file.type.includes("image") ? (
+            <ImageComponent
+              src={URL.createObjectURL(selectedFile.file)}
+              customClass={styles.attachedImage}
+            />
+          ) : (
+            <Tag
+              active
+              tagValue={{ id: uuid(), label: selectedFile.file.name }}
+              customClass={styles.fileName}
+            />
+          )}
+          <ImageComponent
+            src={Images.crossIconBlack}
+            customClass={styles.closeIcon}
+            onClick={onFileRemoval}
+          />
+        </Container>
       )}
       <InputBox
         placeholder="Enter message"

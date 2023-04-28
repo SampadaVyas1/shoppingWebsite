@@ -1,5 +1,5 @@
+import { ISelectedFile } from "@/pages/messages/messages.types";
 import { ChangeEvent } from "react";
-import { ISelectedFile } from "../messages.types";
 
 export interface IChatBottomProps {
   mobile: string;

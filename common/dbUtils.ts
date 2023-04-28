@@ -15,10 +15,6 @@ export const resetUnreadCount = async (mobile: string) => {
   }
 };
 
-export const insertMessage = async (message: ISentMessage) => {
-  await db.messages.put(message);
-};
-
 export const updateMessage = async (newMessage: ISentMessage) => {
   await db.messages.put(newMessage);
 };
@@ -34,18 +30,10 @@ export const getMessages = async (mobile: string) => {
   return await db.messages.where("phone").equals(mobile).toArray();
 };
 
-export const increaseUnreadCount = async (
-  mobile: string,
-  currentRoomNumber: string
-) => {
+export const increaseUnreadCount = async (mobile: string) => {
   const result = await db.conversations.where("id").equals(mobile).first();
-  console.log(mobile, currentRoomNumber);
-  if (
-    result !== undefined &&
-    !!currentRoomNumber &&
-    mobile &&
-    currentRoomNumber !== mobile
-  ) {
+  console.log(mobile);
+  if (result !== undefined && mobile) {
     await db?.conversations.put({
       ...result,
       unreadCount: result.unreadCount + 1,
