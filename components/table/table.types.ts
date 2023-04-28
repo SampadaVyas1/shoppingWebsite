@@ -29,8 +29,7 @@ export interface ITableComponent {
   customStyle?: ICustomStyle;
   moreverticalIcon?: boolean;
   buttonState?: IButtonState;
-  handleUpArrowClick?: (field: string) => void;
-  handleDownArrowClick?: (field: string) => void;
+  handleSortArrowClick?:(field:string,sortType:string)=>void;
   selectedRow: number[];
   handleRowSelect: IHandleRowSelect;
   handleRowEachSelect: (row: number,selectedRow: number[],onSelectedRowChange: (value: number[]) => void)=>void;
