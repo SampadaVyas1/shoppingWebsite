@@ -1,13 +1,6 @@
-import { useCallback } from "react";
-
 interface IData {
   [key: string]: any;
 }
-
-interface IButtonState {
-  [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
-}
-
 
 export const encodeToken = (data: string) => window.btoa(data);
 
@@ -29,7 +22,7 @@ export const debounce = (callback: Function, wait: number = 100) => {
   };
 };
 
-export const sortDataByField  = (
+export const sortDataByField = (
   data: IData[],
   field: string,
   ascending: boolean = true
@@ -37,12 +30,12 @@ export const sortDataByField  = (
   const modifier = ascending ? 1 : -1;
   return data?.sort(
     (column1: { [key: string]: any }, column2: { [key: string]: any }) => {
-      const nameA = column1[field].toUpperCase();
-      const nameB = column2[field].toUpperCase();
-      if (nameA < nameB) {
+      const element1 = column1[field].toUpperCase();
+      const element2 = column2[field].toUpperCase();
+      if (element1 < element2) {
         return -1 * modifier;
       }
-      if (nameA > nameB) {
+      if (element1 > element2) {
         return 1 * modifier;
       }
       return 0;
@@ -50,45 +43,10 @@ export const sortDataByField  = (
   );
 };
 
-export const ascendingSort = (
-  field: string,
-  setButtonState: any,
-  data: IData[],
- 
-) => {
-  setButtonState((buttonState: IButtonState) => ({
-    ...buttonState,
-    [field]: {
-      ...buttonState[field],
-      upKeyDisabled: true,
-      downKeyDisabled: false,
-    },
-  }));
-  const newData = !!data && sortDataByField (data, field, true);
-  return newData
-};
-
-export const descendingSort = (
-  field: string,
-  setButtonState: any,
-  data: IData[],
-) => {
-  setButtonState((buttonState: IButtonState) => ({
-    ...buttonState,
-    [field]: {
-      ...buttonState[field],
-      upKeyDisabled: false,
-      downKeyDisabled: true,
-    },
-  }));
-  const newData =!!data && sortDataByField (data, field, false);
-  return newData
-};
-
 export const checkMaster = (selectedRow: number[], data: IData[] | null) => {
   return (
     !!selectedRow.length &&
-    selectedRow?.filter((id) => data?.map((row: any) => row?.id).includes(id))
+    selectedRow?.filter((id) => data?.map((row) => row?.id).includes(id))
       .length === data?.length
   );
 };
@@ -96,9 +54,7 @@ export const checkMaster = (selectedRow: number[], data: IData[] | null) => {
 export const checkIdeal = (selectedRow: number[], data: IData[]) => {
   const newdata =
     !!data &&
-    data?.filter((item: any) =>
-      selectedRow?.find((param) => param === item?.id)
-    );
+    data?.filter((item) => selectedRow?.find((param) => param === item?.id));
   return !checkMaster(selectedRow, data) &&
     ((!!newdata.length && newdata.length < newdata?.length) ||
       selectedRow?.length)
@@ -106,50 +62,27 @@ export const checkIdeal = (selectedRow: number[], data: IData[]) => {
     : false;
 };
 
-export function handleAllRowSelect(
+export const handleAllRowSelect = (
   data: IData[],
   selectedRow: number[],
-  onSelectedRowChange: any
-) {
-  const handleSelect = useCallback(() => {
-    const filteredArray = selectedRow?.filter(
-      (id: number) => !!data && !data?.map((row: any) => row.id).includes(id)
-    );
-    if (onSelectedRowChange) {
-      selectedRow?.length - filteredArray?.length === data?.length
-        ? onSelectedRowChange([...filteredArray])
-        : onSelectedRowChange([
-            ...filteredArray,
-            ...data.map((row: { [key: string]: any }) => row.id),
-          ]);
-    }
-  }, [selectedRow, data]);
-
-  return handleSelect;
-}
+  onSelectedRowChange: (value: number[]) => void
+) => {
+  const filteredArray = selectedRow?.filter(
+    (id: number) => !!data && !data?.map((row) => row.id).includes(id)
+  );
+  if (onSelectedRowChange) {
+    selectedRow?.length - filteredArray?.length === data?.length
+      ? onSelectedRowChange([...filteredArray])
+      : onSelectedRowChange([
+          ...filteredArray,
+          ...data.map((row: { [key: string]: any }) => row.id),
+        ]);
+  }
+};
 
 export function checkRow(id: number, selectedRow: number[]) {
   return selectedRow?.includes(id);
 }
-
-export const handleRowEachSelect = (
-  row: number,
-  selectedRow: number[],
-  onSelectedRowChange: any
-) => {
-  const filteredRow = selectedRow?.filter((singleRow: number) => {
-    return singleRow !== row;
-  });
-  if (onSelectedRowChange) {
-    if (filteredRow?.length !== selectedRow?.length) {
-      onSelectedRowChange([...filteredRow]);
-    } else {
-      const selectedrow = [...selectedRow];
-      selectedrow.push(row);
-      onSelectedRowChange([...selectedrow]);
-    }
-  }
-};
 
 export const toCamelCase = (str: string) => {
   let words = str.toLowerCase().split(/[\s-]+/);
