@@ -7,6 +7,7 @@ import { DATE_FORMAT, SORT_Type, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "@/components/table";
 import HeaderTitle from "./tableHeaderData.json";
 import { sortDataByField } from "@/common/utils";
+import { getCandidatesData } from "@/services/candidate.service";
 
 const sortbuttonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
@@ -29,6 +30,18 @@ const Candidates = () => {
       colspanValue: TABLE_CONSTANTS.TIME,
     },
   ];
+
+  // const additionalValue: IAdditionalValue[] = [
+  //   {
+  //     colspan: TABLE_CONSTANTS.NAME,
+  //     colspanValue: [{value:"designation"},{value:"lastName"}],
+  //     customStyle: styles.designation,
+  //   },
+  //   {
+  //     colspan: TABLE_CONSTANTS.CREATEDTIME,
+  //     colspanValue: TABLE_CONSTANTS.TIME,
+  //   },
+  // ];
 
   const customStyle = {
     table: ({ ...props }) => {
@@ -97,18 +110,29 @@ const Candidates = () => {
       }
     }
   };
-
+  console.log(data)
   useEffect(() => {
-    const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
-    setData(newData);
-    setButtonState({
-      ...buttonState,
-      name: {
-        ...buttonState[TABLE_CONSTANTS.NAME],
-        upKeyDisabled: true,
-        downKeyDisabled: false,
-      },
-    });
+    // const fetchData = async () => {
+    //   const response = await getCandidatesData();
+    //   return response?.data?.data?.candidates;
+    // };
+
+    // const getCandidates = async () => {
+    //   const getdata = await fetchData();
+    //   setData(getdata);
+    // };
+    // getCandidates();
+
+    // const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
+    setData(fakeData);
+    // setButtonState({
+    //   ...buttonState,
+    //   name: {
+    //     ...buttonState[TABLE_CONSTANTS.NAME],
+    //     upKeyDisabled: true,
+    //     downKeyDisabled: false,
+    //   },
+    // });
   }, []);
 
   return (
@@ -122,7 +146,7 @@ const Candidates = () => {
         columnHeaderTitle={HeaderTitle}
         sortbuttonData={sortbuttonData}
         additionalValue={additionalValue}
-        fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
+        fieldforDateFormat={{ time: "createdAt" }}
         dataFormatType={DATE_FORMAT.DD_MM_YYYY}
         customStyle={customStyle}
         customRowStyling={styles.customRowStyling}

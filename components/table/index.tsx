@@ -76,7 +76,9 @@ export const TableComponent = (props: ITableComponent) => {
     return (
       !!columnHeaderTitle &&
       columnHeaderTitle?.map((column: IHeaderTitleProps) => {
-        const dataIndex = toCamelCase(column.title);
+        console.log(column)
+        // const dataIndex = toCamelCase(column.title);
+        const dataIndex=column.dataIndex;
         return (
           <Column
             title={
@@ -100,7 +102,7 @@ export const TableComponent = (props: ITableComponent) => {
                 )}
                 {!!column.sort && (
                   <div className={styles.sortIcon}>
-                    <ImageComponent
+                    {/* <ImageComponent
                       src={
                         !!buttonState && buttonState[dataIndex].upKeyDisabled
                           ? upArrowDisabled
@@ -113,21 +115,21 @@ export const TableComponent = (props: ITableComponent) => {
                     />
                     <ImageComponent
                       src={
-                        !!buttonState && buttonState[dataIndex].downKeyDisabled
+                        !!buttonState && buttonState[dataIndex as string].downKeyDisabled
                           ? downArrowDisabled
                           : downArrowEnabled
                       }
                       width={10}
                       height={10}
-                      onClick={handleDescendingArrowClick(dataIndex)}
+                      onClick={handleDescendingArrowClick(dataIndex as string )}
                       className={styles.ascendingicon}
-                    />
+                    /> */}
                   </div>
                 )}
               </div>
             }
-            dataIndex={dataIndex}
-            key={dataIndex}
+            dataIndex={dataIndex as string}
+            key={column.key as string}
             render={(text: string, record: IData, index: number) =>
               column.title == TABLE_CONSTANTS.CHECKBOX ? (
                 <CustomCheckBox
@@ -143,7 +145,7 @@ export const TableComponent = (props: ITableComponent) => {
                 />
               ) : (
                 <TableCell
-                  dataIndex={dataIndex}
+                  dataIndex={dataIndex as string}
                   data={data}
                   field={fieldforDateFormat}
                   additionalValue={additionalValue}

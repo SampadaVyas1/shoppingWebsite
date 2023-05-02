@@ -1,45 +1,53 @@
 [
-  {
-    "id": 8,
-    "title": "checkbox"
-  },
+
   {
     "id": 1,
     "title": "Name",
-
-    "sort": true
+    "sort": true,
+    "dataIndex": "firstName",
+    "key": "firstName"
   },
   {
     "id": 2,
     "title": "Mobile number",
-    "sort": false
+    "sort": false,
+    "dataIndex": "mobileNumber",
+    "key": "mobileNumber"
   },
   {
     "id": 3,
     "title": "Experience level",
-    "sort": false
+    "sort": false,
+    "dataIndex": "experienceLevel",
+    "key": "experienceLevel"
   },
   {
     "id": 4,
     "title": "Tech stack",
-    "sort": false
+    "sort": false,
+    "dataIndex": "techStack",
+    "key": "techStack"
   },
   {
     "id": 5,
     "title": "Created time",
-
-    "sort": true
+    "sort": true,
+    "dataIndex": "createdAt",
+    "key": "createdAt"
   },
   {
     "id": 6,
     "title": "Recruiter",
-
-    "sort": false
+    "sort": false,
+    "dataIndex": "recruiterName",
+    "key": "recruiterName"
   },
   {
     "id": 7,
     "title": "Status",
-
-    "sort": false
+    "sort": false,
+    "dataIndex": "interviewName",
+    "key": "interviewName"
   }
 ]
+

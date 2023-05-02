@@ -10,6 +10,8 @@ export interface IHeaderTitleProps {
   id: number;
   title: string;
   sort?: boolean | false;
+  dataIndex?:string|any,
+  key?:string|null,
 }
 
 export interface IAdditionalValue {
