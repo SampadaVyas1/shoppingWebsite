@@ -1,16 +1,14 @@
-import Typography from "@/components/typography";
-import styles from "./messageFilter.module.scss";
-import Card from "@/components/card";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-import CustomCheckBox from "@/components/customCheckBox";
-import { randomUUID } from "crypto";
 import React, { useState } from "react";
+import Typography from "@/components/typography";
+import Card from "@/components/card";
+import CustomCheckBox from "@/components/customCheckBox";
 import ImageComponent from "@/components/imageComponent";
-import Images from "@/public/assets/icons";
-import Button from "@/components/button";
-import Select from "@/components/select";
-import { techStackOptions } from "@/components/addForm/addForm.constants";
 import MultiselectOptions from "@/components/select/multiselectOptions";
+import Button from "@/components/button";
+import Images from "@/public/assets/icons";
+import styles from "./messageFilter.module.scss";
+import { techStackOptions } from "@/components/addForm/addForm.constants";
+import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 
 const MessageFilter = ({ onClose }: any) => {
   const [selectedFilter, setSelectedFilter] = useState<any>(null);

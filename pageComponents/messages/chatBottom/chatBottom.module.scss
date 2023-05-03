@@ -15,9 +15,7 @@
   }
   .imagePreview {
     position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flex-center-alignment;
     left: 0;
     right: 0;
     top: 0;
@@ -56,7 +54,6 @@
   }
   .fileName {
     width: auto;
-    align-self: flex-start;
   }
 
   .skeletonIcon {

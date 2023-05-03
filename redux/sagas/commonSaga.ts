@@ -6,7 +6,6 @@ import { handleMediaSend, toggleLoading } from "../slices/commonSlice";
 
 export function* sendMediaSaga({ formData }: AnyAction): any {
   try {
-    console.log(formData);
     yield put(toggleLoading());
     const result = yield sendMedia(formData);
     yield put(handleMediaSend(result));

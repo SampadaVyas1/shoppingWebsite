@@ -169,6 +169,10 @@ const Messages = () => {
   }, []);
 
   useEffect(() => {
+    return () => localStorage.setItem("phone", "");
+  }, []);
+
+  useEffect(() => {
     socket.on(SOCKET_ROUTES.NOTIFICATION, async (data: any) => {
       const {
         from,

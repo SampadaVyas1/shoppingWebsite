@@ -18,9 +18,7 @@ export const commonSlice = createSlice({
     toggleLoading: (state) => {
       state.isLoading = true;
     },
-    handleMediaSend: (state, action) => {
-      console.log(action.payload);
-    },
+    handleMediaSend: (state, action) => {},
   },
 });
 export default commonSlice.reducer;

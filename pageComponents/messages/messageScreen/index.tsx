@@ -180,7 +180,6 @@ const MessageScreen = (props: IMessageScreenProps) => {
             messages: messages,
           },
         };
-        console.log(syncObject);
       });
       socket.emit(SOCKET_ROUTES.JOIN_ROOM, {
         to: mobile,

@@ -6,12 +6,12 @@ import InputBox from "@/components/inputBox";
 import SkeletonLoader from "@/components/skeletonLoader";
 import AttachmentModal from "@/components/attachmentModal";
 import ClickAwayListener from "@/components/clickAway";
+import Container from "@/components/container";
 import Tag from "@/components/tag";
 import styles from "./chatBottom.module.scss";
 import Images from "@/public/assets/icons";
 import { IChatBottomProps } from "./chatBottom.types";
 import { SKELETON_VARIANT } from "@/common/enums";
-import Container from "@/components/container";
 
 const ChatBottom = (props: IChatBottomProps) => {
   const {
