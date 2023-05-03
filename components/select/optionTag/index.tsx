@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import styles from "./optionTag.module.scss";
-import ImageComponent from "../../image";
+import ImageComponent from "../../imageComponent";
 import Images from "@/public/assets/icons";
 import { IOptionTagProps } from "./optionTag.types";
 import { IOptionType } from "@/common/types";
@@ -10,7 +10,7 @@ const OptionTags = (props: IOptionTagProps) => {
   const { close } = Images;
 
   const handleTagRemove = useCallback(
-    (value: IOptionType) => (event: React.MouseEvent) => {
+    (value: IOptionType) => (event: React.MouseEvent<HTMLImageElement>) => {
       event.stopPropagation();
       onRemove(options.filter((option) => option.id !== value.id));
     },

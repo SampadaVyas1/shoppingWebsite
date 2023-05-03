@@ -1,27 +1,82 @@
 @import "../../styles/variables";
 @import "../../styles/media";
-@import "../../styles/mixins";
-
-.messages {
-  @include flex-center-alignment;
-  flex-direction: column;
-  gap: 2rem;
+.messagesPage {
+  display: flex;
   height: 100%;
+  overflow: hidden;
 
-  .tooltip {
-    width: 25rem;
+  .emptyCandidateList {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    .noCandidateImage {
+      width: auto;
+      height: auto;
+      margin-bottom: 1rem;
+      object-fit: contain;
+    }
+    .hint {
+      color: $gray-500;
+      text-align: center;
+    }
   }
-  .tooltipContent {
-    width: 37.5rem;
-    border-radius: 0.5rem;
-    background-color: $primary;
-    color: $white;
-    padding: 0.5rem;
-    font-size: 0.75rem;
+
+  .candidateList {
+    overflow: hidden;
+    width: 45%;
+    background-color: $white;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .plusIcon {
+      position: absolute;
+      bottom: 3rem;
+      right: 3.5rem;
+      min-width: 2.5rem;
+      max-width: 2.5rem;
+      box-shadow: $inputBoxShadow;
+    }
+    .searchBar {
+      margin-left: 3rem;
+      margin-right: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .searchFilter {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      margin-left: 3rem;
+      margin: 1rem 1.25rem 1.5rem 3rem;
+
+      .levelFilter {
+        flex: 1;
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .filter {
+        margin: 0.4rem;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
   }
-  .tooltipContentLeft {
-    position: absolute;
-    top: -2rem;
-    right: 0;
+  .messageScreen {
+    width: 55%;
+    background-color: $grayLight;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .messagePlaceholder {
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
   }
 }

@@ -55,6 +55,16 @@ export enum TOOLTIP_POSITION {
   RIGHT = "right",
   TOP = "top",
   BOTTOM = "bottom",
+  CENTER = "center",
+}
+
+export enum MESSAGE_STATUS {
+  SENT = "SENT",
+  RECEIVED = "RECEIVED",
+  DELIVERED = "DELIVERED",
+  READ = "READ",
+  FAILED = "FAILED",
+  SENDING = "SENDING",
 }
 
 export enum BUTTON_SIZES {

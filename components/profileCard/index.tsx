@@ -1,11 +1,7 @@
-import { useState } from "react";
-import Button from "../button";
-import ImageComponent from "../image";
-import Modal from "../modal";
+import ImageComponent from "../imageComponent";
 import Typography from "../typography";
 import styles from "./profileCard.module.scss";
-import Images from "@/public/assets/icons";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { IProfileCardProps } from "./profileCard.types";
 
 const ProfileCard = (props: IProfileCardProps) => {

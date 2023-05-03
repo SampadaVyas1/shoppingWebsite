@@ -1,5 +1,6 @@
 @import "../../styles/variables";
 @import "../../styles/mixins";
+@import "../../styles/media";
 
 .navbar {
   max-height: 3.5rem;
@@ -117,5 +118,13 @@
   width: 100%;
   .footerButton {
     flex: 1;
+  }
+}
+
+@media screen and (max-width: $md-max) {
+  .header {
+    color: $primary;
+    font-size: 1rem !important;
+    font-weight: 600;
   }
 }

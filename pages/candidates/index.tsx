@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
+import { Popover } from "react-tiny-popover";
 import fakeData from "./mockData.json";
 import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
 import { DATE_FORMAT, SORT_Type, TABLE_CONSTANTS } from "@/common/constants";
@@ -10,15 +11,16 @@ import { sortDataByField } from "@/common/utils";
 import Container from "@/components/container";
 import Search from "@/components/searchBar";
 import Images from "@/public/assets/icons";
-import ImageComponent from "@/components/image";
+import ImageComponent from "../../components/imageComponent/index";
 import Tag from "@/components/tag/tag";
 import tagList from "./tag.json";
-import Typography from "@/components/typography";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-import Button from "@/components/button";
 import filterData from "./filterData.json";
 import AddForm from "@/components/addForm";
 import Modal from "@/components/modal";
+import Filter from "@/components/filterComponent";
+import { TOOLTIP_POSITION } from "@/common/enums";
+import TransitionWrapper from "@/components/transitionWrapper";
+import Image from "next/image";
 
 const sortbuttonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
@@ -29,9 +31,18 @@ const Candidates = () => {
   const [data, setData] = useState<IData[]>([]);
   const [buttonState, setButtonState] = useState(sortbuttonData);
   const [activeTags, setActiveTags] = useState<{ [key: number]: boolean }>({});
-  const [filterContainer, setShowFilter] = useState<boolean>(false);
-  const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [addButtonClicked, setAddButtonClicked] = useState(false);
+  const [isFilterOpen, setisFilterOpen] = useState(false);
+
+  const closeFilter = () => {
+    setisFilterOpen(false);
+  };
+
+  const toggleFilter = (event: any) => {
+    event.stopPropagation();
+    setisFilterOpen(!isFilterOpen);
+  };
+
   const additionalValue: IAdditionalValue[] = [
     {
       colspan: TABLE_CONSTANTS.NAME,
@@ -114,10 +125,6 @@ const Candidates = () => {
       }
     }
   };
-  const handleFilter = () => {
-    setShowFilter(true);
-  };
-
   useEffect(() => {
     const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
     setData(newData);
@@ -131,15 +138,6 @@ const Candidates = () => {
     });
   }, []);
 
-  function getValuesByKey(filterData: any, keyName: string) {
-    const filterBy = filterData.filterBy || [];
-    const filterObj = filterBy.find((obj: any) => obj.hasOwnProperty(keyName));
-    return filterObj ? filterObj[keyName] : null;
-  }
-  const handleFilterClick = (keyName: any) => {
-    setSelectedKey(keyName);
-  };
-  const values = selectedKey ? getValuesByKey(filterData, selectedKey) : null;
   return (
     <Container>
       <div className={styles.header}>
@@ -160,68 +158,32 @@ const Candidates = () => {
                 key={filterValue.id}
               />
             ))}
-
-          <ImageComponent
-            src={Images.filterIcon}
-            customClass={styles.icons}
-            onClick={handleFilter}
-          />
+          <Popover
+            isOpen={true}
+            // positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
+            reposition={true}
+            align="start"
+            onClickOutside={closeFilter}
+            padding={16}
+            content={
+              <TransitionWrapper open={isFilterOpen}>
+                <Filter
+                  filterData={filterData.filterBy}
+                  onclose={closeFilter}
+                />
+              </TransitionWrapper>
+            }
+          >
+            <Image
+              src={Images.filterIcon}
+              className={styles.icons}
+              width={24}
+              height={24}
+              alt="filter"
+              onClick={toggleFilter}
+            />
+          </Popover>
         </div>
-        {filterContainer && (
-          <Container customClass={styles.filterContainer}>
-            <div className={styles.filter}>
-              <div className={styles.filterheader}>
-                <Typography
-                  variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}
-                  customStyle={styles.filterHeaderLeft}
-                >
-                  Filter By
-                </Typography>
-                <Typography
-                  variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}
-                  customStyle={styles.headerRight}
-                >
-                  Clear all
-                </Typography>
-              </div>
-              {filterData.filterBy &&
-                filterData.filterBy.map((item: any) => {
-                  const keyName = Object.keys(item)[0];
-                  return (
-                    <div
-                      className={styles.filterData}
-                      onClick={() => handleFilterClick(keyName)}
-                    >
-                      <Typography
-                        variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}
-                      >
-                        {keyName}
-                      </Typography>
-                      <ImageComponent
-                        src={Images.rightArrow}
-                        height={24}
-                        width={24}
-                      />
-                    </div>
-                  );
-                })}
-              {values && (
-                <div>
-                  <Typography>{selectedKey} values:</Typography>
-                  <ul>
-                    {values.map((value: any) => (
-                      <li key={value}>{value}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-            <div className={styles.filter}>
-              <Button variant={BUTTON_VARIANT.OUTLINED}>Cancel</Button>
-              <Button variant={BUTTON_VARIANT.CONTAINED}>Apply filters</Button>
-            </div>
-          </Container>
-        )}
       </div>
       <InfiniteScroll
         nextPage={true}

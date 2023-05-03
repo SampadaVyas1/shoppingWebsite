@@ -1,0 +1,41 @@
+@import "../../../styles/variables";
+
+.chatHeader {
+  display: flex;
+  padding: 0.75rem 1.5rem;
+  box-sizing: border-box;
+  justify-content: space-between;
+  align-items: center;
+
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    .image {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+    }
+  }
+  .detail {
+    display: flex;
+    flex-direction: column;
+    .hint {
+      color: $gray-500;
+    }
+    .status {
+      color: $primary;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+  }
+  .detailSkeleton {
+    width: 25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    .skeletonText {
+      height: 1rem;
+    }
+  }
+}

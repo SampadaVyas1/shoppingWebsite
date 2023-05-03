@@ -12,7 +12,7 @@ import { SORT_Type, TABLE_CONSTANTS } from "@/common/constants";
 import CustomCheckBox from "../customCheckBox";
 import Typography from "../typography";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
-import ImageComponent from "@/components/image";
+import ImageComponent from "@/components/imageComponent";
 import { Column } from "rc-table";
 import Images from "@/public/assets/icons";
 import TableCell from "./tableCell";
