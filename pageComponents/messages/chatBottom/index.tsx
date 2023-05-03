@@ -70,21 +70,19 @@ const ChatBottom = (props: IChatBottomProps) => {
   ) : (
     <form className={styles.chatBottom} onSubmit={handleClick}>
       <ImageComponent src={Images.templateIcon} customClass={styles.icon} />
-      <ClickAwayListener handleClose={handleCloseAttachmentModal}>
-        <ImageComponent
-          src={Images.attachmentIcon}
-          customClass={
-            showAttachmentModal
-              ? `${styles.icon} ${styles.active}`
-              : styles.icon
-          }
-          onClick={handleAttachmentClick}
-        />
-        <AttachmentModal
-          open={showAttachmentModal}
-          onSelection={handleFileSelection}
-        />
-      </ClickAwayListener>
+
+      <ImageComponent
+        src={Images.attachmentIcon}
+        customClass={
+          showAttachmentModal ? `${styles.icon} ${styles.active}` : styles.icon
+        }
+        onClick={handleAttachmentClick}
+      />
+      <AttachmentModal
+        open={showAttachmentModal}
+        onSelection={handleFileSelection}
+      />
+
       {selectedFile?.file?.name && (
         <Container customClass={styles.imagePreview}>
           {selectedFile.file.type.includes("image") ? (

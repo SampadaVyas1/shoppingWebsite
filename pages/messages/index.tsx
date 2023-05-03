@@ -18,7 +18,11 @@ import Images from "@/public/assets/icons";
 import candidateData from "./candidates.json";
 import levelData from "../../helpers/levelsData.json";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
-import { increaseUnreadCount, updateMessage } from "@/common/dbUtils";
+import {
+  filterList,
+  increaseUnreadCount,
+  updateMessage,
+} from "@/common/dbUtils";
 import {
   BUTTON_VARIANT,
   TOOLTIP_POSITION,
@@ -80,6 +84,7 @@ const Messages = () => {
       ...prevState,
       searchValue: event.target.value,
     }));
+    filterList(event.target.value);
   };
 
   const handleClearSearch = () => {
@@ -110,7 +115,6 @@ const Messages = () => {
       });
 
       socket.on(SOCKET_ROUTES.DISCONNECT, () => {
-        console.log("disconnect");
         setMessagePageState((prevState) => ({
           ...prevState,
           isConnected: false,

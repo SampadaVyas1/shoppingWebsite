@@ -106,7 +106,6 @@ const ChatBody = (props: IChatBodyProps) => {
                       />
                     )}
                     {typeof mediaUrl === "string" && type === "document" && (
-                      // <a href={mediaUrl} target="_blank" rel="noreferrer">
                       <Tag
                         tagValue={{
                           id: "1",
@@ -118,7 +117,6 @@ const ChatBody = (props: IChatBodyProps) => {
                           window.open(mediaUrl, "_blank", "noreferrer")
                         }
                       />
-                      // </a>
                     )}
                     <Typography
                       variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
