@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import fakeData from "./mockData.json";
@@ -12,18 +12,23 @@ import Search from "@/components/searchBar";
 import Images from "@/public/assets/icons";
 import ImageComponent from "@/components/image";
 import Tag from "@/components/tag/tag";
-import filterData from "./filterData.json"
+import tagList from "./tag.json";
+import Typography from "@/components/typography";
+import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import Button from "@/components/button";
+import filterData from "./filterData.json";
+
 const sortbuttonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
   createdTime: { upKeyDisabled: false, downKeyDisabled: false },
 };
-
 const Candidates = () => {
   const [selectedRow, setSelectedRow] = useState<number[]>([]);
   const [data, setData] = useState<IData[]>([]);
   const [buttonState, setButtonState] = useState(sortbuttonData);
   const [activeTags, setActiveTags] = useState<{ [key: number]: boolean }>({});
-
+  const [filterContainer, setShowFilter] = useState<boolean>(false);
+  const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const additionalValue: IAdditionalValue[] = [
     {
       colspan: TABLE_CONSTANTS.NAME,
@@ -106,8 +111,10 @@ const Candidates = () => {
       }
     }
   };
-
-   useEffect(() => {
+  const handleFilter = () => {
+    setShowFilter(true);
+  };
+  useEffect(() => {
     const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
     setData(newData);
     setButtonState({
@@ -120,6 +127,15 @@ const Candidates = () => {
     });
   }, []);
 
+  function getValuesByKey(filterData: any, keyName: string) {
+    const filterBy = filterData.filterBy || [];
+    const filterObj = filterBy.find((obj: any) => obj.hasOwnProperty(keyName));
+    return filterObj ? filterObj[keyName] : null;
+  }
+  const handleFilterClick = (keyName: any) => {
+    setSelectedKey(keyName);
+  };
+  const values = selectedKey ? getValuesByKey(filterData, selectedKey) : null;
 
   return (
     <Container>
@@ -130,8 +146,8 @@ const Candidates = () => {
           customStyle={styles.search}
         />
         <div className={styles.tagList}>
-          {!!filterData &&
-            filterData.map((filterValue: any) => (
+          {!!tagList &&
+            tagList.map((filterValue: any) => (
               <Tag
                 tagValue={filterValue}
                 onClick={() => handleClickHeaderTag(filterValue.id)}
@@ -141,8 +157,68 @@ const Candidates = () => {
                 key={filterValue.id}
               />
             ))}
-          <ImageComponent src={Images.filterIcon} customClass={styles.icons} />
+
+          <ImageComponent
+            src={Images.filterIcon}
+            customClass={styles.icons}
+            onClick={handleFilter}
+          />
         </div>
+        {filterContainer && (
+          <Container customClass={styles.filterContainer}>
+            <div className={styles.filter}>
+              <div className={styles.filterheader}>
+                <Typography
+                  variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}
+                  customStyle={styles.filterHeaderLeft}
+                >
+                  Filter By
+                </Typography>
+                <Typography
+                  variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}
+                  customStyle={styles.headerRight}
+                >
+                  Clear all
+                </Typography>
+              </div>
+              {filterData.filterBy &&
+                filterData.filterBy.map((item: any) => {
+                  const keyName = Object.keys(item)[0];
+                  return (
+                    <div
+                      className={styles.filterData}
+                      onClick={ ()=>handleFilterClick(keyName)}
+                    >
+                      <Typography
+                        variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}
+                      >
+                        {keyName}
+                      </Typography>
+                      <ImageComponent
+                        src={Images.rightArrow}
+                        height={24}
+                        width={24}
+                      />
+                    </div>
+                  );
+                })}
+              {values && (
+                <div>
+                  <Typography>{selectedKey} values:</Typography>
+                  <ul>
+                    {values.map((value: any) => (
+                      <li key={value}>{value}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+            <div className={styles.filter}>
+              <Button variant={BUTTON_VARIANT.OUTLINED}>Cancel</Button>
+              <Button variant={BUTTON_VARIANT.CONTAINED}>Apply filters</Button>
+            </div>
+          </Container>
+        )}
       </div>
       <InfiniteScroll
         nextPage={true}
@@ -165,6 +241,13 @@ const Candidates = () => {
           handleRowEachSelect={handleRowEachSelect}
           hoverCell={"techStack"}
         />
+        <ImageComponent
+         src={Images.addButton}
+         customClass={styles.addButton}
+         height={40}
+         width={40}
+        //  onClick={}
+         />
       </InfiniteScroll>
     </Container>
   );

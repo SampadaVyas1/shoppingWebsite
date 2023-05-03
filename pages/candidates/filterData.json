@@ -1,26 +1,22 @@
-[
-    {
-      "id": "1",
-      "label": "Screening"
-    },
-    {
-      "id": "2",
-      "label": "L1 Interview"
-    },
-    {
-      "id": "3",
-      "label": "L2 Interview"
-    },
-    {
-      "id": "4",
-      "label": "HM Interview"
-    },
-    {
-      "id": "5",
-      "label": "Selected"
-    },
-    {
-      "id": "6",
-      "label": "Rejected"
-    }
-  ]
+{
+    "sortBy": [
+        "ASC",
+        "firstName"
+    ],
+    "filterBy": [
+        {
+            "techStack": [
+                "Android Dev",
+                "Python Dev"
+            ]
+        },
+        {
+            "postingTitle": [
+                "Associate Software Engineer"
+            ]
+        }
+    ],
+    "search": "sanket",
+    "page": 1,
+    "limit": 10
+}
