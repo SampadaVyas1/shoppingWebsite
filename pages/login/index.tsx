@@ -15,6 +15,7 @@ import { TOKEN } from "@/common/constants";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { PRIVATE_ROUTES, RECRUITER_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
+import { getLoginData } from "@/services/login.service";
 import SectionImage from "../../public/assets/images/loginImage.svg";
 
 const Login = () => {

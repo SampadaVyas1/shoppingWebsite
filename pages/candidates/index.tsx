@@ -17,6 +17,8 @@ import Typography from "@/components/typography";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import Button from "@/components/button";
 import filterData from "./filterData.json";
+import AddForm from "@/components/addForm";
+import Modal from "@/components/modal";
 
 const sortbuttonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
@@ -29,6 +31,7 @@ const Candidates = () => {
   const [activeTags, setActiveTags] = useState<{ [key: number]: boolean }>({});
   const [filterContainer, setShowFilter] = useState<boolean>(false);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const [addButtonClicked, setAddButtonClicked] = useState(false);
   const additionalValue: IAdditionalValue[] = [
     {
       colspan: TABLE_CONSTANTS.NAME,
@@ -114,6 +117,7 @@ const Candidates = () => {
   const handleFilter = () => {
     setShowFilter(true);
   };
+
   useEffect(() => {
     const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
     setData(newData);
@@ -136,7 +140,6 @@ const Candidates = () => {
     setSelectedKey(keyName);
   };
   const values = selectedKey ? getValuesByKey(filterData, selectedKey) : null;
-
   return (
     <Container>
       <div className={styles.header}>
@@ -187,7 +190,7 @@ const Candidates = () => {
                   return (
                     <div
                       className={styles.filterData}
-                      onClick={ ()=>handleFilterClick(keyName)}
+                      onClick={() => handleFilterClick(keyName)}
                     >
                       <Typography
                         variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}
@@ -242,13 +245,21 @@ const Candidates = () => {
           hoverCell={"techStack"}
         />
         <ImageComponent
-         src={Images.addButton}
-         customClass={styles.addButton}
-         height={40}
-         width={40}
-        //  onClick={}
-         />
+          src={Images.addButton}
+          customClass={styles.addButton}
+          height={40}
+          width={40}
+          onClick={() => setAddButtonClicked(true)}
+        />
       </InfiniteScroll>
+      <Modal
+        open={addButtonClicked}
+        onClose={() => setAddButtonClicked(false)}
+        header="Add Candidate"
+        showCloseIcon
+      >
+        <AddForm />
+      </Modal>
     </Container>
   );
 };

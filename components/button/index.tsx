@@ -1,15 +1,17 @@
 import styles from "./button.module.scss";
 import ImageComponent from "../image";
-import { BUTTON_VARIANT } from "@/common/enums";
+import { BUTTON_TYPES, BUTTON_VARIANT, BUTTON_SIZES } from "@/common/enums";
 import { IButtonProps } from "./button.types";
 
 const Button = (props: IButtonProps) => {
   const {
     variant = BUTTON_VARIANT.OUTLINED,
     startIcon,
+    size = BUTTON_SIZES.MEDIUM,
     endIcon,
     children,
     customStyle,
+    type = BUTTON_TYPES.BUTTON,
     ...otherProps
   } = props;
 
@@ -18,8 +20,9 @@ const Button = (props: IButtonProps) => {
     : `${styles.button} ${props.customStyle}`;
   return (
     <button
-      className={`${styles[variant]} ${buttonClass}`}
+      className={`${styles[variant]} ${buttonClass} ${styles[size]}`}
       {...otherProps}
+      type={type}
       disabled={props.disabled}
     >
       {!!startIcon && (
