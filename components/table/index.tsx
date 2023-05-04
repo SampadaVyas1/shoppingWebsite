@@ -43,7 +43,7 @@ export const TableComponent = (props: ITableComponent) => {
   } = Images;
 
   const handleCheckBoxClick = (id: number) => {
-    handleRowEachSelect(id, selectedRow, handleRowSelect);
+    !!selectedRow && !!handleRowEachSelect && handleRowSelect &&  handleRowEachSelect(id, selectedRow, handleRowSelect);
   };
 
   const handleCheckBoxClicks = useCallback(
@@ -86,9 +86,9 @@ export const TableComponent = (props: ITableComponent) => {
               <div className={styles.header}>
                 {column.title === TABLE_CONSTANTS.CHECKBOX ? (
                   <CustomCheckBox
-                    ideal={checkIdeal(selectedRow, data)}
-                    checked={checkMaster(selectedRow, data)}
-                    handleClick={handleAllRowSelects(
+                    ideal={!!selectedRow && checkIdeal(selectedRow, data)}
+                    checked={!!selectedRow && checkMaster(selectedRow, data)}
+                    handleClick={selectedRow && handleRowSelect && handleAllRowSelects(
                       data,
                       selectedRow,
                       handleRowSelect
@@ -138,7 +138,7 @@ export const TableComponent = (props: ITableComponent) => {
                   handleClick={handleCheckBoxClicks(
                     data[index][TABLE_CONSTANTS.ID]
                   )}
-                  checked={checkRow(
+                  checked={selectedRow && checkRow(
                     data[index][TABLE_CONSTANTS.ID],
                     selectedRow
                   )}

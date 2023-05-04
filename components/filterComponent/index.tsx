@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Typography from "@/components/typography";
 import Card from "@/components/card";
-import CustomCheckBox from "@/components/customCheckBox";
 import ImageComponent from "@/components/imageComponent";
 import MulitSelectCheckBOX from "./multiSelectCheckBox/index"
 import Button from "@/components/button";
@@ -69,7 +68,7 @@ const Filter = ({ onClose, filterData }: any) => {
               </div>
               <div className={styles.filters}>
                 <MulitSelectCheckBOX 
-                  options={selectedFilter.value.map((data:any, index:any)=> ({id:index, label:data}))}
+                  options={selectedFilter.value.map((data:any, index:number)=> ({id:index, label:data}))}
                   searchable
                   customStyle={styles.techFilter}
                   selectedValues={[]}

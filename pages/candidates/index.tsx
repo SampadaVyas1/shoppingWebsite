@@ -9,7 +9,6 @@ import { TableComponent } from "@/components/table";
 import HeaderTitle from "./tableHeaderData.json";
 import { sortDataByField } from "@/common/utils";
 import Container from "@/components/container";
-import Search from "@/components/searchBar";
 import Images from "@/public/assets/icons";
 import ImageComponent from "../../components/imageComponent/index";
 import Tag from "@/components/tag/tag";
@@ -21,6 +20,7 @@ import Filter from "@/components/filterComponent";
 import { TOOLTIP_POSITION } from "@/common/enums";
 import TransitionWrapper from "@/components/transitionWrapper";
 import Image from "next/image";
+import InputBox from "@/components/inputBox";
 
 const sortbuttonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
@@ -141,11 +141,14 @@ const Candidates = () => {
   return (
     <Container>
       <div className={styles.header}>
-        <Search
-          placeholder={"Search..."}
-          endIcon={Images.searchIcon}
-          customStyle={styles.search}
-        />
+        <div className={styles.searchBox}>
+          <InputBox
+            endIcon={Images.search}
+            placeholder="Search..."
+            onEndIconClick={Images.searchIcon}
+            className={styles.search}
+          />
+        </div>
         <div className={styles.tagList}>
           {!!tagList &&
             tagList.map((filterValue: any) => (
@@ -160,7 +163,7 @@ const Candidates = () => {
             ))}
           <Popover
             isOpen={true}
-            // positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
+            positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
             reposition={true}
             align="start"
             onClickOutside={closeFilter}

@@ -30,12 +30,12 @@ export interface ITableComponent {
   moreverticalIcon?: boolean;
   buttonState?: IButtonState;
   handleSortArrowClick?: (field: string, sortType: string) => void;
-  selectedRow: number[];
-  handleRowSelect: IHandleRowSelect;
-  handleRowEachSelect: (
+  selectedRow?: number[];
+  handleRowSelect?: IHandleRowSelect;
+  handleRowEachSelect?: (
     row: number,
     selectedRow: number[],
     onSelectedRowChange: (value: number[]) => void
   ) => void;
-  hoverCell: string;
+  hoverCell?: string;
 }

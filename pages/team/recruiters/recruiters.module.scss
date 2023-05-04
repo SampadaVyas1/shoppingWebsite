@@ -1,0 +1,39 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.table {
+    width: 100%;
+    background-color: $white;
+    border-collapse: collapse;
+  }
+  .contained {
+    background-color: $primary;
+    color: $white;
+  }
+  .scroll {
+    height: 43.75rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    &::-webkit-scrollbar {
+      width: 0.3rem;
+      width: 0.3rem;
+    }
+    &::-webkit-scrollbar-track {
+      background: $white;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $scrollBar;
+      border-radius: 1rem;
+    }
+    &::-webkit-scrollbar-track-piece:end {
+      margin-bottom: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+  .customRowStyling:hover {
+    background-color: $tableHover;
+  }
+  .customRowStyling:hover {
+    background-color: $tableHover;
+  }

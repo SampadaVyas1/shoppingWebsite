@@ -7,7 +7,7 @@ export interface ITable {
   additionalValue?: IAdditionalValue[];
   dataFormatType?: string;
   index: number;
-  hoverCell: string;
+  hoverCell?: string;
 }
 
 export interface IExtraField {
