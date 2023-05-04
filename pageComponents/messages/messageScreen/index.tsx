@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, ChangeEvent } from "react";
+import { useState, useEffect, useCallback, ChangeEvent, useRef } from "react";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { v4 as uuid } from "uuid";
@@ -35,6 +35,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
   const [isRoomJoined, setRoomJoined] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<ISelectedFile | null>(null);
+  const chatScreenRef = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch();
 
@@ -194,7 +195,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
   }, [dispatch, mobile, props.isConnected]);
 
   return (
-    <div className={styles.messageScreen}>
+    <div className={styles.messageScreen} ref={chatScreenRef}>
       <React.Fragment>
         <ChatHeader
           name={name}
@@ -221,6 +222,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           message={message}
           onFileRemoval={handleFileRemoval}
           mobile={mobile}
+          chatScreenRef={chatScreenRef}
           isLoading={!props.isConnected || !isRoomJoined}
         />
       </React.Fragment>

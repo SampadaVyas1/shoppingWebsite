@@ -1,0 +1,23 @@
+.startModal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  .header {
+    padding: 0 !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .search {
+      max-width: 32.625rem;
+    }
+  }
+  .footer {
+    display: flex;
+    gap: 1.5rem;
+    align-self: flex-end;
+  }
+  .candidateTable {
+    height: 26.25rem;
+    margin: 0;
+  }
+}

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import Image from "next/image";
 import { FormEvent, useState } from "react";
 import { v4 as uuid } from "uuid";
 import ImageComponent from "@/components/imageComponent";
@@ -11,7 +12,11 @@ import Tag from "@/components/tag";
 import styles from "./chatBottom.module.scss";
 import Images from "@/public/assets/icons";
 import { IChatBottomProps } from "./chatBottom.types";
-import { SKELETON_VARIANT } from "@/common/enums";
+import { SKELETON_VARIANT, TOOLTIP_POSITION } from "@/common/enums";
+import TransitionWrapper from "@/components/transitionWrapper";
+import { Popover, ArrowContainer } from "react-tiny-popover";
+import MultiselectOptions from "@/components/select/multiselectOptions";
+import { getAllTemplates } from "@/services/common.service";
 
 const ChatBottom = (props: IChatBottomProps) => {
   const {
@@ -22,9 +27,13 @@ const ChatBottom = (props: IChatBottomProps) => {
     onFileSelection,
     onSend,
     onFileRemoval,
+    chatScreenRef,
   } = props;
 
   const [showAttachmentModal, toggleAttachmentModal] = useState<boolean>(false);
+  const [isTemplateOpen, setIsTemplateOpen] = useState<boolean>(false);
+
+  const [templateList, setTemplateList] = useState<any>([]);
 
   const handleClick = (
     event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>
@@ -48,6 +57,23 @@ const ChatBottom = (props: IChatBottomProps) => {
     showAttachmentModal && toggleAttachmentModal(false);
   };
 
+  const closePopup = () => {
+    setIsTemplateOpen(false);
+  };
+
+  const closeAttachmentModal = () => toggleAttachmentModal(false);
+
+  const handleTemplateIconClick = async () => {
+    if (!isTemplateOpen) {
+      const data = await getAllTemplates();
+      console.log(data.data.data);
+      setTemplateList(data.data.data.templates);
+    }
+    setIsTemplateOpen(!isTemplateOpen);
+  };
+
+  console.log(chatScreenRef?.current);
+
   return props.isLoading ? (
     <div className={styles.chatBottom}>
       <SkeletonLoader
@@ -69,19 +95,67 @@ const ChatBottom = (props: IChatBottomProps) => {
     </div>
   ) : (
     <form className={styles.chatBottom} onSubmit={handleClick}>
-      <ImageComponent src={Images.templateIcon} customClass={styles.icon} />
-
-      <ImageComponent
-        src={Images.attachmentIcon}
-        customClass={
-          showAttachmentModal ? `${styles.icon} ${styles.active}` : styles.icon
+      <Popover
+        isOpen={true}
+        positions={[TOOLTIP_POSITION.TOP, TOOLTIP_POSITION.LEFT]}
+        reposition={true}
+        parentElement={
+          chatScreenRef?.current ? chatScreenRef.current : undefined
         }
-        onClick={handleAttachmentClick}
-      />
-      <AttachmentModal
-        open={showAttachmentModal}
-        onSelection={handleFileSelection}
-      />
+        onClickOutside={() => console.log("hello")}
+        padding={10}
+        content={({ position, childRect, popoverRect }) => (
+          <TransitionWrapper open={isTemplateOpen}>
+            <ArrowContainer
+              position={position}
+              childRect={childRect}
+              popoverRect={popoverRect}
+              arrowColor="white"
+              arrowSize={12}
+              arrowStyle={{ opacity: 1, zIndex: 2, top: "0.25rem" }}
+              className={styles["popover-arrow-container"]}
+              arrowClassName="popover-arrow"
+            >
+              <MultiselectOptions
+                options={templateList?.map((templates: any) => ({
+                  id: templates.id,
+                  label: templates.name,
+                }))}
+                customStyle={styles.templateList}
+                selectedValues={[]}
+                searchable
+              />
+            </ArrowContainer>
+          </TransitionWrapper>
+        )}
+      >
+        <Image
+          src={Images.templateIcon}
+          className={
+            isTemplateOpen ? `${styles.icon} ${styles.active}` : styles.icon
+          }
+          alt="template"
+          width={24}
+          height={24}
+          onClick={handleTemplateIconClick}
+        />
+      </Popover>
+
+      <ClickAwayListener handleClose={closeAttachmentModal}>
+        <AttachmentModal
+          open={showAttachmentModal}
+          onSelection={handleFileSelection}
+        />
+        <ImageComponent
+          src={Images.attachmentIcon}
+          customClass={
+            showAttachmentModal
+              ? `${styles.icon} ${styles.active}`
+              : styles.icon
+          }
+          onClick={handleAttachmentClick}
+        />
+      </ClickAwayListener>
 
       {selectedFile?.file?.name && (
         <Container customClass={styles.imagePreview}>

@@ -33,6 +33,8 @@ import { ITagType } from "@/components/tag/tag.types";
 import { IMessagesStates } from "./messages.types";
 import { useAppSelector } from "@/redux/hooks";
 import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
+import Modal from "@/components/modal";
+import StartConversationModal from "@/pageComponents/messages/startConversationModal";
 
 const Messages = () => {
   const [messagePageState, setMessagePageState] = useState<IMessagesStates>({
@@ -41,10 +43,16 @@ const Messages = () => {
     isConnected: false,
     searchValue: "",
     isFilterOpen: false,
+    isAddModalOpen: false,
   });
   const { phone } = useAppSelector((state) => state.messages);
-  const { selectedLevels, selectedCandidate, isConnected, searchValue } =
-    messagePageState;
+  const {
+    selectedLevels,
+    selectedCandidate,
+    isConnected,
+    searchValue,
+    isAddModalOpen,
+  } = messagePageState;
 
   const handleCandidateSelect = (candidate: any) => {
     setMessagePageState((prevState) => ({
@@ -95,6 +103,13 @@ const Messages = () => {
       }));
   };
 
+  const handleAddCandidate = () => {
+    setMessagePageState((prevState) => ({
+      ...prevState,
+      isAddModalOpen: !isAddModalOpen,
+    }));
+  };
+
   useEffect(() => {
     if (!socket.connected) {
       socket.connect();
@@ -134,6 +149,27 @@ const Messages = () => {
         .first();
       if (matchedResult) {
         await updateMessage({ ...matchedResult, status: data.status });
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    socket.on(SOCKET_ROUTES.PENDING_STATUS, async (data: any) => {
+      if (data.length) {
+        Promise.all(
+          data.map(async (pendingStatus: any) => {
+            const matchedResult = await db.messages
+              .where("messageId")
+              .equals(pendingStatus.id)
+              .first();
+            if (matchedResult) {
+              await updateMessage({
+                ...matchedResult,
+                status: pendingStatus.status,
+              });
+            }
+          })
+        );
       }
     });
   }, []);
@@ -276,6 +312,7 @@ const Messages = () => {
           startIcon={Images.plusIcon}
           variant={BUTTON_VARIANT.CONTAINED}
           customStyle={styles.plusIcon}
+          onClick={handleAddCandidate}
         ></Button>
       </div>
       <div className={styles.messageScreen}>
@@ -292,6 +329,18 @@ const Messages = () => {
           />
         )}
       </div>
+
+      {
+        <Modal
+          open={isAddModalOpen}
+          onClose={handleAddCandidate}
+          header="Start a new conversation with"
+          showCloseIcon
+          customStyle={styles.startModal}
+        >
+          <StartConversationModal handleClose={handleAddCandidate} />
+        </Modal>
+      }
     </div>
   );
 };

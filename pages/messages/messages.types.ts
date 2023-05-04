@@ -1,5 +1,4 @@
 import { ITagType } from "@/components/tag/tag.types";
-import { ICandidateListCardProps } from "./candidateListCard/candidateListCard.types";
 
 export interface IMessagesStates {
   selectedCandidate: any;
@@ -7,6 +6,7 @@ export interface IMessagesStates {
   isConnected: boolean;
   searchValue: string;
   isFilterOpen: boolean;
+  isAddModalOpen: boolean;
 }
 
 export interface ISelectedFile {

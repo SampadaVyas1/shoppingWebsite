@@ -3,7 +3,12 @@ import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import fakeData from "./mockData.json";
 import HeaderTitle from "./tableHeaderData.json";
-import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
+import {
+  IAdditionalValue,
+  IButtonState,
+  ICandidatesProps,
+  IData,
+} from "./candidates.types";
 import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "@/components/table";
 
@@ -17,7 +22,7 @@ const sortbuttonData = {
   status: { upKeyDisabled: false, downKeyDisabled: false },
 };
 
-const Candidates = () => {
+const Candidates = (props: ICandidatesProps) => {
   const [data, setData] = useState<IData[] | null>(null);
   const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
 
@@ -53,7 +58,7 @@ const Candidates = () => {
     <InfiniteScroll
       nextPage={true}
       handlePageChange={handlePageChange}
-      customClass={styles.scroll}
+      customClass={`${styles.scroll} ${props.customScrollStyle}`}
     >
       <TableComponent
         data={fakeData}

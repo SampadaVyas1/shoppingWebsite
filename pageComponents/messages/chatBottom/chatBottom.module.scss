@@ -1,6 +1,9 @@
 @import "../../../styles/variables";
 @import "../../../styles/mixins";
 
+.required span:global(.react-tiny-popover-container)::after {
+  display: none;
+}
 .chatBottom {
   @include flex-align-center;
   padding: 1.25rem 2rem;
@@ -63,4 +66,10 @@
   .skeletonBox {
     height: 3rem;
   }
+}
+.templateList {
+  padding: 1rem 0.5rem !important;
+  box-sizing: border-box;
+  height: 34.5rem;
+  width: 21.5rem;
 }

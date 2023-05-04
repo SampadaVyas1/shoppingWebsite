@@ -1,5 +1,5 @@
+import { ChangeEvent, RefObject } from "react";
 import { ISelectedFile } from "@/pages/messages/messages.types";
-import { ChangeEvent } from "react";
 
 export interface IChatBottomProps {
   mobile: string;
@@ -12,4 +12,5 @@ export interface IChatBottomProps {
   onFileRemoval: () => void;
   onSend: (message: string) => void;
   isLoading: boolean;
+  chatScreenRef: RefObject<HTMLDivElement>;
 }
