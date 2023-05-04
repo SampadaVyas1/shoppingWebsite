@@ -8,7 +8,7 @@ import {
   handleAllRowSelect,
   toCamelCase,
 } from "@/common/utils";
-import { SORT_Type, TABLE_CONSTANTS } from "@/common/constants";
+import { SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import CustomCheckBox from "../customCheckBox";
 import Typography from "../typography";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
@@ -34,7 +34,6 @@ export const TableComponent = (props: ITableComponent) => {
     handleRowSelect,
     handleRowEachSelect,
   } = props;
-  
   const {
     upArrowDisabled,
     upArrowEnabled,
@@ -54,14 +53,14 @@ export const TableComponent = (props: ITableComponent) => {
   );
 
   const handleAscendingArrowClick = useCallback(
-    (dataIndex: string) => () => {
-      !!handleSortArrowClick && handleSortArrowClick(dataIndex,SORT_Type.ASCENDING)
+    (dataIndex: string,data:any) => () => {
+      !!handleSortArrowClick && handleSortArrowClick(dataIndex,SORT_TYPE.ASCENDING,data)
     },
     [buttonState]
   );
   const handleDescendingArrowClick = useCallback(
-    (dataIndex: string) => () => {
-      !!handleSortArrowClick && handleSortArrowClick(dataIndex,SORT_Type.DESCENDING)
+    (dataIndex: string,data:any) => () => {
+      !!handleSortArrowClick && handleSortArrowClick(dataIndex,SORT_TYPE.DESCENDING,data)
     },
     [buttonState]
   );
@@ -109,7 +108,7 @@ export const TableComponent = (props: ITableComponent) => {
                       }
                       width={10}
                       height={10}
-                      onClick={handleAscendingArrowClick(dataIndex)}
+                      onClick={data && handleAscendingArrowClick(dataIndex,data)}
                       className={styles.ascendingicon}
                     />
                     <ImageComponent
@@ -120,7 +119,7 @@ export const TableComponent = (props: ITableComponent) => {
                       }
                       width={10}
                       height={10}
-                      onClick={handleDescendingArrowClick(dataIndex as string )}
+                      onClick={data && handleDescendingArrowClick(dataIndex as string,data )}
                       className={styles.ascendingicon}
                     />
                   </div>

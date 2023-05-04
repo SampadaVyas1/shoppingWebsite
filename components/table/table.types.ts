@@ -29,7 +29,7 @@ export interface ITableComponent {
   customStyle?: ICustomStyle;
   moreverticalIcon?: boolean;
   buttonState?: IButtonState;
-  handleSortArrowClick?:(field:string,sortType:string)=>void;
+  handleSortArrowClick?:(field:string,sortType:string,data:any)=>void;
   selectedRow: number[];
   handleRowSelect: IHandleRowSelect;
   handleRowEachSelect: (row: number,selectedRow: number[],onSelectedRowChange: (value: number[]) => void)=>void;

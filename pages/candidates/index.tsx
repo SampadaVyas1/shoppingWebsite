@@ -3,14 +3,14 @@ import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import fakeData from "./mockData.json";
 import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
-import { DATE_FORMAT, SORT_Type, TABLE_CONSTANTS } from "@/common/constants";
+import { DATE_FORMAT, SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "../../components/table/index";
 import { sortDataByField } from "@/common/utils";
 import { getCandidatesData } from "@/services/candidate.service";
 
 const sortbuttonData: IButtonState = {
   Name: { upKeyDisabled: false, downKeyDisabled: false },
- " Created time": { upKeyDisabled: false, downKeyDisabled: false },
+  "Created time": { upKeyDisabled: false, downKeyDisabled: false },
 };
 
 const Candidates = () => {
@@ -18,7 +18,7 @@ const Candidates = () => {
   const [data, setData] = useState<IData[]>([]);
   const [buttonState, setButtonState] = useState(sortbuttonData);
   const [pageNumber, setPageNumber] = useState(1);
-
+  
   const keys = !!data && data[0] && Object?.keys(data[0]);
   const tableHeader =
     !!keys &&
@@ -34,7 +34,6 @@ const Candidates = () => {
     });
   const filteredHeaderData =
     !!tableHeader && tableHeader.filter((obj) => /^[A-Z]/.test(obj.title));
-  console.log(filteredHeaderData);
   const additionalValue: IAdditionalValue[] = [
     {
       colspan: "Name",
@@ -56,10 +55,11 @@ const Candidates = () => {
 
   const toggleSortButton = (
     field: string,
-    data: IData[],
+    data: any[],
     upKeyDisabled: boolean,
     downKeyDisabled: boolean
   ) => {
+
     setButtonState((buttonState: IButtonState) => ({
       ...buttonState,
       [field]: {
@@ -72,12 +72,12 @@ const Candidates = () => {
     return newData;
   };
 
-  const handleSortButtonClick = (field: string, sortType: string) => {
-    sortType === SORT_Type.ASCENDING
-      ? !buttonState[field].upKeyDisabled &&
+  const handleSortButtonClick = (field: string, sortType: string,data:any) => {
+    sortType === SORT_TYPE.ASCENDING
+      ? !buttonState[field]?.upKeyDisabled &&
         setData(toggleSortButton(field, data, true, false))
-      : sortType === SORT_Type.DESCENDING
-      ? !buttonState[field].downKeyDisabled &&
+      : sortType === SORT_TYPE.DESCENDING
+      ? !buttonState[field]?.downKeyDisabled &&
         setData(toggleSortButton(field, data, false, true))
       : null;
   };
@@ -90,7 +90,6 @@ const Candidates = () => {
       limit: 10,
       page: pageNumber + 1,
     });
-    console.log(response);
     // setData(data.concat(response.data));
     setPageNumber(pageNumber + 1);
   };
@@ -158,8 +157,8 @@ const Candidates = () => {
     setData(updatedData);
     // setButtonState({
     //   ...buttonState,
-    //   name: {
-    //     ...buttonState[TABLE_CONSTANTS.NAME],
+    //   Name: {
+    //     ...buttonState["Name"],
     //     upKeyDisabled: true,
     //     downKeyDisabled: false,
     //   },

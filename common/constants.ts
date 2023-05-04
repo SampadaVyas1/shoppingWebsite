@@ -40,7 +40,7 @@ export const TABLE_CONSTANTS = {
   TIME: "time",
   ID:"id"
 };
-export const SORT_Type={
+export const SORT_TYPE={
 ASCENDING: "ascending",
 DESCENDING: "descending",
 }
