@@ -2,7 +2,7 @@
 @import "../../styles/mixins";
 
 .designation {
-  color: $primaryText;
+  color: $disabledText;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

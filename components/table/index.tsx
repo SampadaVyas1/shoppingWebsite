@@ -34,6 +34,7 @@ export const TableComponent = (props: ITableComponent) => {
     handleRowSelect,
     handleRowEachSelect,
   } = props;
+  
   const {
     upArrowDisabled,
     upArrowEnabled,
@@ -76,8 +77,6 @@ export const TableComponent = (props: ITableComponent) => {
     return (
       !!columnHeaderTitle &&
       columnHeaderTitle?.map((column: IHeaderTitleProps) => {
-        console.log(column)
-        // const dataIndex = toCamelCase(column.title);
         const dataIndex=column.dataIndex;
         return (
           <Column
@@ -102,9 +101,9 @@ export const TableComponent = (props: ITableComponent) => {
                 )}
                 {!!column.sort && (
                   <div className={styles.sortIcon}>
-                    {/* <ImageComponent
+                    <ImageComponent
                       src={
-                        !!buttonState && buttonState[dataIndex].upKeyDisabled
+                        !!buttonState && buttonState[dataIndex]?.upKeyDisabled
                           ? upArrowDisabled
                           : upArrowEnabled
                       }
@@ -115,7 +114,7 @@ export const TableComponent = (props: ITableComponent) => {
                     />
                     <ImageComponent
                       src={
-                        !!buttonState && buttonState[dataIndex as string].downKeyDisabled
+                        !!buttonState && buttonState[dataIndex as string]?.downKeyDisabled
                           ? downArrowDisabled
                           : downArrowEnabled
                       }
@@ -123,7 +122,7 @@ export const TableComponent = (props: ITableComponent) => {
                       height={10}
                       onClick={handleDescendingArrowClick(dataIndex as string )}
                       className={styles.ascendingicon}
-                    /> */}
+                    />
                   </div>
                 )}
               </div>

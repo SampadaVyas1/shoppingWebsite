@@ -22,7 +22,7 @@ export interface ITableComponent {
   additionalValue?: IAdditionalValue[];
   data: IData[];
   customRowStyling?: string;
-  columnHeaderTitle: IHeaderTitleProps[];
+  columnHeaderTitle: any[];
   sortbuttonData?: IButtonState;
   dataFormatType?: string;
   fieldforDateFormat?: { time: string };
@@ -33,4 +33,5 @@ export interface ITableComponent {
   selectedRow: number[];
   handleRowSelect: IHandleRowSelect;
   handleRowEachSelect: (row: number,selectedRow: number[],onSelectedRowChange: (value: number[]) => void)=>void;
+ 
 }

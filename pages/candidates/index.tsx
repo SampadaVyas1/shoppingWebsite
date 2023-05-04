@@ -4,44 +4,44 @@ import InfiniteScroll from "@/components/infiniteScroll";
 import fakeData from "./mockData.json";
 import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
 import { DATE_FORMAT, SORT_Type, TABLE_CONSTANTS } from "@/common/constants";
-import { TableComponent } from "@/components/table";
-import HeaderTitle from "./tableHeaderData.json";
+import { TableComponent } from "../../components/table/index";
 import { sortDataByField } from "@/common/utils";
 import { getCandidatesData } from "@/services/candidate.service";
 
 const sortbuttonData: IButtonState = {
-  name: { upKeyDisabled: false, downKeyDisabled: false },
-  createdTime: { upKeyDisabled: false, downKeyDisabled: false },
+  Name: { upKeyDisabled: false, downKeyDisabled: false },
+ " Created time": { upKeyDisabled: false, downKeyDisabled: false },
 };
 
 const Candidates = () => {
   const [selectedRow, setSelectedRow] = useState<number[]>([]);
   const [data, setData] = useState<IData[]>([]);
   const [buttonState, setButtonState] = useState(sortbuttonData);
+  const [pageNumber, setPageNumber] = useState(1);
 
+  const keys = !!data && data[0] && Object?.keys(data[0]);
+  const tableHeader =
+    !!keys &&
+    keys.map((key, index) => {
+      let sort = key === "Name" || key === "Created time" ? true : false;
+      return {
+        id: index + 1,
+        title: key,
+        sort: sort,
+        dataIndex: key,
+        key: key,
+      };
+    });
+  const filteredHeaderData =
+    !!tableHeader && tableHeader.filter((obj) => /^[A-Z]/.test(obj.title));
+  console.log(filteredHeaderData);
   const additionalValue: IAdditionalValue[] = [
     {
-      colspan: TABLE_CONSTANTS.NAME,
-      colspanValue: TABLE_CONSTANTS.DESIGNATION,
+      colspan: "Name",
+      colspanValue: "postingTitle",
       customStyle: styles.designation,
     },
-    {
-      colspan: TABLE_CONSTANTS.CREATEDTIME,
-      colspanValue: TABLE_CONSTANTS.TIME,
-    },
   ];
-
-  // const additionalValue: IAdditionalValue[] = [
-  //   {
-  //     colspan: TABLE_CONSTANTS.NAME,
-  //     colspanValue: [{value:"designation"},{value:"lastName"}],
-  //     customStyle: styles.designation,
-  //   },
-  //   {
-  //     colspan: TABLE_CONSTANTS.CREATEDTIME,
-  //     colspanValue: TABLE_CONSTANTS.TIME,
-  //   },
-  // ];
 
   const customStyle = {
     table: ({ ...props }) => {
@@ -82,10 +82,17 @@ const Candidates = () => {
       : null;
   };
 
-  const handlePageChange = () => {
-    fakeData.push(...fakeData);
-    setData([...fakeData]);
-    setButtonState(sortbuttonData);
+  const handlePageChange = async () => {
+    // fakeData.push(...fakeData);
+    // setData([...fakeData]);
+    // setButtonState(sortbuttonData);
+    const response = await getCandidatesData({
+      limit: 10,
+      page: pageNumber + 1,
+    });
+    console.log(response);
+    // setData(data.concat(response.data));
+    setPageNumber(pageNumber + 1);
   };
 
   const handleRowSelect = (value: number[]) => {
@@ -110,7 +117,6 @@ const Candidates = () => {
       }
     }
   };
-  console.log(data)
   useEffect(() => {
     // const fetchData = async () => {
     //   const response = await getCandidatesData();
@@ -119,12 +125,37 @@ const Candidates = () => {
 
     // const getCandidates = async () => {
     //   const getdata = await fetchData();
-    //   setData(getdata);
+    //   // setData(getdata);
+    //   const updatedData =
+    //     !!getdata &&
+    //     getdata.map((item: any) => {
+    //       return {
+    //         ...item,
+    //         Name: `${item.firstName} ${item.lastName}`,
+    //         Recruiter: `${item.recruiterName} ${item.recruiterlastName}`,
+    //       };
+    //     });
+    //   setData(updatedData);
+    //   console.log(updatedData);
     // };
     // getCandidates();
 
     // const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
-    setData(fakeData);
+    const updatedData =
+      !!fakeData &&
+      fakeData.map((item: any) => {
+        return {
+          ...item,
+          Name: `${item.firstName} ${item.lastName}`,
+          "Mobile Number": `${item.mobileNumber}`,
+          "Experience level": `${item.experienceLevel}`,
+          "Tech stack": `${item.techStack}`,
+          "Created time": `${item.createdAt}`,
+          Recruiter: `${item.recruiterName} ${item.recruiterlastName}`,
+          Status: `${item.interviewStatus}`,
+        };
+      });
+    setData(updatedData);
     // setButtonState({
     //   ...buttonState,
     //   name: {
@@ -143,10 +174,10 @@ const Candidates = () => {
     >
       <TableComponent
         data={data}
-        columnHeaderTitle={HeaderTitle}
+        columnHeaderTitle={filteredHeaderData}
         sortbuttonData={sortbuttonData}
         additionalValue={additionalValue}
-        fieldforDateFormat={{ time: "createdAt" }}
+        fieldforDateFormat={{ time: "Created time" }}
         dataFormatType={DATE_FORMAT.DD_MM_YYYY}
         customStyle={customStyle}
         customRowStyling={styles.customRowStyling}
