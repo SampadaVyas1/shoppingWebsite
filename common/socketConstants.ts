@@ -1,5 +1,5 @@
 export const SOCKET_ROUTES = {
-  GET_MESSAGE: "get_message",
+  GET_MESSAGE: "getMessage",
   PERSONAL_MESSAGE: "personalMessage",
   STATUS: "status",
   NOTIFICATION: "notification",
@@ -9,10 +9,11 @@ export const SOCKET_ROUTES = {
   RECONNECT: "reconnect",
   DISCONNECT: "disconnect",
   CREDENTIALS: "credentials",
-  SEND_PERSONAL_MESSAGE: "send_personal_message",
+  SEND_PERSONAL_MESSAGE: "sendPersonalMessage",
   SEND_MEDIA: "sendMedia",
   GET_MEDIA: "getMedia",
   PENDING_MESSAGES: "pendingMessages",
+  PENDING_STATUS: "pendingStatus",
 };
 
 export enum MESSAGE_STATUS_VARIANT {

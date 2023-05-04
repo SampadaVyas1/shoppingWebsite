@@ -32,7 +32,6 @@ export const getMessages = async (mobile: string) => {
 
 export const increaseUnreadCount = async (mobile: string) => {
   const result = await db.conversations.where("id").equals(mobile).first();
-  console.log(mobile);
   if (result !== undefined && mobile) {
     await db?.conversations.put({
       ...result,
@@ -65,4 +64,15 @@ export const getSentMessageData = (messageData: ISentMessage) => {
     from: from,
   };
   return newMessage;
+};
+
+export const filterList = async (searchKey: string) => {
+  if (searchKey) {
+    db.conversations
+      .filter(function (data) {
+        return data.id.includes(searchKey);
+      })
+      .toArray()
+      .then(function (result) {});
+  }
 };

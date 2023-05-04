@@ -23,7 +23,6 @@ const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
 
   const onFileSelect = (event: any) => {
     const file = event.target.files[0];
-    console.log(file);
     file && onSelection(event.target.files[0], "document");
   };
 
