@@ -1,16 +1,107 @@
-[{"id":111,"name":"Anish Jain","designation":"Associate UX designer","mobileNumber":"1234567891","emailId":"abcd@123gmail.com","techStack":["Design","java","Angular","Node"],"candidates":"100","status":"Active"},
-{"id":2,"name":"Eiward Jain","designation":"Associate UX designer","mobileNumber":"1234567891","emailId":"abcd@123gmail.com","techStack":["Design","java","React JS","Node","Angular","develop","python","datascience"],"candidates":"2001","status":"Active"},
-{"id":3,"name":"Uheree Jain","designation":"Associate UX designer","mobileNumber":"1234567891","emailId":"abcd@gmail.com","techStack":["Design"],"candidates":"100","status":"Active"},
-{"id":4,"name":"Wgor Jain","designation":"Associate UX designer","mobileNumber":"1234567891","emailId":"abcd@gmail.com","techStack":["Design"],"candidates":"100","status":"Inactive"},
-{"id":5,"name":"Ronn Jain","designation":"Associate UX designer","mobileNumber":"454541","emailId":"abcd@gmail.com","techStack":["Design"],"candidates":"2021","status":"Inactive"},
-{"id":6,"name":"Fenon Jain","designation":"Associate UX designer","mobileNumber":"1234567891","emailId":"abcd@123gmail.com","techStack":["Design"],"candidates":"1321","status":"Inactive"},
-{"id":7,"name":"Piward Jain","designation":"Associate UX designer","mobileNumber":"1234567891","emailId":"abcd@123gmail.com","techStack":["Java"],"candidates":"345","status":"Inactive"},
-{"id":8,"name":"Hheree Jain","designation":"Associate UX designer","mobileNumber":"1234567891","emailId":"abcd@gmail.com","techStack":["Design"],"candidates":"43","status":"Inactive"},
-{"id":9,"name":"Igor Jain","designation":"Associate UX designer","mobileNumber":"1234567891","emailId":"abcd@gmail.com","techStack":["Design"],"candidates":"433","status":"Inactive"},
-{"id":10,"name":"Zonn Jain","designation":"Associate UX designer","mobileNumber":"454541","emailId":"abcd@gmail.com","techStack":["Design"],"candidates":"232","status":"Active"},
-{"id":11,"name":"Senon Jain","designation":"Associate UX designer","mobileNumber":"1234567891","emailId":"abcd@123gmail.com","techStack":[],"candidates":"20","status":"Active"},
-{"id":12,"name":"Qwheree Jain","designation":"Associate UX designer","mobileNumber":"1234567891","emailId":"abcd@gmail.com","techStack":["Design"],"candidates":"10","status":"Active"},
-{"id":13,"name":"Mgor Jain","designation":"Associate UX designer","mobileNumber":"1234567891","emailId":"abcd@gmail.com","techStack":["Design"],"candidates":"2010","status":"Active"},
-{"id":14,"name":"Oonn Jain","designation":"Associate UX designer","mobileNumber":"454541","emailId":"abcd@gmail.com","techStack":["Design"],"candidates":"100","status":"Active"},
-{"id":15,"name":"Penon Jain","designation":"Associate UX designer","mobileNumber":"1234567891","emailId":"abcd@123gmail.com","techStack":["Design"],"candidates":"2000","status":"Active"}
+[
+  {
+    "id": "0",
+    "emailId":"dvysdf@fmail.com",
+    "firstName": "Rahul",
+    "interviewStatus": "Inactive",
+    "lastName": "Mane",
+    "mobileNumber": "917972287471",
+    "postingTitle": "Associate Software Developer",
+    "candidates": "200",
+    "techStack": "Python Dev"
+  },
+  {
+    "id": "2",
+    "emailId": "ctdsts@gmailcom",
+    "firstName": "ARahul",
+    "interviewStatus": "Inactive",
+    "lastName": "Tiwaari",
+    "mobileNumber": "917972287471",
+    "postingTitle": "Associate Software Developer",
+    "candidates": "100",
+    "techStack": "Python Dev"
+  },
+  {
+    "id": "3",
+
+    "emailId": "abc@123@gmail.com",
+    "firstName": "ARahul",
+    "interviewStatus": "Inactive",
+    "lastName": "Tiwaari",
+    "mobileNumber": "917972287471",
+    "postingTitle": "Associate Software Developer",
+    "candidates": "12",
+    "techStack": "Python Dev"
+  },
+  {
+    "id": "4",
+
+    "emailId": "wewbc@123@gmail.com",
+    "firstName": "ARahul",
+    "interviewStatus": "Inactive",
+    "lastName": "Tiwaari",
+    "mobileNumber": "917972287471",
+    "postingTitle": "Associate Software Developer",
+    "candidates": "23",
+    "techStack": "Python Dev"
+  },
+  {
+    "id": "5",
+
+    "emailId": "kgdtdabc@123@gmail.com",
+    "firstName": "ARahul",
+    "interviewStatus": "Active",
+    "lastName": "Tiwaari",
+    "mobileNumber": "917972287471",
+    "postingTitle": "Associate Software Developer",
+    "candidates": "33",
+    "techStack": "Python Dev"
+  },
+  {
+    "id": "6",
+
+    "emailId": "qatybc@123@gmail.com",
+    "firstName": "ARahul",
+    "interviewStatus": "Active",
+    "lastName": "Tiwaari",
+    "mobileNumber": "917972287471",
+    "postingTitle": "Associate Software Developer",
+    "candidates": "43",
+    "techStack": "Python Dev"
+  },
+  {
+    "id": "7",
+
+    "emailId": "bweqabc@123@gmail.com",
+    "firstName": "ARahul",
+    "interviewStatus": "Active",
+    "lastName": "Tiwaari",
+    "mobileNumber": "917972287471",
+    "postingTitle": "Associate Software Developer",
+    "candidates": "122",
+    "techStack": "Python Dev"
+  },
+  {
+    "id": "8",
+
+    "emailId": "dhugdytfdyt@gmail.com",
+    "firstName": "ARahul",
+    "interviewStatus": "Active",
+    "lastName": "Tiwaari",
+    "mobileNumber": "917972287471",
+    "postingTitle": "Associate Software Developer",
+    "candidates": "234",
+    "techStack": "Python Dev"
+  },
+  {
+    "id": "9",
+    "emailId": "cbweqabc@123@gmail.com",
+    "firstName": "ARahul",
+    "interviewStatus": "Active",
+    "lastName": "Tiwaari",
+    "mobileNumber": "917972287471",
+    "postingTitle": "Associate Software Developer",
+    "candidates": "123",
+    "techStack": "Python Dev"
+  }
 ]

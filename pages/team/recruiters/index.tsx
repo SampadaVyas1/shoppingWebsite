@@ -4,12 +4,28 @@ import Images from "@/public/assets/icons";
 import { TableComponent } from "@/components/table";
 import InfiniteScroll from "@/components/infiniteScroll";
 import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
-import HeaderTitle from "../../candidates/tableHeaderData.json"
-import fakeData from "./mockData.json"
-import styles from "./recruiters.module.scss"
+import HeaderTitle from "../../candidates/tableHeaderData.json";
+import fakeData from "./mockData.json";
+import styles from "./recruiters.module.scss";
 import Container from "@/components/container";
+import { useEffect, useState } from "react";
 const Recruiters = () => {
-
+  const [data, setData] = useState<any[]>([]);
+  const keys = !!data && data[0] && Object?.keys(data[0]);
+  const tableHeader =
+    !!keys &&
+    keys.map((key: any, index: any) => {
+      let sort = key === "Name" || key === "Candidates" ? true : false;
+      return {
+        id: index + 1,
+        title: key,
+        sort: sort,
+        dataIndex: key,
+        key: key,
+      };
+    });
+  const filteredHeaderData =
+    !!tableHeader && tableHeader.filter((obj: any) => /^[A-Z]/.test(obj.title));
   const additionalValue: any[] = [
     {
       colspan: TABLE_CONSTANTS.NAME,
@@ -21,7 +37,7 @@ const Recruiters = () => {
       colspanValue: TABLE_CONSTANTS.TIME,
     },
   ];
-  const handlePageChange=()=>{}
+  const handlePageChange = () => {};
 
   const customStyle = {
     table: ({ ...props }) => {
@@ -33,6 +49,33 @@ const Recruiters = () => {
       ),
     },
   };
+
+  useEffect(() => {
+    const updatedData =
+      !!fakeData &&
+      fakeData.map((item: any) => {
+        console.log(item);
+        return {
+          ...item,
+          "Name": `${item.mobileNumber}`,
+          "Mobile number": `${item.mobileNumber}`,
+          "Email ID": `${item.experienceLevel}`,
+          "Tech stack": `${item.techStack}`,
+          "Candidates": `${item.createdAt}`,
+          "Status": `${item.interviewStatus}`,
+        };
+      });
+    setData(updatedData);
+    // setButtonState({
+    //   ...buttonState,
+    //   Name: {
+    //     ...buttonState["Name"],
+    //     upKeyDisabled: true,
+    //     downKeyDisabled: false,
+    //   },
+    // });
+  }, []);
+
   return (
     <Container>
       {/* <Search />
@@ -47,8 +90,8 @@ const Recruiters = () => {
         customClass={styles.scroll}
       >
         <TableComponent
-          data={fakeData}
-          columnHeaderTitle={HeaderTitle}
+          data={data}
+          columnHeaderTitle={filteredHeaderData}
           // sortbuttonData={sortbuttonData}
           additionalValue={additionalValue}
           // fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
@@ -60,9 +103,8 @@ const Recruiters = () => {
           // selectedRow={selectedRow}
           // handleRowSelect={handleRowSelect}
           // handleRowEachSelect={handleRowEachSelect}
-          // hoverCell={"techStack"} selectedRow={[]} 
-      
-          />
+          // hoverCell={"techStack"} selectedRow={[]}
+        />
       </InfiniteScroll>
     </Container>
   );
