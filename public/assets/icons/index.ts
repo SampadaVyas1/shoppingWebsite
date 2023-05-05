@@ -17,6 +17,7 @@ const Images = {
   upArrowEnabled: require("./upArrowEnabled.svg").default,
   downArrowDisabled: require("./downArrowDisabled.svg").default,
   downArrowEnabled: require("./downArrowEnabled.svg").default,
-};
+  candidateEmptyState:require("./candidateEmptyState.svg").default,
+}
 
 export default Images;

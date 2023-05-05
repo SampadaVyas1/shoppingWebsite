@@ -6,7 +6,7 @@ const token =
 export const getCandidatesData = async (params?:any) => {
   try {
     const response = await axios.post(
-      `https://b9e9a9adf3af8c.lhr.life/candidate/getAllCandidates`, params ? {limit: params.limit, page: params.page} :null,
+      `https://49d9-103-122-147-62.ngrok-free.app/candidate/getAllCandidates`, params ? {limit: params.limit, page: params.page} :{},
       { headers: { authorization: token ,"ngrok-skip-browser-warning": "skip-browser-warning",
       "Content-type": "application/json",} }
     );

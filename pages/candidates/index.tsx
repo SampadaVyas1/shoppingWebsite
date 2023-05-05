@@ -9,7 +9,7 @@ import { sortDataByField } from "@/common/utils";
 import { getCandidatesData } from "@/services/candidate.service";
 
 const sortbuttonData: IButtonState = {
-  Name: { upKeyDisabled: false, downKeyDisabled: false },
+  "Name": { upKeyDisabled: false, downKeyDisabled: false },
   "Created time": { upKeyDisabled: false, downKeyDisabled: false },
 };
 
@@ -18,7 +18,8 @@ const Candidates = () => {
   const [data, setData] = useState<IData[]>([]);
   const [buttonState, setButtonState] = useState(sortbuttonData);
   const [pageNumber, setPageNumber] = useState(1);
-  
+  const [nextPage, handleNextPage] = useState(false);
+
   const keys = !!data && data[0] && Object?.keys(data[0]);
   const tableHeader =
     !!keys &&
@@ -59,7 +60,7 @@ const Candidates = () => {
     upKeyDisabled: boolean,
     downKeyDisabled: boolean
   ) => {
-
+    
     setButtonState((buttonState: IButtonState) => ({
       ...buttonState,
       [field]: {
@@ -72,7 +73,11 @@ const Candidates = () => {
     return newData;
   };
 
-  const handleSortButtonClick = (field: string, sortType: string,data:any) => {
+  const handleSortButtonClick = (
+    field: string,
+    sortType: string,
+    data: any
+  ) => {
     sortType === SORT_TYPE.ASCENDING
       ? !buttonState[field]?.upKeyDisabled &&
         setData(toggleSortButton(field, data, true, false))
@@ -80,6 +85,22 @@ const Candidates = () => {
       ? !buttonState[field]?.downKeyDisabled &&
         setData(toggleSortButton(field, data, false, true))
       : null;
+  };
+  const updateTheFetchData = (getdata: any[]) => {
+    const updatedData =
+      !!getdata &&
+      getdata.map((item: any) => {
+        return {
+          "Name": `${item.firstName} ${item.lastName}`,
+          "Mobile Number": `${item.mobileNumber}`,
+          "Experience level": item.experienceLevel,
+          "Tech stack": item.techStack,
+          "Created time": `${item.createdAt}`,
+          "Recruiter": `${item.recruiterName} ${item.recruiterlastName}`,
+          "Status": `${item.interviewStatus}`,
+        };
+      });
+    return updatedData;
   };
 
   const handlePageChange = async () => {
@@ -90,7 +111,9 @@ const Candidates = () => {
       limit: 10,
       page: pageNumber + 1,
     });
-    // setData(data.concat(response.data));
+    handleNextPage(response?.data?.data?.hasNextPage);
+    const updatedData=updateTheFetchData(response?.data?.data?.candidates)
+    setData([...data, ...updatedData]);
     setPageNumber(pageNumber + 1);
   };
 
@@ -117,44 +140,35 @@ const Candidates = () => {
     }
   };
   useEffect(() => {
-    // const fetchData = async () => {
-    //   const response = await getCandidatesData();
-    //   return response?.data?.data?.candidates;
-    // };
+    const fetchData = async () => {
+      const response = await getCandidatesData();
+      handleNextPage(response?.data?.data?.hasNextPage);
+      return response?.data?.data?.candidates;
 
-    // const getCandidates = async () => {
-    //   const getdata = await fetchData();
-    //   // setData(getdata);
-    //   const updatedData =
-    //     !!getdata &&
-    //     getdata.map((item: any) => {
-    //       return {
-    //         ...item,
-    //         Name: `${item.firstName} ${item.lastName}`,
-    //         Recruiter: `${item.recruiterName} ${item.recruiterlastName}`,
-    //       };
-    //     });
-    //   setData(updatedData);
-    //   console.log(updatedData);
-    // };
-    // getCandidates();
+    };
+    const getCandidates = async () => {
+      const getdata = await fetchData();
+      const updatedData=updateTheFetchData(getdata);
+      setData(updatedData);
+    };
+    getCandidates();
 
     // const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
-    const updatedData =
-      !!fakeData &&
-      fakeData.map((item: any) => {
-        return {
-          ...item,
-          Name: `${item.firstName} ${item.lastName}`,
-          "Mobile Number": `${item.mobileNumber}`,
-          "Experience level": `${item.experienceLevel}`,
-          "Tech stack": `${item.techStack}`,
-          "Created time": `${item.createdAt}`,
-          Recruiter: `${item.recruiterName} ${item.recruiterlastName}`,
-          Status: `${item.interviewStatus}`,
-        };
-      });
-    setData(updatedData);
+    // const updatedData =
+    //   !!fakeData &&
+    //   fakeData.map((item: any) => {
+    //     return {
+    //       ...item,
+    //       Name: `${item.firstName} ${item.lastName}`,
+    //       "Mobile Number": `${item.mobileNumber}`,
+    //       "Experience level": `${item.experienceLevel}`,
+    //       "Tech stack": `${item.techStack}`,
+    //       "Created time": `${item.createdAt}`,
+    //       Recruiter: `${item.recruiterName} ${item.recruiterlastName}`,
+    //       Status: `${item.interviewStatus}`,
+    //     };
+    //   });
+    // setData(updatedData);
     // setButtonState({
     //   ...buttonState,
     //   Name: {
@@ -167,7 +181,7 @@ const Candidates = () => {
 
   return (
     <InfiniteScroll
-      nextPage={true}
+      nextPage={nextPage}
       handlePageChange={handlePageChange}
       customClass={styles.scroll}
     >
