@@ -13,6 +13,8 @@ import Tag from "@/components/tag";
 import TransitionWrapper from "@/components/transitionWrapper";
 import MessageFilter from "@/pageComponents/messages/messageFilter";
 import MessageScreen from "@/pageComponents/messages/messageScreen";
+import Modal from "@/components/modal";
+import StartConversationModal from "@/pageComponents/messages/startConversationModal";
 import styles from "./messages.module.scss";
 import Images from "@/public/assets/icons";
 import candidateData from "./candidates.json";
@@ -33,8 +35,6 @@ import { ITagType } from "@/components/tag/tag.types";
 import { IMessagesStates } from "./messages.types";
 import { useAppSelector } from "@/redux/hooks";
 import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
-import Modal from "@/components/modal";
-import StartConversationModal from "@/pageComponents/messages/startConversationModal";
 
 const Messages = () => {
   const [messagePageState, setMessagePageState] = useState<IMessagesStates>({
@@ -178,7 +178,7 @@ const Messages = () => {
     socket.on(SOCKET_ROUTES.PENDING_MESSAGES, async (data: any) => {
       const messageTypes = ["text", "document", "image"];
 
-      const updatedData = Promise.all(
+      Promise.all(
         data.map(async (singleMessage: any) => {
           const {
             from,
@@ -200,7 +200,7 @@ const Messages = () => {
             from: from,
           };
           if (messageTypes.includes(singleMessage?.messageType)) {
-            await increaseUnreadCount(from, wamid);
+            await increaseUnreadCount(from, wamid, true);
             await updateMessage({ ...newMessage, phone: from });
           }
         })
@@ -209,7 +209,7 @@ const Messages = () => {
   }, []);
 
   useEffect(() => {
-    return () => localStorage.setItem("phone", "");
+    return () => sessionStorage.setItem("phone", "");
   }, []);
 
   useEffect(() => {
@@ -233,8 +233,13 @@ const Messages = () => {
         caption: caption,
         from: from,
       };
-      from !== localStorage.getItem("phone") &&
-        (await increaseUnreadCount(from, wamid));
+      console.log(
+        !sessionStorage.getItem("phone") ||
+          from !== sessionStorage.getItem("phone")
+      );
+      (!sessionStorage.getItem("phone") ||
+        from !== sessionStorage.getItem("phone")) &&
+        (await increaseUnreadCount(from, wamid, false));
       await updateMessage({ ...newMessage, phone: from });
     });
   }, []);

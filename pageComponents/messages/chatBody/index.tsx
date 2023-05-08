@@ -12,7 +12,6 @@ import Loader from "@/components/loader";
 import Images from "@/public/assets/icons";
 import styles from "./chatBody.module.scss";
 import { IChatBodyProps } from "./chatBody.types";
-import { sortMessages } from "@/common/dbUtils";
 import { ISentMessage } from "@/common/types";
 import {
   formatTime,
@@ -94,6 +93,10 @@ const ChatBody = (props: IChatBodyProps) => {
     };
     print();
   }, [phone, messageListData]);
+
+  useEffect(() => {
+    return () => sessionStorage.setItem("phone", "");
+  }, []);
 
   return (
     <InfiniteScroll

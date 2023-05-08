@@ -200,7 +200,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
         to: mobile,
         userId: SOCKET_CONSTANTS.USER_ID,
       });
-      localStorage.setItem("phone", mobile);
+      sessionStorage.setItem("phone", mobile);
       socket.on(SOCKET_ROUTES.ROOM_STATUS, (data) => {
         setRoomJoined(true);
       });

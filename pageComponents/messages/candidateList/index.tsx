@@ -10,7 +10,6 @@ import { SKELETON_VARIANT } from "@/common/enums";
 import { sortMessages } from "@/common/dbUtils";
 import { ICandidateListCardProps } from "../candidateListCard/candidateListCard.types";
 import { ICandidateListProps } from "./candidateList.types";
-import { skeletonArray } from "../chatBody/chatBody.constants";
 import { TIME_FORMAT } from "@/common/constants";
 
 const CandidateList = (props: ICandidateListProps) => {
@@ -40,7 +39,7 @@ const CandidateList = (props: ICandidateListProps) => {
 
   return isLoading ? (
     <div className={styles.listSkeleton}>
-      {skeletonArray.map((element: number, index: number) => {
+      {[...Array(10).keys()].map((element: number, index: number) => {
         return (
           <div className={styles.userSkeleton} key={index}>
             <SkeletonLoader type={SKELETON_VARIANT.CIRCLE} />
@@ -105,6 +104,7 @@ const CandidateList = (props: ICandidateListProps) => {
           }
         )}
       </div>
+      p
     </InfiniteScroll>
   );
 };
