@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import Images from "@/public/assets/icons";
 import moment from "moment";
 import { MESSAGE_STATUS } from "./enums";
@@ -67,4 +68,45 @@ export const toCamelCase = (str: string) => {
     words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
   }
   return words.join("");
+};
+
+export const formatTemplateName = (templateName: string) => {
+  return templateName?.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
+    letter.toUpperCase()
+  );
+};
+
+export const formatTemplateData = (
+  template: any,
+  candidateName: string,
+  messageId: string,
+  timestamp: string
+) => {
+  const templateName = template?.name;
+  const components = template?.components.filter(
+    (component: any) => component.type === "HEADER"
+  );
+  const templateComponents = {
+    type: "header",
+    parameters: components?.map((component: any) => ({
+      type: component.format.toLowerCase(),
+      [component.format.toLowerCase()]:
+        component.format.toLowerCase() === "image"
+          ? { link: component.example.header_handle[0] }
+          : candidateName,
+    })),
+  };
+
+  return {
+    name: templateName,
+    components: [templateComponents],
+    messageId: messageId,
+  };
+};
+
+export const formatTemplateHeader = (
+  header: string,
+  replacementText: string
+) => {
+  return header?.replace("{{1}}", replacementText);
 };

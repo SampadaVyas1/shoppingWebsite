@@ -200,7 +200,7 @@ const Messages = () => {
             from: from,
           };
           if (messageTypes.includes(singleMessage?.messageType)) {
-            await increaseUnreadCount(from);
+            await increaseUnreadCount(from, wamid);
             await updateMessage({ ...newMessage, phone: from });
           }
         })
@@ -234,7 +234,7 @@ const Messages = () => {
         from: from,
       };
       from !== localStorage.getItem("phone") &&
-        (await increaseUnreadCount(from));
+        (await increaseUnreadCount(from, wamid));
       await updateMessage({ ...newMessage, phone: from });
     });
   }, []);

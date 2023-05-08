@@ -1,8 +1,9 @@
-import { SKELETON_VARIANT } from "@/common/enums";
-import SkeletonLoader from "@/components/skeletonLoader";
 import React from "react";
+import SkeletonLoader from "@/components/skeletonLoader";
+import { SKELETON_VARIANT } from "@/common/enums";
 import { skeletonArray } from "./chatBody.constants";
 import styles from "./chatBody.module.scss";
+
 const ChatBodySkeleton = () => {
   return (
     <div className={styles.messageBodySkeleton}>

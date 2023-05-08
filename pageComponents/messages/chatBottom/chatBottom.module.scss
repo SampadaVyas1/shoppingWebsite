@@ -1,9 +1,6 @@
 @import "../../../styles/variables";
 @import "../../../styles/mixins";
 
-.required span:global(.react-tiny-popover-container)::after {
-  display: none;
-}
 .chatBottom {
   @include flex-align-center;
   padding: 1.25rem 2rem;
@@ -16,6 +13,7 @@
       cursor: pointer;
     }
   }
+
   .imagePreview {
     position: absolute;
     @include flex-center-alignment;
@@ -45,6 +43,28 @@
         cursor: pointer;
       }
     }
+    .sendButton {
+      padding: 1rem;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: $primary;
+      .sendIcon {
+        filter: invert(100%) sepia(94%) saturate(0%) hue-rotate(231deg)
+          brightness(106%) contrast(106%);
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .templatePreview {
+    bottom: 0;
   }
   .active {
     filter: invert(43%) sepia(72%) saturate(2642%) hue-rotate(199deg)
@@ -72,4 +92,6 @@
   box-sizing: border-box;
   height: 34.5rem;
   width: 21.5rem;
+  background-color: $white;
+  border-radius: 0.25rem;
 }

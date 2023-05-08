@@ -30,9 +30,16 @@ export const getMessages = async (mobile: string) => {
   return await db.messages.where("phone").equals(mobile).toArray();
 };
 
-export const increaseUnreadCount = async (mobile: string) => {
+export const increaseUnreadCount = async (
+  mobile: string,
+  messageId: string
+) => {
   const result = await db.conversations.where("id").equals(mobile).first();
-  if (result !== undefined && mobile) {
+  const isMessageExists = await db.messages
+    .where("messageId")
+    .equals(messageId)
+    .first();
+  if (result !== undefined && mobile && !isMessageExists) {
     await db?.conversations.put({
       ...result,
       unreadCount: result.unreadCount + 1,

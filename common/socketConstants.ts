@@ -14,6 +14,7 @@ export const SOCKET_ROUTES = {
   GET_MEDIA: "getMedia",
   PENDING_MESSAGES: "pendingMessages",
   PENDING_STATUS: "pendingStatus",
+  SEND_TEMPLATE: "sendTemplate",
 };
 
 export enum MESSAGE_STATUS_VARIANT {
@@ -22,8 +23,8 @@ export enum MESSAGE_STATUS_VARIANT {
 }
 
 export enum SOCKET_CONSTANTS {
-  PHONE_ID = "106886972321301",
+  PHONE_ID = "104746919070579",
   USER_ID = "11098",
   MESSAGING_PRODUCT = "whatsapp",
-  RECIPEINT_TYPE = "individual",
+  RECIPIENT_TYPE = "individual",
 }

@@ -11,7 +11,7 @@ import { IOptionType } from "@/common/types";
 import { IOptionsProp } from "./options.types";
 
 const Options = (props: IOptionsProp) => {
-  const { options, selectedValue, onSelect, searchable } = props;
+  const { options, selectedValue, onSelect, searchable, customStyle } = props;
 
   const [filteredOptions, setFilteredOptions] =
     useState<IOptionType[]>(options);
@@ -32,7 +32,7 @@ const Options = (props: IOptionsProp) => {
   );
 
   return (
-    <Card customClass={styles.optionsWrapper}>
+    <Card customClass={`${styles.optionsWrapper} ${customStyle}`}>
       <>
         {searchable && (
           <InputBox
@@ -47,7 +47,7 @@ const Options = (props: IOptionsProp) => {
               return (
                 <div
                   className={
-                    option.id === selectedValue.id
+                    option.id === selectedValue?.id
                       ? `${styles.option} ${styles.selected}`
                       : styles.option
                   }

@@ -1,18 +1,22 @@
-import { useCallback } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import moment from "moment";
 import { useLiveQuery } from "dexie-react-hooks";
 import { db } from "@/db";
 import CandidateListCard from "../candidateListCard";
 import SkeletonLoader from "@/components/skeletonLoader";
+import InfiniteScroll from "@/components/infiniteScroll";
 import styles from "./candidateList.module.scss";
 import { SKELETON_VARIANT } from "@/common/enums";
 import { sortMessages } from "@/common/dbUtils";
 import { ICandidateListCardProps } from "../candidateListCard/candidateListCard.types";
 import { ICandidateListProps } from "./candidateList.types";
 import { skeletonArray } from "../chatBody/chatBody.constants";
+import { TIME_FORMAT } from "@/common/constants";
 
 const CandidateList = (props: ICandidateListProps) => {
   const { isLoading, selectedData, candidateData, onSelect } = props;
+
+  const [candidateList, setCandidateList] = useState<any>([]);
   const conversations = useLiveQuery(() => {
     return db.conversations.toArray();
   });
@@ -21,10 +25,18 @@ const CandidateList = (props: ICandidateListProps) => {
     return db.messages.toArray();
   });
 
+  const onPageChange = () => {
+    setCandidateList(candidateList.concat(candidateData));
+  };
+
   const handleCandidateSelect = useCallback(
     (candidate: ICandidateListCardProps) => () => onSelect(candidate),
     [onSelect]
   );
+
+  useEffect(() => {
+    setCandidateList(candidateData);
+  }, [candidateData]);
 
   return isLoading ? (
     <div className={styles.listSkeleton}>
@@ -47,47 +59,53 @@ const CandidateList = (props: ICandidateListProps) => {
       })}
     </div>
   ) : (
-    <div className={styles.list}>
-      {candidateData?.map(
-        (candidate: ICandidateListCardProps, index: number) => {
-          const { name, mobile, id, profilePhoto } = candidate;
-          const currentCandidateData = conversations?.find(
-            (data) => data.id === mobile
-          );
-          const currentMessages = messageListData?.filter(
-            (message) => message.phone === mobile
-          );
-          const sortedMessages = sortMessages(currentMessages!);
-          const lastMessage =
-            !!sortedMessages && sortedMessages[sortedMessages.length - 1];
+    <InfiniteScroll
+      handlePageChange={onPageChange}
+      nextPage={candidateList.length < 40}
+      customClass={styles.chatInfinite}
+    >
+      <div className={styles.list}>
+        {candidateList?.map(
+          (candidate: ICandidateListCardProps, index: number) => {
+            const { name, mobile, id, profilePhoto } = candidate;
+            const currentCandidateData = conversations?.find(
+              (data) => data.id === mobile
+            );
+            const currentMessages = messageListData?.filter(
+              (message) => message.phone === mobile
+            );
+            const sortedMessages = sortMessages(currentMessages!);
+            const lastMessage =
+              !!sortedMessages && sortedMessages[sortedMessages.length - 1];
 
-          return (
-            <CandidateListCard
-              key={index}
-              name={candidate.name}
-              onClick={handleCandidateSelect(candidate)}
-              isSelected={selectedData?.id === candidate?.id}
-              time={
-                lastMessage?.timestamp
-                  ? moment
-                      .unix(parseInt(lastMessage?.timestamp))
-                      .format("hh:mm A")
-                  : ""
-              }
-              status={lastMessage?.status}
-              profilePhoto={candidate.profilePhoto}
-              message={
-                lastMessage?.message ||
-                lastMessage?.caption ||
-                (lastMessage?.mediaUrl ? "File" : "")
-              }
-              mobile={candidate.mobile}
-              unreadCount={currentCandidateData?.unreadCount}
-            />
-          );
-        }
-      )}
-    </div>
+            return (
+              <CandidateListCard
+                key={index}
+                name={candidate.name}
+                onClick={handleCandidateSelect(candidate)}
+                isSelected={selectedData?.id === candidate?.id}
+                time={
+                  lastMessage?.timestamp
+                    ? moment
+                        .unix(parseInt(lastMessage?.timestamp))
+                        .format(TIME_FORMAT)
+                    : ""
+                }
+                status={lastMessage?.status}
+                profilePhoto={candidate.profilePhoto}
+                message={
+                  lastMessage?.message ||
+                  lastMessage?.caption ||
+                  (lastMessage?.mediaUrl ? "File" : "")
+                }
+                mobile={candidate.mobile}
+                unreadCount={currentCandidateData?.unreadCount}
+              />
+            );
+          }
+        )}
+      </div>
+    </InfiniteScroll>
   );
 };
 export default CandidateList;

@@ -49,3 +49,4 @@ export const REGEX = {
 };
 export const TRANSITION_TIMEOUT = 300;
 export const INPUT_PLACEHOLDER = "Enter text here";
+export const TIME_FORMAT = "hh:mm A";

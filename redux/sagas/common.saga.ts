@@ -1,8 +1,8 @@
 import { AnyAction } from "@reduxjs/toolkit";
 import { put, takeEvery } from "redux-saga/effects";
 import { sagaActions } from "../constants";
-import { sendMedia } from "@/services/common.service";
 import { handleMediaSend, toggleLoading } from "../slices/commonSlice";
+import { sendMedia } from "@/services/messages.service";
 
 export function* sendMediaSaga({ formData }: AnyAction): any {
   try {

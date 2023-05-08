@@ -10,7 +10,11 @@ import ChatHeader from "../chatHeader";
 import ChatBody from "../chatBody";
 import styles from "./messageScreen.module.scss";
 import { IMessageScreenProps } from "./messageScreen.types";
-import { getTimeStamp } from "@/common/utils";
+import {
+  formatTemplateData,
+  formatTemplateHeader,
+  getTimeStamp,
+} from "@/common/utils";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
 import {
   getSentMessageData,
@@ -18,8 +22,6 @@ import {
   updateMessage,
 } from "@/common/dbUtils";
 import { MESSAGE_STATUS } from "@/common/enums";
-import { setPhone } from "@/redux/slices/messageSlice";
-import { useAppSelector } from "@/redux/hooks";
 import { ISelectedFile } from "@/pages/messages/messages.types";
 
 const MessageScreen = (props: IMessageScreenProps) => {
@@ -82,7 +84,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
     !selectedFile?.file?.name
       ? socket.emit(SOCKET_ROUTES.SEND_PERSONAL_MESSAGE, {
           messaging_product: SOCKET_CONSTANTS.MESSAGING_PRODUCT,
-          recipient_type: SOCKET_CONSTANTS.RECIPEINT_TYPE,
+          recipient_type: SOCKET_CONSTANTS.RECIPIENT_TYPE,
           to: mobile,
           type: "text",
           messageId: messageId,
@@ -98,6 +100,30 @@ const MessageScreen = (props: IMessageScreenProps) => {
           type: selectedFile.type,
           contentType: selectedFile.file.type,
         });
+  };
+
+  const handleTemplateSend = async (template: any) => {
+    const timestamp = getTimeStamp().toString();
+    const messageId = `${uuid()}${timestamp}`;
+    const templateData = formatTemplateData(
+      template,
+      name,
+      messageId,
+      timestamp
+    );
+    socket.emit(SOCKET_ROUTES.SEND_TEMPLATE, templateData);
+    const newMessage = getSentMessageData({
+      messageId,
+      mediaUrl: templateData?.components[0]?.parameters[0]?.image?.link,
+      timestamp,
+      message: formatTemplateHeader(template?.components[0]?.text, name),
+      caption: template?.components[1]?.text,
+      messageType: "image",
+      status: MESSAGE_STATUS.SENDING,
+      to: mobile,
+      from: SOCKET_CONSTANTS.USER_ID,
+    });
+    await updateMessage({ ...newMessage, phone: mobile });
   };
 
   useEffect(() => {
@@ -170,18 +196,6 @@ const MessageScreen = (props: IMessageScreenProps) => {
   useEffect(() => {
     if (props.isConnected) {
       setRoomJoined(false);
-      db.transaction("rw", db.conversations, db.messages, async () => {
-        const messages = await db.messages
-          .where("phone")
-          .equals(mobile)
-          .toArray();
-        const syncObject = {
-          [mobile]: {
-            ta: 1092,
-            messages: messages,
-          },
-        };
-      });
       socket.emit(SOCKET_ROUTES.JOIN_ROOM, {
         to: mobile,
         userId: SOCKET_CONSTANTS.USER_ID,
@@ -192,7 +206,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
       });
       resetUnreadCount(mobile);
     }
-  }, [dispatch, mobile, props.isConnected]);
+  }, [mobile, props.isConnected]);
 
   return (
     <div className={styles.messageScreen} ref={chatScreenRef}>
@@ -221,7 +235,8 @@ const MessageScreen = (props: IMessageScreenProps) => {
           handleMessageChange={handleMessageChange}
           message={message}
           onFileRemoval={handleFileRemoval}
-          mobile={mobile}
+          candidateName={name}
+          onTemplateSend={handleTemplateSend}
           chatScreenRef={chatScreenRef}
           isLoading={!props.isConnected || !isRoomJoined}
         />
