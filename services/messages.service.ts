@@ -11,7 +11,7 @@ const config = {
 export const getAllTemplates = async () => {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_SOCKET_URL}whatsapp/getAllTemplates`,
+      `${process.env.NEXT_PUBLIC_SOCKET_URL}/whatsapp/getAllTemplates`,
       config
     );
     console.log(response);
