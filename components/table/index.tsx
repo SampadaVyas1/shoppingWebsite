@@ -35,58 +35,58 @@ export const TableComponent = (props: ITableComponent) => {
   const generateColumns = (columnHeaderTitle: IHeaderTitleProps[]) => {
     return (
       !!columnHeaderTitle &&
-      columnHeaderTitle
-        ?.map((column: IHeaderTitleProps) => {
-          const dataIndex = toCamelCase(column.title);
-          return (
-            <Column
-              title={
-                <div className={styles.header}>
-                  {column.title === TABLE_CONSTANTS.CHECKBOX ? (
-                    <CustomCheckBox />
-                  ) : (
-                    <Typography
-                      variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
-                      children={column.title}
-                      customStyle={styles.title}
-                    />
-                  )}
-                  {!!column.sort && (
-                    <div className={styles.sortIcon}>
-                      <ImageComponent
-                        src={upArrowEnabled}
-                        width={10}
-                        height={10}
-                        className={styles.ascendingicon}
-                      />
-                      <ImageComponent
-                        src={downArrowEnabled}
-                        width={10}
-                        height={10}
-                        className={styles.ascendingicon}
-                      />
-                    </div>
-                  )}
-                </div>
-              }
-              dataIndex={dataIndex}
-              key={dataIndex}
-              render={(text: string, record: IRecordProps) =>
-                column.title == TABLE_CONSTANTS.CHECKBOX ? (
-                  <CustomCheckBox checked={record.checked} />
+      columnHeaderTitle?.map((column: IHeaderTitleProps) => {
+        const dataIndex = toCamelCase(column.title);
+        return (
+          <Column
+            title={
+              <div className={styles.header}>
+                {column.title === TABLE_CONSTANTS.CHECKBOX ? (
+                  <CustomCheckBox />
                 ) : (
-                  <TableCell
-                    dataIndex={dataIndex}
-                    record={record}
-                    field={fieldforDateFormat}
-                    additionalValue={additionalValue}
-                    dataFormatType={dataFormatType}
-                  />
-                )
-              }
-            />
-          );
-        })
+                  <Typography
+                    variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
+                    customStyle={styles.title}
+                  >
+                    {column.title}
+                  </Typography>
+                )}
+                {!!column.sort && (
+                  <div className={styles.sortIcon}>
+                    <ImageComponent
+                      src={upArrowEnabled}
+                      width={10}
+                      height={10}
+                      className={styles.ascendingicon}
+                    />
+                    <ImageComponent
+                      src={downArrowEnabled}
+                      width={10}
+                      height={10}
+                      className={styles.ascendingicon}
+                    />
+                  </div>
+                )}
+              </div>
+            }
+            dataIndex={dataIndex}
+            key={dataIndex}
+            render={(text: string, record: IRecordProps) =>
+              column.title == TABLE_CONSTANTS.CHECKBOX ? (
+                <CustomCheckBox checked={record.checked} />
+              ) : (
+                <TableCell
+                  dataIndex={dataIndex}
+                  record={record}
+                  field={fieldforDateFormat}
+                  additionalValue={additionalValue}
+                  dataFormatType={dataFormatType}
+                />
+              )
+            }
+          />
+        );
+      })
     );
   };
 
