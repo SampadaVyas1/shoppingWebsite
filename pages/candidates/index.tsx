@@ -2,9 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import { Popover } from "react-tiny-popover";
-import fakeData from "./mockData.json";
 import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
-import HeaderTitle from "./tableHeaderData.json";
 import Container from "@/components/container";
 import Images from "@/public/assets/icons";
 import ImageComponent from "../../components/imageComponent/index";
@@ -19,7 +17,11 @@ import InputBox from "@/components/inputBox";
 import { DATE_FORMAT, SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "../../components/table/index";
 import { debounce, sortDataByField } from "@/common/utils";
-import { addCandidates, getCandidatesData, getFilter } from "@/services/candidate.service";
+import {
+  addCandidates,
+  getCandidatesData,
+  getFilter,
+} from "@/services/candidate.service";
 import Typography from "@/components/typography";
 import Loader from "@/components/loader";
 
@@ -30,19 +32,20 @@ const sortbuttonData: IButtonState = {
 const Candidates = () => {
   const [selectedRow, setSelectedRow] = useState<number[]>([]);
   const [data, setData] = useState<IData[]>([]);
-  const [buttonState, setButtonState] = useState(sortbuttonData);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [nextPage, handleNextPage] = useState(false);
-  const [addButtonClicked, setAddButtonClicked] = useState(false);
-  const [isFilterOpen, setisFilterOpen] = useState(false);
+  const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [nextPage, handleNextPage] = useState<boolean>(false);
+  const [addButtonClicked, setAddButtonClicked] = useState<boolean>(false);
+  const [isFilterOpen, setisFilterOpen] = useState<boolean>(false);
   const [filter, setFilter] = useState<any>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [getFilterData, setFilterData] = useState<any>([]);
   const [tagList, setTagList] = useState([]);
   const [tableLoading, setTableLoading] = useState<boolean>(false);
   const [currentAppliedFilter, setCurrentAppliedFilter] = useState<any[]>([]);
   const [levelsFilter, setLevelsFilter] = useState<any[]>([]);
   const [techStackOptions, setTechStackOptions] = useState<any>();
+
 
   const keys = !!data && data[0] && Object?.keys(data[0]);
   const tableHeader =
@@ -57,15 +60,13 @@ const Candidates = () => {
         key: key,
       };
     });
-    console.log(tableHeader)
-  const filteredHeaderData =
-    !!tableHeader && tableHeader.filter((obj) => /^[A-Z]/.test(obj.title));
   const closeFilter = () => {
     setisFilterOpen(false);
   };
 
   const toggleFilter = async () => {
     const { interviewName, ...rest } = getFilterData;
+    console.log(rest);
     const result =
       !!rest &&
       Object.keys(rest).map((key: any, index) => {
@@ -79,19 +80,12 @@ const Candidates = () => {
         }));
         return { type: key, name, value };
       });
-
     setFilter(result);
     setisFilterOpen(!isFilterOpen);
   };
 
-  const additionalValue: IAdditionalValue[] = [
-    {
-      colspan: "Name",
-      colspanValue: "postingTitle",
-      customStyle: styles.designation,
-    },
-  ];
   const applyFilter = async (filters?: any = []) => {
+    console.log(filters);
     const newObj = [
       { interviewName: levelsFilter },
       { techStack: filters?.techStack?.map((item: any) => item?.label) || [] },
@@ -130,11 +124,6 @@ const Candidates = () => {
       setLevelsFilter([...levelsFilter, filterValue.label]);
     }
   };
-
-  useEffect(() => {
-    applyFilter();
-  }, [levelsFilter]);
-
   const toggleSortButton = (
     field: string,
     data: any[],
@@ -190,11 +179,11 @@ const Candidates = () => {
       limit: 10,
       page: pageNumber + 1,
     });
-    console.log(response?.data?.data?.hasNextPage);
     handleNextPage(response?.data?.data?.hasNextPage);
     const updatedData = updateTheFetchData(response?.data?.data?.candidates);
     setData([...data, ...updatedData]);
     setPageNumber(pageNumber + 1);
+    setButtonState(sortbuttonData);
   };
 
   const handleRowSelect = (value: number[]) => {
@@ -220,6 +209,10 @@ const Candidates = () => {
     }
   };
   useEffect(() => {
+    applyFilter();
+  }, [levelsFilter]);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getCandidatesData();
@@ -233,6 +226,11 @@ const Candidates = () => {
     const getCandidates = async () => {
       try {
         const getdata = await fetchData();
+
+        setButtonState({
+          ...sortbuttonData,
+          Name: { upKeyDisabled: true, downKeyDisabled: false },
+        });
         const updatedData = updateTheFetchData(getdata);
         setData(updatedData);
         setLoading(false);
@@ -243,7 +241,6 @@ const Candidates = () => {
     const getFilterApi = async () => {
       const getAllfilter = await getFilter();
       setFilterData(getAllfilter?.data?.data);
-      console.log(getAllfilter?.data?.data?.techStack);
 
       setTechStackOptions(
         getAllfilter?.data?.data?.techStack.map((item: any, index: number) => ({
@@ -261,17 +258,15 @@ const Candidates = () => {
     getFilterApi();
   }, []);
 
-  const handleSubmitButton = async(value: any) => {
+  const handleSubmitButton = async (value: any) => {
     const updatedData = {
       firstName: value.firstName,
       lastName: value.lastName,
-      mobileNumber:`91${value.mobileNumber}`,
+      mobileNumber: `91${value.mobileNumber}`,
       techStack: value.techStack.label,
       experienceLevel: +value.experienceLevel,
     };
-    const response=await addCandidates(updatedData)
-    console.log(response)
-    console.log(updatedData);
+    const response = await addCandidates(updatedData);
   };
 
   const handleSearch = debounce(async (event: any) => {
@@ -385,9 +380,8 @@ const Candidates = () => {
             <TableComponent
               loading={tableLoading}
               data={data}
-              columnHeaderTitle={filteredHeaderData}
+              columnHeaderTitle={tableHeader}
               sortbuttonData={sortbuttonData}
-              additionalValue={additionalValue}
               fieldforDateFormat={{ time: "Created time" }}
               dataFormatType={DATE_FORMAT.DD_MM_YYYY}
               customStyle={customStyle}
