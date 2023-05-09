@@ -1,7 +1,7 @@
-import React, { useCallback, useState } from "react";
+import React, { ChangeEvent, useCallback, useState } from "react";
 import styles from "./multiSelectOptions.module.scss";
 import Card from "@/components/card";
-import ImageComponent from "@/components/image";
+import ImageComponent from "@/components/imageComponent";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
@@ -28,7 +28,6 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
     useState<IMultiSelectOptionsState>({
       filteredOptions: options,
     });
-
   const { filteredOptions } = multiselectStates;
 
   const handleClick = useCallback(
@@ -55,15 +54,19 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
     }
   };
 
-  const handleSearch = debounce((value: string) => {
-    const updatedOptions = options.filter((data) =>
-      data.label.toLowerCase().includes(value.toLowerCase())
-    );
-    setMultiselectStates((prevStates) => ({
-      ...prevStates,
-      filteredOptions: updatedOptions,
-    }));
-  }, 300);
+  const handleSearch = debounce(
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const value = event.target.value;
+      const updatedOptions = options.filter((data) =>
+        data.label.toLowerCase().includes(value.toLowerCase())
+      );
+      setMultiselectStates((prevStates) => ({
+        ...prevStates,
+        filteredOptions: updatedOptions,
+      }));
+    },
+    300
+  );
 
   return (
     <Card
@@ -76,9 +79,9 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
       <>
         {searchable && (
           <InputBox
-            startIcon={Images.search}
+            endIcon={Images.search}
             placeholder="Search"
-            handleChange={handleSearch}
+            onChange={handleSearch}
           />
         )}
         {masterCheck && !searchable && (

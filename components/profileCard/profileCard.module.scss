@@ -17,7 +17,7 @@
     width: 18rem;
     box-sizing: border-box;
     gap: 0.25rem;
-    border-bottom: 0.0625rem solid $secondaryTextLight;
+    border-bottom: 0.0625rem solid $grayLight;
 
     .profileImage {
       width: 7.5rem;
@@ -33,7 +33,7 @@
       color: $gray-500;
       padding-bottom: 0.25rem;
       margin-bottom: 0.5rem;
-      border-bottom: 0.0625rem solid $secondaryTextLight;
+      border-bottom: 0.0625rem solid $grayLight;
     }
   }
 }

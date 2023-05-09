@@ -1,0 +1,66 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.chatBottom {
+  @include flex-align-center;
+  padding: 1.25rem 2rem;
+  box-sizing: border-box;
+  gap: 0.75rem;
+  .icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .imagePreview {
+    position: absolute;
+    @include flex-center-alignment;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 5.5rem;
+    background-color: $beige;
+    margin: 0.25rem;
+    border-top-right-radius: 0.5rem;
+    border-top-left-radius: 0.5rem;
+    z-index: 3;
+    box-shadow: $modalBoxShadow;
+    .attachedImage {
+      width: 18rem;
+      height: 18rem;
+      border-radius: 0.5rem;
+      border: 0.125rem solid $secondaryText;
+    }
+    .closeIcon {
+      position: absolute;
+      left: 1rem;
+      align-self: flex-end;
+      top: 1rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+  .active {
+    filter: invert(43%) sepia(72%) saturate(2642%) hue-rotate(199deg)
+      brightness(86%) contrast(92%);
+  }
+  .input {
+    height: 2.5rem;
+    padding: 0.875rem 0.75rem !important;
+    box-shadow: none;
+  }
+  .fileName {
+    width: auto;
+  }
+
+  .skeletonIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .skeletonBox {
+    height: 3rem;
+  }
+}

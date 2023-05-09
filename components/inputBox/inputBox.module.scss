@@ -2,8 +2,10 @@
 @import "../../styles/mixins";
 
 .inputOuter {
-  @include flex-direction(column);
+  display: flex;
+  flex-direction: column;
   gap: 0.25rem;
+  width: 100%;
 }
 
 .disabled {
@@ -16,16 +18,21 @@
 
 .inputWrapper {
   @include flex-center-alignment;
-  max-height: 2.5rem;
+  max-height: 3rem;
   flex: 1;
   border: $inputBoxBorder;
-  box-shadow: $inputBoxShadow;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
+  gap: 0.5rem;
   padding: 0.75rem 1rem;
   background-color: $white;
 
-  .startIcon {
-    padding-right: 0.5rem;
+  .startIcon,
+  .endIcon {
+    display: flex;
+    align-items: center;
+    width: 1.125rem;
+    height: 1.125rem;
+    justify-content: center;
   }
 
   .inputField {
@@ -33,10 +40,16 @@
     flex: 1;
     font-family: $Roboto;
     background-color: inherit;
-    font-size: 0.875rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
     padding-left: 0;
     border: none;
     resize: none;
+
+    &::placeholder {
+      font-family: $Roboto;
+      color: $placeholderText;
+    }
     &:focus {
       outline: none;
     }
@@ -53,6 +66,5 @@
 }
 
 .focus {
-  border: 0.0625rem solid $primary;
-  box-shadow: $inputBoxShadow;
+  border: 0.125rem solid $primary;
 }

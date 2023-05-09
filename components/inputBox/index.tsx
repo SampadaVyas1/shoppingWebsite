@@ -10,7 +10,7 @@ import React, {
   FocusEvent,
 } from "react";
 import styles from "./inputBox.module.scss";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import Typography from "../typography";
 import { INPUT_PLACEHOLDER } from "@/common/constants";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
@@ -86,9 +86,11 @@ const InputBox = React.forwardRef((props: IInputProps, ref) => {
       )}
       <div className={`${customClass} ${customInputWrapperClass}`}>
         {startIcon && (
-          <div className={styles.startIcon} onClick={onStartIconClick}>
-            <ImageComponent src={startIcon} className={styles.icon} />
-          </div>
+          <ImageComponent
+            src={startIcon}
+            customClass={styles.startIcon}
+            onClick={onStartIconClick}
+          />
         )}
         {multiline ? (
           <textarea
@@ -116,9 +118,11 @@ const InputBox = React.forwardRef((props: IInputProps, ref) => {
           />
         )}
         {endIcon && (
-          <div className={styles.endIcon} onClick={onEndIconClick}>
-            <ImageComponent src={endIcon} />
-          </div>
+          <ImageComponent
+            src={endIcon}
+            customClass={styles.endIcon}
+            onClick={onEndIconClick}
+          />
         )}
       </div>
       {error && (

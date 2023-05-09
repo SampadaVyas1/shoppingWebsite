@@ -1,6 +1,6 @@
 import Images from "@/public/assets/icons";
 import React from "react";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import TransitionWrapper from "../transitionWrapper";
 import styles from "./modal.module.scss";
 import { IModalProps } from "./modal.types";

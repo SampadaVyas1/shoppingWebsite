@@ -1,11 +1,15 @@
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import styles from "./searchBar.module.scss";
 import Images from "@/public/assets/icons";
-const Search = () => {
+const Search = (props:any) => {
+  const {placeholder,customStyle,endIcon,startIcon}=props
+  const searchClass=customStyle?`${customStyle} ${styles.searchBarContainer}`:styles.searchBarContainer
   return (
-    <div className={styles.searchBarContainer}>
-      <input type="search" className={styles.searchBar} />
-      <ImageComponent src={Images.filterIcon} customClass={styles.icons} />
+    <div className={searchClass}>
+     {!!startIcon &&  <ImageComponent src={startIcon}/>}
+      <input type="search" className={styles.searchBar} placeholder={placeholder}/>
+     {!!endIcon && <ImageComponent src={endIcon}/>}
+      {/* <ImageComponent src={Images.filterIcon} customClass={styles.icons} /> */}
     </div>
   );
 };

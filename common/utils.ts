@@ -1,3 +1,7 @@
+import Images from "@/public/assets/icons";
+import moment from "moment";
+import { MESSAGE_STATUS } from "./enums";
+
 interface IData {
   [key: string]: any;
 }
@@ -43,6 +47,33 @@ export const sortDataByField = (
   );
 };
 
+
+// export const sortDataByField = (
+//   data: IData[],
+//   field: string,
+//   ascending: boolean = true
+// ) => {
+//   const modifier = ascending ? 1 : -1;
+//   return data?.sort((column1: { [key: string]: any }, column2: { [key: string]: any }) => {
+//       const element1 = column1[field].toUpperCase();
+//       const element2 = column2[field].toUpperCase();
+//       if (element1 < element2) {
+//       const element1 = column1[field].toUpperCase();
+//       const element2 = column2[field].toUpperCase();
+//       if (element1 < element2) {
+//         return -1 * modifier;
+//       }
+     
+//       if (element1 > element2) {
+//         return 1 * modifier;
+//       }
+//       return 0;
+    
+//       }
+//     }
+//   )
+//     }
+
 export const checkMaster = (selectedRow: number[], data: IData[] | null) => {
   return (
     !!selectedRow.length &&
@@ -54,6 +85,7 @@ export const checkMaster = (selectedRow: number[], data: IData[] | null) => {
 export const checkIdeal = (selectedRow: number[], data: IData[]) => {
   const newdata =
     !!data &&
+    data?.filter((item) => selectedRow?.find((param) => param === item?.id));
     data?.filter((item) => selectedRow?.find((param) => param === item?.id));
   return !checkMaster(selectedRow, data) &&
     ((!!newdata.length && newdata.length < newdata?.length) ||
@@ -80,10 +112,64 @@ export const handleAllRowSelect = (
   }
 };
 
+//   onSelectedRowChange: (value: number[]) => void
+// ) => {
+//   const filteredArray = selectedRow?.filter(
+//     (id: number) => !!data && !data?.map((row) => row.id).includes(id)
+//   );
+//   if (onSelectedRowChange) {
+//     selectedRow?.length - filteredArray?.length === data?.length
+//       ? onSelectedRowChange([...filteredArray])
+//       : onSelectedRowChange([
+//           ...filteredArray,
+//           ...data.map((row: { [key: string]: any }) => row.id),
+//         ]);
+//   }
+// };
+
 export function checkRow(id: number, selectedRow: number[]) {
   return selectedRow?.includes(id);
 }
 
+export const getTimeStamp = () => {
+  return Math.round(new Date().getTime() / 1000);
+};
+
+export const isSameDay = (currentDay: string, previousDay: string) => {
+  return (
+    moment.unix(parseInt(currentDay)).format("DD/MM/YYYY") ===
+    moment.unix(parseInt(previousDay)).format("DD/MM/YYYY")
+  );
+};
+
+export const getCurrentDay = (timestamp: string) => {
+  return moment.unix(parseInt(timestamp)).calendar(null, {
+    sameDay: "[Today]",
+    nextDay: "[Tomorrow]",
+    nextWeek: "dddd",
+    lastDay: "[Yesterday]",
+    lastWeek: "DD MMM YYYY",
+    sameElse: "DD MMM YYYY",
+  });
+};
+
+export const formatTime = (timestamp: string) => {
+  return moment.unix(parseInt(timestamp)).format("hh:mm A");
+};
+
+export const getStatusImage = (status: string) => {
+  const { readIcon, sentIcon, deliveredIcon, errorIcon, rectangle } = Images;
+  const icon =
+    status === MESSAGE_STATUS.READ
+      ? readIcon
+      : status === MESSAGE_STATUS.DELIVERED
+      ? deliveredIcon
+      : status === MESSAGE_STATUS.FAILED
+      ? errorIcon
+      : sentIcon;
+
+  return icon;
+};
 export const toCamelCase = (str: string) => {
   let words = str.toLowerCase().split(/[\s-]+/);
   for (let i = 1; i < words.length; i++) {

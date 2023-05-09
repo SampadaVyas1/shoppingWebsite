@@ -2,7 +2,7 @@ import { HtmlHTMLAttributes } from "react";
 import { BUTTON_TYPES, BUTTON_VARIANT, BUTTON_SIZES } from "@/common/enums";
 
 export interface IButtonProps extends HtmlHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   startIcon?: string;
   endIcon?: string;
   variant?:

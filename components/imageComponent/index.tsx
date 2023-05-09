@@ -4,6 +4,7 @@ import styles from "./image.module.scss";
 import Typography from "../typography";
 import Rectangle from "../../public/assets/images/rectangle.svg";
 import { IImageProps } from "./image.types";
+import Images from "@/public/assets/icons";
 
 const ImageComponent = (props: IImageProps) => {
   const {
@@ -51,6 +52,15 @@ const ImageComponent = (props: IImageProps) => {
   }
   return (
     <Fragment>
+      <Image
+        src={Images.rectangle}
+        alt="image"
+        className={customClass}
+        onClick={props.onClick}
+        width={+width}
+        height={+height}
+        priority={true}
+      />
       <Rectangle className={customClass} onClick={props.onClick} />
     </Fragment>
   );

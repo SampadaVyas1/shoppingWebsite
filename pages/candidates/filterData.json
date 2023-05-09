@@ -1,0 +1,22 @@
+{
+    "sortBy": [
+        "ASC",
+        "firstName"
+    ],
+    "filterBy": [
+        {
+            "techStack": [
+                "Android Dev",
+                "Python Dev"
+            ]
+        },
+        {
+            "postingTitle": [
+                "Associate Software Engineer"
+            ]
+        }
+    ],
+    "search": "sanket",
+    "page": 1,
+    "limit": 10
+}

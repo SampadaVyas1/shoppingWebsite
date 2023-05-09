@@ -68,9 +68,11 @@ const AddForm = () => {
 
   return (
     <div className={styles.addFormWrapper}>
+      {/* TO BE ADDED LATER
       <Card title="From File">
         <React.Fragment>
-          <DragDropArea customStyle={styles.uploadForm} />
+          
+          <DragDropArea customStyle={styles.uploadForm} /> 
           <Typography
             variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}
             customStyle={styles.downloadLink}
@@ -79,6 +81,8 @@ const AddForm = () => {
           </Typography>
         </React.Fragment>
       </Card>
+          */}
+
       <form onSubmit={handleSubmit(onSubmit)} className={styles.addForm}>
         <Typography variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}>
           Manually
