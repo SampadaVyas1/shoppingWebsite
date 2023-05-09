@@ -6,28 +6,28 @@ import Typography from "../../typography/index";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 
  const TableCell  = (props: ITable) => {
-  const { dataIndex, record, field, additionalValue,dataFormatType } = props;
+  const { dataIndex, data, field, additionalValue,dataFormatType,index } = props;
   return (
     <div className={styles.table}>
       <div>
         {!!field && dataIndex === field.time ? (
-          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}>{dayjs(record[dataIndex]).format(dataFormatType)}</Typography>
+          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}>{dayjs(data[index][dataIndex]).format(dataFormatType)}</Typography>
         ) : 
         (
-          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}>{record[dataIndex]}</Typography>
+          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}>{data[index][dataIndex]}</Typography>
         )}
       </div>
       {!!additionalValue &&
         additionalValue.map((extraField:IExtraField) => {
           return (
             <Fragment>
-              {dataIndex === extraField.colspan ? (
-                <Typography
-                  children={record[extraField.colspanValue]}
-                  variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
-                  customStyle={`${extraField.customStyle}? ${extraField.customStyle} :${styles.colSpan}`}
-                />
-              ) : null}
+          {dataIndex === extraField.colspan ? (
+            <Typography
+              children={data[index][extraField.colspanValue]}
+              variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
+              customStyle={`${extraField.customStyle}? ${extraField.customStyle} :${styles.colSpan}`}
+            />
+          ) : null}
             </Fragment>
           );
         })}

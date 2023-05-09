@@ -1,9 +1,12 @@
+import { IAdditionalValue, IData } from "@/pages/candidates/candidates.types";
+
 export interface ITable {
     dataIndex: string;
-    record: any;
+    data: IData[];
     field?: { time: string };
-    additionalValue?: any;
+    additionalValue?: IAdditionalValue[];
     dataFormatType?:string;
+    index:number
   }
   
   export interface IExtraField {

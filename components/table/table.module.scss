@@ -6,6 +6,7 @@
   @include flex-align-center;
   padding: 0.5rem 0rem;
   gap: 0.5rem;
+  white-space: nowrap;
   .title {
     font-weight: 500;
     color: $blue;

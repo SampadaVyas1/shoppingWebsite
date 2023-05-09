@@ -1,31 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import fakeData from "./mockData.json";
-import HeaderTitle from "./tableHeaderData.json";
 import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
-import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
+import { DATE_FORMAT, SORT_Type, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "@/components/table";
+import HeaderTitle from "./tableHeaderData.json";
+import { sortDataByField } from "@/common/utils";
 
-const sortbuttonData = {
+const sortbuttonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
-  experienceLevel: { upKeyDisabled: false, downKeyDisabled: false },
   createdTime: { upKeyDisabled: false, downKeyDisabled: false },
-  mobileNumber: { upKeyDisabled: false, downKeyDisabled: false },
-  techStack: { upKeyDisabled: false, downKeyDisabled: false },
-  recruiter: { upKeyDisabled: false, downKeyDisabled: false },
-  status: { upKeyDisabled: false, downKeyDisabled: false },
 };
 
 const Candidates = () => {
-  const [data, setData] = useState<IData[] | null>(null);
-  const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
+  const [selectedRow, setSelectedRow] = useState<number[]>([]);
+  const [data, setData] = useState<IData[]>([]);
+  const [buttonState, setButtonState] = useState(sortbuttonData);
 
-  const handlePageChange = () => {
-    fakeData.push(...fakeData);
-    setData([...fakeData]);
-    setButtonState(sortbuttonData);
-  };
   const additionalValue: IAdditionalValue[] = [
     {
       colspan: TABLE_CONSTANTS.NAME,
@@ -49,6 +41,76 @@ const Candidates = () => {
     },
   };
 
+  const toggleSortButton = (
+    field: string,
+    data: IData[],
+    upKeyDisabled: boolean,
+    downKeyDisabled: boolean
+  ) => {
+    setButtonState((buttonState: IButtonState) => ({
+      ...buttonState,
+      [field]: {
+        ...buttonState[field],
+        upKeyDisabled: upKeyDisabled,
+        downKeyDisabled: downKeyDisabled,
+      },
+    }));
+    const newData = !!data && sortDataByField(data, field, upKeyDisabled);
+    return newData;
+  };
+
+  const handleSortButtonClick = (field: string, sortType: string) => {
+    sortType === SORT_Type.ASCENDING
+      ? !buttonState[field].upKeyDisabled &&
+        setData(toggleSortButton(field, data, true, false))
+      : sortType === SORT_Type.DESCENDING
+      ? !buttonState[field].downKeyDisabled &&
+        setData(toggleSortButton(field, data, false, true))
+      : null;
+  };
+
+  const handlePageChange = () => {
+    fakeData.push(...fakeData);
+    setData([...fakeData]);
+    setButtonState(sortbuttonData);
+  };
+
+  const handleRowSelect = (value: number[]) => {
+    setSelectedRow(value);
+  };
+
+  const handleRowEachSelect = (
+    row: number,
+    selectedRow: number[],
+    onSelectedRowChange: (value: number[]) => void
+  ) => {
+    const filteredRow = selectedRow?.filter((singleRow: number) => {
+      return singleRow !== row;
+    });
+    if (onSelectedRowChange) {
+      if (filteredRow?.length !== selectedRow?.length) {
+        onSelectedRowChange([...filteredRow]);
+      } else {
+        const selectedrow = [...selectedRow];
+        selectedrow.push(row);
+        onSelectedRowChange([...selectedrow]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
+    setData(newData);
+    setButtonState({
+      ...buttonState,
+      name: {
+        ...buttonState[TABLE_CONSTANTS.NAME],
+        upKeyDisabled: true,
+        downKeyDisabled: false,
+      },
+    });
+  }, []);
+
   return (
     <InfiniteScroll
       nextPage={true}
@@ -56,7 +118,7 @@ const Candidates = () => {
       customClass={styles.scroll}
     >
       <TableComponent
-        data={fakeData}
+        data={data}
         columnHeaderTitle={HeaderTitle}
         sortbuttonData={sortbuttonData}
         additionalValue={additionalValue}
@@ -64,6 +126,11 @@ const Candidates = () => {
         dataFormatType={DATE_FORMAT.DD_MM_YYYY}
         customStyle={customStyle}
         customRowStyling={styles.customRowStyling}
+        buttonState={buttonState}
+        handleSortArrowClick={handleSortButtonClick}
+        selectedRow={selectedRow}
+        handleRowSelect={handleRowSelect}
+        handleRowEachSelect={handleRowEachSelect}
       />
     </InfiniteScroll>
   );

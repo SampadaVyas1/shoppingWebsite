@@ -1,4 +1,5 @@
 @import "../styles/variables";
+@import "../styles/variables";
 * {
   box-sizing: border-box;
   padding: 0;
@@ -67,7 +68,6 @@ a {
   transform: scale(0.9);
   transition: opacity 300ms, transform 300ms;
 }
-
 .rc-table-thead {
   width: auto;
   position: sticky;
@@ -81,7 +81,7 @@ a {
 }
 .rc-table-tbody {
   width: auto;
-  height: 32rem;
+  height: 32.06rem;
 }
 .rc-table-row {
   height: 3.75rem;
