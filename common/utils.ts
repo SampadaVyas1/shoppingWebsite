@@ -88,13 +88,17 @@ export const formatTemplateData = (
   );
   const templateComponents = {
     type: "header",
-    parameters: components?.map((component: any) => ({
-      type: component.format.toLowerCase(),
-      [component.format.toLowerCase()]:
-        component.format.toLowerCase() === "image"
-          ? { link: component.example.header_handle[0] }
-          : candidateName,
-    })),
+    parameters: components?.map((component: any) => {
+      const [imageLink, ...otherElements] =
+        component?.example?.header_handle ?? [];
+      return {
+        type: component.format.toLowerCase(),
+        [component.format.toLowerCase()]:
+          component.format.toLowerCase() === "image"
+            ? { link: imageLink }
+            : candidateName,
+      };
+    }),
   };
 
   return {

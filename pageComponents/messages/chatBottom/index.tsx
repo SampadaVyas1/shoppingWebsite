@@ -115,6 +115,10 @@ const ChatBottom = (props: IChatBottomProps) => {
     setIsTemplateOpen(!isTemplateOpen);
   };
 
+  const [header, ...otherComponents] = selectedTemplate?.components ?? [];
+  const [selectedImage, ...otherElements] =
+    header?.example?.header_handle ?? [];
+
   return props.isLoading ? (
     <div className={styles.chatBottom}>
       <SkeletonLoader
@@ -251,15 +255,10 @@ const ChatBottom = (props: IChatBottomProps) => {
           customClass={`${styles.imagePreview} ${styles.templatePreview}`}
         >
           <TemplateCard
-            imageUrl={
-              selectedTemplate?.components[0]?.example?.header_handle[0]
-            }
+            imageUrl={selectedImage}
             header={
-              selectedTemplate?.components[0]?.text
-                ? formatTemplateHeader(
-                    selectedTemplate?.components[0]?.text,
-                    candidateName
-                  )
+              header?.text
+                ? formatTemplateHeader(header?.text, candidateName)
                 : ""
             }
             description={selectedTemplate?.components[1]?.text}

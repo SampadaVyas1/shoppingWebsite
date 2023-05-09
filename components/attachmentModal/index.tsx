@@ -17,13 +17,13 @@ const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
   };
 
   const onImageSelect = (event: any) => {
-    const file = event.target.files[0];
-    file && onSelection(event.target.files[0], "image");
+    const [file, ...otherElements] = event.target.files;
+    file && onSelection(file, "image");
   };
 
   const onFileSelect = (event: any) => {
-    const file = event.target.files[0];
-    file && onSelection(event.target.files[0], "document");
+    const [file, ...otherElements] = event.target.files;
+    file && onSelection(file, "document");
   };
 
   return (

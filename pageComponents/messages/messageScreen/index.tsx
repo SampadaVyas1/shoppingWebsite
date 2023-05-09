@@ -39,8 +39,6 @@ const MessageScreen = (props: IMessageScreenProps) => {
   const [selectedFile, setSelectedFile] = useState<ISelectedFile | null>(null);
   const chatScreenRef = useRef<HTMLDivElement>(null);
 
-  const dispatch = useDispatch();
-
   const handleMessageChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -112,12 +110,14 @@ const MessageScreen = (props: IMessageScreenProps) => {
       timestamp
     );
     socket.emit(SOCKET_ROUTES.SEND_TEMPLATE, templateData);
+    const [header, body, ...otherElements] = template?.components ?? [];
+    const [parameters, ...restElements] = header?.example?.header_handle ?? [];
     const newMessage = getSentMessageData({
       messageId,
-      mediaUrl: templateData?.components[0]?.parameters[0]?.image?.link,
+      mediaUrl: parameters,
       timestamp,
-      message: formatTemplateHeader(template?.components[0]?.text, name),
-      caption: template?.components[1]?.text,
+      message: formatTemplateHeader(header?.text, name),
+      caption: body?.text,
       messageType: "image",
       status: MESSAGE_STATUS.SENDING,
       to: mobile,

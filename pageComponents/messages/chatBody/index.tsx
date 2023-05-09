@@ -95,8 +95,9 @@ const ChatBody = (props: IChatBodyProps) => {
   }, [phone, messageListData]);
 
   useEffect(() => {
+    sessionStorage.setItem("phone", phone);
     return () => sessionStorage.setItem("phone", "");
-  }, []);
+  }, [phone]);
 
   return (
     <InfiniteScroll

@@ -14,7 +14,6 @@ export const getAllTemplates = async () => {
       `${process.env.NEXT_PUBLIC_SOCKET_URL}/whatsapp/getAllTemplates`,
       config
     );
-    console.log(response);
     return response;
   } catch (error) {
     return { data: null, error: error };
