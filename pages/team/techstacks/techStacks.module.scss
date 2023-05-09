@@ -21,7 +21,7 @@
     border-collapse: collapse;
   }
   .scroll {
-    height: 43.75rem;
+    max-height: 33rem;
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;

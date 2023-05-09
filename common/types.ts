@@ -31,3 +31,13 @@ export interface IEmptyStateType {
   subTitle?: string;
   customImageStyle?: string;
 }
+
+export interface ITechStackList {
+  id: number;
+  name: string;
+  totalCandidates: number;
+  activeCandidates: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+}

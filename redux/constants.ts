@@ -1,7 +1,10 @@
 export const LOGIN = "login";
+export const TECH_STACK = "techstack";
 
 export const sagaActions = {
   GET_RANDOM_DATA: "GET_RANDOM_DATA",
   GET_LOGIN_DATA: "GET_LOGIN_DATA",
   LOGIN_SAGA_FAILED: "LOGIN_SAGA_FAILED",
+  GET_TECH_STACKS: "GET_TECH_STACKS",
+  TECH_STACK_SAGA_FAILED: "TECH_STACK_SAGA_FAILED",
 };

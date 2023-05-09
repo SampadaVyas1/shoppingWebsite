@@ -10,6 +10,7 @@ interface ICustomStyle {
     row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => JSX.Element;
   };
 }
+
 export interface IHandleRowSelect {
   (value: number[]): void;
 }
@@ -20,17 +21,23 @@ export interface IHandleRowEachSelect {
 }
 export interface ITableComponent {
   additionalValue?: IAdditionalValue[];
+  loading?: boolean;
   data: IData[];
   customRowStyling?: string;
-  columnHeaderTitle: IHeaderTitleProps[];
+  columnHeaderTitle: any[];
   sortbuttonData?: IButtonState;
   dataFormatType?: string;
   fieldforDateFormat?: { time: string };
   customStyle?: ICustomStyle;
   moreverticalIcon?: boolean;
   buttonState?: IButtonState;
-  handleSortArrowClick?:(field:string,sortType:string)=>void;
-  selectedRow: number[];
-  handleRowSelect: IHandleRowSelect;
-  handleRowEachSelect: (row: number,selectedRow: number[],onSelectedRowChange: (value: number[]) => void)=>void;
+  handleSortArrowClick?: (field: string, sortType: string, data: any) => void;
+  selectedRow?: number[];
+  handleRowSelect?: IHandleRowSelect;
+  handleRowEachSelect?: (
+    row: number,
+    selectedRow: number[],
+    onSelectedRowChange: (value: number[]) => void
+  ) => void;
+  hoverCell?: string;
 }

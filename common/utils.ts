@@ -23,7 +23,7 @@ export const debounce = (callback: Function, wait: number = 100) => {
 };
 
 export const sortDataByField = (
-  data: IData[],
+  data: any[],
   field: string,
   ascending: boolean = true
 ) => {

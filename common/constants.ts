@@ -38,12 +38,12 @@ export const TABLE_CONSTANTS = {
   NAME: "name",
   DESIGNATION: "designation",
   TIME: "time",
-  ID:"id"
+  ID: "id",
 };
-export const SORT_Type={
-ASCENDING: "ascending",
-DESCENDING: "descending",
-}
+export const SORT_TYPE = {
+  ASCENDING: "ascending",
+  DESCENDING: "descending",
+};
 
 export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";
