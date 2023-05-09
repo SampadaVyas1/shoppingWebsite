@@ -192,7 +192,7 @@ export const TableComponent = (props: ITableComponent) => {
                   dataIndex={dataIndex as string}
                   data={data}
                   field={fieldforDateFormat}
-                  additionalValue={additionalValue}
+                  additionalValue={additionalValue && additionalValue}
                   dataFormatType={dataFormatType}
                   index={index}
                   hoverCell={hoverCell}

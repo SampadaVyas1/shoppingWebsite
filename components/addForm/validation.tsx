@@ -27,6 +27,11 @@ export const AddFormSchema = yup
         label: yup.string(),
       })
       .required(VALIDATION_ERRORS.REQUIRED_ERROR),
+    experienceLevel:yup
+    .string()
+    .matches(REGEX.ONLY_NUMBERS, VALIDATION_ERRORS.NOT_NUMBER_ERROR)
+    .required(VALIDATION_ERRORS.REQUIRED_ERROR)
+    ,
     techStack: yup
       .object()
       .shape({

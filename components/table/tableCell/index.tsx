@@ -16,21 +16,45 @@ const TableCell = (props: ITable) => {
     index,
     hoverCell,
   } = props;
+  // const getHoverTooltip = (data: any, index: number, dataIndex: any) => (
+  //   <div>
+  //     {!!data[index][dataIndex]?.length &&
+  //       data[index][dataIndex]?.map((item: string, i: number) => {
+  //         return (
+  //           <Fragment>
+  //             {i < 2 && <span>{item} </span>}
+  //             {i === 2 && data[index][dataIndex].length > 3 && (
+  //               <span>+{data[index][dataIndex].length - 2}</span>
+  //             )}
+  //           </Fragment>
+  //         );
+  //       })}
+  //   </div>
+  // );
   const getHoverTooltip = (data: any, index: number, dataIndex: any) => (
     <div>
       {!!data[index][dataIndex]?.length &&
         data[index][dataIndex]?.map((item: string, i: number) => {
-          return (
-            <Fragment>
-              {i < 2 && <span>{item} </span>}
-              {i === 2 && data[index][dataIndex].length > 3 && (
+          const isLastItem = i === data[index][dataIndex].length - 1;
+          if (i < 2) {
+            return (
+              <Fragment key={i}>
+                <span>{item}{isLastItem ? '' : ', '}</span>
+              </Fragment>
+            );
+          } else if (i === 2 && data[index][dataIndex].length > 2) {
+            return (
+              <Fragment key={i}>
                 <span>+{data[index][dataIndex].length - 2}</span>
-              )}
-            </Fragment>
-          );
+              </Fragment>
+            );
+          } else {
+            return null;
+          }
         })}
     </div>
   );
+
   return (
     <div className={styles.table}>
       <div>
@@ -38,8 +62,10 @@ const TableCell = (props: ITable) => {
           <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}>
             {dayjs(data[index][dataIndex]).format(dataFormatType)}
           </Typography>
-        ) : dataIndex === hoverCell ? (
+        ) : dataIndex === hoverCell ? 
+        (
           data[index][dataIndex]?.length > 2 ? (
+         
             <div className={styles.tooltip}>
               <Tooltip
                 position={TOOLTIP_POSITION.BOTTOM}
@@ -60,10 +86,13 @@ const TableCell = (props: ITable) => {
               </Tooltip>
             </div>
           ) : (
-            getHoverTooltip(data, index, dataIndex)
+            <> 
+           { getHoverTooltip(data, index, dataIndex)}
+            </>
           )
+     
         ) : (
-          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR} >
+          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}>
             {data[index][dataIndex]}
           </Typography>
         )}

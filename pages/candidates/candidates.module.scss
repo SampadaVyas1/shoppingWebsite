@@ -51,6 +51,7 @@
   width: 100%;
   background-color: $white;
   border-collapse: collapse;
+  box-sizing: initial;
 }
 .contained {
   background-color: $primary;
@@ -77,7 +78,7 @@
 }
 .customRowStyling:hover {
   background-color: $tableHover;
-  height:4.25rem;
+  // height:4.25rem;
 }
 .addButton {
   position: fixed;
@@ -87,7 +88,6 @@
 .emptyState
 {
   height: 100%;
-
   flex-direction: column;
   @include flex-center-alignment;
  .emptyStateText

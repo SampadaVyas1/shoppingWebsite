@@ -19,7 +19,7 @@ import InputBox from "@/components/inputBox";
 import { DATE_FORMAT, SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "../../components/table/index";
 import { debounce, sortDataByField } from "@/common/utils";
-import { getCandidatesData, getFilter } from "@/services/candidate.service";
+import { addCandidates, getCandidatesData, getFilter } from "@/services/candidate.service";
 import Typography from "@/components/typography";
 import Loader from "@/components/loader";
 
@@ -40,10 +40,9 @@ const Candidates = () => {
   const [getFilterData, setFilterData] = useState<any>([]);
   const [tagList, setTagList] = useState([]);
   const [tableLoading, setTableLoading] = useState<boolean>(false);
-
   const [currentAppliedFilter, setCurrentAppliedFilter] = useState<any[]>([]);
-
   const [levelsFilter, setLevelsFilter] = useState<any[]>([]);
+  const [techStackOptions, setTechStackOptions] = useState<any>();
 
   const keys = !!data && data[0] && Object?.keys(data[0]);
   const tableHeader =
@@ -58,6 +57,7 @@ const Candidates = () => {
         key: key,
       };
     });
+    console.log(tableHeader)
   const filteredHeaderData =
     !!tableHeader && tableHeader.filter((obj) => /^[A-Z]/.test(obj.title));
   const closeFilter = () => {
@@ -243,6 +243,14 @@ const Candidates = () => {
     const getFilterApi = async () => {
       const getAllfilter = await getFilter();
       setFilterData(getAllfilter?.data?.data);
+      console.log(getAllfilter?.data?.data?.techStack);
+
+      setTechStackOptions(
+        getAllfilter?.data?.data?.techStack.map((item: any, index: number) => ({
+          id: index,
+          label: item,
+        }))
+      );
       setTagList(
         getAllfilter?.data?.data.interviewName.map(
           (item: any, index: number) => ({ id: index, label: item })
@@ -252,9 +260,19 @@ const Candidates = () => {
     getCandidates();
     getFilterApi();
   }, []);
-  const handleSubmitForm=()=>{
-console.log("sahgys")
-  }
+
+  const handleSubmitButton = async(value: any) => {
+    const updatedData = {
+      firstName: value.firstName,
+      lastName: value.lastName,
+      mobileNumber:`91${value.mobileNumber}`,
+      techStack: value.techStack.label,
+      experienceLevel: +value.experienceLevel,
+    };
+    const response=await addCandidates(updatedData)
+    console.log(response)
+    console.log(updatedData);
+  };
 
   const handleSearch = debounce(async (event: any) => {
     const searchValue = event.target.value;
@@ -267,7 +285,6 @@ console.log("sahgys")
     setData([...updatedData]);
     setTableLoading(false);
   }, 1000);
-
   return (
     <>
       {loading ? (
@@ -380,7 +397,7 @@ console.log("sahgys")
               selectedRow={selectedRow}
               handleRowSelect={handleRowSelect}
               handleRowEachSelect={handleRowEachSelect}
-              hoverCell={"techStack"}
+              hoverCell={"Tech stack"}
             />
             <ImageComponent
               src={Images.addButton}
@@ -396,7 +413,10 @@ console.log("sahgys")
             header="Add Candidate"
             showCloseIcon
           >
-            <AddForm handleSubmit={handleSubmitForm}/>
+            <AddForm
+              handleSubmitButton={handleSubmitButton}
+              techStackOptions={techStackOptions}
+            />
           </Modal>
         </Container>
       )}

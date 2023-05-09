@@ -9,8 +9,12 @@ import fakeData from "./mockData.json";
 import styles from "./recruiters.module.scss";
 import Container from "@/components/container";
 import { useEffect, useState } from "react";
+import Loader from "@/components/loader";
+import InputBox from "@/components/inputBox";
 const Recruiters = () => {
   const [data, setData] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [nextPage, setNextPage] = useState<boolean>(true);
   const keys = !!data && data[0] && Object?.keys(data[0]);
   const tableHeader =
     !!keys &&
@@ -57,12 +61,12 @@ const Recruiters = () => {
         console.log(item);
         return {
           ...item,
-          "Name": `${item.mobileNumber}`,
+          Name: `${item.mobileNumber}`,
           "Mobile number": `${item.mobileNumber}`,
           "Email ID": `${item.experienceLevel}`,
           "Tech stack": `${item.techStack}`,
-          "Candidates": `${item.createdAt}`,
-          "Status": `${item.interviewStatus}`,
+          Candidates: `${item.createdAt}`,
+          Status: `${item.interviewStatus}`,
         };
       });
     setData(updatedData);
@@ -75,38 +79,89 @@ const Recruiters = () => {
     //   },
     // });
   }, []);
+  const handleSearch = () => {};
 
   return (
-    <Container>
-      {/* <Search />
-      <EmptyState
-        image={Images.emptyStateImage}
-        title="Nothing to see here!"
-        subTitle="Click on + to add a recruiter"
-      /> */}
-      <InfiniteScroll
-        nextPage={true}
-        handlePageChange={handlePageChange}
-        customClass={styles.scroll}
-      >
-        <TableComponent
-          data={data}
-          columnHeaderTitle={filteredHeaderData}
-          // sortbuttonData={sortbuttonData}
-          additionalValue={additionalValue}
-          // fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
-          // dataFormatType={DATE_FORMAT.DD_MM_YYYY}
-          customStyle={customStyle}
-          customRowStyling={styles.customRowStyling}
-          // buttonState={buttonState}
-          // handleSortArrowClick={handleSortButtonClick}
-          // selectedRow={selectedRow}
-          // handleRowSelect={handleRowSelect}
-          // handleRowEachSelect={handleRowEachSelect}
-          // hoverCell={"techStack"} selectedRow={[]}
-        />
-      </InfiniteScroll>
-    </Container>
+    // <Container>
+    //   {/* <Search />
+    //   <EmptyState
+    //     image={Images.emptyStateImage}
+    //     title="Nothing to see here!"
+    //     subTitle="Click on + to add a recruiter"
+    //   /> */}
+    //   <InfiniteScroll
+    //     nextPage={true}
+    //     handlePageChange={handlePageChange}
+    //     customClass={styles.scroll}
+    //   >
+    //     <TableComponent
+    //       data={data}
+    //       columnHeaderTitle={filteredHeaderData}
+    //       // sortbuttonData={sortbuttonData}
+    //       additionalValue={additionalValue}
+    //       // fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
+    //       // dataFormatType={DATE_FORMAT.DD_MM_YYYY}
+    //       customStyle={customStyle}
+    //       customRowStyling={styles.customRowStyling}
+    //       // buttonState={buttonState}
+    //       // handleSortArrowClick={handleSortButtonClick}
+    //       // selectedRow={selectedRow}
+    //       // handleRowSelect={handleRowSelect}
+    //       // handleRowEachSelect={handleRowEachSelect}
+    //       // hoverCell={"techStack"} selectedRow={[]}
+    //     />
+    //   </InfiniteScroll>
+    // </Container>
+
+    <>
+      {loading ? (
+        <Loader />
+      ) : data.length === 0 ? (
+        <div className={styles.emptyState}>
+          <EmptyState
+            image={Images.emptyStateImage}
+            title="Nothing to see here!"
+            subTitle="Click on + to add a recruiter"
+          />
+        </div>
+      ) : (
+        <Container>
+          <div className={styles.header}>
+            <div className={styles.searchBox}>
+              <InputBox
+                endIcon={Images.search}
+                placeholder="Search..."
+                onEndIconClick={Images.searchIcon}
+                className={styles.search}
+                onChange={handleSearch}
+              />
+            </div>
+          </div>
+          <InfiniteScroll
+            nextPage={nextPage}
+            handlePageChange={handlePageChange}
+            customClass={styles.scroll}
+          >
+            <TableComponent
+              data={data}
+              columnHeaderTitle={filteredHeaderData}
+              // sortbuttonData={sortbuttonData}
+              additionalValue={additionalValue}
+              // fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
+              // dataFormatType={DATE_FORMAT.DD_MM_YYYY}
+              customStyle={customStyle}
+              customRowStyling={styles.customRowStyling}
+              // buttonState={buttonState}
+              // handleSortArrowClick={handleSortButtonClick}
+              // selectedRow={selectedRow}
+              // handleRowSelect={handleRowSelect}
+              // handleRowEachSelect={handleRowEachSelect}
+              // hoverCell={"techStack"} selectedRow={[]}
+            />
+          </InfiniteScroll>
+        </Container>
+      )}
+    </>
   );
 };
 
