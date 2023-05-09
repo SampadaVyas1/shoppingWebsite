@@ -234,7 +234,7 @@ const ChatBody = (props: IChatBodyProps) => {
             </React.Fragment>
           );
         })}
-      {!!messageListData && <div ref={messagesEndRef} />}
+      <div ref={messagesEndRef}></div>
       <Modal
         open={!!selectedImage.length}
         onClose={handleModalClose}
