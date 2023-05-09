@@ -14,7 +14,15 @@
   .customHeaderStyle {
     background-color: $tableHeader;
   }
-
+  .errorMessage {
+    @include flex-center-alignment;
+    font-size: 1rem;
+    border: 0.125rem solid $error;
+    width: fit-content;
+    align-self: center;
+    padding: 0.5rem 2rem;
+    border-radius: 0.25rem;
+  }
   .table {
     width: 100%;
     background-color: $white;

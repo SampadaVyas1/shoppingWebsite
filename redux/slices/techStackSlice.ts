@@ -34,10 +34,18 @@ export const techStackSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
       state.totalPages = action.payload.totalPages;
-      state.currentTechStacks = action.payload.techStacks;
-      state.techStackList = action.payload.techStacks;
+      state.techStackList = [
+        ...state.techStackList,
+        ...action.payload.techStacks,
+      ];
       state.hasNextPage = action.payload.hasNextPage;
       state.currentPage = action.payload.currentPage;
+    },
+    handleTechStackSearch: (state, action: any) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.totalPages = action.payload.totalPages;
+      state.currentTechStacks = action.payload.techStacks;
     },
     toggleError: (state) => {
       state.isLoading = false;
@@ -46,5 +54,9 @@ export const techStackSlice = createSlice({
   },
 });
 export default techStackSlice.reducer;
-export const { toggleError, getAllTechStacks, toggleLoading } =
-  techStackSlice.actions;
+export const {
+  toggleError,
+  getAllTechStacks,
+  handleTechStackSearch,
+  toggleLoading,
+} = techStackSlice.actions;

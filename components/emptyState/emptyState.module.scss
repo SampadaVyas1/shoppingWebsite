@@ -4,6 +4,7 @@
 .emptyStateContainer {
   @include flex-direction(column);
   @include flex-center-alignment;
+  height: 100%;
 }
 
 .notFoundImage {

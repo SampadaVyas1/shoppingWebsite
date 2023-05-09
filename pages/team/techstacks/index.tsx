@@ -23,6 +23,8 @@ import NoTechStack from "../../../public/assets/icons/techStackEmpty.svg";
 import { ITechStackList } from "@/common/types";
 import { SORT_TYPE } from "@/common/constants";
 import { IButtonState } from "@/pages/candidates/candidates.types";
+import Typography from "@/components/typography";
+import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 
 const tableHeader = [
   {
@@ -60,8 +62,15 @@ const TechStacks = () => {
 
   const dispatch = useDispatch();
 
-  const { techStackList, hasNextPage, currentPage, isLoading, totalPages } =
-    useAppSelector((state) => state.techStack);
+  const {
+    techStackList,
+    hasNextPage,
+    currentPage,
+    isLoading,
+    isError,
+    totalPages,
+    currentTechStacks,
+  } = useAppSelector((state) => state.techStack);
 
   const customStyle = {
     table: ({ ...props }) => {
@@ -78,18 +87,16 @@ const TechStacks = () => {
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setSearchValue(event.target.value);
-    pageNumber > 1 && setPageNumber(1);
-    debounce(fetchTechStackList, 1000);
+    searchTechStack(event.target.value);
   };
 
   const handlePageChange = () => {
     setPageNumber(pageNumber + 1);
-    console.log("pageChange", pageNumber);
   };
 
   const clearSearch = () => {
     searchValue && setSearchValue("");
-    fetchTechStackList();
+    setTechStackData(techStackList);
   };
 
   const toggleSort = (
@@ -124,26 +131,42 @@ const TechStacks = () => {
       : null;
   };
 
-  const fetchTechStackList = useCallback(() => {
+  const searchTechStack = (searchKey: string) => {
+    dispatch({
+      type: sagaActions.SEARCH_TECH_STACK,
+      payload: { search: searchKey, page: 1, limit: 10 },
+    });
+  };
+
+  const getAllTechStackData = useCallback(() => {
     dispatch({
       type: sagaActions.GET_TECH_STACKS,
-      payload: { search: searchValue, page: pageNumber, limit: 10 },
+      payload: { page: pageNumber, limit: 10 },
     });
-  }, [dispatch, pageNumber, searchValue]);
+  }, [dispatch, pageNumber]);
 
   useEffect(() => {
-    fetchTechStackList();
-  }, [fetchTechStackList]);
-
-  useEffect(() => {
-    console.log(techStackList);
-    searchValue
-      ? setTechStackData(techStackList)
-      : setTechStackData([...techStackData, ...techStackList]);
+    setTechStackData(techStackList);
   }, [techStackList]);
+
+  useEffect(() => {
+    getAllTechStackData();
+  }, [getAllTechStackData]);
+
+  useEffect(() => {
+    setTechStackData(currentTechStacks);
+  }, [currentTechStacks]);
 
   return (
     <Container customClass={styles.techStacks}>
+      {isError && (
+        <Typography
+          variant={TYPOGRAPHY_VARIANT.ERROR}
+          customStyle={styles.errorMessage}
+        >
+          Oops!!! Something went wrong......
+        </Typography>
+      )}
       <InputBox
         endIcon={searchValue ? Images.close : Images.search}
         onEndIconClick={clearSearch}
@@ -158,15 +181,18 @@ const TechStacks = () => {
             handlePageChange={handlePageChange}
             customClass={styles.scroll}
           >
-            <TableComponent
-              data={techStackData}
-              columnHeaderTitle={tableHeader}
-              sortbuttonData={sortbuttonData}
-              handleSortArrowClick={handleSortButtonClick}
-              customStyle={customStyle}
-              customRowStyling={styles.customRowStyling}
-            />
-            {isLoading && <Loader />}
+            {isLoading ? (
+              <Loader />
+            ) : (
+              <TableComponent
+                data={techStackData}
+                columnHeaderTitle={tableHeader}
+                sortbuttonData={sortbuttonData}
+                handleSortArrowClick={handleSortButtonClick}
+                customStyle={customStyle}
+                customRowStyling={styles.customRowStyling}
+              />
+            )}
           </InfiniteScroll>
         </React.Fragment>
       ) : (

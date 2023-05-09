@@ -28,7 +28,7 @@ export const sortDataByField = (
   ascending: boolean = true
 ) => {
   const modifier = ascending ? 1 : -1;
-  return data?.sort(
+  return [...data]?.sort(
     (column1: { [key: string]: any }, column2: { [key: string]: any }) => {
       const element1 = column1[field].toUpperCase();
       const element2 = column2[field].toUpperCase();
