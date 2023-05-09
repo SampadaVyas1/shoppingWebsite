@@ -145,7 +145,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
 
   useEffect(() => {
     socket.on(SOCKET_ROUTES.GET_MEDIA, async (data: any) => {
-      const { id, receiverNumber, messageId, mediaUrl } = data;
+      const { id, receiverNumber, messageId, mediaUrl, fileName } = data;
       const result = await db.messages
         .where("messageId")
         .equals(messageId)
@@ -156,6 +156,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           message: result?.message,
           messageId: id,
           mediaUrl: mediaUrl,
+          fileName: fileName,
           status: MESSAGE_STATUS.SENT,
         });
       }

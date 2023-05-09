@@ -13,10 +13,10 @@ export class MySubClassedDexie extends Dexie {
 
   constructor() {
     super("ccMessages");
-    this.version(8).stores({
+    this.version(9).stores({
       conversations: "id, ta, messages, unreadCount",
       messages:
-        "messageId,message,timestamp,messageType,status,to,from, phone, mediaUrl",
+        "messageId,message,timestamp,messageType,status,to,from, phone, mediaUrl, fileName",
     });
   }
 }

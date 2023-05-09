@@ -188,6 +188,7 @@ const Messages = () => {
             message,
             mediaUrl,
             caption,
+            fileName,
           } = singleMessage;
           const newMessage = {
             messageId: wamid,
@@ -197,6 +198,7 @@ const Messages = () => {
             mediaUrl: mediaUrl,
             to: SOCKET_CONSTANTS.USER_ID,
             caption: caption,
+            fileName: fileName,
             from: from,
           };
           if (messageTypes.includes(singleMessage?.messageType)) {
@@ -222,6 +224,7 @@ const Messages = () => {
         message,
         mediaUrl,
         caption,
+        fileName,
       } = data;
       const newMessage = {
         messageId: wamid,
@@ -229,14 +232,11 @@ const Messages = () => {
         timestamp: timestamp,
         messageType: messageType,
         mediaUrl: mediaUrl,
+        fileName: fileName,
         to: SOCKET_CONSTANTS.USER_ID,
         caption: caption,
         from: from,
       };
-      console.log(
-        !sessionStorage.getItem("phone") ||
-          from !== sessionStorage.getItem("phone")
-      );
       (!sessionStorage.getItem("phone") ||
         from !== sessionStorage.getItem("phone")) &&
         (await increaseUnreadCount(from, wamid, false));

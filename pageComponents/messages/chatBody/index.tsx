@@ -169,9 +169,9 @@ const ChatBody = (props: IChatBodyProps) => {
                       <Tag
                         tagValue={{
                           id: "1",
-                          label: mediaUrl!.substring(
-                            mediaUrl.lastIndexOf("/") + 1
-                          ),
+                          label:
+                            caption ||
+                            mediaUrl!.substring(mediaUrl.lastIndexOf("/") + 1),
                         }}
                         onClick={() =>
                           window.open(mediaUrl, "_blank", "noreferrer")
@@ -184,12 +184,14 @@ const ChatBody = (props: IChatBodyProps) => {
                   >
                     {message}
                   </Typography>
-                  <Typography
-                    variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
-                    customStyle={styles.messageText}
-                  >
-                    {caption}
-                  </Typography>
+                  {type !== "document" && (
+                    <Typography
+                      variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
+                      customStyle={styles.messageText}
+                    >
+                      {caption}
+                    </Typography>
+                  )}
 
                   <div className={styles.time}>
                     <Typography
