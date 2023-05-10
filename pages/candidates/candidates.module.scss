@@ -58,7 +58,7 @@
   color: $white;
 }
 .scroll {
-  height: 35.45rem;
+  height: 40.45rem;
   overflow-x: auto;
   overflow-y: auto;
   position: relative;
@@ -78,12 +78,12 @@
 }
 .customRowStyling:hover {
   background-color: $tableHover;
-  // height:4.25rem;
 }
 .addButton {
   position: fixed;
   right: 5%;
   top: 90%;
+ 
 }
 .emptyState
 {

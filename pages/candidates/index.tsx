@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import { Popover } from "react-tiny-popover";
-import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
+import { IAdditionalValue, IButtonState, IData, IFilter } from "./candidates.types";
 import Container from "@/components/container";
 import Images from "@/public/assets/icons";
 import ImageComponent from "../../components/imageComponent/index";
@@ -22,7 +22,6 @@ import {
   getCandidatesData,
   getFilter,
 } from "@/services/candidate.service";
-import Typography from "@/components/typography";
 import Loader from "@/components/loader";
 import EmptyState from "@/components/emptyState";
 
@@ -34,39 +33,42 @@ const Candidates = () => {
   const [selectedRow, setSelectedRow] = useState<number[]>([]);
   const [data, setData] = useState<IData[]>([]);
   const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const [nextPage, handleNextPage] = useState<boolean>(false);
-  const [addButtonClicked, setAddButtonClicked] = useState<boolean>(false);
+  const [pageNumber, setPageNumber] = useState<any>(1);
+  const [nextPage, handleNextPage] = useState<any>(false);
+  const [addButtonClicked, setAddButtonClicked] = useState<any>(false);
   const [isFilterOpen, setisFilterOpen] = useState<boolean>(false);
-  const [filter, setFilter] = useState<any>([]);
+  const [filter, setFilter] = useState<IFilter[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [getFilterData, setFilterData] = useState<any>();
-  const [tagList, setTagList] = useState([]);
+  const [tagList, setTagList] = useState<any>([]);
   const [tableLoading, setTableLoading] = useState<boolean>(false);
   const [currentAppliedFilter, setCurrentAppliedFilter] = useState<any[]>([]);
   const [levelsFilter, setLevelsFilter] = useState<any[]>([]);
   const [techStackOptions, setTechStackOptions] = useState<any>();
-  const [error, setError] = useState<boolean>(false);
 
-  const keys = !!data && data[0] && Object?.keys(data[0]);
-  const tableHeader =
-    !!keys &&
-    keys.map((key, index) => {
-      let sort = key === "Name" || key === "Created time" ? true : false;
-      return {
-        id: index + 1,
-        title: key,
-        sort: sort,
-        dataIndex: key,
-        key: key,
-      };
-    });
+  const createHeader = () => {
+    const keys = !!data && data[0] && Object?.keys(data[0]);
+    const tableHeader =
+      !!keys &&
+      keys.map((key, index) => {
+        let sort = key === "Name" || key === "Created time" ? true : false;
+        return {
+          id: index + 1,
+          title: key,
+          sort: sort,
+          dataIndex: key,
+          key: key,
+        };
+      });
+    return tableHeader;
+  };
+
   const closeFilter = () => {
     setisFilterOpen(false);
   };
 
   const toggleFilter = async () => {
-    const { interviewName, ...rest } = !!getFilterData &&  getFilterData;
+    const { interviewName, ...rest } = !!getFilterData && getFilterData;
     const result =
       !!rest &&
       Object.keys(rest).map((key: any, index) => {
@@ -85,7 +87,6 @@ const Candidates = () => {
   };
 
   const applyFilter = async (filters?: any = []) => {
-    console.log(filters);
     const newObj = [
       { interviewName: levelsFilter },
       { techStack: filters?.techStack?.map((item: any) => item?.label) || [] },
@@ -216,17 +217,16 @@ const Candidates = () => {
     const fetchData = async () => {
       try {
         const response = await getCandidatesData();
+        console.log(response);
         handleNextPage(response?.data?.data?.hasNextPage);
         return response?.data?.data?.candidates;
       } catch (error) {
         setLoading(true);
-        //  error;
       }
     };
     const getCandidates = async () => {
       try {
         const getdata = await fetchData();
-
         setButtonState({
           ...sortbuttonData,
           Name: { upKeyDisabled: true, downKeyDisabled: false },
@@ -235,8 +235,6 @@ const Candidates = () => {
         setData(updatedData);
         setLoading(false);
       } catch (error) {
-        console.log(error);
-        setError(true);
         setLoading(true);
       }
     };
@@ -285,16 +283,7 @@ const Candidates = () => {
 
   return (
     <Fragment>
-      {error ? (
-        <div className={styles.error}>
-        {/* <Typography variant={TYPOGRAPHY_VARIANT.HEADER_LARGE}  customStyle={styles.error404}>Error 404</Typography> */}
-        <EmptyState image={Images.Error404} title={"Oops! No Internet Connection"} 
-        subTitle={"Please check your internet connection and try again."}
-        heading="Error 404"/>
-        
-        </div>
-        
-      ) : loading ? (
+      {loading ? (
         <Loader />
       ) : data.length === 0 ? (
         <EmptyState
@@ -370,7 +359,7 @@ const Candidates = () => {
             <TableComponent
               loading={tableLoading}
               data={data}
-              columnHeaderTitle={tableHeader}
+              columnHeaderTitle={createHeader()}
               sortbuttonData={sortbuttonData}
               fieldforDateFormat={{ time: "Created time" }}
               dataFormatType={DATE_FORMAT.DD_MM_YYYY}

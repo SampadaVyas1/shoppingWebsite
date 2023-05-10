@@ -19,3 +19,9 @@ export interface IAdditionalValue {
   colspanValue: string;
   customStyle?: string
 }
+
+export interface IFilter {
+  type: string;
+  name: string;
+  value: { id: number; label: string }[];
+};
