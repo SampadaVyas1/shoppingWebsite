@@ -8,8 +8,8 @@ import { toast } from "react-toastify";
 interface ITechStackStates {
   isLoading: boolean;
   isError: boolean;
-  techStackList: ITechStackList[];
-  currentTechStacks: ITechStackList[];
+  recruitersList: ITechStackList[];
+  currentRecruiters: ITechStackList[];
   currentPage: number;
   hasNextPage: boolean;
   totalPages: number;
@@ -18,8 +18,8 @@ interface ITechStackStates {
 const initialState: ITechStackStates = {
   isLoading: false,
   isError: false,
-  techStackList: [],
-  currentTechStacks: [],
+  recruitersList: [],
+  currentRecruiters: [],
   currentPage: 1,
   hasNextPage: false,
   totalPages: 1,
