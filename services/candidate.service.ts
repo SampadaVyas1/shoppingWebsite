@@ -15,7 +15,7 @@ export const getCandidatesData = async (params?: any) => {
         },
       }
     );
-    return response;
+    return response?.data?.data;
   } catch (error) {
    return error
     
@@ -34,7 +34,7 @@ export const getFilter = async () => {
         },
       }
     );
-    return response;
+    return response?.data?.data;
   } catch (error) {
     return error
   }

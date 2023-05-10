@@ -25,3 +25,32 @@ export interface IFilter {
   name: string;
   value: { id: number; label: string }[];
 };
+export interface IList
+{
+  id:number,
+  label:string
+  
+}
+export interface ICurrentAppliedField
+{
+interviewName?:string[]
+techStack?:string[]
+}
+
+export interface IFilteredData
+{postingTitle?:string[]
+  candidateStatus?: string[]
+  techStack?:string[]
+  interviewName?: string[]
+}
+
+export interface ISubmitButton
+{
+
+  experience:{}
+  experienceLevel:string
+  firstName:string
+  lastName:string
+  mobileNumber:string
+  techStack:IList
+}

@@ -16,7 +16,7 @@ const TableCell = (props: ITable) => {
     index,
     hoverCell,
   } = props;
-  const getHoverTooltip = (data: any, index: number, dataIndex: any) => (
+  const getHoverTooltip = (data: any, index: number, dataIndex: string) => (
     <div>
       {!!data[index][dataIndex]?.length &&
         data[index][dataIndex]?.map((item: string, i: number) => {
