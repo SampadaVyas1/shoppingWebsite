@@ -44,4 +44,5 @@ export interface IEmptyStateType {
   image: string;
   subTitle?: string;
   customImageStyle?: string;
+  heading?:string;
 }

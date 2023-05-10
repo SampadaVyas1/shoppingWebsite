@@ -40,12 +40,13 @@ const Candidates = () => {
   const [isFilterOpen, setisFilterOpen] = useState<boolean>(false);
   const [filter, setFilter] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [getFilterData, setFilterData] = useState<any>([]);
+  const [getFilterData, setFilterData] = useState<any>();
   const [tagList, setTagList] = useState([]);
   const [tableLoading, setTableLoading] = useState<boolean>(false);
   const [currentAppliedFilter, setCurrentAppliedFilter] = useState<any[]>([]);
   const [levelsFilter, setLevelsFilter] = useState<any[]>([]);
   const [techStackOptions, setTechStackOptions] = useState<any>();
+  const [error, setError] = useState<boolean>(false);
 
   const keys = !!data && data[0] && Object?.keys(data[0]);
   const tableHeader =
@@ -65,8 +66,7 @@ const Candidates = () => {
   };
 
   const toggleFilter = async () => {
-    const { interviewName, ...rest } = getFilterData;
-    console.log(rest);
+    const { interviewName, ...rest } = !!getFilterData &&  getFilterData;
     const result =
       !!rest &&
       Object.keys(rest).map((key: any, index) => {
@@ -220,7 +220,7 @@ const Candidates = () => {
         return response?.data?.data?.candidates;
       } catch (error) {
         setLoading(true);
-        throw error;
+        //  error;
       }
     };
     const getCandidates = async () => {
@@ -235,13 +235,15 @@ const Candidates = () => {
         setData(updatedData);
         setLoading(false);
       } catch (error) {
+        console.log(error);
+        setError(true);
         setLoading(true);
       }
     };
     const getFilterApi = async () => {
       const getAllfilter = await getFilter();
       setFilterData(getAllfilter?.data?.data);
-
+      console.log(getAllfilter?.data?.data);
       setTechStackOptions(
         getAllfilter?.data?.data?.techStack.map((item: any, index: number) => ({
           id: index,
@@ -283,7 +285,18 @@ const Candidates = () => {
 
   return (
     <Fragment>
-      {loading ? <Loader /> :data.length === 0 ? (
+      {error ? (
+        <div className={styles.error}>
+        {/* <Typography variant={TYPOGRAPHY_VARIANT.HEADER_LARGE}  customStyle={styles.error404}>Error 404</Typography> */}
+        <EmptyState image={Images.Error404} title={"Oops! No Internet Connection"} 
+        subTitle={"Please check your internet connection and try again."}
+        heading="Error 404"/>
+        
+        </div>
+        
+      ) : loading ? (
+        <Loader />
+      ) : data.length === 0 ? (
         <EmptyState
           image={Images.candidateEmptyState}
           title={"“Welcome to the candidate management system!"}

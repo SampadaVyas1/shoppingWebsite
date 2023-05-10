@@ -16,21 +16,6 @@ const TableCell = (props: ITable) => {
     index,
     hoverCell,
   } = props;
-  // const getHoverTooltip = (data: any, index: number, dataIndex: any) => (
-  //   <div>
-  //     {!!data[index][dataIndex]?.length &&
-  //       data[index][dataIndex]?.map((item: string, i: number) => {
-  //         return (
-  //           <Fragment>
-  //             {i < 2 && <span>{item} </span>}
-  //             {i === 2 && data[index][dataIndex].length > 3 && (
-  //               <span>+{data[index][dataIndex].length - 2}</span>
-  //             )}
-  //           </Fragment>
-  //         );
-  //       })}
-  //   </div>
-  // );
   const getHoverTooltip = (data: any, index: number, dataIndex: any) => (
     <div>
       {!!data[index][dataIndex]?.length &&
