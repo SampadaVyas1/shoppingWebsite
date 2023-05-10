@@ -176,7 +176,7 @@ const Recruiters = () => {
   }, [currentTechStacks]);
 
   return (
-    <Container customClass={styles.techStacks}>
+    <Container customClass={styles.recruiters}>
       <InputBox
         endIcon={searchValue ? Images.close : Images.search}
         onEndIconClick={clearSearch}
@@ -216,7 +216,7 @@ const Recruiters = () => {
         !isLoading && (
           <EmptyState
             image={Images.emptyStateImage}
-            title={`"Oops, it looks like tech stack details haven't been added yet!`}
+            title={`Nothing to see here`}
           />
         )
       )}
