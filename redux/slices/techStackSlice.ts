@@ -2,6 +2,8 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TECH_STACK } from "../constants";
 import { ITechStackList } from "@/common/types";
 import { number } from "yup";
+import { notify } from "@/helpers/toastHelper";
+import { toast } from "react-toastify";
 
 interface ITechStackStates {
   isLoading: boolean;
@@ -40,16 +42,37 @@ export const techStackSlice = createSlice({
       ];
       state.hasNextPage = action.payload.hasNextPage;
       state.currentPage = action.payload.currentPage;
+      toast.dismiss();
     },
     handleTechStackSearch: (state, action: any) => {
       state.isLoading = false;
       state.isError = false;
       state.totalPages = action.payload.totalPages;
       state.currentTechStacks = action.payload.techStacks;
+      state.hasNextPage = action.payload.hasNextPage;
+      state.currentPage = action.payload.currentPage;
+      toast.dismiss();
     },
     toggleError: (state) => {
       state.isLoading = false;
       state.isError = true;
+      notify(
+        true,
+        "Something went wrong...",
+        "jugdu",
+        () => {},
+        "error",
+        false
+      );
+    },
+    resetPage: (state) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.techStackList = [];
+      state.currentTechStacks = [];
+      state.currentPage = 1;
+      state.hasNextPage = false;
+      state.totalPages = 1;
     },
   },
 });
@@ -59,4 +82,5 @@ export const {
   getAllTechStacks,
   handleTechStackSearch,
   toggleLoading,
+  resetPage,
 } = techStackSlice.actions;

@@ -1,5 +1,5 @@
 import { AnyAction } from "@reduxjs/toolkit";
-import { put, takeEvery } from "redux-saga/effects";
+import { delay, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { sagaActions } from "../constants";
 import {
   getAllTechStacks,
@@ -12,6 +12,7 @@ import { getAllTechStackService } from "@/services/techStack.service";
 export function* searchTechStack({ payload }: AnyAction): any {
   try {
     yield put(toggleLoading());
+    yield delay(500);
     const result = yield getAllTechStackService(payload);
     yield put(handleTechStackSearch(result.data));
   } catch (e) {
@@ -33,5 +34,5 @@ export function* getAllTechStack({ payload }: AnyAction): any {
 
 export const techStackSaga = [
   takeEvery(sagaActions.GET_TECH_STACKS, getAllTechStack),
-  takeEvery(sagaActions.SEARCH_TECH_STACK, searchTechStack),
+  takeLatest(sagaActions.SEARCH_TECH_STACK, searchTechStack),
 ];

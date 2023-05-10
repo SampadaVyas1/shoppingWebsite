@@ -1,9 +1,3 @@
-import Container from "@/components/container";
-import Search from "@/components/searchBar";
-import InfiniteScroll from "@/components/infiniteScroll";
-import { TableComponent } from "@/components/table";
-import techStacks from "./mockData.json";
-import styles from "./techStacks.module.scss";
 import React, {
   ChangeEvent,
   useCallback,
@@ -11,20 +5,23 @@ import React, {
   useRef,
   useState,
 } from "react";
-import InputBox from "@/components/inputBox";
-import Images from "@/public/assets/icons";
-import { debounce, sortDataByField } from "@/common/utils";
-import EmptyState from "@/components/emptyState";
 import { useDispatch } from "react-redux";
+import Image from "next/image";
 import { sagaActions } from "@/redux/constants";
 import { useAppSelector } from "@/redux/hooks";
-import Loader from "@/components/loader";
-import NoTechStack from "../../../public/assets/icons/techStackEmpty.svg";
+import Container from "@/components/container";
+import InfiniteScroll from "@/components/infiniteScroll";
+import { TableComponent } from "@/components/table";
+import InputBox from "@/components/inputBox";
+import Images from "@/public/assets/icons";
+import EmptyState from "@/components/emptyState";
+import styles from "./techStacks.module.scss";
+import loaderSpinner from "../../../public/assets/icons/loader.svg";
 import { ITechStackList } from "@/common/types";
 import { SORT_TYPE } from "@/common/constants";
 import { IButtonState } from "@/pages/candidates/candidates.types";
-import Typography from "@/components/typography";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { debounce, sortDataByField } from "@/common/utils";
+import { resetPage } from "@/redux/slices/techStackSlice";
 
 const tableHeader = [
   {
@@ -55,23 +52,6 @@ const sortbuttonData: any = {
 };
 
 const TechStacks = () => {
-  const [techStackData, setTechStackData] = useState<ITechStackList[]>([]);
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [pageNumber, setPageNumber] = useState<number>(1);
-  const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
-
-  const dispatch = useDispatch();
-
-  const {
-    techStackList,
-    hasNextPage,
-    currentPage,
-    isLoading,
-    isError,
-    totalPages,
-    currentTechStacks,
-  } = useAppSelector((state) => state.techStack);
-
   const customStyle = {
     table: ({ ...props }) => {
       return <table {...props} className={styles.table} />;
@@ -83,15 +63,32 @@ const TechStacks = () => {
     },
   };
 
+  const [techStackData, setTechStackData] = useState<ITechStackList[]>([]);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
+
+  const {
+    techStackList,
+    hasNextPage,
+    currentPage,
+    isLoading,
+    isError,
+    totalPages,
+    currentTechStacks,
+  } = useAppSelector((state) => state.techStack);
+
+  const dispatch = useDispatch();
+
+  const handlePageChange = () => {
+    setPageNumber(pageNumber + 1);
+  };
+
   const handleSearch = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setSearchValue(event.target.value);
     searchTechStack(event.target.value);
-  };
-
-  const handlePageChange = () => {
-    setPageNumber(pageNumber + 1);
   };
 
   const clearSearch = () => {
@@ -131,12 +128,12 @@ const TechStacks = () => {
       : null;
   };
 
-  const searchTechStack = (searchKey: string) => {
+  const searchTechStack = debounce((searchKey: string) => {
     dispatch({
       type: sagaActions.SEARCH_TECH_STACK,
       payload: { search: searchKey, page: 1, limit: 10 },
     });
-  };
+  }, 1000);
 
   const getAllTechStackData = useCallback(() => {
     dispatch({
@@ -154,19 +151,17 @@ const TechStacks = () => {
   }, [getAllTechStackData]);
 
   useEffect(() => {
+    return () => {
+      dispatch(resetPage());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
     setTechStackData(currentTechStacks);
   }, [currentTechStacks]);
 
   return (
     <Container customClass={styles.techStacks}>
-      {isError && (
-        <Typography
-          variant={TYPOGRAPHY_VARIANT.ERROR}
-          customStyle={styles.errorMessage}
-        >
-          Oops!!! Something went wrong......
-        </Typography>
-      )}
       <InputBox
         endIcon={searchValue ? Images.close : Images.search}
         onEndIconClick={clearSearch}
@@ -177,28 +172,34 @@ const TechStacks = () => {
       {!!techStackData.length || searchValue || isLoading ? (
         <React.Fragment>
           <InfiniteScroll
-            nextPage={pageNumber < totalPages}
+            nextPage={hasNextPage}
             handlePageChange={handlePageChange}
             customClass={styles.scroll}
           >
-            {isLoading ? (
-              <Loader />
-            ) : (
-              <TableComponent
-                data={techStackData}
-                columnHeaderTitle={tableHeader}
-                sortbuttonData={sortbuttonData}
-                handleSortArrowClick={handleSortButtonClick}
-                customStyle={customStyle}
-                customRowStyling={styles.customRowStyling}
-              />
+            {isLoading && (
+              <div className={styles.loadingWrapper}>
+                <Image
+                  src={loaderSpinner}
+                  className={styles.spinner}
+                  alt="loading"
+                />
+              </div>
             )}
+
+            <TableComponent
+              data={techStackData}
+              columnHeaderTitle={tableHeader}
+              sortbuttonData={sortbuttonData}
+              handleSortArrowClick={handleSortButtonClick}
+              customStyle={customStyle}
+              customRowStyling={styles.customRowStyling}
+            />
           </InfiniteScroll>
         </React.Fragment>
       ) : (
         !isLoading && (
           <EmptyState
-            image={NoTechStack}
+            image={Images.techStackEmpty}
             title={`"Oops, it looks like tech stack details haven't been added yet!`}
           />
         )

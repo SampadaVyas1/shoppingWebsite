@@ -91,3 +91,14 @@ a {
   padding: 0.5rem 0.75rem;
   height: 3.75rem;
 }
+
+.Toastify__toast--error {
+  border: 2px solid $error;
+  border-radius: 25px;
+  align-items: center;
+  display: flex;
+  box-sizing: border-box;
+}
+.Toastify__toast {
+  min-height: auto;
+}
