@@ -24,6 +24,7 @@ import {
 } from "@/services/candidate.service";
 import Typography from "@/components/typography";
 import Loader from "@/components/loader";
+import EmptyState from "@/components/emptyState";
 
 const sortbuttonData: IButtonState = {
   Name: { upKeyDisabled: false, downKeyDisabled: false },
@@ -45,7 +46,6 @@ const Candidates = () => {
   const [currentAppliedFilter, setCurrentAppliedFilter] = useState<any[]>([]);
   const [levelsFilter, setLevelsFilter] = useState<any[]>([]);
   const [techStackOptions, setTechStackOptions] = useState<any>();
-
 
   const keys = !!data && data[0] && Object?.keys(data[0]);
   const tableHeader =
@@ -280,40 +280,17 @@ const Candidates = () => {
     setData([...updatedData]);
     setTableLoading(false);
   }, 1000);
+
   return (
-    <>
-      {loading ? (
-        <Loader />
-      ) : data.length === 0 ? (
-        <div className={styles.emptyState}>
-          <div>
-            <ImageComponent
-              src={Images.candidateEmptyState}
-              height={200}
-              width={250}
-              className={styles.emptyState}
-            />
-          </div>
-          <div className={styles.emptyStateText}>
-            <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}>
-              “Welcome to the candidate management system!
-            </Typography>
-            <Typography
-              variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
-              className={styles.secondaryState}
-            >
-              To get started, let’s add your first candidate. Click the “+”
-              button to create a new profile.
-            </Typography>
-          </div>
-          <ImageComponent
-            src={Images.addButton}
-            customClass={styles.addButton}
-            height={40}
-            width={40}
-            onClick={() => setAddButtonClicked(true)}
-          />
-        </div>
+    <Fragment>
+      {loading ? <Loader /> :data.length === 0 ? (
+        <EmptyState
+          image={Images.candidateEmptyState}
+          title={"“Welcome to the candidate management system!"}
+          subTitle={
+            "To get started, let’s add your first candidate. Click the “+”button to create a new profile."
+          }
+        />
       ) : (
         <Container>
           <div className={styles.header}>
@@ -414,7 +391,7 @@ const Candidates = () => {
           </Modal>
         </Container>
       )}
-    </>
+    </Fragment>
   );
 };
 export default Candidates;
