@@ -166,6 +166,7 @@ const TechStacks = () => {
         endIcon={searchValue ? Images.close : Images.search}
         onEndIconClick={clearSearch}
         value={searchValue}
+        placeholder="Search..."
         onChange={handleSearch}
         customClass={styles.searchBox}
       />

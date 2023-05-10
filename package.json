@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@coditas/candidate-connet-dto": "https://oauth2:glpat-8RqTzgzPAqFbEns5WXp_@gitlab.com/rahulMane-coditas/candidate-connect-package.git",
     "@hookform/resolvers": "^3.0.0",
     "@next/font": "13.1.6",
     "@react-oauth/google": "^0.9.0",
