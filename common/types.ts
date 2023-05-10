@@ -41,3 +41,24 @@ export interface ITechStackList {
   updatedAt: string;
   deletedAt: string;
 }
+
+export interface IRecruitersList {
+  candidates: number;
+  createdAt: string;
+  deletedAt: string;
+  designation: string;
+  email: string;
+  employeeId: string;
+  firstName: string;
+  lastName: string;
+  id: string;
+  isActive: boolean;
+  mobileNumber: string;
+  role: string;
+  techStack: string[];
+  updatedAt: string;
+  userImageUrl: string;
+  freshLogin: string;
+  name?: string;
+  status?: string;
+}

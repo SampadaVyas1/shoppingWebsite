@@ -5,6 +5,7 @@ import { IExtraField, ITable } from "./tableCell.types";
 import Typography from "../../typography/index";
 import { TOOLTIP_POSITION, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import Tooltip from "@/components/tooltip";
+import Switch from "@/components/switch";
 
 const TableCell = (props: ITable) => {
   const {
@@ -15,7 +16,13 @@ const TableCell = (props: ITable) => {
     dataFormatType,
     index,
     hoverCell,
+    onSwitchToggle,
+    showToggle,
   } = props;
+
+  const setSwitchValue = (value: boolean) => {
+    onSwitchToggle && onSwitchToggle(data[index]);
+  };
   // const getHoverTooltip = (data: any, index: number, dataIndex: any) => (
   //   <div>
   //     {!!data[index][dataIndex]?.length &&
@@ -107,17 +114,24 @@ const TableCell = (props: ITable) => {
                   {data[index][extraField.colspanValue]}
                 </Typography>
               ) : null}
-              {dataIndex === extraField.colspan ? (
-                <Typography
-                  variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
-                  customStyle={`${extraField.customStyle}? ${extraField.customStyle} :${styles.colSpan}`}
-                >
-                  {data[index][extraField.colspanValue]}
-                </Typography>
-              ) : null}
             </Fragment>
           );
         })}
+      {!!showToggle && (
+        <Fragment key={index}>
+          {dataIndex === showToggle.colspan ? (
+            <Typography
+              variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
+              customStyle={`${showToggle.customStyle}? ${showToggle.customStyle} :${styles.colSpan}`}
+            >
+              <Switch
+                active={data[index]?.isActive}
+                onChange={setSwitchValue}
+              />
+            </Typography>
+          ) : null}
+        </Fragment>
+      )}
     </div>
   );
 };

@@ -11,7 +11,7 @@ import {
 import { SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import CustomCheckBox from "../customCheckBox";
 import Typography from "../typography";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import ImageComponent from "@/components/image";
 import { Column } from "rc-table";
 import Images from "@/public/assets/icons";
@@ -19,6 +19,7 @@ import TableCell from "./tableCell";
 import { Fragment, useCallback } from "react";
 import { IData, IHeaderTitleProps } from "@/pages/candidates/candidates.types";
 import Loader from "../loader";
+import SkeletonLoader from "../skeletonLoader";
 
 export const TableComponent = (props: ITableComponent) => {
   const {
@@ -34,8 +35,11 @@ export const TableComponent = (props: ITableComponent) => {
     handleSortArrowClick,
     selectedRow,
     handleRowSelect,
+    showToggle,
     handleRowEachSelect,
     hoverCell,
+    onSwitchToggle,
+    isLoading,
   } = props;
   const {
     upArrowDisabled,
@@ -188,15 +192,22 @@ export const TableComponent = (props: ITableComponent) => {
                   }
                   customClass={styles.checkBoxStyling}
                 />
-              ) : (
+              ) : !isLoading ? (
                 <TableCell
                   dataIndex={dataIndex as string}
                   data={data}
+                  showToggle={showToggle}
+                  onSwitchToggle={onSwitchToggle}
                   field={fieldforDateFormat}
                   additionalValue={additionalValue && additionalValue}
                   dataFormatType={dataFormatType}
                   index={index}
                   hoverCell={hoverCell}
+                />
+              ) : (
+                <SkeletonLoader
+                  type={SKELETON_VARIANT.TEXT_LARGE}
+                  customClass={styles.cellLoader}
                 />
               )
             }
@@ -213,6 +224,7 @@ export const TableComponent = (props: ITableComponent) => {
       ) : (
         <Table
           data={!!data && data}
+          emptyText="No results Found.. "
           className={styles.rcTable}
           components={customStyle}
           rowClassName={customRowStyling}

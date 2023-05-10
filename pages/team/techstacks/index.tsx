@@ -81,6 +81,11 @@ const TechStacks = () => {
   const dispatch = useDispatch();
 
   const handlePageChange = () => {
+    searchValue &&
+      dispatch({
+        type: sagaActions.SEARCH_RECRUITER,
+        payload: { search: searchValue, page: currentPage + 1, limit: 10 },
+      });
     setPageNumber(pageNumber + 1);
   };
 
@@ -136,11 +141,12 @@ const TechStacks = () => {
   }, 1000);
 
   const getAllTechStackData = useCallback(() => {
-    dispatch({
-      type: sagaActions.GET_TECH_STACKS,
-      payload: { page: pageNumber, limit: 10 },
-    });
-  }, [dispatch, pageNumber]);
+    !searchValue &&
+      dispatch({
+        type: sagaActions.GET_TECH_STACKS,
+        payload: { page: pageNumber, limit: 10 },
+      });
+  }, [dispatch, pageNumber, searchValue]);
 
   useEffect(() => {
     setTechStackData(techStackList);
@@ -149,6 +155,10 @@ const TechStacks = () => {
   useEffect(() => {
     getAllTechStackData();
   }, [getAllTechStackData]);
+
+  useEffect(() => {
+    setPageNumber(currentPage);
+  }, [currentPage]);
 
   useEffect(() => {
     return () => {

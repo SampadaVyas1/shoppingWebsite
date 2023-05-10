@@ -28,6 +28,12 @@ export const sortDataByField = (
   ascending: boolean = true
 ) => {
   const modifier = ascending ? 1 : -1;
+  if (field === "candidates") {
+    console.log(ascending);
+    return [...data].sort((a, b) =>
+      ascending ? a.candidates - b.candidates : b.candidates - a.candidates
+    );
+  }
   return [...data]?.sort(
     (column1: { [key: string]: any }, column2: { [key: string]: any }) => {
       const element1 = column1[field].toUpperCase();

@@ -32,47 +32,56 @@ export const techStackSlice = createSlice({
     toggleLoading: (state) => {
       state.isLoading = true;
     },
-    getAllTechStacks: (state, action: any) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.totalPages = action.payload.totalPages;
-      state.techStackList = [
-        ...state.techStackList,
-        ...action.payload.techStacks,
-      ];
-      state.hasNextPage = action.payload.hasNextPage;
-      state.currentPage = action.payload.currentPage;
+    getAllTechStacks: (state, { payload }: any) => {
       toast.dismiss();
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        totalPages: payload.totalPages,
+        techStackList: [...state.techStackList, ...payload.techStacks],
+        hasNextPage: payload.hasNextPage,
+        currentPage: payload.currentPage,
+      };
     },
-    handleTechStackSearch: (state, action: any) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.totalPages = action.payload.totalPages;
-      state.currentTechStacks = action.payload.techStacks;
-      state.hasNextPage = action.payload.hasNextPage;
-      state.currentPage = action.payload.currentPage;
+    handleTechStackSearch: (state, { payload }: any) => {
       toast.dismiss();
+
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        totalPages: payload.totalPages,
+        currentTechStacks: payload.techStacks,
+        hasNextPage: payload.hasNextPage,
+        currentPage: payload.currentPage,
+      };
     },
     toggleError: (state) => {
-      state.isLoading = false;
-      state.isError = true;
       notify(
         true,
         "Something went wrong...",
-        "jugdu",
+        "error",
         () => {},
         "error",
         false
       );
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      };
     },
     resetPage: (state) => {
-      state.isLoading = false;
-      state.isError = false;
-      state.techStackList = [];
-      state.currentTechStacks = [];
-      state.currentPage = 1;
-      state.hasNextPage = false;
-      state.totalPages = 1;
+      return {
+        isLoading: false,
+        isError: false,
+        techStackList: [],
+        currentTechStacks: [],
+        currentPage: 1,
+        hasNextPage: false,
+        totalPages: 1,
+      };
     },
   },
 });

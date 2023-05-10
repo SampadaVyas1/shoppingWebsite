@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 import { sagaActions } from "@/redux/constants";
@@ -12,16 +6,21 @@ import { useAppSelector } from "@/redux/hooks";
 import Container from "@/components/container";
 import InfiniteScroll from "@/components/infiniteScroll";
 import { TableComponent } from "@/components/table";
+import ConfirmationModal from "@/components/confirmationModal";
 import InputBox from "@/components/inputBox";
 import Images from "@/public/assets/icons";
 import EmptyState from "@/components/emptyState";
-import styles from "./techStacks.module.scss";
+import styles from "./recruiters.module.scss";
 import loaderSpinner from "../../../public/assets/icons/loader.svg";
-import { ITechStackList } from "@/common/types";
+import { IRecruitersList, ITechStackList } from "@/common/types";
 import { SORT_TYPE } from "@/common/constants";
-import { IButtonState } from "@/pages/candidates/candidates.types";
+import {
+  IAdditionalValue,
+  IButtonState,
+  IShowToggle,
+} from "@/pages/candidates/candidates.types";
 import { debounce, sortDataByField } from "@/common/utils";
-import { resetPage } from "@/redux/slices/techStackSlice";
+import { resetPage } from "@/redux/slices/recruiterSlice";
 
 const tableHeader = [
   {
@@ -42,7 +41,7 @@ const tableHeader = [
     id: 3,
     title: "Email Id",
     sort: false,
-    dataIndex: "emailId",
+    dataIndex: "email",
     key: "emailId",
   },
   {
@@ -78,24 +77,45 @@ const Recruiters = () => {
     },
   };
 
-  const [techStackData, setTechStackData] = useState<ITechStackList[]>([]);
+  const additionalValue: IAdditionalValue[] = [
+    {
+      colspan: "name",
+      colspanValue: "designation",
+      customStyle: styles.designation,
+    },
+  ];
+
+  const showToggle: IShowToggle = {
+    colspan: "status",
+    customStyle: styles.designation,
+  };
+  const [recruitersData, setRecruitersData] = useState<IRecruitersList[]>([]);
+  const [isModalOpen, toggleModal] = useState<boolean>(false);
+  const [selectedRecruiter, setSelectedRecruiter] = useState<IRecruitersList>(
+    {} as IRecruitersList
+  );
   const [searchValue, setSearchValue] = useState<string>("");
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
 
   const {
-    techStackList,
+    recruitersList,
     hasNextPage,
     currentPage,
     isLoading,
     isError,
     totalPages,
-    currentTechStacks,
-  } = useAppSelector((state) => state.techStack);
+    currentRecruiters,
+  } = useAppSelector((state) => state.recruiters);
 
   const dispatch = useDispatch();
 
   const handlePageChange = () => {
+    searchValue &&
+      dispatch({
+        type: sagaActions.SEARCH_RECRUITER,
+        payload: { search: searchValue, page: currentPage + 1, limit: 10 },
+      });
     setPageNumber(pageNumber + 1);
   };
 
@@ -103,12 +123,12 @@ const Recruiters = () => {
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setSearchValue(event.target.value);
-    searchTechStack(event.target.value);
+    searchRecruiter(event.target.value);
   };
 
   const clearSearch = () => {
     searchValue && setSearchValue("");
-    setTechStackData(techStackList);
+    setRecruitersData(updatedData(recruitersList));
   };
 
   const toggleSort = (
@@ -125,8 +145,12 @@ const Recruiters = () => {
         downKeyDisabled: downKeyDisabled,
       },
     }));
+    // dispatch({
+    //   type: sagaActions.GET_RECRUITERS,
+    //   payload: { page: pageNumber, search: searchValue,sortBy:[] limit: 10 },
+    // });
     const newData = !!data && sortDataByField(data, field, upKeyDisabled);
-    setTechStackData(newData);
+    setRecruitersData(newData);
   };
 
   const handleSortButtonClick = (
@@ -143,27 +167,66 @@ const Recruiters = () => {
       : null;
   };
 
-  const searchTechStack = debounce((searchKey: string) => {
+  const searchRecruiter = debounce((searchKey: string) => {
     dispatch({
-      type: sagaActions.SEARCH_TECH_STACK,
+      type: sagaActions.SEARCH_RECRUITER,
       payload: { search: searchKey, page: 1, limit: 10 },
     });
   }, 1000);
 
-  const getAllTechStackData = useCallback(() => {
-    dispatch({
-      type: sagaActions.GET_TECH_STACKS,
-      payload: { page: pageNumber, limit: 10 },
+  useEffect(() => {
+    setPageNumber(currentPage);
+  }, [currentPage]);
+
+  const getAllRecruitersData = useCallback(() => {
+    !searchValue &&
+      dispatch({
+        type: sagaActions.GET_RECRUITERS,
+        payload: { page: pageNumber, limit: 10 },
+      });
+  }, [dispatch, pageNumber, searchValue]);
+
+  const updatedData = (data: IRecruitersList[]) => {
+    const tableData = data.map((recruiter) => {
+      return {
+        ...recruiter,
+        name: `${recruiter.firstName} ${recruiter.lastName}`,
+        status: recruiter.isActive ? "Active" : "Inactive",
+      };
     });
-  }, [dispatch, pageNumber]);
+    return tableData;
+  };
+
+  const changeStatus = () => {
+    dispatch({
+      type: sagaActions.UPDATE_RECRUITER,
+      payload: {
+        employeeId: selectedRecruiter.employeeId,
+        isActive: !selectedRecruiter.isActive,
+        recruiters: recruitersData,
+      },
+    });
+
+    toggleModal(false);
+  };
+
+  const handleStatusChange = (data: IRecruitersList) => {
+    toggleModal(!isModalOpen);
+    setSelectedRecruiter(data);
+  };
+
+  const handleModalClose = () => {
+    toggleModal(false);
+    setSelectedRecruiter({} as IRecruitersList);
+  };
 
   useEffect(() => {
-    setTechStackData(techStackList);
-  }, [techStackList]);
+    setRecruitersData(updatedData(recruitersList));
+  }, [recruitersList]);
 
   useEffect(() => {
-    getAllTechStackData();
-  }, [getAllTechStackData]);
+    getAllRecruitersData();
+  }, [getAllRecruitersData]);
 
   useEffect(() => {
     return () => {
@@ -172,8 +235,8 @@ const Recruiters = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setTechStackData(currentTechStacks);
-  }, [currentTechStacks]);
+    setRecruitersData(updatedData(currentRecruiters));
+  }, [currentRecruiters]);
 
   return (
     <Container customClass={styles.recruiters}>
@@ -185,7 +248,7 @@ const Recruiters = () => {
         onChange={handleSearch}
         customClass={styles.searchBox}
       />
-      {!!techStackData.length || searchValue || isLoading ? (
+      {!!recruitersData.length || searchValue || isLoading ? (
         <React.Fragment>
           <InfiniteScroll
             nextPage={hasNextPage}
@@ -203,11 +266,15 @@ const Recruiters = () => {
             )}
 
             <TableComponent
-              data={techStackData}
+              data={recruitersData}
+              // isLoading={isLoading}
+              additionalValue={additionalValue}
               columnHeaderTitle={tableHeader}
               sortbuttonData={sortbuttonData}
               handleSortArrowClick={handleSortButtonClick}
+              onSwitchToggle={handleStatusChange}
               customStyle={customStyle}
+              showToggle={showToggle}
               customRowStyling={styles.customRowStyling}
             />
           </InfiniteScroll>
@@ -220,6 +287,20 @@ const Recruiters = () => {
           />
         )
       )}
+
+      <ConfirmationModal
+        open={isModalOpen}
+        title={`Change to ${
+          selectedRecruiter?.isActive ? "Inactive" : "Active"
+        }`}
+        description={`Are you sure you want to change the status to ${
+          selectedRecruiter?.isActive ? "inactive" : "active"
+        } for ${selectedRecruiter?.name}? `}
+        cancelButtonText="Cancel"
+        confirmButtonText="Yes"
+        onCancelButtonClick={handleModalClose}
+        onConfirmButtonClick={changeStatus}
+      />
     </Container>
   );
 };

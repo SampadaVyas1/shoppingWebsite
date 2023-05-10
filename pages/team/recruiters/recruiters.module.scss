@@ -14,6 +14,9 @@
   .customHeaderStyle {
     background-color: $tableHeader;
   }
+  .designation {
+    color: $disabledText;
+  }
   .errorMessage {
     @include flex-center-alignment;
     font-size: 1rem;

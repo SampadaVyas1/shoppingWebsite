@@ -3,10 +3,12 @@ import createSagaMiddleware from "redux-saga";
 import loginSlice from "../slices/loginSlice";
 import rootSaga from "../sagas";
 import techstackSlice from "../slices/techStackSlice";
+import recruiterSlice from "../slices/recruiterSlice";
 
 const rootReducer = combineReducers({
   login: loginSlice,
   techStack: techstackSlice,
+  recruiters: recruiterSlice,
 });
 
 const sagaMiddleware = createSagaMiddleware();
