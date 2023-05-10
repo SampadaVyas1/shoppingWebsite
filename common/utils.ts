@@ -47,33 +47,6 @@ export const sortDataByField = (
   );
 };
 
-
-// export const sortDataByField = (
-//   data: IData[],
-//   field: string,
-//   ascending: boolean = true
-// ) => {
-//   const modifier = ascending ? 1 : -1;
-//   return data?.sort((column1: { [key: string]: any }, column2: { [key: string]: any }) => {
-//       const element1 = column1[field].toUpperCase();
-//       const element2 = column2[field].toUpperCase();
-//       if (element1 < element2) {
-//       const element1 = column1[field].toUpperCase();
-//       const element2 = column2[field].toUpperCase();
-//       if (element1 < element2) {
-//         return -1 * modifier;
-//       }
-     
-//       if (element1 > element2) {
-//         return 1 * modifier;
-//       }
-//       return 0;
-    
-//       }
-//     }
-//   )
-//     }
-
 export const checkMaster = (selectedRow: number[], data: IData[] | null) => {
   return (
     !!selectedRow.length &&
@@ -111,21 +84,6 @@ export const handleAllRowSelect = (
         ]);
   }
 };
-
-//   onSelectedRowChange: (value: number[]) => void
-// ) => {
-//   const filteredArray = selectedRow?.filter(
-//     (id: number) => !!data && !data?.map((row) => row.id).includes(id)
-//   );
-//   if (onSelectedRowChange) {
-//     selectedRow?.length - filteredArray?.length === data?.length
-//       ? onSelectedRowChange([...filteredArray])
-//       : onSelectedRowChange([
-//           ...filteredArray,
-//           ...data.map((row: { [key: string]: any }) => row.id),
-//         ]);
-//   }
-// };
 
 export function checkRow(id: number, selectedRow: number[]) {
   return selectedRow?.includes(id);
