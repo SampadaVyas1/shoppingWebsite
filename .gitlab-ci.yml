@@ -1,0 +1,30 @@
+variables:
+  ENVIRONMENT: 'dev'
+  Distribution_Id: 'E3BNJX2NS606V1'
+
+stages:
+  - deploy
+
+dev-deploy:
+  stage: deploy
+  image:
+    name: amazon/aws-cli
+    entrypoint: ['']
+  before_script:
+    - amazon-linux-extras install docker
+    - aws --version
+    - curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -
+    - yum install -y nodejs
+  script:
+    - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
+    - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    - npm install --global yarn
+    - yarn
+    - yarn build
+    - ls
+    - aws --version
+    - aws s3 sync build/ s3://non-prod-connect-dev
+    - aws cloudfront create-invalidation --distribution-id ${Distribution_Id} --paths "/*"
+  only:
+    refs:
+      - feature/recruiter
