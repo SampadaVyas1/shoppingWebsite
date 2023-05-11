@@ -62,3 +62,15 @@ export interface IRecruitersList {
   name?: string;
   status?: string;
 }
+
+export interface IUserData {
+  firstLogin: boolean;
+  firstName: string;
+  lastName: string;
+  employeeId: number;
+  email: string;
+  designation: string;
+  role: string;
+  userImageUrl: string;
+  mobileNumber?: string;
+}

@@ -23,6 +23,7 @@ export enum API_ROUTES {
   GET_RECRUITER = "tpi/userRole/getAllRecruiters",
   UPDATE_RECRUITER = "tpi/userRole/updateUser",
   GET_TECH_STACKS = "tpi/techStack/getAllTechStacks",
+  GET_USER_DETAILS = "gauth/auth/userDetails",
 }
 
 export const TEAM_PAGE_ROUTES = {

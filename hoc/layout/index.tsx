@@ -35,6 +35,7 @@ const Layout = ({ children }: any) => {
 
   useEffect(() => {
     dispatch({ type: sagaActions.FETCH_ROLE });
+    dispatch({ type: sagaActions.GET_USER_DETAILS });
   }, [dispatch]);
 
   return (

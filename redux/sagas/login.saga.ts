@@ -1,4 +1,8 @@
-import { getAllFeatureAccess, getLoginData } from "@/services/login.service";
+import {
+  getAllFeatureAccess,
+  getLoginData,
+  getUserDetail,
+} from "@/services/login.service";
 import { AnyAction } from "@reduxjs/toolkit";
 import { put, takeEvery } from "redux-saga/effects";
 import {
@@ -6,6 +10,7 @@ import {
   handleLogin,
   toggleError,
   handleFeatureAccess,
+  handleUserDetail,
 } from "../slices/loginSlice";
 import { sagaActions } from "../constants";
 
@@ -33,6 +38,19 @@ export function* fetchRoleSaga(): any {
       yield put(toggleError());
     }
   } catch (e) {
+    yield put({ type: sagaActions.LOGIN_SAGA_FAILED });
+  }
+}
+
+export function* userDetailSaga(): any {
+  try {
+    const result = yield getUserDetail();
+    if (!!!result.error) {
+      yield put(handleUserDetail(result.data));
+    } else {
+      yield put(toggleError());
+    }
+  } catch (e) {
     console.log(e);
     yield put({ type: sagaActions.LOGIN_SAGA_FAILED });
   }
@@ -41,4 +59,5 @@ export function* fetchRoleSaga(): any {
 export const loginSaga = [
   takeEvery(sagaActions.GET_LOGIN_DATA, handleLoginSaga),
   takeEvery(sagaActions.FETCH_ROLE, fetchRoleSaga),
+  takeEvery(sagaActions.GET_USER_DETAILS, userDetailSaga),
 ];

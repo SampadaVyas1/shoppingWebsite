@@ -55,3 +55,5 @@ export const REGEX = {
 };
 export const TRANSITION_TIMEOUT = 300;
 export const INPUT_PLACEHOLDER = "Enter text here";
+
+export const ADMIN_EMAIL = "mailto:coditas.admin@domain.com";

@@ -32,3 +32,12 @@ export const getAllFeatureAccess = async () => {
     return { data: null, error: error };
   }
 };
+
+export const getUserDetail = async () => {
+  try {
+    const response = await service.get(API_ROUTES.GET_USER_DETAILS);
+    return response.data;
+  } catch (error) {
+    return { data: null, error: error };
+  }
+};

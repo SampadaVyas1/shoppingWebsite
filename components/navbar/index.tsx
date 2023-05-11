@@ -19,14 +19,21 @@ import Images from "@/public/assets/icons";
 import { PRIVATE_ROUTES, TEAM_PAGE_ROUTES } from "@/common/routes";
 import { INavbarProps, profileData } from "./navbar.types";
 import { handleLogout } from "@/redux/slices/loginSlice";
+import { useAppSelector } from "@/redux/hooks";
 
 const Navbar = ({ routes }: INavbarProps) => {
   const router = useRouter();
   const [isProfileOpen, toggleProfile] = useState<boolean>(false);
   const [isLogoutModalOpen, toggleLogoutModal] = useState<boolean>(false);
 
-  const { firstName, lastName, profileImage, email, phone, designation } =
-    profileData;
+  const {
+    firstName,
+    lastName,
+    userImageUrl,
+    email,
+    designation,
+    mobileNumber,
+  } = useAppSelector((state) => state.login.userDetails);
 
   const dispatch = useDispatch();
 
@@ -101,7 +108,7 @@ const Navbar = ({ routes }: INavbarProps) => {
                 arrowClassName="popover-arrow"
               >
                 <ProfileCard
-                  profileImage={profileImage}
+                  profileImage={userImageUrl}
                   firstName={firstName}
                   lastName={lastName}
                   designation={designation}
@@ -117,7 +124,8 @@ const Navbar = ({ routes }: INavbarProps) => {
                         variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
                         customStyle={styles.email}
                       >
-                        Phone : <span className={styles.boldText}>{phone}</span>
+                        Phone :
+                        <span className={styles.boldText}>{mobileNumber}</span>
                       </Typography>
                     </React.Fragment>
                   }

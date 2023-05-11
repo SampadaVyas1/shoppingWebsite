@@ -4,12 +4,14 @@ import { LOGIN } from "../constants";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
 import { REFRESH_TOKEN, TOKEN, USER_TOKEN } from "@/common/constants";
 import { ILoginStates, ITokens } from "@/common/login.types";
+import { IUserData } from "@/common/types";
 
 const initialState: ILoginStates = {
   isLoggedIn: !!getDataFromLocalStorage(REFRESH_TOKEN),
   isLoading: false,
   isError: false,
   featureData: {},
+  userDetails: {} as IUserData,
 };
 
 export const loginSlice = createSlice({
@@ -28,6 +30,11 @@ export const loginSlice = createSlice({
       state.isLoggedIn = true;
       state.isError = false;
       state.featureData = payload;
+    },
+    handleUserDetail: (state, { payload }: any) => {
+      state.isLoggedIn = true;
+      state.isError = false;
+      state.userDetails = payload;
     },
     handleLogout: (state) => {
       state.isLoggedIn = false;
@@ -50,4 +57,5 @@ export const {
   toggleLoading,
   toggleError,
   handleFeatureAccess,
+  handleUserDetail,
 } = loginSlice.actions;

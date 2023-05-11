@@ -11,7 +11,7 @@ import Container from "@/components/container";
 import Images from "@/public/assets/icons";
 import { sagaActions } from "@/redux/constants";
 import { useAppSelector } from "@/redux/hooks";
-import { TOKEN } from "@/common/constants";
+import { ADMIN_EMAIL, TOKEN } from "@/common/constants";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { PRIVATE_ROUTES, RECRUITER_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
@@ -23,6 +23,11 @@ const Login = () => {
   const { isLoggedIn, isLoading, isError } = useAppSelector(
     (state) => state.login
   );
+
+  const handleContactAdmin = () => {
+    const win: Window = window;
+    win.location = ADMIN_EMAIL;
+  };
 
   const handleClick = async (codeResponse: Object) => {
     dispatch({
@@ -102,7 +107,8 @@ const Login = () => {
               variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
               customStyle={styles.text}
             >
-              Having trouble logging in? <span> Contact Admin</span>
+              Having trouble logging in?{" "}
+              <span onClick={handleContactAdmin}> Contact Admin</span>
             </Typography>
 
             <Container customClass={styles.footer}>
