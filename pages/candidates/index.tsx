@@ -80,7 +80,6 @@ const Candidates = () => {
     const { interviewName, ...remainingFilteredArray }: any =
       !!getFilterData && getFilterData;
 
-    console.log(remainingFilteredArray);
     const result =
       !!remainingFilteredArray &&
       Object.keys(remainingFilteredArray).map((key, index) => {
@@ -100,7 +99,7 @@ const Candidates = () => {
     setisFilterOpen(!isFilterOpen);
   };
 
-  const applyFilter = async (filters?: IFilteredData[] = []) => {
+  const applyFilter = async (filters?: any[] = []) => {
     const currentFieldObject: ICurrentAppliedField[] = [
       { interviewName: levelsFilter },
       {
@@ -114,7 +113,7 @@ const Candidates = () => {
     setCurrentAppliedFilter(currentFieldObject);
     handleNextPage(response?.hasNextPage);
     const updatedData = updateTheFetchData(
-      response?.candidates.length !== 0 && response?.candidates
+      response?.candidates?.length !== 0 && response?.candidates
     );
     setPageNumber(response?.currentPage);
     setTableData(updatedData);
@@ -146,7 +145,6 @@ const Candidates = () => {
     upKeyDisabled: boolean,
     downKeyDisabled: boolean
   ) => {
-    console.log(data);
     setButtonState((buttonState: IButtonState) => ({
       ...buttonState,
       [field]: {
@@ -317,7 +315,6 @@ const Candidates = () => {
                   <TransitionWrapper open={isFilterOpen}>
                     <Filter
                       filterData={filter}
-                      onclose={closeFilter}
                       onClick={applyFilter}
                       filterList={{
                         postingTitle: [],

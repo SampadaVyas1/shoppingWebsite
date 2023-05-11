@@ -20,8 +20,6 @@ const Filter = ({ onClose, filterData,onClick,filterList}: any) => {
       setOptions(filterData.value)
     }
   };
-
-
   return (
     <Card customClass={styles.messageFilter}>
       <React.Fragment>
