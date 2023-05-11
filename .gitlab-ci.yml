@@ -25,8 +25,9 @@ dev-deploy:
     - yarn build
     - ls
     - aws --version
+    - ls -la build/
     - aws s3 sync build/ s3://non-prod-connect-dev
-    - aws cloudfront create-invalidation --distribution-id ${Distribution_Id} --paths "/*"
+    - aws cloudfront create-invalidation --distribution-id E3BNJX2NS606V1 --paths "/*"
   only:
     refs:
       - feature/recruiter
