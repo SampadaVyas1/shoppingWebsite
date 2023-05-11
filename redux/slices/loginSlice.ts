@@ -3,7 +3,7 @@ import { googleLogout } from "@react-oauth/google";
 import { LOGIN } from "../constants";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
 import { REFRESH_TOKEN, TOKEN, USER_TOKEN } from "@/common/constants";
-import { ILoginStates, ITokens } from "@/pages/login/login.types";
+import { ILoginStates, ITokens } from "@/common/login.types";
 
 const initialState: ILoginStates = {
   isLoggedIn: !!getDataFromLocalStorage(REFRESH_TOKEN),
