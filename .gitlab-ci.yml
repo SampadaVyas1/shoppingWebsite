@@ -15,10 +15,12 @@ dev-deploy:
     - aws --version
     - curl --silent --location https://rpm.nodesource.com/setup_16.x | bash -
     - yum install -y nodejs
+    - yum install -y git
   script:
     - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
     - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     - npm install --global yarn
+    - git --version
     - yarn
     - yarn build
     - ls
