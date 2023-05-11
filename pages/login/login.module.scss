@@ -19,6 +19,14 @@
       text-align: center;
       font-weight: 500;
     }
+    .loginError {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.25rem 1rem;
+      border-radius: 0.25rem;
+      border: 0.0625rem solid $error;
+    }
 
     .appLogo {
       gap: 1rem;

@@ -25,8 +25,8 @@ export const VALIDATION_ERRORS = {
   NOT_NUMBER_ERROR: "Only digits allowed",
 };
 export const ROLES = {
-  ADMIN: "admin",
-  RECRUITER: "recruiter",
+  ADMIN: "ADMIN",
+  RECRUITER: "RECRUITER",
 };
 export const DATE_FORMAT = {
   DD_MM_YYYY: "DD-MM-YYYY",

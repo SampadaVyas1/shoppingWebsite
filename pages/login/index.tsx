@@ -15,13 +15,14 @@ import { TOKEN } from "@/common/constants";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { PRIVATE_ROUTES, RECRUITER_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
-import { getLoginData } from "@/services/login.service";
 import SectionImage from "../../public/assets/images/loginImage.svg";
 
 const Login = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { isLoggedIn, isLoading } = useAppSelector((state) => state.login);
+  const { isLoggedIn, isLoading, isError } = useAppSelector(
+    (state) => state.login
+  );
 
   const handleClick = async (codeResponse: Object) => {
     dispatch({
@@ -86,6 +87,16 @@ const Login = () => {
             >
               Sign in with google
             </Button>
+
+            {isError && (
+              <Typography
+                customStyle={styles.loginError}
+                variant={TYPOGRAPHY_VARIANT.ERROR}
+              >
+                <ImageComponent src={Images.warning} />
+                {`You don't have permissions to login`}
+              </Typography>
+            )}
 
             <Typography
               variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}

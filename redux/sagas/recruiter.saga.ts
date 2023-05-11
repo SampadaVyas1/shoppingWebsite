@@ -12,7 +12,6 @@ import {
   toggleLoading,
   updateRecruiterData,
 } from "../slices/recruiterSlice";
-import { notify } from "@/helpers/toastHelper";
 
 export function* searchRecruiters({ payload }: AnyAction): any {
   try {

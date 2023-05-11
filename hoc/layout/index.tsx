@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
+import jwt_decode from "jwt-decode";
 import Navbar from "@/components/navbar";
 import TeamNavbar from "@/components/teamNavbar";
 import Splash from "@/components/splash";
@@ -14,15 +14,28 @@ import {
 import { TEAM_PAGE_ROUTES } from "@/common/routes";
 import { ROLES, TOKEN } from "@/common/constants";
 import { getDataFromLocalStorage } from "@/common/utils";
+import { useDispatch } from "react-redux";
+import { sagaActions } from "@/redux/constants";
 
 const Layout = ({ children }: any) => {
-  const role = ROLES.ADMIN;
+  const dispatch = useDispatch();
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [role, setRole] = useState<string>(ROLES.RECRUITER);
   const router = useRouter();
 
   useEffect(() => {
+    try {
+      const userData: any = jwt_decode(`${getDataFromLocalStorage(TOKEN)}`);
+      setRole(userData.role);
+    } catch (error) {
+      console.log(error);
+    }
     setLoggedIn(!!getDataFromLocalStorage(TOKEN));
   }, []);
+
+  useEffect(() => {
+    dispatch({ type: sagaActions.FETCH_ROLE });
+  }, [dispatch]);
 
   return (
     <>

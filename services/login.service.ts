@@ -24,10 +24,10 @@ export const getAccessToken = async () => {
   }
 };
 
-export const getDummyData = async () => {
+export const getAllFeatureAccess = async () => {
   try {
-    const response = await service.get(API_ROUTES.CHECK_TOKEN);
-    return response;
+    const response = await service.get(API_ROUTES.FEATURE_ACCESS);
+    return response.data;
   } catch (error) {
     return { data: null, error: error };
   }

@@ -19,6 +19,7 @@ export enum API_ROUTES {
   LOGIN = "gauth/auth/login",
   GET_ACCESS_TOKEN = "gauth/auth/getNewAccessToken",
   CHECK_TOKEN = "gauth/auth/checkToken",
+  FEATURE_ACCESS = "gauth/featureAccess/getAllFeatureAccess",
   GET_RECRUITER = "tpi/userRole/getAllRecruiters",
   UPDATE_RECRUITER = "tpi/userRole/updateUser",
   GET_TECH_STACKS = "tpi/techStack/getAllTechStacks",
