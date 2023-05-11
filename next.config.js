@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  icons: {
-    unoptimized: true,
-  },
+  pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
   images: {
     unoptimized: true,
   },
