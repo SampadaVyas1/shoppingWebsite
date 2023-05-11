@@ -25,7 +25,8 @@ export const updateRecruiterService = async (
       }
     );
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
+    return error?.response.data;
   }
 };

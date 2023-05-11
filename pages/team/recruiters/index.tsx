@@ -145,10 +145,6 @@ const Recruiters = () => {
         downKeyDisabled: downKeyDisabled,
       },
     }));
-    // dispatch({
-    //   type: sagaActions.GET_RECRUITERS,
-    //   payload: { page: pageNumber, search: searchValue,sortBy:[] limit: 10 },
-    // });
     const newData = !!data && sortDataByField(data, field, upKeyDisabled);
     setRecruitersData(newData);
   };

@@ -69,6 +69,14 @@ export const recruiterSlice = createSlice({
       };
     },
     toggleError: (state) => {
+      notify(
+        true,
+        "Something went wrong...",
+        "error",
+        () => {},
+        "error",
+        false
+      );
       return {
         ...state,
         isLoading: false,

@@ -12,6 +12,7 @@ import {
   toggleLoading,
   updateRecruiterData,
 } from "../slices/recruiterSlice";
+import { notify } from "@/helpers/toastHelper";
 
 export function* searchRecruiters({ payload }: AnyAction): any {
   try {
@@ -42,7 +43,11 @@ export function* updateRecruiter({ payload }: AnyAction): any {
     const recruiterData = { employeeId, recruiters };
     yield put(toggleLoading());
     const result = yield updateRecruiterService(employeeId, isActive);
-    yield put(updateRecruiterData(recruiterData as unknown as void));
+    if (result.data) {
+      yield put(updateRecruiterData(recruiterData as unknown as void));
+    } else {
+      yield put(toggleError());
+    }
   } catch (e) {
     console.log(e);
     yield put(toggleError());

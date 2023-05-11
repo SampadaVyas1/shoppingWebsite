@@ -48,15 +48,21 @@ export const TableComponent = (props: ITableComponent) => {
     downArrowEnabled,
   } = Images;
 
-  // const handleCheckBoxClick = (id: number) => {
-  //   handleRowEachSelect(id, selectedRow, handleRowSelect);
-  // };
+  const handleCheckBoxClick = useCallback(
+    (id: number) => {
+      !!selectedRow &&
+        !!handleRowEachSelect &&
+        handleRowSelect &&
+        handleRowEachSelect(id, selectedRow, handleRowSelect);
+    },
+    [handleRowEachSelect, handleRowSelect, selectedRow]
+  );
 
   const handleCheckBoxClicks = useCallback(
     (id: number) => () => {
       !!handleCheckBoxClick && handleCheckBoxClick(id);
     },
-    [selectedRow]
+    [handleCheckBoxClick]
   );
 
   const handleAscendingArrowClick = useCallback(
@@ -64,57 +70,22 @@ export const TableComponent = (props: ITableComponent) => {
       !!handleSortArrowClick &&
         handleSortArrowClick(dataIndex, SORT_TYPE.ASCENDING, data);
     },
-    [buttonState]
+    [handleSortArrowClick]
   );
   const handleDescendingArrowClick = useCallback(
     (dataIndex: string, data: any) => () => {
       !!handleSortArrowClick &&
         handleSortArrowClick(dataIndex, SORT_TYPE.DESCENDING, data);
     },
-    [buttonState]
+    [handleSortArrowClick]
   );
   const handleAllRowSelects = useCallback(
     (data: IData[], selectedRow: number[], handleRowSelect: IHandleRowSelect) =>
       () => {
         handleAllRowSelect(data, selectedRow, handleRowSelect);
       },
-    [data, selectedRow, handleAllRowSelect]
+    []
   );
-  const handleCheckBoxClick = (id: number) => {
-    !!selectedRow &&
-      !!handleRowEachSelect &&
-      handleRowSelect &&
-      handleRowEachSelect(id, selectedRow, handleRowSelect);
-  };
-
-  // const handleCheckBoxClicks = useCallback(
-  //   (id: number) => () => {
-  //     !!handleCheckBoxClick && handleCheckBoxClick(id);
-  //   },
-  //   [selectedRow]
-  // );
-
-  // const handleAscendingArrowClick = useCallback(
-  //   (dataIndex: string) => () => {
-  //     !!handleSortArrowClick &&
-  //       handleSortArrowClick(dataIndex, SORT_Type.ASCENDING);
-  //   },
-  //   [buttonState]
-  // );
-  // const handleDescendingArrowClick = useCallback(
-  //   (dataIndex: string) => () => {
-  //     !!handleSortArrowClick &&
-  //       handleSortArrowClick(dataIndex, SORT_Type.DESCENDING);
-  //   },
-  //   [buttonState]
-  // );
-  // const handleAllRowSelects = useCallback(
-  //   (data: IData[], selectedRow: number[], handleRowSelect: IHandleRowSelect) =>
-  //     () => {
-  //       handleAllRowSelect(data, selectedRow, handleRowSelect);
-  //     },
-  //   [data, selectedRow, handleAllRowSelect]
-  // );
 
   const generateColumns = (columnHeaderTitle: IHeaderTitleProps[]) => {
     return (

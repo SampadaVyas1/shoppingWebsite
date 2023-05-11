@@ -3,7 +3,7 @@ import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import fakeData from "./mockData.json";
 import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
-import { DATE_FORMAT, SORT_Type, TABLE_CONSTANTS } from "@/common/constants";
+import { DATE_FORMAT, SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "@/components/table";
 import HeaderTitle from "./tableHeaderData.json";
 import { sortDataByField } from "@/common/utils";
@@ -60,10 +60,10 @@ const Candidates = () => {
   };
 
   const handleSortButtonClick = (field: string, sortType: string) => {
-    sortType === SORT_Type.ASCENDING
+    sortType === SORT_TYPE.ASCENDING
       ? !buttonState[field].upKeyDisabled &&
         setData(toggleSortButton(field, data, true, false))
-      : sortType === SORT_Type.DESCENDING
+      : sortType === SORT_TYPE.DESCENDING
       ? !buttonState[field].downKeyDisabled &&
         setData(toggleSortButton(field, data, false, true))
       : null;
@@ -109,30 +109,32 @@ const Candidates = () => {
         downKeyDisabled: false,
       },
     });
-  }, []);
+  }, [buttonState]);
 
   return (
-    <InfiniteScroll
-      nextPage={true}
-      handlePageChange={handlePageChange}
-      customClass={styles.scroll}
-    >
-      <TableComponent
-        data={data}
-        columnHeaderTitle={HeaderTitle}
-        sortbuttonData={sortbuttonData}
-        additionalValue={additionalValue}
-        fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
-        dataFormatType={DATE_FORMAT.DD_MM_YYYY}
-        customStyle={customStyle}
-        customRowStyling={styles.customRowStyling}
-        buttonState={buttonState}
-        handleSortArrowClick={handleSortButtonClick}
-        selectedRow={selectedRow}
-        handleRowSelect={handleRowSelect}
-        handleRowEachSelect={handleRowEachSelect}
-      />
-    </InfiniteScroll>
+    <div>Candidates</div>
+    //TO BE ADDED LATER
+    // <InfiniteScroll
+    //   nextPage={true}
+    //   handlePageChange={handlePageChange}
+    //   customClass={styles.scroll}
+    // >
+    //   <TableComponent
+    //     data={data}
+    //     columnHeaderTitle={HeaderTitle}
+    //     sortbuttonData={sortbuttonData}
+    //     additionalValue={additionalValue}
+    //     fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
+    //     dataFormatType={DATE_FORMAT.DD_MM_YYYY}
+    //     customStyle={customStyle}
+    //     customRowStyling={styles.customRowStyling}
+    //     buttonState={buttonState}
+    //     handleSortArrowClick={handleSortButtonClick}
+    //     selectedRow={selectedRow}
+    //     handleRowSelect={handleRowSelect}
+    //     handleRowEachSelect={handleRowEachSelect}
+    //   />
+    // </InfiniteScroll>
   );
 };
 export default Candidates;
