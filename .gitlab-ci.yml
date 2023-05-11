@@ -19,7 +19,7 @@ dev-deploy:
     - export AWS_ACCESS_KEY=${AWS_ACCESS_KEY_ID}
     - export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
     - npm install --global yarn
-    - yarn add https://oauth2:glpat-8RqTzgzPAqFbEns5WXp_@gitlab.com/rahulMane-coditas/candidate-connect-package.git
+    - yarn add --dev https://oauth2:glpat-8RqTzgzPAqFbEns5WXp_@gitlab.com/rahulMane-coditas/candidate-connect-package.git
     - yarn
     - yarn build
     - ls
