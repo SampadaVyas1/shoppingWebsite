@@ -17,7 +17,7 @@ import { Column } from "rc-table";
 import Images from "@/public/assets/icons";
 import TableCell from "./tableCell";
 import { Fragment, useCallback } from "react";
-import { IData, IHeaderTitleProps } from "@/pages/candidates/candidates.types";
+import { IData, IHeaderTitleProps } from "@/common/candidates.types";
 import Loader from "../loader";
 import SkeletonLoader from "../skeletonLoader";
 

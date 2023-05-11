@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import fakeData from "./mockData.json";
-import { IAdditionalValue, IButtonState, IData } from "./candidates.types";
+import {
+  IAdditionalValue,
+  IButtonState,
+  IData,
+} from "../../common/candidates.types";
 import { DATE_FORMAT, SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "@/components/table";
 import HeaderTitle from "./tableHeaderData.json";

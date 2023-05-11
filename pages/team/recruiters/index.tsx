@@ -18,7 +18,7 @@ import {
   IAdditionalValue,
   IButtonState,
   IShowToggle,
-} from "@/pages/candidates/candidates.types";
+} from "@/common/candidates.types";
 import { debounce, sortDataByField } from "@/common/utils";
 import { resetPage } from "@/redux/slices/recruiterSlice";
 
