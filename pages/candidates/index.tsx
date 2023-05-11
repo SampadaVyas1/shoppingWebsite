@@ -98,18 +98,18 @@ const Candidates = () => {
     }
   };
 
-  useEffect(() => {
-    const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
-    setData(newData);
-    setButtonState({
-      ...buttonState,
-      name: {
-        ...buttonState[TABLE_CONSTANTS.NAME],
-        upKeyDisabled: true,
-        downKeyDisabled: false,
-      },
-    });
-  }, [buttonState]);
+  // useEffect(() => {
+  //   const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
+  //   setData(newData);
+  //   setButtonState({
+  //     ...buttonState,
+  //     name: {
+  //       ...buttonState[TABLE_CONSTANTS.NAME],
+  //       upKeyDisabled: true,
+  //       downKeyDisabled: false,
+  //     },
+  //   });
+  // }, [buttonState]);
 
   return (
     <div>Candidates</div>
