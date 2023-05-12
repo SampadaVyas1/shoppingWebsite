@@ -21,7 +21,10 @@ import { ITechStackList } from "@/common/types";
 import { SORT_TYPE } from "@/common/constants";
 import { IButtonState } from "@/common/candidates.types";
 import { debounce, sortDataByField } from "@/common/utils";
-import { resetPage } from "@/redux/slices/techStackSlice";
+import {
+  resetCurrentTechStacks,
+  resetPage,
+} from "@/redux/slices/techStackSlice";
 
 const tableHeader = [
   {
@@ -93,12 +96,12 @@ const TechStacks = () => {
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setSearchValue(event.target.value);
+    dispatch(resetCurrentTechStacks());
     searchTechStack(event.target.value);
   };
 
   const clearSearch = () => {
     searchValue && setSearchValue("");
-    setTechStackData(techStackList);
   };
 
   const toggleSort = (

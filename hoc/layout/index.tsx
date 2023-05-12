@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import jwt_decode from "jwt-decode";
@@ -17,7 +18,6 @@ import { getDataFromLocalStorage } from "@/common/utils";
 import { useDispatch } from "react-redux";
 import { sagaActions } from "@/redux/constants";
 import { useAppSelector } from "@/redux/hooks";
-import { handleLogout } from "@/redux/slices/loginSlice";
 
 const Layout = ({ children }: any) => {
   const dispatch = useDispatch();
@@ -37,8 +37,10 @@ const Layout = ({ children }: any) => {
   }, [dispatch, userRole]);
 
   useEffect(() => {
-    dispatch({ type: sagaActions.FETCH_ROLE });
-    dispatch({ type: sagaActions.GET_USER_DETAILS });
+    if (router.pathname !== PRIVATE_ROUTES.LOGIN) {
+      dispatch({ type: sagaActions.FETCH_ROLE });
+      dispatch({ type: sagaActions.GET_USER_DETAILS });
+    }
   }, [dispatch]);
 
   return (

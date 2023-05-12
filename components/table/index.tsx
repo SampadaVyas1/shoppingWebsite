@@ -195,7 +195,7 @@ export const TableComponent = (props: ITableComponent) => {
       ) : (
         <Table
           data={!!data && data}
-          emptyText="No results Found.. "
+          emptyText=""
           className={styles.rcTable}
           components={customStyle}
           rowClassName={customRowStyling}

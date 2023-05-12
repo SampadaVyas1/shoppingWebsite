@@ -1,9 +1,8 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { RECRUITERS, TECH_STACK } from "../constants";
-import { IRecruitersList, ITechStackList } from "@/common/types";
-import { number } from "yup";
-import { notify } from "@/helpers/toastHelper";
+import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
+import { RECRUITERS } from "../constants";
+import { IRecruitersList } from "@/common/types";
+import { notify } from "@/helpers/toastHelper";
 
 interface IRecruiterStates {
   isLoading: boolean;
@@ -51,9 +50,17 @@ export const recruiterSlice = createSlice({
         isLoading: false,
         isError: false,
         totalPages: payload.totalPages,
-        currentRecruiters: payload.recruiters,
+        currentRecruiters: [...state.currentRecruiters, ...payload.recruiters],
         hasNextPage: payload.hasNextPage,
         currentPage: payload.currentPage,
+      };
+    },
+    resetCurrentRecruiters: (state) => {
+      return {
+        ...state,
+        isLoading: true,
+        currentRecruiters: [],
+        recruitersList: [],
       };
     },
     updateRecruiterData: (state, { payload }: any) => {
@@ -104,4 +111,5 @@ export const {
   toggleLoading,
   resetPage,
   updateRecruiterData,
+  resetCurrentRecruiters,
 } = recruiterSlice.actions;

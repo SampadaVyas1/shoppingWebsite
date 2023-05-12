@@ -1,9 +1,8 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import { TECH_STACK } from "../constants";
 import { ITechStackList } from "@/common/types";
-import { number } from "yup";
 import { notify } from "@/helpers/toastHelper";
-import { toast } from "react-toastify";
 
 interface ITechStackStates {
   isLoading: boolean;
@@ -57,6 +56,14 @@ export const techStackSlice = createSlice({
         currentPage: payload.currentPage,
       };
     },
+    resetCurrentTechStacks: (state) => {
+      return {
+        ...state,
+        isLoading: true,
+        currentTechStacks: [],
+        techStackList: [],
+      };
+    },
     toggleError: (state) => {
       notify(
         true,
@@ -92,4 +99,5 @@ export const {
   handleTechStackSearch,
   toggleLoading,
   resetPage,
+  resetCurrentTechStacks,
 } = techStackSlice.actions;

@@ -20,7 +20,10 @@ import {
   IShowToggle,
 } from "@/common/candidates.types";
 import { debounce, sortDataByField } from "@/common/utils";
-import { resetPage } from "@/redux/slices/recruiterSlice";
+import {
+  resetCurrentRecruiters,
+  resetPage,
+} from "@/redux/slices/recruiterSlice";
 
 const tableHeader = [
   {
@@ -46,13 +49,20 @@ const tableHeader = [
   },
   {
     id: 4,
+    title: "Tech stack",
+    sort: false,
+    dataIndex: "techStack",
+    key: "techStack",
+  },
+  {
+    id: 5,
     title: "Candidates",
     sort: true,
     dataIndex: "candidates",
     key: "candidates",
   },
   {
-    id: 5,
+    id: 6,
     title: "Status",
     sort: false,
     dataIndex: "status",
@@ -124,12 +134,12 @@ const Recruiters = () => {
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setSearchValue(event.target.value);
+    dispatch(resetCurrentRecruiters());
     searchRecruiter(event.target.value);
   };
 
   const clearSearch = () => {
     searchValue && setSearchValue("");
-    searchRecruiter("");
   };
 
   const toggleSort = (
@@ -264,7 +274,7 @@ const Recruiters = () => {
 
             <TableComponent
               data={recruitersData}
-              // isLoading={isLoading}
+              hoverCell="techStack"
               additionalValue={additionalValue}
               columnHeaderTitle={tableHeader}
               sortbuttonData={sortbuttonData}
