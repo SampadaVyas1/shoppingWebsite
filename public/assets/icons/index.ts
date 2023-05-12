@@ -37,7 +37,8 @@ const Images = {
   rightArrow:require("./rightArrow.svg").default,
   addButton:require("./addButton.svg").default,
   candidateEmptyState:require("./candidateEmptyState.svg").default,
-  Error404:require("./404.svg")
+  Error404:require("./404.svg"),
+  searchResultNotFound:require("./searchResultNotFound.svg")
 }
 
 export default Images;

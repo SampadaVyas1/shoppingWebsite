@@ -122,9 +122,9 @@ const MulitSelectCheckBOX = (props: IMultiSelectCheckBoxProp) => {
             })
           ) : (
             <div className={styles.noData}>
-              <ImageComponent src={Images.search} customClass={styles.icon} />
+              <ImageComponent src={Images.searchResultNotFound} customClass={styles.icon} />
               <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}>
-                No results Found
+                No results.Try other terms
               </Typography>
             </div>
           )}

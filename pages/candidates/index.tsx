@@ -66,7 +66,7 @@ const Candidates = () => {
   const [levelsFilter, setLevelsFilter] = useState<string[]>([]);
   const [techStackOptions, setTechStackOptions] = useState<IList[]>();
   const [tagList, setTagList] = useState<IList[]>([]);
-
+  const [totalCandidateCount, setTotalCandidateCount] = useState();
 
   const createHeader = () => {
     const keys = !!tabledata && tabledata[0] && Object?.keys(tabledata[0]);
@@ -209,7 +209,7 @@ const Candidates = () => {
     setTableData([...tabledata, ...updatedData]);
     setPageNumber(pageNumber + 1);
     setButtonState(sortbuttonData);
-  };
+  };  
 
   useEffect(() => {
     applyFilter();
@@ -219,6 +219,7 @@ const Candidates = () => {
     const getCandidates = async () => {
       try {
         const response = await getCandidatesService();
+        setTotalCandidateCount(response.totalCandidates);
         handleNextPage(response.hasNextPage);
         setButtonState({
           ...sortbuttonData,
@@ -266,6 +267,7 @@ const Candidates = () => {
     setPageNumber(1);
   };
 
+ 
   const handleSearch = debounce(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       const searchValue = event.target.value.trimStart().trimEnd();
@@ -277,6 +279,9 @@ const Candidates = () => {
       const updatedData = updateTheFetchData(response?.candidates);
       setTableData([...updatedData]);
       setLoading((prev) => ({ ...prev, tableLoading: false }));
+      handleNextPage(response?.hasNextPage)
+      setPageNumber(response.currentPage)
+    
     },
     1000
   );
@@ -285,7 +290,7 @@ const Candidates = () => {
     <Fragment>
       {loadingState.loading ? (
         <Loader />
-      ) : tabledata?.length === 0 ? (
+      ) : tabledata?.length === 0 && totalCandidateCount === 0 ? (
         <Fragment>
           <EmptyState
             image={Images.candidateEmptyState}
@@ -320,7 +325,7 @@ const Candidates = () => {
               variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}
               customStyle={styles.totalCount}
             >
-              Candidates(123)
+              Candidates({totalCandidateCount})
             </Typography>
           </div>
           <div className={styles.header}>
@@ -378,30 +383,39 @@ const Candidates = () => {
               </Popover>
             </div>
           </div>
-          <InfiniteScroll
-            nextPage={nextPage}
-            handlePageChange={handlePageChange}
-            customClass={styles.scroll}
-          >
-            <TableComponent
-              loading={loadingState.tableLoading}
-              data={tabledata}
-              columnHeaderTitle={createHeader()}
-              fieldforDateFormat={{ time: "Created time" }}
-              dataFormatType={DATE_FORMAT.DD_MM_YYYY}
-              customStyle={customStyle}
-              customRowStyling={styles.customRowStyling}
-              buttonState={buttonState}
-              handleSortArrowClick={handleSortButtonClick}
-            />
-            <ImageComponent
-              src={Images.addButton}
-              customClass={styles.addButton}
-              height={40}
-              width={40}
-              onClick={() => setAddButtonClicked(true)}
-            />
-          </InfiniteScroll>
+          {tabledata?.length === 0 ? (
+          <div className={styles.noData}>
+          <ImageComponent src={Images.searchResultNotFound} customClass={styles.icon}/>
+          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}>
+            No results.Try other terms
+          </Typography>
+        </div>
+          ) : (
+            <InfiniteScroll
+              nextPage={nextPage}
+              handlePageChange={handlePageChange}
+              customClass={styles.scroll}
+            >
+              <TableComponent
+                loading={loadingState.tableLoading}
+                data={tabledata}
+                columnHeaderTitle={createHeader()}
+                fieldforDateFormat={{ time: "Created time" }}
+                dataFormatType={DATE_FORMAT.DD_MM_YYYY}
+                customStyle={customStyle}
+                customRowStyling={styles.customRowStyling}
+                buttonState={buttonState}
+                handleSortArrowClick={handleSortButtonClick}
+              />
+              <ImageComponent
+                src={Images.addButton}
+                customClass={styles.addButton}
+                height={40}
+                width={40}
+                onClick={() => setAddButtonClicked(true)}
+              />
+            </InfiniteScroll>
+          )}
           <Modal
             open={addButtonClicked}
             onClose={() => setAddButtonClicked(false)}
