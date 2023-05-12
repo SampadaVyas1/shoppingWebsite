@@ -1,5 +1,6 @@
 export const LOGIN = "login";
 export const COMMON = "common";
+export const CANDIDATES="candidates"
 
 export const sagaActions = {
   GET_RANDOM_DATA: "GET_RANDOM_DATA",

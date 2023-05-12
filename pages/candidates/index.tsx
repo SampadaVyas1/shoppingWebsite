@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import { Popover } from "react-tiny-popover";
@@ -22,18 +22,20 @@ import { TOOLTIP_POSITION, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import TransitionWrapper from "@/components/transitionWrapper";
 import Image from "next/image";
 import InputBox from "@/components/inputBox";
-import { DATE_FORMAT, SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
+import { DATE_FORMAT, SORT_TYPE } from "@/common/constants";
 import { TableComponent } from "../../components/table/index";
 import { debounce, sortDataByField } from "@/common/utils";
 import {
-  addCandidates,
-  getCandidatesData,
-  getFilter,
+  addCandidatesService,
+  getCandidatesService,
+  getFilterService,
 } from "@/services/candidate.service";
 import Loader from "@/components/loader";
 import EmptyState from "@/components/emptyState";
+import Typography from "@/components/typography";
 
 const Candidates = () => {
+  
   const sortbuttonData: IButtonState = {
     Name: { upKeyDisabled: false, downKeyDisabled: false },
     "Created time": { upKeyDisabled: false, downKeyDisabled: false },
@@ -43,13 +45,23 @@ const Candidates = () => {
   const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [nextPage, handleNextPage] = useState<boolean>(false);
+
   const [addButtonClicked, setAddButtonClicked] = useState<boolean>(false);
-  const [isFilterOpen, setisFilterOpen] = useState<boolean>(false);
-  const [filter, setFilter] = useState<IFilter[] | false>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [isFilterOpen, setisFilterOpen] = useState<boolean>(false);
+  // const [filter, setFilter] = useState<IFilter[] | false>([]);
+  
+  const [filterState,setFilterState]=useState<{isFilterOpen:boolean,filter:IFilter[] | false}>({
+    isFilterOpen:false,
+    filter:[]
+  })
+  // const [loading, setLoading] = useState<boolean>(true);
+  // const [tableLoading, setTableLoading] = useState<boolean>(false);
+  const [loadingState,setLoading]=useState<{loading:boolean,tableLoading:boolean}>({
+    loading:true,
+    tableLoading:false
+  })
   const [getFilterData, setFilterData] = useState<IFilteredData | false>();
   const [tagList, setTagList] = useState<IList[]>([]);
-  const [tableLoading, setTableLoading] = useState<boolean>(false);
   const [currentAppliedFilter, setCurrentAppliedFilter] = useState<
     ICurrentAppliedField[]
   >([]);
@@ -72,14 +84,13 @@ const Candidates = () => {
       });
     return tableHeader;
   };
-
   const closeFilter = () => {
-    setisFilterOpen(false);
+    // setisFilterOpen(false);
+    setFilterState((prev)=>({...prev, isFilterOpen:false}))
   };
   const toggleFilter = async () => {
     const { interviewName, ...remainingFilteredArray }: any =
       !!getFilterData && getFilterData;
-
     const result =
       !!remainingFilteredArray &&
       Object.keys(remainingFilteredArray).map((key, index) => {
@@ -87,16 +98,18 @@ const Candidates = () => {
           .replace(/([A-Z])/g, " $1")
           .toLowerCase()
           .replace(/^\w/, (value) => value.toUpperCase());
-        const value = remainingFilteredArray[key].map(
-          (item: string, idx: number) => ({
+        const value =
+          !!remainingFilteredArray &&
+          remainingFilteredArray[key]?.map((item: string, idx: number) => ({
             id: idx + 1,
             label: item,
-          })
-        );
+          }));
         return { type: key, name, value };
       });
-    setFilter(result);
-    setisFilterOpen(!isFilterOpen);
+    // setFilter(result);
+    setFilterState((prev)=>({...prev,filter:result}))
+    // setisFilterOpen(!isFilterOpen);
+    setFilterState((prev)=>({...prev, isFilterOpen:!prev.isFilterOpen}))
   };
 
   const applyFilter = async (filters?: any[] = []) => {
@@ -106,10 +119,9 @@ const Candidates = () => {
         techStack: filters?.techStack?.map((item: IList) => item?.label) || [],
       },
     ];
-    const response = await getCandidatesData({
+    const response = await getCandidatesService({
       filterBy: currentFieldObject,
     });
-
     setCurrentAppliedFilter(currentFieldObject);
     handleNextPage(response?.hasNextPage);
     const updatedData = updateTheFetchData(
@@ -129,16 +141,16 @@ const Candidates = () => {
       ),
     },
   };
-  const handleClickHeaderTag = (filterValue: IList) => {
-    if (levelsFilter.includes(filterValue.label)) {
-      const filteredData = levelsFilter.filter(
-        (level) => level !== filterValue.label
-      );
-      setLevelsFilter(filteredData);
-    } else {
-      setLevelsFilter([...levelsFilter, filterValue.label]);
-    }
-  };
+  const handleClickHeaderTag = useCallback((filterValue: IList) => {
+    setLevelsFilter((prevFilter) => {
+      if (prevFilter.includes(filterValue.label)) {
+        return prevFilter.filter((level) => level !== filterValue.label);
+      } else {
+        return [...prevFilter, filterValue.label];
+      }
+    });
+  }, []);
+
   const toggleSortButton = (
     field: string,
     data: IData[],
@@ -189,7 +201,7 @@ const Candidates = () => {
   };
 
   const handlePageChange = async () => {
-    const response = await getCandidatesData({
+    const response = await getCandidatesService({
       filterBy: currentAppliedFilter,
       limit: 10,
       page: pageNumber + 1,
@@ -208,7 +220,7 @@ const Candidates = () => {
   useEffect(() => {
     const getCandidates = async () => {
       try {
-        const response = await getCandidatesData();
+        const response = await getCandidatesService();
         handleNextPage(response.hasNextPage);
         setButtonState({
           ...sortbuttonData,
@@ -216,13 +228,15 @@ const Candidates = () => {
         });
         const updatedData = updateTheFetchData(response.candidates);
         setTableData(updatedData);
-        setLoading(false);
+        // setLoading(false);
+        setLoading((prev)=>({...prev,loading:false}))
       } catch (error) {
-        setLoading(true);
+        // setLoading(true);
+        setLoading((prev)=>({...prev,loading:true}))
       }
     };
     const getFilterApi = async () => {
-      const getAllfilter = await getFilter();
+      const getAllfilter = await getFilterService();
       setFilterData(getAllfilter);
       setTechStackOptions(
         getAllfilter?.techStack &&
@@ -241,7 +255,7 @@ const Candidates = () => {
     };
     getCandidates();
     getFilterApi();
-  }, []);
+  }, [addButtonClicked]);
 
   const handleSubmitButton = async (value: ISubmitButton) => {
     const updatedData = {
@@ -251,38 +265,70 @@ const Candidates = () => {
       techStack: value.techStack.label,
       experienceLevel: +value.experienceLevel,
     };
-    const response = await addCandidates(updatedData);
+    const response = await addCandidatesService(updatedData);
+    setAddButtonClicked(false);
+    setPageNumber(1)
   };
 
   const handleSearch = debounce(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
-      const searchValue = event.target.value;
-      setTableLoading(true);
-      const response = await getCandidatesData({
+      const searchValue = event.target.value.trimStart().trimEnd();
+      // setTableLoading(true);
+      setLoading((prev)=>({...prev,tableLoading:true}))
+      const response = await getCandidatesService({
         filterBy: currentAppliedFilter,
         search: searchValue,
       });
       const updatedData = updateTheFetchData(response?.candidates);
       setTableData([...updatedData]);
-      setTableLoading(false);
+      // setTableLoading(false);
+      setLoading((prev)=>({...prev,tableLoading:false}))
     },
     1000
   );
 
   return (
     <Fragment>
-      {loading ? (
+      {loadingState.loading ? (
         <Loader />
       ) : tabledata?.length === 0 ? (
-        <EmptyState
-          image={Images.candidateEmptyState}
-          title={"“Welcome to the candidate management system!"}
-          subTitle={
-            "To get started, let’s add your first candidate. Click the “+”button to create a new profile."
-          }
-        />
+        <Fragment>
+          <EmptyState
+            image={Images.candidateEmptyState}
+            title={"“Welcome to the candidate management system!"}
+            subTitle={
+              "To get started, let’s add your first candidate. Click the “+”button to create a new profile."
+            }
+          />
+          <ImageComponent
+            src={Images.addButton}
+            customClass={styles.addButton}
+            height={40}
+            width={40}
+            onClick={() => setAddButtonClicked(true)}
+          />
+          <Modal
+            open={addButtonClicked}
+            onClose={() => setAddButtonClicked(false)}
+            header="Add Candidate"
+            showCloseIcon
+          >
+            <AddForm
+              handleSubmitButton={handleSubmitButton}
+              techStackOptions={techStackOptions}
+            />
+          </Modal>
+        </Fragment>
       ) : (
         <Container>
+          <div>
+            <Typography
+              variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}
+              customStyle={styles.totalCount}
+            >
+              Candidates(123)
+            </Typography>
+          </div>
           <div className={styles.header}>
             <div className={styles.searchBox}>
               <InputBox
@@ -312,9 +358,9 @@ const Candidates = () => {
                 onClickOutside={closeFilter}
                 padding={16}
                 content={
-                  <TransitionWrapper open={isFilterOpen}>
+                  <TransitionWrapper open={filterState.isFilterOpen}>
                     <Filter
-                      filterData={filter}
+                      filterData={filterState.filter}
                       onClick={applyFilter}
                       filterList={{
                         postingTitle: [],
@@ -344,7 +390,7 @@ const Candidates = () => {
             customClass={styles.scroll}
           >
             <TableComponent
-              loading={tableLoading}
+              loading={loadingState.tableLoading}
               data={tabledata}
               columnHeaderTitle={createHeader()}
               sortbuttonData={sortbuttonData}

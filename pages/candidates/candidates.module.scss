@@ -20,7 +20,6 @@
 
   .searchBox {
     width: 27rem;
-
     .search {
       max-width: 27rem;
       padding: 0.75rem 0.75rem 0.75rem 1rem;
@@ -58,7 +57,7 @@
   color: $white;
 }
 .scroll {
-  height: 40.45rem;
+  height: 39rem;
   overflow-x: auto;
   overflow-y: auto;
   position: relative;
@@ -83,36 +82,7 @@
   position: fixed;
   right: 5%;
   top: 90%;
- 
 }
-.emptyState
-{
-  height: 100%;
-  flex-direction: column;
-  @include flex-center-alignment;
- .emptyStateText
- {
-  flex-direction: column;
-  @include flex-center-alignment;
-  .secondaryState
-  {
-    color: $secondaryText;
-    font-size: 400;
-  }
- }
-}
-.error
-{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-align-items: center;
-height: 100vh;
-  .error404
-  {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+.totalCount {
+  // padding-bottom: 1.5rem;
 }
