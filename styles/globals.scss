@@ -23,12 +23,6 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-
 .drawer-enter {
   transform: translateX(36.875rem);
 }
