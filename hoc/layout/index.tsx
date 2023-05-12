@@ -16,9 +16,12 @@ import { ROLES, TOKEN } from "@/common/constants";
 import { getDataFromLocalStorage } from "@/common/utils";
 import { useDispatch } from "react-redux";
 import { sagaActions } from "@/redux/constants";
+import { useAppSelector } from "@/redux/hooks";
+import { handleLogout } from "@/redux/slices/loginSlice";
 
 const Layout = ({ children }: any) => {
   const dispatch = useDispatch();
+  const { role: userRole } = useAppSelector((state) => state.login.userDetails);
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
   const [role, setRole] = useState<string>(ROLES.RECRUITER);
   const router = useRouter();
@@ -31,7 +34,7 @@ const Layout = ({ children }: any) => {
       console.log(error);
     }
     setLoggedIn(!!getDataFromLocalStorage(TOKEN));
-  }, []);
+  }, [dispatch, userRole]);
 
   useEffect(() => {
     dispatch({ type: sagaActions.FETCH_ROLE });

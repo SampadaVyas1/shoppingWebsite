@@ -24,7 +24,7 @@ const ProfileCard = (props: IProfileCardProps) => {
         <ImageComponent
           src={profileImage}
           fallbackClass={styles.profileImage}
-          fallbackText={`${firstName.charAt(0)}${lastName.charAt(0)}`}
+          fallbackText={`${firstName?.charAt(0)}${lastName?.charAt(0)}`}
           customClass={styles.profileImage}
         />
         <Typography

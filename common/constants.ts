@@ -56,4 +56,8 @@ export const REGEX = {
 export const TRANSITION_TIMEOUT = 300;
 export const INPUT_PLACEHOLDER = "Enter text here";
 
+export const ACCESS_TOKEN_EXPIRED = "ACCESS TOKEN EXPIRED";
+export const ACCESS_TOKEN_INVALID = "ACCESS TOKEN INVALID";
+export const REFRESH_TOKEN_EXPIRED = "REFRESH TOKEN EXPIRED";
+
 export const ADMIN_EMAIL = "mailto:coditas.admin@domain.com";

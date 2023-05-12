@@ -116,6 +116,7 @@ const Recruiters = () => {
         type: sagaActions.SEARCH_RECRUITER,
         payload: { search: searchValue, page: currentPage + 1, limit: 10 },
       });
+
     setPageNumber(pageNumber + 1);
   };
 
@@ -128,7 +129,7 @@ const Recruiters = () => {
 
   const clearSearch = () => {
     searchValue && setSearchValue("");
-    setRecruitersData(updatedData(recruitersList));
+    searchRecruiter("");
   };
 
   const toggleSort = (

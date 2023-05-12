@@ -2,9 +2,7 @@
 @import "../../../styles/mixins";
 
 .recruiters {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  overflow: hidden;
   @include flex-direction(column, 1);
   .searchBox {
     display: flex;
@@ -32,7 +30,7 @@
     border-collapse: collapse;
   }
   .scroll {
-    max-height: 33rem;
+    max-height: 80%;
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;

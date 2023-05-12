@@ -2,10 +2,8 @@
 @import "../../../styles/mixins";
 
 .techStacks {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
   @include flex-direction(column, 1);
+  overflow: hidden;
   .searchBox {
     display: flex;
     width: 27rem;
@@ -29,7 +27,7 @@
     border-collapse: collapse;
   }
   .scroll {
-    max-height: 33rem;
+    max-height: 80%;
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;
