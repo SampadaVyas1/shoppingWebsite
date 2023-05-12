@@ -16,9 +16,9 @@ export const ADMIN_ROUTES = [
 ];
 
 export enum API_ROUTES {
-  LOGIN = "/auth/login",
-  GET_ACCESS_TOKEN = "/auth/getNewAccessToken",
-  CHECK_TOKEN = "/auth/checkToken",
+  LOGIN = "gauth/auth/login",
+  GET_ACCESS_TOKEN = "gauth/auth/getNewAccessToken",
+  CHECK_TOKEN = "gauth/auth/checkToken",
 }
 
 export const TEAM_PAGE_ROUTES = {

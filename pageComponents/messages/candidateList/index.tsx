@@ -87,7 +87,7 @@ const CandidateList = (props: ICandidateListProps) => {
                   lastMessage?.timestamp
                     ? moment
                         .unix(parseInt(lastMessage?.timestamp))
-                        .format(TIME_FORMAT)
+                        .format(TIME_FORMAT.HOUR_MINUTE)
                     : ""
                 }
                 status={lastMessage?.status}

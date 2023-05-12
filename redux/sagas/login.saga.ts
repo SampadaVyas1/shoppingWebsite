@@ -2,7 +2,7 @@ import { getLoginData } from "@/services/login.service";
 import { AnyAction } from "@reduxjs/toolkit";
 import { put, takeEvery } from "redux-saga/effects";
 import { toggleLoading, handleLogin } from "../slices/loginSlice";
-import { sagaActions } from "../constants";
+import { sagaActions } from "../actions";
 
 export function* handleLoginSaga({ token }: AnyAction): any {
   try {

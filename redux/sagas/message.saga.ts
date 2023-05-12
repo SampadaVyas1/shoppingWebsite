@@ -1,6 +1,6 @@
 import { AnyAction } from "@reduxjs/toolkit";
 import { put, takeEvery } from "redux-saga/effects";
-import { sagaActions } from "../constants";
+import { sagaActions } from "../actions";
 import { setAllTemplates, toggleLoading } from "../slices/messageSlice";
 import { getAllTemplates } from "@/services/messages.service";
 3;

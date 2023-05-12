@@ -10,7 +10,7 @@
   @include flex-align-center;
   justify-content: space-between;
 }
-@mixin flex-direction($direction: row, $flex: auto) {
+@mixin flex-direction($direction: row, $flex: none) {
   display: flex;
   flex-direction: $direction;
   flex: $flex;

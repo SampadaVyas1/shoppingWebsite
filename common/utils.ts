@@ -2,6 +2,7 @@ import { v4 as uuid } from "uuid";
 import Images from "@/public/assets/icons";
 import moment from "moment";
 import { MESSAGE_STATUS } from "./enums";
+import { HEADER, IMAGE, TIME_FORMAT } from "./constants";
 
 export const encodeToken = (data: string) => window.btoa(data);
 
@@ -29,8 +30,8 @@ export const getTimeStamp = () => {
 
 export const isSameDay = (currentDay: string, previousDay: string) => {
   return (
-    moment.unix(parseInt(currentDay)).format("DD/MM/YYYY") ===
-    moment.unix(parseInt(previousDay)).format("DD/MM/YYYY")
+    moment.unix(parseInt(currentDay)).format(TIME_FORMAT.DATE_MONTH) ===
+    moment.unix(parseInt(previousDay)).format(TIME_FORMAT.DATE_MONTH)
   );
 };
 
@@ -84,7 +85,7 @@ export const formatTemplateData = (
 ) => {
   const templateName = template?.name;
   const components = template?.components.filter(
-    (component: any) => component.type === "HEADER"
+    (component: any) => component.type === HEADER
   );
   const templateComponents = {
     type: "header",
@@ -94,7 +95,7 @@ export const formatTemplateData = (
       return {
         type: component.format.toLowerCase(),
         [component.format.toLowerCase()]:
-          component.format.toLowerCase() === "image"
+          component.format.toLowerCase() === IMAGE
             ? { link: imageLink }
             : candidateName,
       };
