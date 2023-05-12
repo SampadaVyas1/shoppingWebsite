@@ -2,7 +2,6 @@ import {
   IAdditionalValue,
   IButtonState,
   IData,
-  IHeaderTitleProps,
 } from "@/pages/candidates/candidates.types";
 
 interface ICustomStyle {
@@ -10,10 +9,8 @@ interface ICustomStyle {
     row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => JSX.Element;
   };
 }
-
 export interface IHandleRowSelect {
   (value: number[]): void;
-
 }
 export interface IHandleRowEachSelect {
   row: number;

@@ -68,11 +68,18 @@ const Candidates = () => {
   const [tagList, setTagList] = useState<IList[]>([]);
   const [totalCandidateCount, setTotalCandidateCount] = useState();
 
+  const filterList = {
+    postingTitle: [],
+    candidateStatus: [],
+    techStack: [],
+    interviewName: [],
+  };
   const createHeader = () => {
-    const keys = !!tabledata && tabledata[0] && Object?.keys(tabledata[0]);
+    const tableHeaderkeys =
+      !!tabledata && tabledata[0] && Object?.keys(tabledata[0]);
     const tableHeader =
-      !!keys &&
-      keys.map((key: string, index: number) => {
+      !!tableHeaderkeys &&
+      tableHeaderkeys.map((key: string, index: number) => {
         let sort = key === "Name" || key === "Created time" ? true : false;
         return {
           id: index + 1,
@@ -84,14 +91,18 @@ const Candidates = () => {
       });
     return tableHeader;
   };
+
   const closeFilter = () => {
     setFilterState((prev) => ({ ...prev, isFilterOpen: false }));
   };
 
   const toggleFilter = async () => {
-    const { interviewName, ...remainingFilteredArray }: any =
-      !!getFilterData && getFilterData;
-    const result =
+    const remainingFilteredArray = Object.fromEntries(
+      Object.entries(getFilterData || {}).filter(
+        ([key]) => key !== "interviewName"
+      )
+    );
+    const filteredArray =
       !!remainingFilteredArray &&
       Object.keys(remainingFilteredArray).map((key, index) => {
         const name = key
@@ -106,11 +117,14 @@ const Candidates = () => {
           }));
         return { type: key, name, value };
       });
-    setFilterState((prev) => ({ ...prev, filter: result }));
-    setFilterState((prev) => ({ ...prev, isFilterOpen: !prev.isFilterOpen }));
+    setFilterState((prev) => ({
+      ...prev,
+      filter: filteredArray,
+      isFilterOpen: !prev.isFilterOpen,
+    }));
   };
 
-  const applyFilter = async (filters?: any[] = []) => {
+  const applyFilter = async (filters: IFilteredData[] = []) => {
     const currentFieldObject: ICurrentAppliedField[] = [
       { interviewName: levelsFilter },
       {
@@ -209,7 +223,7 @@ const Candidates = () => {
     setTableData([...tabledata, ...updatedData]);
     setPageNumber(pageNumber + 1);
     setButtonState(sortbuttonData);
-  };  
+  };
 
   useEffect(() => {
     applyFilter();
@@ -254,7 +268,7 @@ const Candidates = () => {
     getFilterApi();
   }, [addButtonClicked]);
 
-  const handleSubmitButton = async (value: ISubmitButton) => {
+  const handleAddCandidateSubmitButton = async (value: ISubmitButton) => {
     const updatedData = {
       firstName: value.firstName,
       lastName: value.lastName,
@@ -267,7 +281,6 @@ const Candidates = () => {
     setPageNumber(1);
   };
 
- 
   const handleSearch = debounce(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       const searchValue = event.target.value.trimStart().trimEnd();
@@ -279,9 +292,8 @@ const Candidates = () => {
       const updatedData = updateTheFetchData(response?.candidates);
       setTableData([...updatedData]);
       setLoading((prev) => ({ ...prev, tableLoading: false }));
-      handleNextPage(response?.hasNextPage)
-      setPageNumber(response.currentPage)
-    
+      handleNextPage(response?.hasNextPage);
+      setPageNumber(response.currentPage);
     },
     1000
   );
@@ -313,7 +325,7 @@ const Candidates = () => {
             showCloseIcon
           >
             <AddForm
-              handleSubmitButton={handleSubmitButton}
+              handleSubmitButton={handleAddCandidateSubmitButton}
               techStackOptions={techStackOptions}
             />
           </Modal>
@@ -361,12 +373,7 @@ const Candidates = () => {
                     <Filter
                       filterData={filterState.filter}
                       onClick={applyFilter}
-                      filterList={{
-                        postingTitle: [],
-                        candidateStatus: [],
-                        techStack: [],
-                        interviewName: [],
-                      }}
+                      filterList={filterList}
                       onClose={closeFilter}
                     />
                   </TransitionWrapper>
@@ -384,12 +391,15 @@ const Candidates = () => {
             </div>
           </div>
           {tabledata?.length === 0 ? (
-          <div className={styles.noData}>
-          <ImageComponent src={Images.searchResultNotFound} customClass={styles.icon}/>
-          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}>
-            No results.Try other terms
-          </Typography>
-        </div>
+            <div className={styles.noData}>
+              <ImageComponent
+                src={Images.searchResultNotFound}
+                customClass={styles.icon}
+              />
+              <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}>
+                No results.Try other terms
+              </Typography>
+            </div>
           ) : (
             <InfiniteScroll
               nextPage={nextPage}
@@ -423,7 +433,7 @@ const Candidates = () => {
             showCloseIcon
           >
             <AddForm
-              handleSubmitButton={handleSubmitButton}
+              handleSubmitButton={handleAddCandidateSubmitButton}
               techStackOptions={techStackOptions}
             />
           </Modal>

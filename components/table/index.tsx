@@ -43,8 +43,6 @@ export const TableComponent = (props: ITableComponent) => {
     downArrowDisabled,
     downArrowEnabled,
   } = Images;
-console.log(buttonState)
-console.log()
   const handleCheckBoxClicks = useCallback(
     (id: number) => () => {
       !!handleCheckBoxClick && handleCheckBoxClick(id);
@@ -53,14 +51,14 @@ console.log()
   );
 
   const handleAscendingArrowClick = useCallback(
-    (dataIndex: string, data: any) => () => {
+    (dataIndex: string, data: IData) => () => {
       !!handleSortArrowClick &&
         handleSortArrowClick(dataIndex, SORT_TYPE.ASCENDING, data);
     },
     [buttonState]
   );
   const handleDescendingArrowClick = useCallback(
-    (dataIndex: string, data: any) => () => {
+    (dataIndex: string, data: IData) => () => {
       !!handleSortArrowClick &&
         handleSortArrowClick(dataIndex, SORT_TYPE.DESCENDING, data);
     },
