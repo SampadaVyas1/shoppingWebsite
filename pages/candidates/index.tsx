@@ -35,7 +35,6 @@ import EmptyState from "@/components/emptyState";
 import Typography from "@/components/typography";
 
 const Candidates = () => {
-  
   const sortbuttonData: IButtonState = {
     Name: { upKeyDisabled: false, downKeyDisabled: false },
     "Created time": { upKeyDisabled: false, downKeyDisabled: false },
@@ -45,28 +44,29 @@ const Candidates = () => {
   const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [nextPage, handleNextPage] = useState<boolean>(false);
-
   const [addButtonClicked, setAddButtonClicked] = useState<boolean>(false);
-  // const [isFilterOpen, setisFilterOpen] = useState<boolean>(false);
-  // const [filter, setFilter] = useState<IFilter[] | false>([]);
-  
-  const [filterState,setFilterState]=useState<{isFilterOpen:boolean,filter:IFilter[] | false}>({
-    isFilterOpen:false,
-    filter:[]
-  })
-  // const [loading, setLoading] = useState<boolean>(true);
-  // const [tableLoading, setTableLoading] = useState<boolean>(false);
-  const [loadingState,setLoading]=useState<{loading:boolean,tableLoading:boolean}>({
-    loading:true,
-    tableLoading:false
-  })
+  const [filterState, setFilterState] = useState<{
+    isFilterOpen: boolean;
+    filter: IFilter[] | false;
+  }>({
+    isFilterOpen: false,
+    filter: [],
+  });
+  const [loadingState, setLoading] = useState<{
+    loading: boolean;
+    tableLoading: boolean;
+  }>({
+    loading: true,
+    tableLoading: false,
+  });
   const [getFilterData, setFilterData] = useState<IFilteredData | false>();
-  const [tagList, setTagList] = useState<IList[]>([]);
   const [currentAppliedFilter, setCurrentAppliedFilter] = useState<
     ICurrentAppliedField[]
   >([]);
   const [levelsFilter, setLevelsFilter] = useState<string[]>([]);
   const [techStackOptions, setTechStackOptions] = useState<IList[]>();
+  const [tagList, setTagList] = useState<IList[]>([]);
+
 
   const createHeader = () => {
     const keys = !!tabledata && tabledata[0] && Object?.keys(tabledata[0]);
@@ -85,9 +85,9 @@ const Candidates = () => {
     return tableHeader;
   };
   const closeFilter = () => {
-    // setisFilterOpen(false);
-    setFilterState((prev)=>({...prev, isFilterOpen:false}))
+    setFilterState((prev) => ({ ...prev, isFilterOpen: false }));
   };
+
   const toggleFilter = async () => {
     const { interviewName, ...remainingFilteredArray }: any =
       !!getFilterData && getFilterData;
@@ -106,10 +106,8 @@ const Candidates = () => {
           }));
         return { type: key, name, value };
       });
-    // setFilter(result);
-    setFilterState((prev)=>({...prev,filter:result}))
-    // setisFilterOpen(!isFilterOpen);
-    setFilterState((prev)=>({...prev, isFilterOpen:!prev.isFilterOpen}))
+    setFilterState((prev) => ({ ...prev, filter: result }));
+    setFilterState((prev) => ({ ...prev, isFilterOpen: !prev.isFilterOpen }));
   };
 
   const applyFilter = async (filters?: any[] = []) => {
@@ -228,11 +226,9 @@ const Candidates = () => {
         });
         const updatedData = updateTheFetchData(response.candidates);
         setTableData(updatedData);
-        // setLoading(false);
-        setLoading((prev)=>({...prev,loading:false}))
+        setLoading((prev) => ({ ...prev, loading: false }));
       } catch (error) {
-        // setLoading(true);
-        setLoading((prev)=>({...prev,loading:true}))
+        setLoading((prev) => ({ ...prev, loading: true }));
       }
     };
     const getFilterApi = async () => {
@@ -267,22 +263,20 @@ const Candidates = () => {
     };
     const response = await addCandidatesService(updatedData);
     setAddButtonClicked(false);
-    setPageNumber(1)
+    setPageNumber(1);
   };
 
   const handleSearch = debounce(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       const searchValue = event.target.value.trimStart().trimEnd();
-      // setTableLoading(true);
-      setLoading((prev)=>({...prev,tableLoading:true}))
+      setLoading((prev) => ({ ...prev, tableLoading: true }));
       const response = await getCandidatesService({
         filterBy: currentAppliedFilter,
         search: searchValue,
       });
       const updatedData = updateTheFetchData(response?.candidates);
       setTableData([...updatedData]);
-      // setTableLoading(false);
-      setLoading((prev)=>({...prev,tableLoading:false}))
+      setLoading((prev) => ({ ...prev, tableLoading: false }));
     },
     1000
   );
@@ -393,14 +387,12 @@ const Candidates = () => {
               loading={loadingState.tableLoading}
               data={tabledata}
               columnHeaderTitle={createHeader()}
-              sortbuttonData={sortbuttonData}
               fieldforDateFormat={{ time: "Created time" }}
               dataFormatType={DATE_FORMAT.DD_MM_YYYY}
               customStyle={customStyle}
               customRowStyling={styles.customRowStyling}
               buttonState={buttonState}
               handleSortArrowClick={handleSortButtonClick}
-              hoverCell={"Tech stack"}
             />
             <ImageComponent
               src={Images.addButton}

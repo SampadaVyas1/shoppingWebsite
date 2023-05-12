@@ -26,7 +26,6 @@ export interface ITableComponent {
   data: IData[];
   customRowStyling?: string;
   columnHeaderTitle: any[];
-  sortbuttonData?: IButtonState;
   dataFormatType?: string;
   fieldforDateFormat?: { time: string };
   customStyle?: ICustomStyle;

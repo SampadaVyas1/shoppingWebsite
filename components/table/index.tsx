@@ -43,7 +43,8 @@ export const TableComponent = (props: ITableComponent) => {
     downArrowDisabled,
     downArrowEnabled,
   } = Images;
-
+console.log(buttonState)
+console.log()
   const handleCheckBoxClicks = useCallback(
     (id: number) => () => {
       !!handleCheckBoxClick && handleCheckBoxClick(id);
