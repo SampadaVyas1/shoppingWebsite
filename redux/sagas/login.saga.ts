@@ -8,6 +8,7 @@ import { put, takeEvery } from "redux-saga/effects";
 import {
   toggleLoading,
   handleLogin,
+  toggleLoginError,
   toggleError,
   handleFeatureAccess,
   handleUserDetail,
@@ -21,7 +22,7 @@ export function* handleLoginSaga({ token }: AnyAction): any {
     if (!!!result.error) {
       yield put(handleLogin(result.data));
     } else {
-      yield put(toggleError());
+      yield put(toggleLoginError());
     }
   } catch (e) {
     console.log(e);

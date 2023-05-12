@@ -183,7 +183,7 @@ const TechStacks = () => {
         onChange={handleSearch}
         customClass={styles.searchBox}
       />
-      {!!techStackData.length || searchValue || isLoading ? (
+      {!!techStackData.length || isLoading ? (
         <React.Fragment>
           <InfiniteScroll
             nextPage={hasNextPage}
@@ -214,7 +214,7 @@ const TechStacks = () => {
         !isLoading && (
           <EmptyState
             image={Images.techStackEmpty}
-            title={`"Oops, it looks like tech stack details haven't been added yet!`}
+            title={`No Tech stacks found`}
           />
         )
       )}

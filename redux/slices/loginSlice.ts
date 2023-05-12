@@ -12,6 +12,7 @@ const initialState: ILoginStates = {
   isLoading: false,
   isError: false,
   featureData: {},
+  isLoginError: false,
   userDetails: {} as IUserData,
 };
 
@@ -23,7 +24,7 @@ export const loginSlice = createSlice({
       const { accessToken, refresh_token } = action.payload;
       state.isLoggedIn = true;
       state.isLoading = false;
-      state.isError = false;
+      state.isLoginError = false;
       setDataInLocalStorage(TOKEN, accessToken);
       setDataInLocalStorage(REFRESH_TOKEN, refresh_token);
     },
@@ -57,6 +58,10 @@ export const loginSlice = createSlice({
       state.isLoading = false;
       state.isError = true;
     },
+    toggleLoginError: (state) => {
+      state.isLoading = false;
+      state.isLoginError = true;
+    },
   },
 });
 export default loginSlice.reducer;
@@ -67,4 +72,5 @@ export const {
   toggleError,
   handleFeatureAccess,
   handleUserDetail,
+  toggleLoginError,
 } = loginSlice.actions;

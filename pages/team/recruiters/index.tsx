@@ -255,7 +255,7 @@ const Recruiters = () => {
         onChange={handleSearch}
         customClass={styles.searchBox}
       />
-      {!!recruitersData.length || searchValue || isLoading ? (
+      {!!recruitersData.length || isLoading ? (
         <React.Fragment>
           <InfiniteScroll
             nextPage={hasNextPage}
@@ -290,7 +290,7 @@ const Recruiters = () => {
         !isLoading && (
           <EmptyState
             image={Images.emptyStateImage}
-            title={`Nothing to see here`}
+            title={`No recruiters found`}
           />
         )
       )}

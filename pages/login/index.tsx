@@ -20,7 +20,7 @@ import SectionImage from "../../public/assets/images/loginImage.svg";
 const Login = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { isLoggedIn, isLoading, isError } = useAppSelector(
+  const { isLoggedIn, isLoading, isLoginError } = useAppSelector(
     (state) => state.login
   );
 
@@ -93,7 +93,7 @@ const Login = () => {
               Sign in with google
             </Button>
 
-            {isError && (
+            {isLoginError && (
               <Typography
                 customStyle={styles.loginError}
                 variant={TYPOGRAPHY_VARIANT.ERROR}
@@ -107,7 +107,7 @@ const Login = () => {
               variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
               customStyle={styles.text}
             >
-              Having trouble logging in?{" "}
+              Having trouble logging in?
               <span onClick={handleContactAdmin}> Contact Admin</span>
             </Typography>
 

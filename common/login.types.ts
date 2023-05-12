@@ -5,6 +5,7 @@ export interface ILoginStates {
   isLoading: boolean;
   isError: boolean;
   featureData: any;
+  isLoginError: boolean;
   userDetails: IUserData;
 }
 export interface ITokens {
