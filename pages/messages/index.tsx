@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Popover } from "react-tiny-popover";
 import Image from "next/image";
 import socket from "@/socket";
-import { db } from "@/db";
 import Button from "@/components/button";
 import ImageComponent from "@/components/imageComponent";
 import CandidateList from "../../pageComponents/messages/candidateList";
@@ -36,6 +35,7 @@ import { ITagType } from "@/components/tag/tag.types";
 import { IIncomingMessageType, IMessagesStates } from "./messages.types";
 import { useAppSelector } from "@/redux/hooks";
 import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
+import { getDataFromSessionStorage } from "@/common/utils";
 
 const Messages = () => {
   const [messagePageState, setMessagePageState] = useState<IMessagesStates>({
@@ -213,7 +213,7 @@ const Messages = () => {
         const { from, wamid } = data;
         const newMessage = createNewMessage(data);
         (!sessionStorage.getItem("phone") ||
-          from !== sessionStorage.getItem("phone")) &&
+          from !== getDataFromSessionStorage("phone")) &&
           (await increaseUnreadCount(from, wamid, false));
         await updateMessage({ ...newMessage, phone: from });
       }

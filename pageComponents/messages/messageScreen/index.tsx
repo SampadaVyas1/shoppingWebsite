@@ -6,7 +6,6 @@ import {
   useRef,
   Fragment,
 } from "react";
-import { useDispatch } from "react-redux";
 import { v4 as uuid } from "uuid";
 import { db } from "@/db";
 import socket from "@/socket";
@@ -20,6 +19,7 @@ import {
   formatTemplateData,
   formatTemplateHeader,
   getTimeStamp,
+  setDataInSessionStorage,
 } from "@/common/utils";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
 import {
@@ -29,7 +29,7 @@ import {
   resetUnreadCount,
   updateMessage,
 } from "@/common/dbUtils";
-import { MESSAGE_STATUS } from "@/common/enums";
+import { MESSAGE_STATUS, MESSAGE_TYPES } from "@/common/enums";
 import { ISelectedFile } from "@/pages/messages/messages.types";
 
 const MessageScreen = (props: IMessageScreenProps) => {
@@ -68,7 +68,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           messageId,
           message,
           timestamp,
-          messageType: "text",
+          messageType: MESSAGE_TYPES.TEXT,
           status: MESSAGE_STATUS.SENT,
           to: mobile,
           from: SOCKET_CONSTANTS.USER_ID,
@@ -92,7 +92,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           messaging_product: SOCKET_CONSTANTS.MESSAGING_PRODUCT,
           recipient_type: SOCKET_CONSTANTS.RECIPIENT_TYPE,
           to: mobile,
-          type: "text",
+          type: MESSAGE_TYPES.TEXT,
           messageId: messageId,
           text: {
             body: message,
@@ -126,7 +126,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
       timestamp,
       message: formatTemplateHeader(header?.text, name),
       caption: body?.text,
-      messageType: "image",
+      messageType: MESSAGE_TYPES.IMAGE,
       status: MESSAGE_STATUS.SENDING,
       to: mobile,
       from: SOCKET_CONSTANTS.USER_ID,
@@ -203,7 +203,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
         to: mobile,
         userId: SOCKET_CONSTANTS.USER_ID,
       });
-      sessionStorage.setItem("phone", mobile);
+      setDataInSessionStorage("phone", mobile);
       socket.on(SOCKET_ROUTES.ROOM_STATUS, (data) => {
         setRoomJoined(true);
       });

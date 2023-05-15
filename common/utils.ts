@@ -14,6 +14,12 @@ export const setDataInLocalStorage = (key: string, value: any) => {
 export const getDataFromLocalStorage = (key: string) =>
   typeof window !== "undefined" ? localStorage.getItem(key) : "";
 
+export const setDataInSessionStorage = (key: string, value: any) => {
+  sessionStorage.setItem(key, value);
+};
+export const getDataFromSessionStorage = (key: string) =>
+  typeof window !== "undefined" ? sessionStorage.getItem(key) : "";
+
 export const debounce = (callback: Function, wait: number = 100) => {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   return (...args: any) => {

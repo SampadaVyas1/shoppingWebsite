@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect,useState,FormEvent } from "react";
+import React, { ChangeEvent, useEffect, useState, FormEvent } from "react";
 import Image from "next/image";
 import { v4 as uuid } from "uuid";
 import ImageComponent from "@/components/imageComponent";
@@ -13,6 +13,7 @@ import Images from "@/public/assets/icons";
 import { IChatBottomProps } from "./chatBottom.types";
 import {
   BUTTON_VARIANT,
+  MESSAGE_TYPES,
   SKELETON_VARIANT,
   TOOLTIP_POSITION,
 } from "@/common/enums";
@@ -230,7 +231,7 @@ const ChatBottom = (props: IChatBottomProps) => {
 
       {selectedFile?.file?.name && (
         <Container customClass={styles.imagePreview}>
-          {selectedFile.file.type.includes("image") ? (
+          {selectedFile.file.type.includes(MESSAGE_TYPES.IMAGE) ? (
             <ImageComponent
               src={URL.createObjectURL(selectedFile.file)}
               customClass={styles.attachedImage}

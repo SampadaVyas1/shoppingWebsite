@@ -1,4 +1,10 @@
-import React, { useLayoutEffect, useState,useCallback ,useEffect,useRef} from "react";
+import React, {
+  useLayoutEffect,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+} from "react";
 import { db } from "@/db";
 import { useLiveQuery } from "dexie-react-hooks";
 import TipContainer from "@/components/tipContainer";
@@ -17,13 +23,16 @@ import {
   getCurrentDay,
   getStatusImage,
   isSameDay,
+  setDataInSessionStorage,
 } from "@/common/utils";
 import {
   MESSAGE_STATUS,
+  MESSAGE_TYPES,
   TOOLTIP_POSITION,
   TYPOGRAPHY_VARIANT,
 } from "@/common/enums";
 import { MESSAGE_STATUS_VARIANT } from "@/common/socketConstants";
+import { sortMessageByTime } from "@/common/dbUtils";
 
 const ChatBody = (props: IChatBodyProps) => {
   const { phone, onRetry } = props;
@@ -65,6 +74,10 @@ const ChatBody = (props: IChatBodyProps) => {
       });
   };
 
+  const handleMediaDownload = useCallback((mediaUrl: string) => {
+    window.open(mediaUrl, "_blank", "noreferrer");
+  }, []);
+
   const loadMoreChats = async (batchSize: number) => {
     setIsLoading(true);
     const messageCollection = await db.messages
@@ -83,10 +96,7 @@ const ChatBody = (props: IChatBodyProps) => {
 
   useEffect(() => {
     const print = async () => {
-      const messageCollection = await db.messages
-        .where("phone")
-        .equals(phone)
-        .sortBy("timestamp");
+      const messageCollection = await sortMessageByTime(phone);
       const messages = await messageCollection;
       setChats(messages.slice(-25));
     };
@@ -94,8 +104,8 @@ const ChatBody = (props: IChatBodyProps) => {
   }, [phone, messageListData]);
 
   useEffect(() => {
-    sessionStorage.setItem("phone", phone);
-    return () => sessionStorage.setItem("phone", "");
+    setDataInSessionStorage("phone", phone);
+    return () => setDataInSessionStorage("phone", "");
   }, [phone]);
 
   return (
@@ -156,7 +166,7 @@ const ChatBody = (props: IChatBodyProps) => {
                       height={200}
                     />
                   )}
-                  {type === "document" &&
+                  {type === MESSAGE_TYPES.DOCUMENT &&
                     (typeof mediaUrl !== "string" ? (
                       <Tag
                         tagValue={{
@@ -172,9 +182,7 @@ const ChatBody = (props: IChatBodyProps) => {
                             caption ||
                             mediaUrl!.substring(mediaUrl.lastIndexOf("/") + 1),
                         }}
-                        onClick={() =>
-                          window.open(mediaUrl, "_blank", "noreferrer")
-                        }
+                        onClick={() => handleMediaDownload(mediaUrl)}
                       />
                     ))}
                   <Typography

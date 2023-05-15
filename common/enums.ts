@@ -93,3 +93,8 @@ export enum MESSAGE_TYPES {
   IMAGE = "image",
   DOCUMENT = "document",
 }
+
+export enum TYPEOF {
+  STRING = "string",
+  NUMBER = "number",
+}

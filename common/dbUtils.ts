@@ -91,6 +91,14 @@ export const getMessageFromMessageId = async (messageId: string) => {
   return result;
 };
 
+export const sortMessageByTime = async (phone: string) => {
+  const result = await db.messages
+    .where("phone")
+    .equals(phone)
+    .sortBy("timestamp");
+  return result;
+};
+
 export const deleteMessageByMessageId = (whatsappId: string) => {
   db.messages.delete(whatsappId);
 };
