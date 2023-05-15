@@ -45,7 +45,6 @@ service.interceptors.response.use(
       return Promise.reject(error);
     } else if (
       error?.response?.status == ERROR_CODES.ERROR_FORBIDDEN &&
-      error?.response?.data?.error?.message === ACCESS_TOKEN_EXPIRED &&
       !!token
     ) {
       if (!originalRequest._retry) {
