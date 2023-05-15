@@ -1,6 +1,5 @@
-import React, { ChangeEvent, useEffect } from "react";
+import React, { ChangeEvent, useEffect,useState,FormEvent } from "react";
 import Image from "next/image";
-import { FormEvent, useState } from "react";
 import { v4 as uuid } from "uuid";
 import ImageComponent from "@/components/imageComponent";
 import InputBox from "@/components/inputBox";

@@ -28,11 +28,9 @@
 
   .startIcon,
   .endIcon {
-    display: flex;
-    align-items: center;
+    @include flex-center-alignment;
     width: 1.125rem;
     height: 1.125rem;
-    justify-content: center;
   }
 
   .inputField {

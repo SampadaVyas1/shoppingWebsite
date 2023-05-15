@@ -19,6 +19,7 @@ export enum API_ROUTES {
   LOGIN = "gauth/auth/login",
   GET_ACCESS_TOKEN = "gauth/auth/getNewAccessToken",
   CHECK_TOKEN = "gauth/auth/checkToken",
+  GET_ALL_TEMPLATES="/wa/whatsapp/getAllTemplates"
 }
 
 export const TEAM_PAGE_ROUTES = {

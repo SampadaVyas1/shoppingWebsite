@@ -1,5 +1,4 @@
-import { useState, useEffect, useCallback, ChangeEvent, useRef } from "react";
-import React from "react";
+import { useState, useEffect, useCallback, ChangeEvent, useRef, Fragment } from "react";
 import { useDispatch } from "react-redux";
 import { v4 as uuid } from "uuid";
 import { db } from "@/db";
@@ -211,7 +210,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
 
   return (
     <div className={styles.messageScreen} ref={chatScreenRef}>
-      <React.Fragment>
+      <Fragment>
         <ChatHeader
           name={name}
           designation={designation}
@@ -241,7 +240,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           chatScreenRef={chatScreenRef}
           isLoading={!props.isConnected || !isRoomJoined}
         />
-      </React.Fragment>
+      </Fragment>
     </div>
   );
 };

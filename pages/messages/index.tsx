@@ -1,5 +1,4 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import { Popover } from "react-tiny-popover";
 import Image from "next/image";
 import socket from "@/socket";
@@ -318,7 +317,7 @@ const Messages = () => {
           variant={BUTTON_VARIANT.CONTAINED}
           customStyle={styles.plusIcon}
           onClick={handleAddCandidate}
-        ></Button>
+        />
       </div>
       <div className={styles.messageScreen}>
         {!selectedCandidate?.mobile ? (
