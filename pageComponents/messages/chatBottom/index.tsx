@@ -21,7 +21,7 @@ import TransitionWrapper from "@/components/transitionWrapper";
 import { Popover, ArrowContainer } from "react-tiny-popover";
 import { useAppSelector } from "@/redux/hooks";
 import { useDispatch } from "react-redux";
-import { sagaActions } from "@/redux/constants";
+import { sagaActions } from "@/redux/actions";
 import Options from "@/components/select/options";
 import Loader from "@/components/loader";
 import { IOptionType } from "@/common/types";
