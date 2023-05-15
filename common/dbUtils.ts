@@ -1,5 +1,6 @@
 import { db } from "@/db";
 import { ISentMessage } from "./types";
+import { messageSaga } from "@/redux/sagas/message.saga";
 
 export const resetUnreadCount = async (mobile: string) => {
   const result = await db.conversations.where("id").equals(mobile).first();
@@ -83,4 +84,9 @@ export const filterList = async (searchKey: string) => {
       .toArray()
       .then(function (result) {});
   }
+};
+
+export const getMessageFromMessageId = async (messageId: string) => {
+  const result = await db.messages.where("messageId").equals(messageId).first();
+  return result;
 };

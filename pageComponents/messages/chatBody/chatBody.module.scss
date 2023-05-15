@@ -4,7 +4,7 @@
 .messageBody {
   flex: 1;
   background-color: $secondary;
-  @include flex-direction(column);
+  @include flex-direction(column, 1);
   padding: 1.5rem;
   box-sizing: border-box;
   overflow-y: auto;
@@ -93,7 +93,7 @@
   .previewModal {
     width: 30rem;
     @include flex-direction(column);
-        .imagePreview {
+    .imagePreview {
       align-self: center;
       width: 23rem;
       height: 23rem;

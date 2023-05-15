@@ -1,4 +1,4 @@
-import {useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Popover } from "react-tiny-popover";
 import Image from "next/image";
 import socket from "@/socket";
@@ -21,6 +21,7 @@ import levelData from "../../helpers/levelsData.json";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
 import {
   filterList,
+  getMessageFromMessageId,
   increaseUnreadCount,
   updateMessage,
 } from "@/common/dbUtils";
@@ -142,10 +143,7 @@ const Messages = () => {
 
   useEffect(() => {
     socket.on(SOCKET_ROUTES.STATUS, async (data: any) => {
-      const matchedResult = await db.messages
-        .where("messageId")
-        .equals(data.id)
-        .first();
+      const matchedResult = await getMessageFromMessageId(data.id);
       if (matchedResult) {
         await updateMessage({ ...matchedResult, status: data.status });
       }
@@ -157,10 +155,9 @@ const Messages = () => {
       if (data.length) {
         Promise.all(
           data.map(async (pendingStatus: any) => {
-            const matchedResult = await db.messages
-              .where("messageId")
-              .equals(pendingStatus.id)
-              .first();
+            const matchedResult = await getMessageFromMessageId(
+              pendingStatus.id
+            );
             if (matchedResult) {
               await updateMessage({
                 ...matchedResult,

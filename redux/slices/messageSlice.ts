@@ -24,10 +24,11 @@ export const messageSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
     },
-    MESSAGE_SAGA_FAILED: (state) => {
+    toggleError: (state) => {
       state.isError = true;
     },
   },
 });
 export default messageSlice.reducer;
-export const { toggleLoading, setAllTemplates } = messageSlice.actions;
+export const { toggleLoading, setAllTemplates, toggleError } =
+  messageSlice.actions;

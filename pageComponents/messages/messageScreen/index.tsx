@@ -1,4 +1,11 @@
-import { useState, useEffect, useCallback, ChangeEvent, useRef, Fragment } from "react";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  ChangeEvent,
+  useRef,
+  Fragment,
+} from "react";
 import { useDispatch } from "react-redux";
 import { v4 as uuid } from "uuid";
 import { db } from "@/db";
@@ -16,6 +23,7 @@ import {
 } from "@/common/utils";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
 import {
+  getMessageFromMessageId,
   getSentMessageData,
   resetUnreadCount,
   updateMessage,
@@ -128,10 +136,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
   useEffect(() => {
     socket.on(SOCKET_ROUTES.GET_MESSAGE, async (data: any) => {
       const { id, receiverNumber, messageId } = data;
-      const result = await db.messages
-        .where("messageId")
-        .equals(messageId)
-        .first();
+      const result = await getMessageFromMessageId(messageId);
       if (result) {
         await db.messages.update(messageId, {
           ...result,
@@ -145,10 +150,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
   useEffect(() => {
     socket.on(SOCKET_ROUTES.GET_MEDIA, async (data: any) => {
       const { id, receiverNumber, messageId, mediaUrl, fileName } = data;
-      const result = await db.messages
-        .where("messageId")
-        .equals(messageId)
-        .first();
+      const result = await getMessageFromMessageId(messageId);
       if (result) {
         await db.messages.update(messageId, {
           ...result,
