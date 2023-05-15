@@ -1,13 +1,7 @@
 import axios from "axios";
 import { googleLogout } from "@react-oauth/google";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
-import {
-  ACCESS_TOKEN_EXPIRED,
-  ACCESS_TOKEN_INVALID,
-  ERROR_CODES,
-  TOKEN,
-  USER_TOKEN,
-} from "@/common/constants";
+import { ERROR_CODES, TOKEN, USER_TOKEN } from "@/common/constants";
 import { PRIVATE_ROUTES } from "@/common/routes";
 import { getAccessToken } from "./login.service";
 
@@ -30,7 +24,6 @@ service.interceptors.response.use(
     return response;
   },
   async (error) => {
-    console.log(error);
     const originalRequest = error.config;
     const token = localStorage.getItem(TOKEN);
     if (error.code === ERROR_CODES.ERROR_NETWORK) {
@@ -53,8 +46,8 @@ service.interceptors.response.use(
         const response = await getAccessToken();
         if (response?.status === ERROR_CODES.STATUS_OK) {
           const { data } = response.data;
-          setDataInLocalStorage(TOKEN, data);
-          originalRequest.headers.Authorization = data;
+          setDataInLocalStorage(TOKEN, data.accessToken);
+          originalRequest.headers.Authorization = data.accessToken;
           return axios(originalRequest);
         } else {
           localStorage.clear();
@@ -62,13 +55,6 @@ service.interceptors.response.use(
           googleLogout();
         }
       }
-    } else if (
-      error?.response?.status == ERROR_CODES.ERROR_FORBIDDEN &&
-      error?.response?.data?.error?.message === ACCESS_TOKEN_INVALID
-    ) {
-      localStorage.clear();
-      window.location.href = PRIVATE_ROUTES.LOGIN;
-      googleLogout();
     }
     return Promise.reject(error);
   }
