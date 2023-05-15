@@ -12,8 +12,9 @@ import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { ISelectedFilter } from "./messageFilter.types";
 
 const MessageFilter = ({ onClose }: any) => {
-  console.log(onClose)
-  const [selectedFilter, setSelectedFilter] = useState<ISelectedFilter|null>(null);
+  const [selectedFilter, setSelectedFilter] = useState<ISelectedFilter | null>(
+    null
+  );
   const primaryFilters = [
     { type: "CANDIDATE_STATUS", name: "Candidate Status" },
     { type: "POSTING_TITLE", name: "Posting Title" },

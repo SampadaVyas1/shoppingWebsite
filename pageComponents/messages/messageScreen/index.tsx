@@ -23,6 +23,7 @@ import {
 } from "@/common/utils";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
 import {
+  deleteMessageByMessageId,
   getMessageFromMessageId,
   getSentMessageData,
   resetUnreadCount,
@@ -84,7 +85,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
         });
     setMessage("");
     selectedFile?.file?.name && setSelectedFile(null);
-    whatsappId.length && db.messages.delete(whatsappId);
+    whatsappId.length && deleteMessageByMessageId(whatsappId);
     await updateMessage({ ...newMessage, phone: mobile });
     !selectedFile?.file?.name
       ? socket.emit(SOCKET_ROUTES.SEND_PERSONAL_MESSAGE, {

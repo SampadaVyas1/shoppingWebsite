@@ -90,3 +90,7 @@ export const getMessageFromMessageId = async (messageId: string) => {
   const result = await db.messages.where("messageId").equals(messageId).first();
   return result;
 };
+
+export const deleteMessageByMessageId = (whatsappId: string) => {
+  db.messages.delete(whatsappId);
+};

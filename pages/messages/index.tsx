@@ -27,12 +27,13 @@ import {
 } from "@/common/dbUtils";
 import {
   BUTTON_VARIANT,
+  MESSAGE_TYPES,
   TOOLTIP_POSITION,
   TYPOGRAPHY_VARIANT,
 } from "@/common/enums";
 import MessagePlaceholder from "@/public/assets/images/messagePlaceholder.svg";
 import { ITagType } from "@/components/tag/tag.types";
-import { IMessagesStates } from "./messages.types";
+import { IIncomingMessageType, IMessagesStates } from "./messages.types";
 import { useAppSelector } from "@/redux/hooks";
 import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
 
@@ -110,6 +111,31 @@ const Messages = () => {
     }));
   };
 
+  const createNewMessage = (singleMessage: IIncomingMessageType) => {
+    const {
+      from,
+      wamid,
+      messageType,
+      timestamp,
+      message,
+      mediaUrl,
+      caption,
+      fileName,
+    } = singleMessage;
+    const newMessage = {
+      messageId: wamid,
+      message: message,
+      timestamp: timestamp,
+      messageType: messageType,
+      mediaUrl: mediaUrl,
+      to: SOCKET_CONSTANTS.USER_ID,
+      caption: caption,
+      fileName: fileName,
+      from: from,
+    };
+    return newMessage;
+  };
+
   useEffect(() => {
     if (!socket.connected) {
       socket.connect();
@@ -136,21 +162,14 @@ const Messages = () => {
         }));
       });
     }
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
 
-  useEffect(() => {
     socket.on(SOCKET_ROUTES.STATUS, async (data: any) => {
       const matchedResult = await getMessageFromMessageId(data.id);
       if (matchedResult) {
         await updateMessage({ ...matchedResult, status: data.status });
       }
     });
-  }, []);
 
-  useEffect(() => {
     socket.on(SOCKET_ROUTES.PENDING_STATUS, async (data: any) => {
       if (data.length) {
         Promise.all(
@@ -168,76 +187,40 @@ const Messages = () => {
         );
       }
     });
-  }, []);
 
-  useEffect(() => {
     socket.on(SOCKET_ROUTES.PENDING_MESSAGES, async (data: any) => {
-      const messageTypes = ["text", "document", "image"];
-
+      const messageTypes = [
+        MESSAGE_TYPES.TEXT,
+        MESSAGE_TYPES.DOCUMENT,
+        MESSAGE_TYPES.IMAGE,
+      ];
       Promise.all(
-        data.map(async (singleMessage: any) => {
-          const {
-            from,
-            wamid,
-            messageType,
-            timestamp,
-            message,
-            mediaUrl,
-            caption,
-            fileName,
-          } = singleMessage;
-          const newMessage = {
-            messageId: wamid,
-            message: message,
-            timestamp: timestamp,
-            messageType: messageType,
-            mediaUrl: mediaUrl,
-            to: SOCKET_CONSTANTS.USER_ID,
-            caption: caption,
-            fileName: fileName,
-            from: from,
-          };
-          if (messageTypes.includes(singleMessage?.messageType)) {
+        data.map(async (singleMessage: IIncomingMessageType) => {
+          const { from, wamid } = singleMessage;
+          const newMessage = createNewMessage(singleMessage);
+          if (
+            messageTypes.includes(singleMessage?.messageType as MESSAGE_TYPES)
+          ) {
             await increaseUnreadCount(from, wamid, true);
             await updateMessage({ ...newMessage, phone: from });
           }
         })
       );
     });
-  }, []);
-
-  useEffect(() => {
-    return () => sessionStorage.setItem("phone", "");
-  }, []);
-
-  useEffect(() => {
-    socket.on(SOCKET_ROUTES.NOTIFICATION, async (data: any) => {
-      const {
-        from,
-        wamid,
-        messageType,
-        timestamp,
-        message,
-        mediaUrl,
-        caption,
-        fileName,
-      } = data;
-      const newMessage = {
-        messageId: wamid,
-        message: message,
-        timestamp: timestamp,
-        messageType: messageType,
-        mediaUrl: mediaUrl,
-        fileName: fileName,
-        to: SOCKET_CONSTANTS.USER_ID,
-        caption: caption,
-        from: from,
-      };
-      (!sessionStorage.getItem("phone") ||
-        from !== sessionStorage.getItem("phone")) &&
-        (await increaseUnreadCount(from, wamid, false));
-      await updateMessage({ ...newMessage, phone: from });
-    });
+    socket.on(
+      SOCKET_ROUTES.NOTIFICATION,
+      async (data: IIncomingMessageType) => {
+        const { from, wamid } = data;
+        const newMessage = createNewMessage(data);
+        (!sessionStorage.getItem("phone") ||
+          from !== sessionStorage.getItem("phone")) &&
+          (await increaseUnreadCount(from, wamid, false));
+        await updateMessage({ ...newMessage, phone: from });
+      }
+    );
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   return (
