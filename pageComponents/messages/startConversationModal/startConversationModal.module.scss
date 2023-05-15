@@ -1,12 +1,10 @@
+@import "../../../styles/mixins.scss";
 .startModal {
-  display: flex;
-  flex-direction: column;
+  @include flex-direction(column);
   gap: 1.5rem;
   .header {
     padding: 0 !important;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @include flex-space-between-alignment;
     .search {
       max-width: 32.625rem;
     }

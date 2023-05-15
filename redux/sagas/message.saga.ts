@@ -8,7 +8,8 @@ export function* getAllTemplateSaga({}: AnyAction): any {
   try {
     yield put(toggleLoading());
     const result = yield getAllTemplates();
-    yield put(setAllTemplates(result.data.data.templates));
+    const templatesData=result.data.data.templates;
+    yield put(setAllTemplates(templatesData));
   } catch (e) {
     console.log(e);
     yield put({ type: sagaActions.MESSAGE_SAGA_FAILED });

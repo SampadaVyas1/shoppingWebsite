@@ -1,12 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { COMMON } from "../constants";
-
-export interface IMessageSliceStates {
-  isLoading: boolean;
-  phone: string;
-  templates: any;
-  isError: boolean;
-}
+import { IMessageSliceStates } from "./messageSlice.types";
 
 const initialState: IMessageSliceStates = {
   isLoading: false,

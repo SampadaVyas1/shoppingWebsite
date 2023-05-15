@@ -4,10 +4,9 @@
 .messageBody {
   flex: 1;
   background-color: $secondary;
-  display: flex;
+  @include flex-direction(column);
   padding: 1.5rem;
   box-sizing: border-box;
-  flex-direction: column;
   overflow-y: auto;
   gap: 0.75rem;
   bottom: 0;
@@ -77,9 +76,8 @@
   }
 
   .messageContent {
-    display: flex;
+    @include flex-direction(column);
     gap: 0.25rem;
-    flex-direction: column;
     .time {
       @include flex-justify-align(flex-end, center);
       gap: 0.75rem;
@@ -94,9 +92,8 @@
   }
   .previewModal {
     width: 30rem;
-    display: flex;
-    flex-direction: column;
-    .imagePreview {
+    @include flex-direction(column);
+        .imagePreview {
       align-self: center;
       width: 23rem;
       height: 23rem;
@@ -108,10 +105,9 @@
   overflow: hidden;
   flex: 1;
   background-color: $secondary;
-  display: flex;
+  @include flex-direction(column);
   padding: 1.5rem;
   box-sizing: border-box;
-  flex-direction: column;
   overflow-y: hidden;
   gap: 0.75rem;
 

@@ -49,9 +49,7 @@
       position: absolute;
       bottom: 2rem;
       right: 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      @include flex-center-alignment;
       background-color: $primary;
       .sendIcon {
         filter: invert(100%) sepia(94%) saturate(0%) hue-rotate(231deg)
