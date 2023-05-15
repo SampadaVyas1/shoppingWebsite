@@ -1,12 +1,14 @@
 import Table from "rc-table";
 import styles from "./table.module.scss";
+import { IHandleRowSelect, ITableComponent } from "./table.types";
 import {
-  IHeaderTitleProps,
-  IRecordProps,
-  ITableComponent,
-} from "./table.types";
-import { toCamelCase } from "@/common/utils";
-import { TABLE_CONSTANTS } from "@/common/constants";
+  checkIdeal,
+  checkMaster,
+  checkRow,
+  handleAllRowSelect,
+  toCamelCase,
+} from "@/common/utils";
+import { SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import CustomCheckBox from "../customCheckBox";
 import Typography from "../typography";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
@@ -14,16 +16,26 @@ import ImageComponent from "@/components/imageComponent";
 import { Column } from "rc-table";
 import Images from "@/public/assets/icons";
 import TableCell from "./tableCell";
+import { Fragment, useCallback } from "react";
+import { IData, IHeaderTitleProps } from "@/pages/candidates/candidates.types";
+import Loader from "../loader";
 
 export const TableComponent = (props: ITableComponent) => {
   const {
     data,
+    loading,
     columnHeaderTitle,
     additionalValue,
     fieldforDateFormat,
     dataFormatType,
     customStyle,
     customRowStyling,
+    buttonState,
+    handleSortArrowClick,
+    selectedRow,
+    handleRowSelect,
+    handleRowEachSelect,
+    hoverCell,
   } = props;
   const {
     upArrowDisabled,
@@ -31,18 +43,60 @@ export const TableComponent = (props: ITableComponent) => {
     downArrowDisabled,
     downArrowEnabled,
   } = Images;
+  const handleCheckBoxClicks = useCallback(
+    (id: number) => () => {
+      !!handleCheckBoxClick && handleCheckBoxClick(id);
+    },
+    [selectedRow]
+  );
+
+  const handleAscendingArrowClick = useCallback(
+    (dataIndex: string, data: IData) => () => {
+      !!handleSortArrowClick &&
+        handleSortArrowClick(dataIndex, SORT_TYPE.ASCENDING, data);
+    },
+    [buttonState]
+  );
+  const handleDescendingArrowClick = useCallback(
+    (dataIndex: string, data: IData) => () => {
+      !!handleSortArrowClick &&
+        handleSortArrowClick(dataIndex, SORT_TYPE.DESCENDING, data);
+    },
+    [buttonState]
+  );
+  const handleAllRowSelects = useCallback(
+    (data: IData[], selectedRow: number[], handleRowSelect: IHandleRowSelect) =>
+      () => {
+        handleAllRowSelect(data, selectedRow, handleRowSelect);
+      },
+    [data, selectedRow, handleAllRowSelect]
+  );
+  const handleCheckBoxClick = (id: number) => {
+    !!selectedRow &&
+      !!handleRowEachSelect &&
+      handleRowSelect &&
+      handleRowEachSelect(id, selectedRow, handleRowSelect);
+  };
 
   const generateColumns = (columnHeaderTitle: IHeaderTitleProps[]) => {
     return (
       !!columnHeaderTitle &&
       columnHeaderTitle?.map((column: IHeaderTitleProps) => {
-        const dataIndex = toCamelCase(column.title);
+        const dataIndex = column.dataIndex;
         return (
           <Column
             title={
               <div className={styles.header}>
                 {column.title === TABLE_CONSTANTS.CHECKBOX ? (
-                  <CustomCheckBox />
+                  <CustomCheckBox
+                    ideal={!!selectedRow && checkIdeal(selectedRow, data)}
+                    checked={!!selectedRow && checkMaster(selectedRow, data)}
+                    handleClick={
+                      selectedRow &&
+                      handleRowSelect &&
+                      handleAllRowSelects(data, selectedRow, handleRowSelect)
+                    }
+                  />
                 ) : (
                   <Typography
                     variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
@@ -53,33 +107,61 @@ export const TableComponent = (props: ITableComponent) => {
                 {!!column.sort && (
                   <div className={styles.sortIcon}>
                     <ImageComponent
-                      src={upArrowEnabled}
+                      src={
+                        !!buttonState && buttonState[dataIndex]?.upKeyDisabled
+                          ? upArrowDisabled
+                          : upArrowEnabled
+                      }
                       width={10}
                       height={10}
+                      onClick={
+                        data && handleAscendingArrowClick(dataIndex, data)
+                      }
                       className={styles.ascendingicon}
                     />
                     <ImageComponent
-                      src={downArrowEnabled}
+                      src={
+                        !!buttonState &&
+                        buttonState[dataIndex as string]?.downKeyDisabled
+                          ? downArrowDisabled
+                          : downArrowEnabled
+                      }
                       width={10}
                       height={10}
+                      onClick={
+                        data &&
+                        handleDescendingArrowClick(dataIndex as string, data)
+                      }
                       className={styles.ascendingicon}
                     />
                   </div>
                 )}
               </div>
             }
-            dataIndex={dataIndex}
-            key={dataIndex}
-            render={(text: string, record: IRecordProps) =>
+            dataIndex={dataIndex as string}
+            key={column.key as string}
+            render={(text: string, record: IData, index: number) =>
               column.title == TABLE_CONSTANTS.CHECKBOX ? (
-                <CustomCheckBox checked={record.checked} />
+                <CustomCheckBox
+                  id={data[index][TABLE_CONSTANTS.ID]}
+                  handleClick={handleCheckBoxClicks(
+                    data[index][TABLE_CONSTANTS.ID]
+                  )}
+                  checked={
+                    selectedRow &&
+                    checkRow(data[index][TABLE_CONSTANTS.ID], selectedRow)
+                  }
+                  customClass={styles.checkBoxStyling}
+                />
               ) : (
                 <TableCell
-                  dataIndex={dataIndex}
-                  record={record}
+                  dataIndex={dataIndex as string}
+                  data={data}
                   field={fieldforDateFormat}
-                  additionalValue={additionalValue}
+                  additionalValue={additionalValue && additionalValue}
                   dataFormatType={dataFormatType}
+                  index={index}
+                  hoverCell={hoverCell}
                 />
               )
             }
@@ -90,12 +172,19 @@ export const TableComponent = (props: ITableComponent) => {
   };
 
   return (
-    <Table
-      data={!!data && data}
-      components={customStyle}
-      rowClassName={customRowStyling}
-    >
-      {generateColumns(columnHeaderTitle)}
-    </Table>
+    <Fragment>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Table
+          data={!!data && data}
+          className={styles.rcTable}
+          components={customStyle}
+          rowClassName={customRowStyling}
+        >
+          {generateColumns(columnHeaderTitle)}
+        </Table>
+      )}
+    </Fragment>
   );
 };

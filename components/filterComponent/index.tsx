@@ -1,30 +1,24 @@
 import React, { useState } from "react";
 import Typography from "@/components/typography";
 import Card from "@/components/card";
-import CustomCheckBox from "@/components/customCheckBox";
 import ImageComponent from "@/components/imageComponent";
-import MultiselectOptions from "@/components/select/multiselectOptions";
+import MulitSelectCheckBOX from "./multiSelectCheckBox/index"
 import Button from "@/components/button";
 import Images from "@/public/assets/icons";
-import styles from "./messageFilter.module.scss";
-import { techStackOptions } from "@/components/addForm/addForm.constants";
+import styles from "./filterComponent.module.scss";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
-import { ISelectedFilter } from "./messageFilter.types";
 
-const MessageFilter = ({ onClose }: any) => {
-  const [selectedFilter, setSelectedFilter] = useState<ISelectedFilter | null>(
-    null
-  );
-  const primaryFilters = [
-    { type: "CANDIDATE_STATUS", name: "Candidate Status" },
-    { type: "POSTING_TITLE", name: "Posting Title" },
-    { type: "TECH_STACK", name: "Tech Stack" },
-  ];
-
+const Filter = ({ onClose, filterData,onClick,filterList}: any) => {
+  const [selectedFilter, setSelectedFilter] = useState<any>(null);
+  const [options,setOptions]=useState()
+ 
+  const [filters, setFilters] = useState<any>(filterList)
   const handleFilterClick = (filterData: any) => {
     if (filterData?.type == selectedFilter?.type) {
       setSelectedFilter(null);
-    } else setSelectedFilter(filterData);
+    } else {setSelectedFilter(filterData);
+      setOptions(filterData.value)
+    }
   };
   return (
     <Card customClass={styles.messageFilter}>
@@ -38,16 +32,7 @@ const MessageFilter = ({ onClose }: any) => {
               <div className={styles.clearButton}>Clear all</div>
             </div>
             <div className={styles.filters}>
-              <div className={styles.statusFilter}>
-                <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}>
-                  Message Status
-                </Typography>
-                <div className={styles.filter}>
-                  <CustomCheckBox label="Unread" id={"Unread"} />
-                  <CustomCheckBox label="Failed" id={"Failed"} />
-                </div>
-              </div>
-              {primaryFilters.map((filter, index: number) => {
+              {!!filterData && filterData.map((filter:any, index: number) => {
                 const customStyle =
                   filter.type === selectedFilter?.type
                     ? `${styles.mainFilters} ${styles.activeFilter}`
@@ -76,11 +61,12 @@ const MessageFilter = ({ onClose }: any) => {
                 <div className={styles.clearButton}>Clear</div>
               </div>
               <div className={styles.filters}>
-                <MultiselectOptions
-                  options={techStackOptions}
+                <MulitSelectCheckBOX 
+                  options={options!}
                   searchable
+                  onSelect={(value)=> setFilters((prevState:any)=>({...prevState, [selectedFilter?.type]: value}))}
                   customStyle={styles.techFilter}
-                  selectedValues={[]}
+                  selectedValues={filters[selectedFilter?.type]}
                 />
               </div>
             </div>
@@ -90,10 +76,10 @@ const MessageFilter = ({ onClose }: any) => {
           <Button variant={BUTTON_VARIANT.OUTLINED} onClick={onClose}>
             Cancel
           </Button>
-          <Button variant={BUTTON_VARIANT.CONTAINED}>Apply Filters</Button>
+          <Button variant={BUTTON_VARIANT.CONTAINED} onClick={()=>onClick(filters)}>Apply Filters</Button>
         </div>
       </React.Fragment>
     </Card>
   );
 };
-export default MessageFilter;
+export default Filter;

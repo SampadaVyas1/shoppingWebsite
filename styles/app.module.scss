@@ -12,7 +12,7 @@
   gap: 1rem;
   width: 100%;
   .content {
-    @include flex-direction(column,1);
+    @include flex-direction(column, 1);
     @include flex-justify-align(center);
     gap: 0.5rem;
   }

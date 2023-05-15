@@ -7,4 +7,23 @@
 }
 .colSpan {
   letter-spacing: 0.030;
+  height: 4.25rem;;
+}
+.tooltip {
+  position: relative;
+  .tooltipCustomStyle {
+    background-color: $primary;
+    height: 2.125rem;
+    color: $white;
+    width: max-content;
+    position: absolute;
+    @include flex-center-alignment;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    top: 2rem;
+    font-weight: 300;
+    font-size: 0.75rem;
+    line-height: 1.125rem;
+    letter-spacing: 0.030rem;
+  }
 }

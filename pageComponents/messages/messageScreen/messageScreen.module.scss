@@ -1,7 +1,7 @@
 @import "../../../styles/variables";
 @import "../../../styles/mixins.scss";
 .messageScreen {
-  @include flex-direction(column,1);
+  @include flex-direction(column, 1);
   height: 100%;
   position: relative;
   .popover-arrow {

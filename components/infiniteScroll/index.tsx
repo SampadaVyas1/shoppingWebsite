@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   InfiniteScrollProps,
   InfiniteScrollState,
@@ -48,7 +48,7 @@ const InfiniteScroll = ({
     ? debounce(handleReverseScroll)
     : debounce(handleDebounce);
 
-
+  const handleScroll = debounce(handleDebounce);
   return (
     <div ref={scrollRef} onScroll={handleScroll} className={customClass}>
       {children}

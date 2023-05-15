@@ -41,8 +41,9 @@ export interface INavbarProps {
 }
 
 export interface IEmptyStateType {
-  title: string;
+  title?: string;
   image: string;
   subTitle?: string;
   customImageStyle?: string;
+  heading?: string;
 }

@@ -10,9 +10,11 @@ const EmptyState = ({
   image,
   subTitle = "",
   customImageStyle = "",
+  heading
 }: IEmptyStateType) => {
   return (
     <div className={styles.emptyStateContainer}>
+     <Typography variant={TYPOGRAPHY_VARIANT.HEADER_LARGE}  customStyle={styles.error404}>{heading}</Typography>
       <div className={styles.imageContainer}>
         <ImageComponent
           src={image}
