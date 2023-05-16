@@ -1,6 +1,11 @@
-import { useState, useEffect, useCallback, ChangeEvent } from "react";
-import React from "react";
-import { useDispatch } from "react-redux";
+import {
+  useState,
+  useEffect,
+  useCallback,
+  ChangeEvent,
+  useRef,
+  Fragment,
+} from "react";
 import { v4 as uuid } from "uuid";
 import { db } from "@/db";
 import socket from "@/socket";
@@ -10,16 +15,21 @@ import ChatHeader from "../chatHeader";
 import ChatBody from "../chatBody";
 import styles from "./messageScreen.module.scss";
 import { IMessageScreenProps } from "./messageScreen.types";
-import { getTimeStamp } from "@/common/utils";
+import {
+  formatTemplateData,
+  formatTemplateHeader,
+  getTimeStamp,
+  setDataInSessionStorage,
+} from "@/common/utils";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
 import {
+  deleteMessageByMessageId,
+  getMessageFromMessageId,
   getSentMessageData,
   resetUnreadCount,
   updateMessage,
 } from "@/common/dbUtils";
-import { MESSAGE_STATUS } from "@/common/enums";
-import { setPhone } from "@/redux/slices/messageSlice";
-import { useAppSelector } from "@/redux/hooks";
+import { MESSAGE_STATUS, MESSAGE_TYPES } from "@/common/enums";
 import { ISelectedFile } from "@/pages/messages/messages.types";
 
 const MessageScreen = (props: IMessageScreenProps) => {
@@ -35,8 +45,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
   const [isRoomJoined, setRoomJoined] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<ISelectedFile | null>(null);
-
-  const dispatch = useDispatch();
+  const chatScreenRef = useRef<HTMLDivElement>(null);
 
   const handleMessageChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -59,7 +68,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           messageId,
           message,
           timestamp,
-          messageType: "text",
+          messageType: MESSAGE_TYPES.TEXT,
           status: MESSAGE_STATUS.SENT,
           to: mobile,
           from: SOCKET_CONSTANTS.USER_ID,
@@ -76,14 +85,14 @@ const MessageScreen = (props: IMessageScreenProps) => {
         });
     setMessage("");
     selectedFile?.file?.name && setSelectedFile(null);
-    whatsappId.length && db.messages.delete(whatsappId);
+    whatsappId.length && deleteMessageByMessageId(whatsappId);
     await updateMessage({ ...newMessage, phone: mobile });
     !selectedFile?.file?.name
       ? socket.emit(SOCKET_ROUTES.SEND_PERSONAL_MESSAGE, {
           messaging_product: SOCKET_CONSTANTS.MESSAGING_PRODUCT,
-          recipient_type: SOCKET_CONSTANTS.RECIPEINT_TYPE,
+          recipient_type: SOCKET_CONSTANTS.RECIPIENT_TYPE,
           to: mobile,
-          type: "text",
+          type: MESSAGE_TYPES.TEXT,
           messageId: messageId,
           text: {
             body: message,
@@ -99,13 +108,36 @@ const MessageScreen = (props: IMessageScreenProps) => {
         });
   };
 
+  const handleTemplateSend = async (template: any) => {
+    const timestamp = getTimeStamp().toString();
+    const messageId = `${uuid()}${timestamp}`;
+    const templateData = formatTemplateData(
+      template,
+      name,
+      messageId,
+      timestamp
+    );
+    socket.emit(SOCKET_ROUTES.SEND_TEMPLATE, templateData);
+    const [header, body, ...otherElements] = template?.components ?? [];
+    const [parameters, ...restElements] = header?.example?.header_handle ?? [];
+    const newMessage = getSentMessageData({
+      messageId,
+      mediaUrl: parameters,
+      timestamp,
+      message: formatTemplateHeader(header?.text, name),
+      caption: body?.text,
+      messageType: MESSAGE_TYPES.IMAGE,
+      status: MESSAGE_STATUS.SENDING,
+      to: mobile,
+      from: SOCKET_CONSTANTS.USER_ID,
+    });
+    await updateMessage({ ...newMessage, phone: mobile });
+  };
+
   useEffect(() => {
     socket.on(SOCKET_ROUTES.GET_MESSAGE, async (data: any) => {
       const { id, receiverNumber, messageId } = data;
-      const result = await db.messages
-        .where("messageId")
-        .equals(messageId)
-        .first();
+      const result = await getMessageFromMessageId(messageId);
       if (result) {
         await db.messages.update(messageId, {
           ...result,
@@ -118,17 +150,15 @@ const MessageScreen = (props: IMessageScreenProps) => {
 
   useEffect(() => {
     socket.on(SOCKET_ROUTES.GET_MEDIA, async (data: any) => {
-      const { id, receiverNumber, messageId, mediaUrl } = data;
-      const result = await db.messages
-        .where("messageId")
-        .equals(messageId)
-        .first();
+      const { id, receiverNumber, messageId, mediaUrl, fileName } = data;
+      const result = await getMessageFromMessageId(messageId);
       if (result) {
         await db.messages.update(messageId, {
           ...result,
           message: result?.message,
           messageId: id,
           mediaUrl: mediaUrl,
+          fileName: fileName,
           status: MESSAGE_STATUS.SENT,
         });
       }
@@ -169,33 +199,21 @@ const MessageScreen = (props: IMessageScreenProps) => {
   useEffect(() => {
     if (props.isConnected) {
       setRoomJoined(false);
-      db.transaction("rw", db.conversations, db.messages, async () => {
-        const messages = await db.messages
-          .where("phone")
-          .equals(mobile)
-          .toArray();
-        const syncObject = {
-          [mobile]: {
-            ta: 1092,
-            messages: messages,
-          },
-        };
-      });
       socket.emit(SOCKET_ROUTES.JOIN_ROOM, {
         to: mobile,
         userId: SOCKET_CONSTANTS.USER_ID,
       });
-      localStorage.setItem("phone", mobile);
+      setDataInSessionStorage("phone", mobile);
       socket.on(SOCKET_ROUTES.ROOM_STATUS, (data) => {
         setRoomJoined(true);
       });
       resetUnreadCount(mobile);
     }
-  }, [dispatch, mobile, props.isConnected]);
+  }, [mobile, props.isConnected]);
 
   return (
-    <div className={styles.messageScreen}>
-      <React.Fragment>
+    <div className={styles.messageScreen} ref={chatScreenRef}>
+      <Fragment>
         <ChatHeader
           name={name}
           designation={designation}
@@ -220,10 +238,12 @@ const MessageScreen = (props: IMessageScreenProps) => {
           handleMessageChange={handleMessageChange}
           message={message}
           onFileRemoval={handleFileRemoval}
-          mobile={mobile}
+          candidateName={name}
+          onTemplateSend={handleTemplateSend}
+          chatScreenRef={chatScreenRef}
           isLoading={!props.isConnected || !isRoomJoined}
         />
-      </React.Fragment>
+      </Fragment>
     </div>
   );
 };

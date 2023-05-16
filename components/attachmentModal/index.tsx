@@ -4,6 +4,7 @@ import TransitionWrapper from "../transitionWrapper";
 import styles from "./attachmentModal.module.scss";
 import Images from "@/public/assets/icons";
 import { IAttachmentModalProps } from "./attachmentModal.types";
+import { IMAGE_TYPES } from "@/common/constants";
 
 const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
   const imageRef = useRef<HTMLInputElement>(null);
@@ -17,14 +18,13 @@ const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
   };
 
   const onImageSelect = (event: any) => {
-    const file = event.target.files[0];
-    file && onSelection(event.target.files[0], "image");
+    const [file, ...otherElements] = event.target.files;
+    file && onSelection(file, "image");
   };
 
   const onFileSelect = (event: any) => {
-    const file = event.target.files[0];
-    console.log(file);
-    file && onSelection(event.target.files[0], "document");
+    const [file, ...otherElements] = event.target.files;
+    file && onSelection(file, "document");
   };
 
   return (
@@ -36,7 +36,7 @@ const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
             ref={imageRef}
             className={styles.fileInput}
             onChange={onImageSelect}
-            accept="image/png, image/jpg, image/jpeg"
+            accept={IMAGE_TYPES}
           />
           <ImageComponent
             src={Images.imageAttachmentIcon}

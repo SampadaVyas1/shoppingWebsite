@@ -18,6 +18,7 @@ export interface ISentMessage {
   from: string;
   phone?: string;
   caption?: string;
+  fileName?: string;
 }
 export interface IOptionType {
   id: number;
@@ -44,5 +45,5 @@ export interface IEmptyStateType {
   image: string;
   subTitle?: string;
   customImageStyle?: string;
-  heading?:string;
+  heading?: string;
 }

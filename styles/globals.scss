@@ -78,7 +78,7 @@ a {
 .Toastify__toast--success {
   border: none;
   border-radius: 0.5rem !important;
-  background: #2c74d6 !important;
+  background: $primary !important;
   padding: 0.75rem 1rem;
   box-sizing: border-box;
   max-height: 2.5rem !important;
@@ -86,11 +86,8 @@ a {
   box-shadow: 0 0.1875rem 0.375rem rgba(16, 24, 40, 0.16);
 }
 .Toastify__toast-body {
-  color: white;
+  color: $white;
   font-size: 0.75rem;
-  line-height: 1.125rem;
-  width: 100%;
-  padding: 0 1rem;
 }
 .Toastify--animate-icon,
 .Toastify__toast > button > svg {
@@ -131,4 +128,7 @@ a {
 .rc-table-cell {
   padding: 0.5rem 0.75rem;
   height: 3.75rem;
+}
+.popover-arrow {
+  top: auto;
 }

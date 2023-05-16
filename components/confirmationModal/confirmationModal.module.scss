@@ -15,9 +15,8 @@
     color: $gray-500;
   }
   .modalButtons {
-    display: flex;
+    @include flex-justify-align( flex-end);
     width: 100%;
     gap: 0.5rem;
-    justify-content: flex-end;
   }
 }

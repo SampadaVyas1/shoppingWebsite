@@ -1,10 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { COMMON } from "../constants";
-
-export interface ICommonSliceStates {
-  isLoading: boolean;
-  levelFilters: string[];
-}
+import { ICommonSliceStates } from "./commonSlice.types";
 
 const initialState: ICommonSliceStates = {
   isLoading: false,

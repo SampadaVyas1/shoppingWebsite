@@ -1,13 +1,11 @@
-import { REFRESH_TOKEN } from "@/common/constants";
-import axios from "axios";
+import { API_ROUTES } from "@/common/routes";
+import service from "./config";
 
-export const getMedia = async (imageId: string) => {
+export const getAllTemplates = async () => {
   try {
-    const response = await axios.get(
-      `https://graph.facebook.com/v15.0/${imageId}`
-    );
+    const response = await service.get(API_ROUTES.GET_ALL_TEMPLATES);
     return response;
   } catch (error) {
-    console.log(error);
+    return { data: null, error: error };
   }
 };

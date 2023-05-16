@@ -1,15 +1,13 @@
 @import "../../../styles/variables";
+@import "../../../styles/mixins.scss";
 
 .chatHeader {
-  display: flex;
   padding: 0.75rem 1.5rem;
   box-sizing: border-box;
-  justify-content: space-between;
-  align-items: center;
+  @include flex-space-between-alignment;
 
   .profile {
-    display: flex;
-    align-items: center;
+    @include flex-align-center;
     gap: 1.5rem;
     .image {
       width: 3.5rem;
@@ -18,8 +16,7 @@
     }
   }
   .detail {
-    display: flex;
-    flex-direction: column;
+    @include flex-direction(column);
     .hint {
       color: $gray-500;
     }
@@ -31,8 +28,7 @@
   }
   .detailSkeleton {
     width: 25rem;
-    display: flex;
-    flex-direction: column;
+    @include flex-direction(column);
     gap: 0.5rem;
     .skeletonText {
       height: 1rem;

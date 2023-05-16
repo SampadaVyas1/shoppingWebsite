@@ -1,6 +1,8 @@
+import { v4 as uuid } from "uuid";
 import Images from "@/public/assets/icons";
 import moment from "moment";
 import { MESSAGE_STATUS } from "./enums";
+import { HEADER, IMAGE, TIME_FORMAT } from "./constants";
 
 interface IData {
   [key: string]: any;
@@ -15,6 +17,12 @@ export const setDataInLocalStorage = (key: string, value: any) => {
 };
 export const getDataFromLocalStorage = (key: string) =>
   typeof window !== "undefined" ? localStorage.getItem(key) : "";
+
+export const setDataInSessionStorage = (key: string, value: any) => {
+  sessionStorage.setItem(key, value);
+};
+export const getDataFromSessionStorage = (key: string) =>
+  typeof window !== "undefined" ? sessionStorage.getItem(key) : "";
 
 export const debounce = (callback: Function, wait: number = 100) => {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -59,7 +67,6 @@ export const checkIdeal = (selectedRow: number[], data: IData[]) => {
   const newdata =
     !!data &&
     data?.filter((item) => selectedRow?.find((param) => param === item?.id));
-    data?.filter((item) => selectedRow?.find((param) => param === item?.id));
   return !checkMaster(selectedRow, data) &&
     ((!!newdata.length && newdata.length < newdata?.length) ||
       selectedRow?.length)
@@ -95,8 +102,8 @@ export const getTimeStamp = () => {
 
 export const isSameDay = (currentDay: string, previousDay: string) => {
   return (
-    moment.unix(parseInt(currentDay)).format("DD/MM/YYYY") ===
-    moment.unix(parseInt(previousDay)).format("DD/MM/YYYY")
+    moment.unix(parseInt(currentDay)).format(TIME_FORMAT.DATE_MONTH) ===
+    moment.unix(parseInt(previousDay)).format(TIME_FORMAT.DATE_MONTH)
   );
 };
 
@@ -134,4 +141,49 @@ export const toCamelCase = (str: string) => {
     words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
   }
   return words.join("");
+};
+
+export const formatTemplateName = (templateName: string) => {
+  return templateName?.replace(/(^\w{1})|(\s+\w{1})/g, (letter) =>
+    letter.toUpperCase()
+  );
+};
+
+export const formatTemplateData = (
+  template: any,
+  candidateName: string,
+  messageId: string,
+  timestamp: string
+) => {
+  const templateName = template?.name;
+  const components = template?.components.filter(
+    (component: any) => component.type === HEADER
+  );
+  const templateComponents = {
+    type: "header",
+    parameters: components?.map((component: any) => {
+      const [imageLink, ...otherElements] =
+        component?.example?.header_handle ?? [];
+      return {
+        type: component.format.toLowerCase(),
+        [component.format.toLowerCase()]:
+          component.format.toLowerCase() === IMAGE
+            ? { link: imageLink }
+            : candidateName,
+      };
+    }),
+  };
+
+  return {
+    name: templateName,
+    components: [templateComponents],
+    messageId: messageId,
+  };
+};
+
+export const formatTemplateHeader = (
+  header: string,
+  replacementText: string
+) => {
+  return header?.replace("{{1}}", replacementText);
 };

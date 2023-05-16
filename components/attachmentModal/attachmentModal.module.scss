@@ -1,7 +1,7 @@
 @import "../../styles/variables";
+@import "../../styles/mixins";
 .attachmentModal {
-  display: flex;
-  flex-direction: column;
+  @include flex-direction(column);
   gap: 0.75rem;
   position: absolute;
   left: 3.75rem;

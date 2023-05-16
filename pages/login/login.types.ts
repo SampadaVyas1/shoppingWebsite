@@ -4,6 +4,6 @@ export interface ILoginStates {
 }
 export interface ITokens {
   accessToken: string;
-  refreshToken: string;
+  refresh_token: string;
   userToken: string;
 }

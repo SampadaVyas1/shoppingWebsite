@@ -33,12 +33,13 @@ const Images = {
   upArrowEnabled: require("./upArrowEnabled.svg").default,
   downArrowDisabled: require("./downArrowDisabled.svg").default,
   downArrowEnabled: require("./downArrowEnabled.svg").default,
-  searchIcon:require("./searchIcon.svg").default,
-  rightArrow:require("./rightArrow.svg").default,
-  addButton:require("./addButton.svg").default,
-  candidateEmptyState:require("./candidateEmptyState.svg").default,
-  Error404:require("./404.svg"),
-  searchResultNotFound:require("./searchResultNotFound.svg")
-}
+  noCandidate: require("./noCandidate.svg").default,
+  searchIcon: require("./searchIcon.svg").default,
+  rightArrow: require("./rightArrow.svg").default,
+  addButton: require("./addButton.svg").default,
+  candidateEmptyState: require("./candidateEmptyState.svg").default,
+  Error404: require("./404.svg"),
+  searchResultNotFound: require("./searchResultNotFound.svg"),
+};
 
 export default Images;

@@ -6,7 +6,12 @@ export interface InfiniteScrollState {
   handleScroll?: () => void;
 }
 export interface InfiniteScrollProps extends PropsWithChildren {
-  handlePageChange: () => void;
+  handlePageChange?: () => void;
+  onReversePageChange?: (
+    scrollTop: number,
+    scrollRef: React.RefObject<HTMLDivElement>
+  ) => void;
   nextPage: boolean;
   customClass?: string;
+  reverseScroll?: boolean;
 }

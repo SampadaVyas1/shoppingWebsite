@@ -3,15 +3,6 @@
 .list {
   @include flex-direction(column);
   overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    width: 0.5rem;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $gray-300;
-    border-radius: 0.25rem;
-  }
 }
 .listSkeleton {
   @include flex-direction(column);
@@ -25,11 +16,22 @@
       @include flex-direction(column, 1);
       gap: 0.5rem;
       padding: 0.5rem;
-      justify-content: space-around;
+      @include flex-justify-align(space-around);
       .skeletonBox {
         flex: 1;
         border-radius: 0.25rem;
       }
     }
+  }
+}
+.chatInfinite {
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $gray-300;
+    border-radius: 0.25rem;
   }
 }

@@ -55,3 +55,13 @@ export const REGEX = {
 };
 export const TRANSITION_TIMEOUT = 300;
 export const INPUT_PLACEHOLDER = "Enter text here";
+export const TIME_FORMAT = {
+  HOUR_MINUTE: "hh:mm A",
+  DATE_MONTH: "DD/MM/YYYY",
+};
+export const HEADER = "HEADER";
+export const IMAGE = "image";
+export const IMAGE_TYPES = "image/png, image/jpg, image/jpeg";
+export const DOCUMENT_TYPES =
+  "application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint";
+export const ENTER_KEYCODE = 13;

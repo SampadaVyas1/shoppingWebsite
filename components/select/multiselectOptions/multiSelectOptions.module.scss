@@ -27,7 +27,6 @@
   .multiSelectOptions {
     display: flex;
     flex-direction: column;
-    max-height: 11.25rem;
     overflow-y: auto;
     &::-webkit-scrollbar {
       width: 0.25rem;

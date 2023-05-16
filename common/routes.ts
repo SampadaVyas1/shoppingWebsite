@@ -19,9 +19,10 @@ export enum API_ROUTES {
   LOGIN = "gauth/auth/login",
   GET_ACCESS_TOKEN = "gauth/auth/getNewAccessToken",
   CHECK_TOKEN = "gauth/auth/checkToken",
-  GET_CANDIDATES=`tpi/candidate/getAllCandidates`,
-  GET_FILTER="tpi/filters/getAllFilters",
-  ADD_CANDIDATES="tpi/candidate/createCandidate"
+  GET_ALL_TEMPLATES = "/wa/whatsapp/getAllTemplates",
+  GET_CANDIDATES = `tpi/candidate/getAllCandidates`,
+  GET_FILTER = "tpi/filters/getAllFilters",
+  ADD_CANDIDATES = "tpi/candidate/createCandidate",
 }
 
 export const TEAM_PAGE_ROUTES = {

@@ -1,14 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { COMMON } from "../constants";
-
-export interface IMessageSliceStates {
-  isLoading: boolean;
-  phone: string;
-}
+import { IMessageSliceStates } from "./messageSlice.types";
 
 const initialState: IMessageSliceStates = {
   isLoading: false,
   phone: "",
+  templates: [],
+  isError: false,
 };
 
 export const messageSlice = createSlice({
@@ -21,7 +19,16 @@ export const messageSlice = createSlice({
     setPhone: (state, action) => {
       state.phone = action.payload;
     },
+    setAllTemplates: (state, action) => {
+      state.templates = action.payload;
+      state.isLoading = false;
+      state.isError = false;
+    },
+    toggleError: (state) => {
+      state.isError = true;
+    },
   },
 });
 export default messageSlice.reducer;
-export const { toggleLoading, setPhone } = messageSlice.actions;
+export const { toggleLoading, setAllTemplates, toggleError } =
+  messageSlice.actions;

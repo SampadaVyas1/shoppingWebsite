@@ -57,6 +57,7 @@ const ImageComponent = (props: IImageProps) => {
         alt="image"
         className={customClass}
         onClick={props.onClick}
+        placeholder="blur"
         width={+width}
         height={+height}
         priority={true}

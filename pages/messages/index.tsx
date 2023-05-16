@@ -1,9 +1,7 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import { Popover } from "react-tiny-popover";
 import Image from "next/image";
 import socket from "@/socket";
-import { db } from "@/db";
 import Button from "@/components/button";
 import ImageComponent from "@/components/imageComponent";
 import CandidateList from "../../pageComponents/messages/candidateList";
@@ -13,22 +11,31 @@ import Tag from "@/components/tag";
 import TransitionWrapper from "@/components/transitionWrapper";
 import MessageFilter from "@/pageComponents/messages/messageFilter";
 import MessageScreen from "@/pageComponents/messages/messageScreen";
+import Modal from "@/components/modal";
+import StartConversationModal from "@/pageComponents/messages/startConversationModal";
 import styles from "./messages.module.scss";
 import Images from "@/public/assets/icons";
 import candidateData from "./candidates.json";
 import levelData from "../../helpers/levelsData.json";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
-import { increaseUnreadCount, updateMessage } from "@/common/dbUtils";
+import {
+  filterList,
+  getMessageFromMessageId,
+  increaseUnreadCount,
+  updateMessage,
+} from "@/common/dbUtils";
 import {
   BUTTON_VARIANT,
+  MESSAGE_TYPES,
   TOOLTIP_POSITION,
   TYPOGRAPHY_VARIANT,
 } from "@/common/enums";
 import MessagePlaceholder from "@/public/assets/images/messagePlaceholder.svg";
 import { ITagType } from "@/components/tag/tag.types";
-import { IMessagesStates } from "./messages.types";
+import { IIncomingMessageType, IMessagesStates } from "./messages.types";
 import { useAppSelector } from "@/redux/hooks";
 import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
+import { getDataFromSessionStorage } from "@/common/utils";
 
 const Messages = () => {
   const [messagePageState, setMessagePageState] = useState<IMessagesStates>({
@@ -37,10 +44,16 @@ const Messages = () => {
     isConnected: false,
     searchValue: "",
     isFilterOpen: false,
+    isAddModalOpen: false,
   });
   const { phone } = useAppSelector((state) => state.messages);
-  const { selectedLevels, selectedCandidate, isConnected, searchValue } =
-    messagePageState;
+  const {
+    selectedLevels,
+    selectedCandidate,
+    isConnected,
+    searchValue,
+    isAddModalOpen,
+  } = messagePageState;
 
   const handleCandidateSelect = (candidate: any) => {
     setMessagePageState((prevState) => ({
@@ -80,6 +93,7 @@ const Messages = () => {
       ...prevState,
       searchValue: event.target.value,
     }));
+    filterList(event.target.value);
   };
 
   const handleClearSearch = () => {
@@ -88,6 +102,38 @@ const Messages = () => {
         ...prevState,
         searchValue: "",
       }));
+  };
+
+  const handleAddCandidate = () => {
+    setMessagePageState((prevState) => ({
+      ...prevState,
+      isAddModalOpen: !isAddModalOpen,
+    }));
+  };
+
+  const createNewMessage = (singleMessage: IIncomingMessageType) => {
+    const {
+      from,
+      wamid,
+      messageType,
+      timestamp,
+      message,
+      mediaUrl,
+      caption,
+      fileName,
+    } = singleMessage;
+    const newMessage = {
+      messageId: wamid,
+      message: message,
+      timestamp: timestamp,
+      messageType: messageType,
+      mediaUrl: mediaUrl,
+      to: SOCKET_CONSTANTS.USER_ID,
+      caption: caption,
+      fileName: fileName,
+      from: from,
+    };
+    return newMessage;
   };
 
   useEffect(() => {
@@ -110,93 +156,71 @@ const Messages = () => {
       });
 
       socket.on(SOCKET_ROUTES.DISCONNECT, () => {
-        console.log("disconnect");
         setMessagePageState((prevState) => ({
           ...prevState,
           isConnected: false,
         }));
       });
     }
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
 
-  useEffect(() => {
     socket.on(SOCKET_ROUTES.STATUS, async (data: any) => {
-      const matchedResult = await db.messages
-        .where("messageId")
-        .equals(data.id)
-        .first();
+      const matchedResult = await getMessageFromMessageId(data.id);
       if (matchedResult) {
         await updateMessage({ ...matchedResult, status: data.status });
       }
     });
-  }, []);
 
-  useEffect(() => {
+    socket.on(SOCKET_ROUTES.PENDING_STATUS, async (data: any) => {
+      if (data.length) {
+        Promise.all(
+          data.map(async (pendingStatus: any) => {
+            const matchedResult = await getMessageFromMessageId(
+              pendingStatus.id
+            );
+            if (matchedResult) {
+              await updateMessage({
+                ...matchedResult,
+                status: pendingStatus.status,
+              });
+            }
+          })
+        );
+      }
+    });
+
     socket.on(SOCKET_ROUTES.PENDING_MESSAGES, async (data: any) => {
-      const messageTypes = ["text", "document", "image"];
-
-      const updatedData = Promise.all(
-        data.map(async (singleMessage: any) => {
-          const {
-            from,
-            wamid,
-            messageType,
-            timestamp,
-            message,
-            mediaUrl,
-            caption,
-          } = singleMessage;
-          const newMessage = {
-            messageId: wamid,
-            message: message,
-            timestamp: timestamp,
-            messageType: messageType,
-            mediaUrl: mediaUrl,
-            to: SOCKET_CONSTANTS.USER_ID,
-            caption: caption,
-            from: from,
-          };
-          if (messageTypes.includes(singleMessage?.messageType)) {
-            await increaseUnreadCount(from);
+      const messageTypes = [
+        MESSAGE_TYPES.TEXT,
+        MESSAGE_TYPES.DOCUMENT,
+        MESSAGE_TYPES.IMAGE,
+      ];
+      Promise.all(
+        data.map(async (singleMessage: IIncomingMessageType) => {
+          const { from, wamid } = singleMessage;
+          const newMessage = createNewMessage(singleMessage);
+          if (
+            messageTypes.includes(singleMessage?.messageType as MESSAGE_TYPES)
+          ) {
+            await increaseUnreadCount(from, wamid, true);
             await updateMessage({ ...newMessage, phone: from });
           }
         })
       );
     });
-  }, []);
-
-  useEffect(() => {
-    return () => localStorage.setItem("phone", "");
-  }, []);
-
-  useEffect(() => {
-    socket.on(SOCKET_ROUTES.NOTIFICATION, async (data: any) => {
-      const {
-        from,
-        wamid,
-        messageType,
-        timestamp,
-        message,
-        mediaUrl,
-        caption,
-      } = data;
-      const newMessage = {
-        messageId: wamid,
-        message: message,
-        timestamp: timestamp,
-        messageType: messageType,
-        mediaUrl: mediaUrl,
-        to: SOCKET_CONSTANTS.USER_ID,
-        caption: caption,
-        from: from,
-      };
-      from !== localStorage.getItem("phone") &&
-        (await increaseUnreadCount(from));
-      await updateMessage({ ...newMessage, phone: from });
-    });
+    socket.on(
+      SOCKET_ROUTES.NOTIFICATION,
+      async (data: IIncomingMessageType) => {
+        const { from, wamid } = data;
+        const newMessage = createNewMessage(data);
+        (!sessionStorage.getItem("phone") ||
+          from !== getDataFromSessionStorage("phone")) &&
+          (await increaseUnreadCount(from, wamid, false));
+        await updateMessage({ ...newMessage, phone: from });
+      }
+    );
+    return () => {
+      socket.disconnect();
+    };
   }, []);
 
   return (
@@ -272,7 +296,8 @@ const Messages = () => {
           startIcon={Images.plusIcon}
           variant={BUTTON_VARIANT.CONTAINED}
           customStyle={styles.plusIcon}
-        ></Button>
+          onClick={handleAddCandidate}
+        />
       </div>
       <div className={styles.messageScreen}>
         {!selectedCandidate?.mobile ? (
@@ -288,6 +313,18 @@ const Messages = () => {
           />
         )}
       </div>
+
+      {
+        <Modal
+          open={isAddModalOpen}
+          onClose={handleAddCandidate}
+          header="Start a new conversation with"
+          showCloseIcon
+          customStyle={styles.startModal}
+        >
+          <StartConversationModal handleClose={handleAddCandidate} />
+        </Modal>
+      }
     </div>
   );
 };

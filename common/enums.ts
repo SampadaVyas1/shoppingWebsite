@@ -87,3 +87,14 @@ export enum FILE_TYPES {
   TYPE_XLSX = "types/xlsx",
   TYPE_CSV = "types/csv",
 }
+
+export enum MESSAGE_TYPES {
+  TEXT = "text",
+  IMAGE = "image",
+  DOCUMENT = "document",
+}
+
+export enum TYPEOF {
+  STRING = "string",
+  NUMBER = "number",
+}

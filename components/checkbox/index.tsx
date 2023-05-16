@@ -5,19 +5,10 @@ import Typography from "../typography";
 import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import checkedIcon from "../../public/assets/icons/checked.svg";
 import checkboxIdeal from "../../public/assets/icons/checkboxIdeal.svg";
+import { ENTER_KEYCODE } from "@/common/constants";
+import { ICheckboxProps } from "@/common/checkbox.types";
 
-interface props {
-  checked?: boolean;
-  label?: string;
-  disabled?: boolean;
-  handleClick?: (event: SyntheticEvent, check: boolean) => void;
-  customClass?: string;
-  id?: string;
-  ideal?: boolean;
-  tabIndex?: boolean;
-}
-
-const CheckBox = (props: props) => {
+const CheckBox = (props: ICheckboxProps) => {
   const {
     checked: check = false,
     label = null,
@@ -42,7 +33,7 @@ const CheckBox = (props: props) => {
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLSpanElement>) => {
     const { disabled = false, handleClick } = props;
-    if (!disabled && e.keyCode == 13) {
+    if (!disabled && e.keyCode == ENTER_KEYCODE) {
       setChecked(!checked);
       handleClick && handleClick(e, !checked);
     }

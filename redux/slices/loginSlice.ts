@@ -15,12 +15,11 @@ export const loginSlice = createSlice({
   initialState,
   reducers: {
     handleLogin: (state, action: PayloadAction<ITokens>) => {
-      const { accessToken, refreshToken, userToken } = action.payload;
+      const { accessToken, refresh_token } = action.payload;
       state.isLoggedIn = true;
       state.isLoading = false;
       setDataInLocalStorage(TOKEN, accessToken);
-      setDataInLocalStorage(REFRESH_TOKEN, refreshToken);
-      setDataInLocalStorage(USER_TOKEN, userToken);
+      setDataInLocalStorage(REFRESH_TOKEN, refresh_token);
     },
     handleLogout: (state) => {
       state.isLoggedIn = false;

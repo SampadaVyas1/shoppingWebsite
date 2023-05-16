@@ -1,12 +1,12 @@
-import { SKELETON_VARIANT } from "@/common/enums";
-import SkeletonLoader from "@/components/skeletonLoader";
 import React from "react";
-import { skeletonArray } from "./chatBody.constants";
+import SkeletonLoader from "@/components/skeletonLoader";
+import { SKELETON_VARIANT } from "@/common/enums";
 import styles from "./chatBody.module.scss";
+
 const ChatBodySkeleton = () => {
   return (
     <div className={styles.messageBodySkeleton}>
-      {skeletonArray.map((element: any, index: number) => (
+      {[...Array(10).keys()].map((element: any, index: number) => (
         <React.Fragment key={index}>
           <SkeletonLoader
             type={SKELETON_VARIANT.TEXT_SMALL}

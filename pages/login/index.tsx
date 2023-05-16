@@ -9,7 +9,7 @@ import Loader from "@/components/loader";
 import Typography from "@/components/typography";
 import Container from "@/components/container";
 import Images from "@/public/assets/icons";
-import { sagaActions } from "@/redux/constants";
+import { sagaActions } from "@/redux/actions";
 import { useAppSelector } from "@/redux/hooks";
 import { TOKEN } from "@/common/constants";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";

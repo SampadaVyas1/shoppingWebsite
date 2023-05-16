@@ -14,6 +14,19 @@ const ChatHeader = (props: IChatHeaderProps) => {
     interviewStatus,
     profileImage,
   } = props;
+
+  const renderTypography = (
+    text: string,
+    variant: TYPOGRAPHY_VARIANT,
+    customStyle?: string
+  ) => {
+    return (
+      <Typography variant={variant} customStyle={customStyle}>
+        {text}
+      </Typography>
+    );
+  };
+
   return !isLoading ? (
     <div className={styles.chatHeader}>
       <div className={styles.profile}>
@@ -24,30 +37,25 @@ const ChatHeader = (props: IChatHeaderProps) => {
           fallbackText={name?.charAt(0)}
         />
         <div className={styles.detail}>
-          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}>
-            {name}
-          </Typography>
-          <Typography
-            variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
-            customStyle={styles.hint}
-          >
-            {designation}
-          </Typography>
+          {renderTypography(name, TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD)}
+          {renderTypography(
+            designation,
+            TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR,
+            styles.hint
+          )}
         </div>
       </div>
       <div className={styles.detail}>
-        <Typography
-          variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
-          customStyle={styles.hint}
-        >
-          {techStack}
-        </Typography>
-        <Typography
-          variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_SEMIBOLD}
-          customStyle={styles.status}
-        >
-          {interviewStatus}
-        </Typography>
+        {renderTypography(
+          techStack,
+          TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR,
+          styles.hint
+        )}
+        {renderTypography(
+          interviewStatus,
+          TYPOGRAPHY_VARIANT.TEXT_SMALL_SEMIBOLD,
+          styles.status
+        )}
       </div>
     </div>
   ) : (

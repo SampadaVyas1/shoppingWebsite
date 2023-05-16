@@ -1,5 +1,5 @@
 export const SOCKET_ROUTES = {
-  GET_MESSAGE: "get_message",
+  GET_MESSAGE: "getMessage",
   PERSONAL_MESSAGE: "personalMessage",
   STATUS: "status",
   NOTIFICATION: "notification",
@@ -9,10 +9,12 @@ export const SOCKET_ROUTES = {
   RECONNECT: "reconnect",
   DISCONNECT: "disconnect",
   CREDENTIALS: "credentials",
-  SEND_PERSONAL_MESSAGE: "send_personal_message",
+  SEND_PERSONAL_MESSAGE: "sendPersonalMessage",
   SEND_MEDIA: "sendMedia",
   GET_MEDIA: "getMedia",
   PENDING_MESSAGES: "pendingMessages",
+  PENDING_STATUS: "pendingStatus",
+  SEND_TEMPLATE: "sendTemplate",
 };
 
 export enum MESSAGE_STATUS_VARIANT {
@@ -21,8 +23,8 @@ export enum MESSAGE_STATUS_VARIANT {
 }
 
 export enum SOCKET_CONSTANTS {
-  PHONE_ID = "106886972321301",
+  PHONE_ID = "104746919070579",
   USER_ID = "11098",
   MESSAGING_PRODUCT = "whatsapp",
-  RECIPEINT_TYPE = "individual",
+  RECIPIENT_TYPE = "individual",
 }

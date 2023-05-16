@@ -1,5 +1,6 @@
 import { db } from "@/db";
 import { ISentMessage } from "./types";
+import { messageSaga } from "@/redux/sagas/message.saga";
 
 export const resetUnreadCount = async (mobile: string) => {
   const result = await db.conversations.where("id").equals(mobile).first();
@@ -30,10 +31,17 @@ export const getMessages = async (mobile: string) => {
   return await db.messages.where("phone").equals(mobile).toArray();
 };
 
-export const increaseUnreadCount = async (mobile: string) => {
+export const increaseUnreadCount = async (
+  mobile: string,
+  messageId: string,
+  isPending: boolean
+) => {
   const result = await db.conversations.where("id").equals(mobile).first();
-  console.log(mobile);
-  if (result !== undefined && mobile) {
+  const isMessageExists =
+    isPending &&
+    (await db.messages.where("messageId").equals(messageId).first());
+
+  if (result !== undefined && mobile && !isMessageExists) {
     await db?.conversations.put({
       ...result,
       unreadCount: result.unreadCount + 1,
@@ -65,4 +73,32 @@ export const getSentMessageData = (messageData: ISentMessage) => {
     from: from,
   };
   return newMessage;
+};
+
+export const filterList = async (searchKey: string) => {
+  if (searchKey) {
+    db.conversations
+      .filter(function (data: any) {
+        return data.id.includes(searchKey);
+      })
+      .toArray()
+      .then(function () {});
+  }
+};
+
+export const getMessageFromMessageId = async (messageId: string) => {
+  const result = await db.messages.where("messageId").equals(messageId).first();
+  return result;
+};
+
+export const sortMessageByTime = async (phone: string) => {
+  const result = await db.messages
+    .where("phone")
+    .equals(phone)
+    .sortBy("timestamp");
+  return result;
+};
+
+export const deleteMessageByMessageId = (whatsappId: string) => {
+  db.messages.delete(whatsappId);
 };

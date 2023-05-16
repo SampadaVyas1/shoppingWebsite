@@ -1,16 +1,14 @@
 @import "../../styles/variables";
 @import "../../styles/media";
+@import "../../styles/mixins.scss";
 .messagesPage {
   display: flex;
   height: 100%;
   overflow: hidden;
 
   .emptyCandidateList {
-    display: flex;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    @include flex-center-alignment;
+    @include flex-direction(column, 1);
     .noCandidateImage {
       width: auto;
       height: auto;
@@ -27,8 +25,7 @@
     overflow: hidden;
     width: 45%;
     background-color: $white;
-    display: flex;
-    flex-direction: column;
+    @include flex-direction(column);
     position: relative;
 
     .plusIcon {
@@ -45,15 +42,13 @@
       margin-top: 1.5rem;
     }
     .searchFilter {
-      display: flex;
+      @include flex-justify-align;
       gap: 1.25rem;
-      align-items: flex-start;
       margin-left: 3rem;
       margin: 1rem 1.25rem 1.5rem 3rem;
 
       .levelFilter {
-        flex: 1;
-        display: flex;
+        @include flex-direction(row, 1);
         gap: 0.75rem;
         flex-wrap: wrap;
       }
@@ -69,14 +64,17 @@
   .messageScreen {
     width: 55%;
     background-color: $grayLight;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include flex-center-alignment;
 
     .messagePlaceholder {
       width: auto;
       height: auto;
       object-fit: contain;
     }
+  }
+  .startModal {
+    max-height: 40.75rem;
+    width: calc(100% - 11.75rem);
+    max-width: 78rem;
   }
 }

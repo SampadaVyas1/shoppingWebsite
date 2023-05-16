@@ -7,13 +7,14 @@ const nextConfig = {
     unoptimized: true,
     remotePatterns: [
       {
-          protocol: 'https',
-          hostname: '**',
-          port: '',
-          pathname: '**',
+        protocol: "https",
+        hostname: "**",
+        port: "",
+        pathname: "**",
       },
-  ],
+    ],
   },
+  trailingSlash: true,
 };
 
 module.exports = nextConfig;

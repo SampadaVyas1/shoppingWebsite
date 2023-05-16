@@ -63,17 +63,15 @@
     width: 21.5rem;
 
     .logout {
-      display: flex;
-      flex-direction: column;
+      @include flex-direction(column);
       gap: 1rem;
 
       .text {
         color: $gray-500;
       }
       .buttons {
-        display: flex;
         gap: 0.5rem;
-        justify-content: flex-end;
+        @include flex-justify-align(flex-end);
       }
     }
   }

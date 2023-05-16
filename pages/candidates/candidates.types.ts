@@ -37,7 +37,7 @@ export interface ICurrentAppliedField {
 export interface IFilteredData {
   postingTitle?: string[];
   candidateStatus?: string[];
-  techStack?:string[];
+  techStack?: string[];
   interviewName?: string[];
 }
 
