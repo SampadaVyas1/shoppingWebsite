@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useState } from "react";
 import styles from "./customCheckBox.module.scss";
 import { ICheckBoxProps } from "./customCheckBox.types";
-import { CHECKBOX } from "@/common/constants";
+import { FORM_CONSTANTS } from "@/common/constants";
 
 const CustomCheckBox = (props: ICheckBoxProps) => {
   const {
@@ -28,7 +28,7 @@ const CustomCheckBox = (props: ICheckBoxProps) => {
   return (
     <div className={`${styles.checkbox} ${customClass}`}>
       <input
-        type={CHECKBOX}
+        type={FORM_CONSTANTS.CHECKBOX}
         disabled={disabled}
         id={id}
         checked={checked}

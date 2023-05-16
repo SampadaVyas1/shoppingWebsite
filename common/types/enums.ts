@@ -82,3 +82,8 @@ export enum RECRUITER_STATUS {
   INACTIVE = "Inactive",
   ACTIVE = "Active",
 }
+
+export enum ROLES {
+  ADMIN = "ADMIN",
+  RECRUITER = "RECRUITER",
+}

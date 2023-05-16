@@ -25,7 +25,7 @@ import {
   resetCurrentTechStacks,
   resetPage,
 } from "@/redux/slices/techStackSlice";
-import { tableHeader } from "@/common/constants/techStacks";
+import { tableHeader } from "@/helpers/techStacks";
 
 const sortButtonData: any = {
   name: { upKeyDisabled: false, downKeyDisabled: false },

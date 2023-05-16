@@ -13,11 +13,12 @@ import {
   TEAM_ROUTES,
 } from "@/common/routes";
 import { TEAM_PAGE_ROUTES } from "@/common/routes";
-import { ROLES, TOKEN } from "@/common/constants";
+import { TOKEN } from "@/common/constants";
 import { getDataFromLocalStorage } from "@/common/utils";
 import { useDispatch } from "react-redux";
 import { sagaActions } from "@/redux/constants";
 import { useAppSelector } from "@/redux/hooks";
+import { ROLES } from "@/common/types/enums";
 
 const Layout = ({ children }: any) => {
   const dispatch = useDispatch();

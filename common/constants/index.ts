@@ -10,11 +10,18 @@ export const VARIANT_TYPE = {
   SUBTITLE_16: "subtitle16",
 };
 
-export const CHECKBOX = "checkbox";
+export const TOAST_VARIANTS = {
+  SUCCESS: "success",
+  LIGHT_THEME: "light",
+};
 
-export const CANDIDATES = "candidates";
-export const TOAST_SUCCESS = "success";
-export const THEME_LIGHT = "light";
+export const FORM_CONSTANTS = {
+  CHECKBOX: "checkbox",
+};
+
+export const PAGE_CONSTANTS = {
+  CANDIDATES: "candidates",
+};
 
 export const ERROR_CODES = {
   ERROR_NETWORK: "ERR_NETWORK",
@@ -30,10 +37,7 @@ export const VALIDATION_ERRORS = {
   SPECIAL_CHARACTER_ERROR: "Special characters and numbers are not allowed",
   NOT_NUMBER_ERROR: "Only digits allowed",
 };
-export const ROLES = {
-  ADMIN: "ADMIN",
-  RECRUITER: "RECRUITER",
-};
+
 export const DATE_FORMAT = {
   DD_MM_YYYY: "DD-MM-YYYY",
 };
@@ -62,8 +66,10 @@ export const REGEX = {
 export const TRANSITION_TIMEOUT = 300;
 export const INPUT_PLACEHOLDER = "Enter text here";
 
-export const ACCESS_TOKEN_EXPIRED = "ACCESS TOKEN EXPIRED";
-export const ACCESS_TOKEN_INVALID = "ACCESS TOKEN INVALID";
-export const REFRESH_TOKEN_EXPIRED = "REFRESH TOKEN EXPIRED";
+export const API_ERROR_MESSAGES = {
+  ACCESS_TOKEN_EXPIRED: "ACCESS TOKEN EXPIRED",
+  ACCESS_TOKEN_INVALID: "ACCESS TOKEN INVALID",
+  REFRESH_TOKEN_EXPIRED: "REFRESH TOKEN EXPIRED",
+};
 
 export const ADMIN_EMAIL = "mailto:coditas.admin@domain.com";

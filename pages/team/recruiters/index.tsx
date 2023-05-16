@@ -25,7 +25,7 @@ import {
 } from "@/redux/slices/recruiterSlice";
 import { RECRUITER_STATUS } from "@/common/types/enums";
 import { IRecruitersList, ITechStackList } from "@/common/types";
-import { tableHeader } from "@/common/constants/recruiters";
+import { tableHeader } from "@/helpers/recruiters";
 
 const sortButtonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
