@@ -5,7 +5,7 @@ import {
   BUTTON_TYPES,
   BUTTON_VARIANT,
   TYPOGRAPHY_VARIANT,
-} from "@/common/enums";
+} from "@/common/types/enums";
 import Button from "../button";
 import DragDropArea from "../dragDropArea";
 import Typography from "../typography";
