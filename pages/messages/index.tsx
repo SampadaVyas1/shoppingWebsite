@@ -36,6 +36,7 @@ import { IIncomingMessageType, IMessagesStates } from "./messages.types";
 import { useAppSelector } from "@/redux/hooks";
 import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
 import { getDataFromSessionStorage } from "@/common/utils";
+import EmptyState from "@/components/emptyState";
 
 const Messages = () => {
   const [messagePageState, setMessagePageState] = useState<IMessagesStates>({
@@ -277,19 +278,7 @@ const Messages = () => {
           />
         ) : (
           <div className={styles.emptyCandidateList}>
-            <ImageComponent
-              src={Images.noCandidates}
-              customClass={styles.noCandidateImage}
-            />
-            <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}>
-              Empty candidate list
-            </Typography>
-            <Typography
-              variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
-              customStyle={styles.hint}
-            >
-              {` But don't worry - you can start adding candidates by clicking on the “+” button`}
-            </Typography>
+            <EmptyState title={"No message yet"} subTitle={"click on the “+” button to start messaging a candidate"} image={Images.noCandidates} customImageStyle={styles.noCandidateImage}/>
           </div>
         )}
         <Button
