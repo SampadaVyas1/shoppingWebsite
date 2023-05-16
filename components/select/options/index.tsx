@@ -5,7 +5,7 @@ import ImageComponent from "@/components/image";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 import { debounce } from "@/common/utils";
 import { IOptionType } from "@/common/types";
 import { IOptionsProp } from "./options.types";

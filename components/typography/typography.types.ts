@@ -1,4 +1,4 @@
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 import { HTMLAttributes } from "react";
 
 export interface ITypographyProps extends HTMLAttributes<HTMLParagraphElement> {

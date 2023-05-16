@@ -1,5 +1,9 @@
 import { HtmlHTMLAttributes } from "react";
-import { BUTTON_TYPES, BUTTON_VARIANT, BUTTON_SIZES } from "@/common/enums";
+import {
+  BUTTON_TYPES,
+  BUTTON_VARIANT,
+  BUTTON_SIZES,
+} from "@/common/types/enums";
 
 export interface IButtonProps extends HtmlHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;

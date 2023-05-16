@@ -1,4 +1,4 @@
-import { TOOLTIP_POSITION } from "@/common/enums";
+import { TOOLTIP_POSITION } from "@/common/types/enums";
 
 export interface ITooltipProp {
   children: JSX.Element;
