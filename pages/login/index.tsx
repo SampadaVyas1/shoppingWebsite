@@ -26,7 +26,7 @@ const Login = () => {
 
   const handleContactAdmin = () => {
     const win: Window = window;
-    win.location = ADMIN_EMAIL;
+    win.location = `${process.env.NEXT_PUBLIC_ADMIN_EMAIL}`;
   };
 
   const handleClick = async (codeResponse: Object) => {
