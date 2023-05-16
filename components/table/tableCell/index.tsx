@@ -3,9 +3,9 @@ import dayjs from "dayjs";
 import styles from "./tableCell.module.scss";
 import { IExtraField, ITable } from "./tableCell.types";
 import Typography from "../../typography/index";
-import { TOOLTIP_POSITION, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import Tooltip from "@/components/tooltip";
 import Switch from "@/components/switch";
+import { TYPOGRAPHY_VARIANT, TOOLTIP_POSITION } from "@/common/types/enums";
 
 const TableCell = (props: ITable) => {
   const {
@@ -23,21 +23,6 @@ const TableCell = (props: ITable) => {
   const setSwitchValue = (value: boolean) => {
     onSwitchToggle && onSwitchToggle(data[index]);
   };
-  // const getHoverTooltip = (data: any, index: number, dataIndex: any) => (
-  //   <div>
-  //     {!!data[index][dataIndex]?.length &&
-  //       data[index][dataIndex]?.map((item: string, i: number) => {
-  //         return (
-  //           <Fragment>
-  //             {i < 2 && <span>{item} </span>}
-  //             {i === 2 && data[index][dataIndex].length > 3 && (
-  //               <span>+{data[index][dataIndex].length - 2}</span>
-  //             )}
-  //           </Fragment>
-  //         );
-  //       })}
-  //   </div>
-  // );
   const getHoverTooltip = (data: any, index: number, dataIndex: any) => (
     <div>
       {!!data[index][dataIndex]?.length &&

@@ -1,4 +1,4 @@
-import { IUserData } from "./types";
+import { IUserData } from ".";
 
 export interface ILoginStates {
   isLoggedIn: boolean;
@@ -10,6 +10,6 @@ export interface ILoginStates {
 }
 export interface ITokens {
   accessToken: string;
-  refresh_token: string;
+  refreshToken: string;
   userToken: string;
 }

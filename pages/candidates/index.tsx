@@ -6,7 +6,7 @@ import {
   IAdditionalValue,
   IButtonState,
   IData,
-} from "../../common/candidates.types";
+} from "../../common/types/candidates.types";
 import { DATE_FORMAT, SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "@/components/table";
 import HeaderTitle from "./tableHeaderData.json";
@@ -102,43 +102,6 @@ const Candidates = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const newData = sortDataByField(fakeData, TABLE_CONSTANTS.NAME, true);
-  //   setData(newData);
-  //   setButtonState({
-  //     ...buttonState,
-  //     name: {
-  //       ...buttonState[TABLE_CONSTANTS.NAME],
-  //       upKeyDisabled: true,
-  //       downKeyDisabled: false,
-  //     },
-  //   });
-  // }, [buttonState]);
-
-  return (
-    <div>Candidates</div>
-    //TO BE ADDED LATER
-    // <InfiniteScroll
-    //   nextPage={true}
-    //   handlePageChange={handlePageChange}
-    //   customClass={styles.scroll}
-    // >
-    //   <TableComponent
-    //     data={data}
-    //     columnHeaderTitle={HeaderTitle}
-    //     sortbuttonData={sortbuttonData}
-    //     additionalValue={additionalValue}
-    //     fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
-    //     dataFormatType={DATE_FORMAT.DD_MM_YYYY}
-    //     customStyle={customStyle}
-    //     customRowStyling={styles.customRowStyling}
-    //     buttonState={buttonState}
-    //     handleSortArrowClick={handleSortButtonClick}
-    //     selectedRow={selectedRow}
-    //     handleRowSelect={handleRowSelect}
-    //     handleRowEachSelect={handleRowEachSelect}
-    //   />
-    // </InfiniteScroll>
-  );
+  return <div>Candidates</div>;
 };
 export default Candidates;

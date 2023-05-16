@@ -4,7 +4,7 @@ import {
   IData,
   IHeaderTitleProps,
   IShowToggle,
-} from "@/common/candidates.types";
+} from "@/common/types/candidates.types";
 
 interface ICustomStyle {
   header: {

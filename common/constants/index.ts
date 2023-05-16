@@ -10,6 +10,12 @@ export const VARIANT_TYPE = {
   SUBTITLE_16: "subtitle16",
 };
 
+export const CHECKBOX = "checkbox";
+
+export const CANDIDATES = "candidates";
+export const TOAST_SUCCESS = "success";
+export const THEME_LIGHT = "light";
+
 export const ERROR_CODES = {
   ERROR_NETWORK: "ERR_NETWORK",
   ERROR_UNAUTHORIZED: 401,

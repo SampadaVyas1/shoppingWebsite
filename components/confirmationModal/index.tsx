@@ -1,4 +1,4 @@
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 import Button from "../button";
 import Container from "../container";
 import Modal from "../modal";

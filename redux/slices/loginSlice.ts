@@ -4,8 +4,8 @@ import jwt_decode from "jwt-decode";
 import { LOGIN } from "../constants";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
 import { REFRESH_TOKEN, TOKEN, USER_TOKEN } from "@/common/constants";
-import { ILoginStates, ITokens } from "@/common/login.types";
 import { IUserData } from "@/common/types";
+import { ILoginStates, ITokens } from "@/common/types/login.types";
 
 const initialState: ILoginStates = {
   isLoggedIn: !!getDataFromLocalStorage(REFRESH_TOKEN),
@@ -21,12 +21,12 @@ export const loginSlice = createSlice({
   initialState,
   reducers: {
     handleLogin: (state, action: PayloadAction<ITokens>) => {
-      const { accessToken, refresh_token } = action.payload;
+      const { accessToken, refreshToken } = action.payload;
       state.isLoggedIn = true;
       state.isLoading = false;
       state.isLoginError = false;
       setDataInLocalStorage(TOKEN, accessToken);
-      setDataInLocalStorage(REFRESH_TOKEN, refresh_token);
+      setDataInLocalStorage(REFRESH_TOKEN, refreshToken);
     },
     handleFeatureAccess: (state, { payload }: any) => {
       state.isLoggedIn = true;

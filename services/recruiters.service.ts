@@ -1,9 +1,9 @@
 import service from "./config";
-import { API_ROUTES } from "@/common/routes";
+import { SERVICE_TPI } from "@/common/routes";
 
 export const getAllRecruiterService = async (filters?: any) => {
   try {
-    const response = await service.post(API_ROUTES.GET_RECRUITER, filters);
+    const response = await service.post(SERVICE_TPI.GET_RECRUITER, filters);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -16,7 +16,7 @@ export const updateRecruiterService = async (
 ) => {
   try {
     const response = await service.put(
-      API_ROUTES.UPDATE_RECRUITER,
+      SERVICE_TPI.UPDATE_RECRUITER,
       { isActive },
       {
         params: {

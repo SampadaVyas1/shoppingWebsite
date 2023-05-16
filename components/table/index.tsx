@@ -11,15 +11,15 @@ import {
 import { SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import CustomCheckBox from "../customCheckBox";
 import Typography from "../typography";
-import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import ImageComponent from "@/components/image";
 import { Column } from "rc-table";
 import Images from "@/public/assets/icons";
 import TableCell from "./tableCell";
 import { Fragment, useCallback } from "react";
-import { IData, IHeaderTitleProps } from "@/common/candidates.types";
+import { IData, IHeaderTitleProps } from "@/common/types/candidates.types";
 import Loader from "../loader";
 import SkeletonLoader from "../skeletonLoader";
+import { TYPOGRAPHY_VARIANT, SKELETON_VARIANT } from "@/common/types/enums";
 
 export const TableComponent = (props: ITableComponent) => {
   const {

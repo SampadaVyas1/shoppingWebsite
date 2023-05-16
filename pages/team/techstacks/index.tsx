@@ -19,7 +19,7 @@ import styles from "./techStacks.module.scss";
 import loaderSpinner from "../../../public/assets/icons/loader.svg";
 import { ITechStackList } from "@/common/types";
 import { SORT_TYPE } from "@/common/constants";
-import { IButtonState } from "@/common/candidates.types";
+import { IButtonState } from "@/common/types/candidates.types";
 import { debounce, sortDataByField } from "@/common/utils";
 import {
   resetCurrentTechStacks,

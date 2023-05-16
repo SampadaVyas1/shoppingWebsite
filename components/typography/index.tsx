@@ -1,7 +1,7 @@
 import React, { HTMLAttributes } from "react";
 import styles from "./typography.module.scss";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { ITypographyProps } from "./typography.types";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 
 const Typography = (props: ITypographyProps) => {
   const {

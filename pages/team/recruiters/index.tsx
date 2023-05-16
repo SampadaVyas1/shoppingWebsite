@@ -12,18 +12,19 @@ import Images from "@/public/assets/icons";
 import EmptyState from "@/components/emptyState";
 import styles from "./recruiters.module.scss";
 import loaderSpinner from "../../../public/assets/icons/loader.svg";
-import { IRecruitersList, ITechStackList } from "@/common/types";
 import { SORT_TYPE } from "@/common/constants";
 import {
   IAdditionalValue,
   IButtonState,
   IShowToggle,
-} from "@/common/candidates.types";
+} from "@/common/types/candidates.types";
 import { debounce, sortDataByField } from "@/common/utils";
 import {
   resetCurrentRecruiters,
   resetPage,
 } from "@/redux/slices/recruiterSlice";
+import { RECRUITER_STATUS } from "@/common/types/enums";
+import { IRecruitersList, ITechStackList } from "@/common/types";
 
 const tableHeader = [
   {
@@ -198,7 +199,9 @@ const Recruiters = () => {
       return {
         ...recruiter,
         name: `${recruiter.firstName} ${recruiter.lastName}`,
-        status: recruiter.isActive ? "Active" : "Inactive",
+        status: recruiter.isActive
+          ? RECRUITER_STATUS.ACTIVE
+          : RECRUITER_STATUS.INACTIVE,
       };
     });
     return tableData;
@@ -298,10 +301,14 @@ const Recruiters = () => {
       <ConfirmationModal
         open={isModalOpen}
         title={`Change to ${
-          selectedRecruiter?.isActive ? "Inactive" : "Active"
+          selectedRecruiter?.isActive
+            ? RECRUITER_STATUS.INACTIVE
+            : RECRUITER_STATUS.ACTIVE
         }`}
         description={`Are you sure you want to change the status to ${
-          selectedRecruiter?.isActive ? "inactive" : "active"
+          selectedRecruiter?.isActive
+            ? RECRUITER_STATUS.INACTIVE
+            : RECRUITER_STATUS.ACTIVE
         } for ${selectedRecruiter?.name}? `}
         cancelButtonText="Cancel"
         confirmButtonText="Yes"

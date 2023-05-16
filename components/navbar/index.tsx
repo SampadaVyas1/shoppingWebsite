@@ -10,16 +10,17 @@ import ProfileCard from "../profileCard";
 import Modal from "../modal";
 import Button from "../button";
 import TransitionWrapper from "../transitionWrapper";
-import {
-  BUTTON_VARIANT,
-  TOOLTIP_POSITION,
-  TYPOGRAPHY_VARIANT,
-} from "@/common/enums";
+
 import Images from "@/public/assets/icons";
 import { PRIVATE_ROUTES, TEAM_PAGE_ROUTES } from "@/common/routes";
 import { INavbarProps, profileData } from "./navbar.types";
 import { handleLogout } from "@/redux/slices/loginSlice";
 import { useAppSelector } from "@/redux/hooks";
+import {
+  TYPOGRAPHY_VARIANT,
+  TOOLTIP_POSITION,
+  BUTTON_VARIANT,
+} from "@/common/types/enums";
 
 const Navbar = ({ routes }: INavbarProps) => {
   const router = useRouter();

@@ -23,7 +23,6 @@ const InfiniteScroll = ({
         scroller?.clientHeight;
     if (scroller && atBottom && nextPage) {
       updateState((state) => ({ ...state, loading: true }));
-      console.log("called");
       handlePageChange();
     } else {
       updateState((state) => ({ ...state, loading: false }));

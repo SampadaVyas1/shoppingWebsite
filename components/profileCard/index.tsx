@@ -5,8 +5,9 @@ import Modal from "../modal";
 import Typography from "../typography";
 import styles from "./profileCard.module.scss";
 import Images from "@/public/assets/icons";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+
 import { IProfileCardProps } from "./profileCard.types";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 
 const ProfileCard = (props: IProfileCardProps) => {
   const {

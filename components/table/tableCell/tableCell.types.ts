@@ -3,7 +3,7 @@ import {
   IAdditionalValue,
   IData,
   IShowToggle,
-} from "@/common/candidates.types";
+} from "@/common/types/candidates.types";
 
 export interface ITable {
   dataIndex: string;

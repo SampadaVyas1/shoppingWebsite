@@ -1,3 +1,5 @@
+import { CANDIDATES } from "../constants";
+
 interface IData {
   [key: string]: any;
 }
@@ -28,8 +30,7 @@ export const sortDataByField = (
   ascending: boolean = true
 ) => {
   const modifier = ascending ? 1 : -1;
-  if (field === "candidates") {
-    console.log(ascending);
+  if (field === CANDIDATES) {
     return [...data].sort((a, b) =>
       ascending ? a.candidates - b.candidates : b.candidates - a.candidates
     );
