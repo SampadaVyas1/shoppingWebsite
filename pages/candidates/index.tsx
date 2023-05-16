@@ -33,6 +33,7 @@ import {
 import Loader from "@/components/loader";
 import EmptyState from "@/components/emptyState";
 import Typography from "@/components/typography";
+import { useAppSelector } from "@/redux/hooks";
 
 const Candidates = () => {
   const sortbuttonData: IButtonState = {
@@ -74,6 +75,18 @@ const Candidates = () => {
     techStack: [],
     interviewName: [],
   };
+
+  const {
+    candidatesList,
+    hasNextPage,
+    currentPage,
+    isLoading,
+    isError,
+    totalPages,
+    currentCandidates,
+  } = useAppSelector((state) => state.candidate);
+
+
   const createHeader = () => {
     const tableHeaderkeys =
       !!tabledata && tabledata[0] && Object?.keys(tabledata[0]);
