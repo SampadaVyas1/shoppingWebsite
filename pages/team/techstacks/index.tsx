@@ -25,51 +25,28 @@ import {
   resetCurrentTechStacks,
   resetPage,
 } from "@/redux/slices/techStackSlice";
+import { tableHeader } from "@/common/constants/techStacks";
 
-const tableHeader = [
-  {
-    id: 1,
-    title: "Name",
-    sort: true,
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    id: 2,
-    title: "Total Candidates",
-    sort: false,
-    dataIndex: "totalCandidates",
-    key: "totalCandidates",
-  },
-  {
-    id: 3,
-    title: "Active Candidates",
-    sort: false,
-    dataIndex: "activeCandidates",
-    key: "activeCandidates",
-  },
-];
-
-const sortbuttonData: any = {
+const sortButtonData: any = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
 };
 
-const TechStacks = () => {
-  const customStyle = {
-    table: ({ ...props }) => {
-      return <table {...props} className={styles.table} />;
-    },
-    header: {
-      row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => (
-        <tr {...props} className={styles.customHeaderStyle} />
-      ),
-    },
-  };
+const customStyle = {
+  table: ({ ...props }) => {
+    return <table {...props} className={styles.table} />;
+  },
+  header: {
+    row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => (
+      <tr {...props} className={styles.customHeaderStyle} />
+    ),
+  },
+};
 
+const TechStacks = () => {
   const [techStackData, setTechStackData] = useState<ITechStackList[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
+  const [buttonState, setButtonState] = useState<IButtonState>(sortButtonData);
 
   const {
     techStackList,
@@ -203,7 +180,7 @@ const TechStacks = () => {
             <TableComponent
               data={techStackData}
               columnHeaderTitle={tableHeader}
-              sortbuttonData={sortbuttonData}
+              sortbuttonData={sortButtonData}
               handleSortArrowClick={handleSortButtonClick}
               customStyle={customStyle}
               customRowStyling={styles.customRowStyling}

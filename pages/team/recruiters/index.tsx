@@ -25,81 +25,38 @@ import {
 } from "@/redux/slices/recruiterSlice";
 import { RECRUITER_STATUS } from "@/common/types/enums";
 import { IRecruitersList, ITechStackList } from "@/common/types";
+import { tableHeader } from "@/common/constants/recruiters";
 
-const tableHeader = [
-  {
-    id: 1,
-    title: "Name",
-    sort: true,
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    id: 2,
-    title: "Mobile Number",
-    sort: false,
-    dataIndex: "mobileNumber",
-    key: "mobileNumber",
-  },
-  {
-    id: 3,
-    title: "Email Id",
-    sort: false,
-    dataIndex: "email",
-    key: "emailId",
-  },
-  {
-    id: 4,
-    title: "Tech stack",
-    sort: false,
-    dataIndex: "techStack",
-    key: "techStack",
-  },
-  {
-    id: 5,
-    title: "Candidates",
-    sort: true,
-    dataIndex: "candidates",
-    key: "candidates",
-  },
-  {
-    id: 6,
-    title: "Status",
-    sort: false,
-    dataIndex: "status",
-    key: "status",
-  },
-];
-
-const sortbuttonData: any = {
+const sortButtonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
   candidates: { upKeyDisabled: false, downKeyDisabled: false },
 };
 
-const Recruiters = () => {
-  const customStyle = {
-    table: ({ ...props }) => {
-      return <table {...props} className={styles.table} />;
-    },
-    header: {
-      row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => (
-        <tr {...props} className={styles.customHeaderStyle} />
-      ),
-    },
-  };
+const customStyle = {
+  table: ({ ...props }) => {
+    return <table {...props} className={styles.table} />;
+  },
+  header: {
+    row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => (
+      <tr {...props} className={styles.customHeaderStyle} />
+    ),
+  },
+};
 
-  const additionalValue: IAdditionalValue[] = [
-    {
-      colspan: "name",
-      colspanValue: "designation",
-      customStyle: styles.designation,
-    },
-  ];
-
-  const showToggle: IShowToggle = {
-    colspan: "status",
+const additionalValue: IAdditionalValue[] = [
+  {
+    colspan: "name",
+    colspanValue: "designation",
     customStyle: styles.designation,
-  };
+  },
+];
+
+const showToggle: IShowToggle = {
+  colspan: "status",
+  customStyle: styles.designation,
+};
+
+const Recruiters = () => {
   const [recruitersData, setRecruitersData] = useState<IRecruitersList[]>([]);
   const [isModalOpen, toggleModal] = useState<boolean>(false);
   const [selectedRecruiter, setSelectedRecruiter] = useState<IRecruitersList>(
@@ -107,7 +64,7 @@ const Recruiters = () => {
   );
   const [searchValue, setSearchValue] = useState<string>("");
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
+  const [buttonState, setButtonState] = useState<IButtonState>(sortButtonData);
 
   const {
     recruitersList,
@@ -280,7 +237,7 @@ const Recruiters = () => {
               hoverCell="techStack"
               additionalValue={additionalValue}
               columnHeaderTitle={tableHeader}
-              sortbuttonData={sortbuttonData}
+              sortbuttonData={sortButtonData}
               handleSortArrowClick={handleSortButtonClick}
               onSwitchToggle={handleStatusChange}
               customStyle={customStyle}
