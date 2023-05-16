@@ -72,10 +72,15 @@ export const TableComponent = (props: ITableComponent) => {
     [data, selectedRow, handleAllRowSelect]
   );
   const handleCheckBoxClick = (id: number) => {
+    const updatedRows = !!selectedRow
+      ? selectedRow?.includes(id)
+        ? selectedRow.filter((row) => row !== id)
+        : [...selectedRow, id]
+      : [];
     !!selectedRow &&
       !!handleRowEachSelect &&
       handleRowSelect &&
-      handleRowEachSelect(id, selectedRow, handleRowSelect);
+      handleRowEachSelect(id, updatedRows, handleRowSelect);
   };
 
   const generateColumns = (columnHeaderTitle: IHeaderTitleProps[]) => {

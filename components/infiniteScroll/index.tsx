@@ -48,7 +48,6 @@ const InfiniteScroll = ({
     ? debounce(handleReverseScroll)
     : debounce(handleDebounce);
 
-  const handleScroll = debounce(handleDebounce);
   return (
     <div ref={scrollRef} onScroll={handleScroll} className={customClass}>
       {children}

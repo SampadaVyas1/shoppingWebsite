@@ -1,4 +1,6 @@
 @import "../../../styles/mixins.scss";
+@import "../../../styles/variables.scss";
+
 .startModal {
   @include flex-direction(column);
   gap: 1.5rem;
@@ -15,7 +17,16 @@
     align-self: flex-end;
   }
   .candidateTable {
-    height: 26.25rem;
+    height: 23rem;
     margin: 0;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 0.5rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $secondaryTextLight;
+      border-radius: 0.25rem;
+    }
   }
 }

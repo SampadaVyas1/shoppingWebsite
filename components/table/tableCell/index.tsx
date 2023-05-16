@@ -24,7 +24,10 @@ const TableCell = (props: ITable) => {
           if (i < 2) {
             return (
               <Fragment key={i}>
-                <span>{item}{isLastItem ? '' : ', '}</span>
+                <span>
+                  {item}
+                  {isLastItem ? "" : ", "}
+                </span>
               </Fragment>
             );
           } else if (i === 2 && data[index][dataIndex].length > 2) {
@@ -47,10 +50,8 @@ const TableCell = (props: ITable) => {
           <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}>
             {dayjs(data[index][dataIndex]).format(dataFormatType)}
           </Typography>
-        ) : dataIndex === hoverCell ? 
-        (
+        ) : dataIndex === hoverCell ? (
           data[index][dataIndex]?.length > 2 ? (
-         
             <div className={styles.tooltip}>
               <Tooltip
                 position={TOOLTIP_POSITION.BOTTOM}
@@ -71,11 +72,8 @@ const TableCell = (props: ITable) => {
               </Tooltip>
             </div>
           ) : (
-            <> 
-           { getHoverTooltip(data, index, dataIndex)}
-            </>
+            <>{getHoverTooltip(data, index, dataIndex)}</>
           )
-     
         ) : (
           <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_REGULAR}>
             {data[index][dataIndex]}
@@ -83,9 +81,9 @@ const TableCell = (props: ITable) => {
         )}
       </div>
       {!!additionalValue &&
-        additionalValue.map((extraField: IExtraField) => {
+        additionalValue.map((extraField: IExtraField, index: number) => {
           return (
-            <Fragment>
+            <Fragment key={index}>
               {dataIndex === extraField.colspan ? (
                 <Typography
                   children={data[index][extraField.colspanValue]}

@@ -78,11 +78,11 @@ export const getSentMessageData = (messageData: ISentMessage) => {
 export const filterList = async (searchKey: string) => {
   if (searchKey) {
     db.conversations
-      .filter(function (data) {
+      .filter(function (data: any) {
         return data.id.includes(searchKey);
       })
       .toArray()
-      .then(function (result) {});
+      .then(function () {});
   }
 };
 

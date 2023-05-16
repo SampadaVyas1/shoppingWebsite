@@ -4,7 +4,6 @@ import Images from "@/public/assets/icons";
 import { TableComponent } from "@/components/table";
 import InfiniteScroll from "@/components/infiniteScroll";
 import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
-import HeaderTitle from "../../candidates/tableHeaderData.json";
 import fakeData from "./mockData.json";
 import styles from "./recruiters.module.scss";
 import Container from "@/components/container";
@@ -113,55 +112,57 @@ const Recruiters = () => {
     //   </InfiniteScroll>
     // </Container>
 
-    <>
-      {loading ? (
-        <Loader />
-      ) : data.length === 0 ? (
-        <div className={styles.emptyState}>
-          <EmptyState
-            image={Images.emptyStateImage}
-            title="Nothing to see here!"
-            subTitle="Click on + to add a recruiter"
-          />
-        </div>
-      ) : (
-        <Container>
-          <div className={styles.header}>
-            <div className={styles.searchBox}>
-              <InputBox
-                endIcon={Images.search}
-                placeholder="Search..."
-                onEndIconClick={Images.searchIcon}
-                className={styles.search}
-                onChange={handleSearch}
-              />
-            </div>
-          </div>
-          <InfiniteScroll
-            nextPage={nextPage}
-            handlePageChange={handlePageChange}
-            customClass={styles.scroll}
-          >
-            <TableComponent
-              data={data}
-              columnHeaderTitle={filteredHeaderData}
-              // sortbuttonData={sortbuttonData}
-              additionalValue={additionalValue}
-              // fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
-              // dataFormatType={DATE_FORMAT.DD_MM_YYYY}
-              customStyle={customStyle}
-              customRowStyling={styles.customRowStyling}
-              // buttonState={buttonState}
-              // handleSortArrowClick={handleSortButtonClick}
-              // selectedRow={selectedRow}
-              // handleRowSelect={handleRowSelect}
-              // handleRowEachSelect={handleRowEachSelect}
-              // hoverCell={"techStack"} selectedRow={[]}
-            />
-          </InfiniteScroll>
-        </Container>
-      )}
-    </>
+    <div>Recruiter</div>
+
+    // <>
+    //   {loading ? (
+    //     <Loader />
+    //   ) : data.length === 0 ? (
+    //     <div className={styles.emptyState}>
+    //       <EmptyState
+    //         image={Images.emptyStateImage}
+    //         title="Nothing to see here!"
+    //         subTitle="Click on + to add a recruiter"
+    //       />
+    //     </div>
+    //   ) : (
+    //     <Container>
+    //       <div className={styles.header}>
+    //         <div className={styles.searchBox}>
+    //           <InputBox
+    //             endIcon={Images.search}
+    //             placeholder="Search..."
+    //             onEndIconClick={Images.searchIcon}
+    //             className={styles.search}
+    //             onChange={handleSearch}
+    //           />
+    //         </div>
+    //       </div>
+    //       <InfiniteScroll
+    //         nextPage={nextPage}
+    //         handlePageChange={handlePageChange}
+    //         customClass={styles.scroll}
+    //       >
+    //         <TableComponent
+    //           data={data}
+    //           columnHeaderTitle={filteredHeaderData}
+    //           // sortbuttonData={sortbuttonData}
+    //           additionalValue={additionalValue}
+    //           // fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
+    //           // dataFormatType={DATE_FORMAT.DD_MM_YYYY}
+    //           customStyle={customStyle}
+    //           customRowStyling={styles.customRowStyling}
+    //           // buttonState={buttonState}
+    //           // handleSortArrowClick={handleSortButtonClick}
+    //           // selectedRow={selectedRow}
+    //           // handleRowSelect={handleRowSelect}
+    //           // handleRowEachSelect={handleRowEachSelect}
+    //           // hoverCell={"techStack"} selectedRow={[]}
+    //         />
+    //       </InfiniteScroll>
+    //     </Container>
+    //   )}
+    // </>
   );
 };
 

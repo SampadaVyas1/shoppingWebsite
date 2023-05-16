@@ -67,7 +67,6 @@ export const checkIdeal = (selectedRow: number[], data: IData[]) => {
   const newdata =
     !!data &&
     data?.filter((item) => selectedRow?.find((param) => param === item?.id));
-  data?.filter((item) => selectedRow?.find((param) => param === item?.id));
   return !checkMaster(selectedRow, data) &&
     ((!!newdata.length && newdata.length < newdata?.length) ||
       selectedRow?.length)

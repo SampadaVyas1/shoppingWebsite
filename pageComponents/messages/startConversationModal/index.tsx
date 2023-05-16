@@ -17,6 +17,8 @@ const StartConversationModal = (props: IStartConversationModalProps) => {
   const [searchValue, setSearchValue] = useState<string>("");
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
 
+  const [selectedCandidates, setSelectedCandidates] = useState<any[]>([]);
+
   const handleClearSearch = () => {
     searchValue && setSearchValue("");
   };
@@ -33,9 +35,14 @@ const StartConversationModal = (props: IStartConversationModalProps) => {
     setIsFilterOpen(!isFilterOpen);
   };
 
+  const onRowSelect = (value: any[]) => {
+    setSelectedCandidates(value);
+    console.log(value, ">>>");
+  };
+
   return (
     <div className={styles.startModal}>
-      <Container customClass={styles.header}>
+      {/* <Container customClass={styles.header}>
         <InputBox
           endIcon={searchValue ? Images.crossIconBlack : Images.search}
           placeholder="Search..."
@@ -64,9 +71,13 @@ const StartConversationModal = (props: IStartConversationModalProps) => {
             className={styles.filter}
           />
         </Popover>
-      </Container>
+      </Container> */}
       {!props.candidateList ? (
-        <Candidates customScrollStyle={styles.candidateTable} />
+        <Candidates
+          customScrollStyle={styles.candidateTable}
+          hasOutsideData
+          onSelect={onRowSelect}
+        />
       ) : (
         <EmptyState
           title="Oops! No candidate Found"

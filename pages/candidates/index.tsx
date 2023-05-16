@@ -22,7 +22,7 @@ import { TOOLTIP_POSITION, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import TransitionWrapper from "@/components/transitionWrapper";
 import Image from "next/image";
 import InputBox from "@/components/inputBox";
-import { DATE_FORMAT, SORT_TYPE } from "@/common/constants";
+import { DATE_FORMAT, SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import { TableComponent } from "../../components/table/index";
 import { debounce, sortDataByField } from "@/common/utils";
 import {
@@ -34,11 +34,89 @@ import Loader from "@/components/loader";
 import EmptyState from "@/components/emptyState";
 import Typography from "@/components/typography";
 
-const Candidates = () => {
+const tableHeaderData = [
+  {
+    id: 0,
+    title: "checkbox",
+    sort: false,
+    dataIndex: "checkbox",
+    key: "checkbox",
+  },
+  {
+    id: 1,
+    title: "Name",
+    sort: true,
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    id: 2,
+    title: "Mobile number",
+    sort: false,
+    dataIndex: "mobileNumber",
+    key: "mobileNumber",
+  },
+  {
+    id: 3,
+    title: "Experience Level",
+    sort: false,
+    dataIndex: "experienceLevel",
+    key: "activeCandidates",
+  },
+  {
+    id: 4,
+    title: "Tech stack",
+    sort: false,
+    dataIndex: "techStack",
+    key: "techStack",
+  },
+  {
+    id: 5,
+    title: "Created time",
+    sort: true,
+    dataIndex: "createdAt",
+    key: "createdAt",
+  },
+  {
+    id: 6,
+    title: "Recruiter",
+    sort: false,
+    dataIndex: "recruiter",
+    key: "recruiter",
+  },
+  {
+    id: 7,
+    title: "Status",
+    sort: false,
+    dataIndex: "interviewStatus",
+    key: "interviewStatus",
+  },
+  {
+    id: 7,
+    title: "Interview Level",
+    sort: false,
+    dataIndex: "interviewName",
+    key: "interviewName",
+  },
+];
+
+const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
   const sortbuttonData: IButtonState = {
     Name: { upKeyDisabled: false, downKeyDisabled: false },
     "Created time": { upKeyDisabled: false, downKeyDisabled: false },
   };
+
+  const additionalValue: any[] = [
+    {
+      colspan: TABLE_CONSTANTS.NAME,
+      colspanValue: TABLE_CONSTANTS.DESIGNATION,
+      customStyle: styles.designation,
+    },
+    {
+      colspan: TABLE_CONSTANTS.CREATEDTIME,
+      colspanValue: TABLE_CONSTANTS.TIME,
+    },
+  ];
 
   const [tabledata, setTableData] = useState<IData[]>([]);
   const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
@@ -75,20 +153,9 @@ const Candidates = () => {
     interviewName: [],
   };
   const createHeader = () => {
-    const tableHeaderkeys =
-      !!tabledata && tabledata[0] && Object?.keys(tabledata[0]);
-    const tableHeader =
-      !!tableHeaderkeys &&
-      tableHeaderkeys.map((key: string, index: number) => {
-        let sort = key === "Name" || key === "Created time" ? true : false;
-        return {
-          id: index + 1,
-          title: key,
-          sort: sort,
-          dataIndex: key,
-          key: key,
-        };
-      });
+    const tableHeader = !hasOutsideData
+      ? tableHeaderData.filter((header) => header.dataIndex !== "checkbox")
+      : tableHeaderData;
     return tableHeader;
   };
 
@@ -124,7 +191,7 @@ const Candidates = () => {
     }));
   };
 
-  const applyFilter = async (filters: IFilteredData[] = []) => {
+  const applyFilter = async (filters: any = []) => {
     const currentFieldObject: ICurrentAppliedField[] = [
       { interviewName: levelsFilter },
       {
@@ -199,14 +266,10 @@ const Candidates = () => {
       !!getdata &&
       getdata.map((item: IData) => {
         return {
-          Name: item.firstName + " " + item.lastName,
-          "Mobile Number": item.mobileNumber,
-          "Experience level": item.experienceLevel,
-          "Tech stack": item.techStack,
-          "Created time": item.createdAt,
-          Recruiter: item.recruiterName + " " + item.recruiterlastName,
-          "Interview Level": item.interviewName,
-          Status: item.interviewStatus,
+          ...item,
+          checkbox: "true",
+          name: item.firstName + " " + item.lastName,
+          recruiter: item.recruiterName + " " + item.recruiterlastName,
         };
       });
     return updatedData;
@@ -298,6 +361,26 @@ const Candidates = () => {
     1000
   );
 
+  const onMasterCheck = (value: number[]) => {
+    setSelectedData([...value]);
+    const filteredData = tabledata?.filter((data) => value?.includes(data.id));
+    onSelect && onSelect(filteredData);
+  };
+
+  const onRowSelect = (
+    row: number,
+    selectedRow: number[],
+    onSelectedRowChange: (value: number[]) => void
+  ) => {
+    setSelectedData([...selectedRow]);
+    const filteredData = tabledata?.filter((data) =>
+      selectedRow?.includes(data.id)
+    );
+    onSelect && onSelect(filteredData);
+  };
+
+  const [selectedData, setSelectedData] = useState<number[]>([]);
+
   return (
     <Fragment>
       {loadingState.loading ? (
@@ -306,7 +389,7 @@ const Candidates = () => {
         <Fragment>
           <EmptyState
             image={Images.candidateEmptyState}
-            title={"“Welcome to the candidate management system!"}
+            title={"Welcome to the candidate management system!"}
             subTitle={
               "To get started, let’s add your first candidate. Click the “+”button to create a new profile."
             }
@@ -333,12 +416,14 @@ const Candidates = () => {
       ) : (
         <Container>
           <div>
-            <Typography
-              variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}
-              customStyle={styles.totalCount}
-            >
-              Candidates({totalCandidateCount})
-            </Typography>
+            {!hasOutsideData && (
+              <Typography
+                variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}
+                customStyle={styles.totalCount}
+              >
+                Candidates({totalCandidateCount})
+              </Typography>
+            )}
           </div>
           <div className={styles.header}>
             <div className={styles.searchBox}>
@@ -366,6 +451,7 @@ const Candidates = () => {
                 positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
                 reposition={true}
                 align="start"
+                containerStyle={{ zIndex: "5" }}
                 onClickOutside={closeFilter}
                 padding={16}
                 content={
@@ -404,26 +490,32 @@ const Candidates = () => {
             <InfiniteScroll
               nextPage={nextPage}
               handlePageChange={handlePageChange}
-              customClass={styles.scroll}
+              customClass={customScrollStyle || styles.scroll}
             >
               <TableComponent
                 loading={loadingState.tableLoading}
                 data={tabledata}
                 columnHeaderTitle={createHeader()}
-                fieldforDateFormat={{ time: "Created time" }}
+                fieldforDateFormat={{ time: "createdAt" }}
                 dataFormatType={DATE_FORMAT.DD_MM_YYYY}
                 customStyle={customStyle}
                 customRowStyling={styles.customRowStyling}
                 buttonState={buttonState}
+                additionalValue={additionalValue}
+                selectedRow={selectedData}
+                handleRowEachSelect={onRowSelect}
+                handleRowSelect={onMasterCheck}
                 handleSortArrowClick={handleSortButtonClick}
               />
-              <ImageComponent
-                src={Images.addButton}
-                customClass={styles.addButton}
-                height={40}
-                width={40}
-                onClick={() => setAddButtonClicked(true)}
-              />
+              {!hasOutsideData && (
+                <ImageComponent
+                  src={Images.addButton}
+                  customClass={styles.addButton}
+                  height={40}
+                  width={40}
+                  onClick={() => setAddButtonClicked(true)}
+                />
+              )}
             </InfiniteScroll>
           )}
           <Modal

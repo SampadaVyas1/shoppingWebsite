@@ -19,7 +19,7 @@ export interface IHandleRowEachSelect {
 }
 export interface ITableComponent {
   additionalValue?: IAdditionalValue[];
-  loading?:boolean;
+  loading?: boolean;
   data: IData[];
   customRowStyling?: string;
   columnHeaderTitle: any[];
@@ -28,7 +28,7 @@ export interface ITableComponent {
   customStyle?: ICustomStyle;
   moreverticalIcon?: boolean;
   buttonState?: IButtonState;
-  handleSortArrowClick?: (field: string, sortType: string,data:any) => void;
+  handleSortArrowClick?: (field: string, sortType: string, data: any) => void;
   selectedRow?: number[];
   handleRowSelect?: IHandleRowSelect;
   handleRowEachSelect?: (
