@@ -54,7 +54,7 @@ const initialState: ICandidateStates = {
           currentPage: payload.currentPage,
         };
       },
-      updateRecruiterData: (state, { payload }: any) => {
+      updateCandidateData: (state, { payload }: any) => {
         return {
           ...state,
           isLoading: false,
@@ -95,12 +95,13 @@ const initialState: ICandidateStates = {
     },
   });
   export default candidateSlice.reducer;
+
   export const {
     toggleError,
     getAllCandidates,
     handleCandidateSearch,
     toggleLoading,
     resetPage,
-    updateRecruiterData,
+    updateCandidateData,
   } = candidateSlice.actions;
   
