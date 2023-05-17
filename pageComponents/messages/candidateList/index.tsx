@@ -62,7 +62,7 @@ const CandidateList = (props: ICandidateListProps) => {
   ) : (
     <InfiniteScroll
       handlePageChange={onPageChange}
-      nextPage={candidateList.length < 40}
+      nextPage={candidateList?.length < candidateData?.length}
       customClass={styles.chatInfinite}
     >
       <div className={styles.list}>

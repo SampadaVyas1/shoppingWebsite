@@ -49,7 +49,8 @@ const Messages = () => {
     isAddModalOpen: false,
   });
   const conversations = useLiveQuery(() => {
-    return db.conversations.toArray();
+    const dbData = db.conversations.toArray();
+    return dbData;
   });
 
   const {
@@ -278,12 +279,12 @@ const Messages = () => {
           </Popover>
         </div>
 
-        {conversations?.length ? (
+        {!conversations || conversations?.length ? (
           <CandidateList
             candidateData={conversations}
             selectedData={selectedCandidate}
             onSelect={handleCandidateSelect}
-            isLoading={false}
+            isLoading={!conversations}
           />
         ) : (
           <div className={styles.emptyCandidateList}>
