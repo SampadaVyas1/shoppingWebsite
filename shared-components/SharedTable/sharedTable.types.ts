@@ -1,5 +1,5 @@
-import { IRecruitersList, ITechStackList } from "@/common/types";
 import { ChangeEvent } from "react";
+import { IRecruitersList, ITechStackList } from "@/common/types";
 
 export interface ISharedTableProps {
   searchValue: string;

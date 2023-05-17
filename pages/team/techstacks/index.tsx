@@ -26,7 +26,7 @@ import {
   resetPage,
 } from "@/redux/slices/techStackSlice";
 import { tableHeader } from "@/helpers/techStacks";
-import SharedTable from "@/components/SharedTable";
+import SharedTable from "@/shared-components/SharedTable";
 
 const TechStacks = () => {
   const [techStackData, setTechStackData] = useState<ITechStackList[]>([]);

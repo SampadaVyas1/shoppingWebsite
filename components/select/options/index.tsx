@@ -9,6 +9,7 @@ import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 import { debounce } from "@/common/utils";
 import { IOptionType } from "@/common/types";
 import { IOptionsProp } from "./options.types";
+import { DEBOUNCE_TIME } from "@/common/constants";
 
 const Options = (props: IOptionsProp) => {
   const { options, selectedValue, onSelect, searchable } = props;
@@ -30,7 +31,7 @@ const Options = (props: IOptionsProp) => {
         : [];
       setFilteredOptions(updatedOptions);
     },
-    300
+    DEBOUNCE_TIME.DROPDOWN_SEARCH_DEBOUNCE
   );
 
   return (

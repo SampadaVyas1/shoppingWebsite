@@ -13,7 +13,7 @@ import {
 } from "@/redux/slices/recruiterSlice";
 import { RECRUITER_STATUS } from "@/common/types/enums";
 import { IRecruitersList } from "@/common/types";
-import SharedTable from "@/components/SharedTable";
+import SharedTable from "@/shared-components/SharedTable";
 import { tableHeader } from "@/helpers/recruiters";
 import { DEBOUNCE_TIME } from "@/common/constants";
 

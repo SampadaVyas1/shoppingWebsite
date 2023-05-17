@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import Images from "@/build/assets/icons";
-import { RECRUITER_STATUS } from "@/common/types/enums";
-import ConfirmationModal from "../confirmationModal";
-import Container from "../container";
-import EmptyState from "../emptyState";
-import InfiniteScroll from "../infiniteScroll";
-import InputBox from "../inputBox";
-import { TableComponent } from "../table";
+import EmptyState from "../../components/emptyState";
+import InfiniteScroll from "../../components/infiniteScroll";
+import InputBox from "../../components/inputBox";
+import { TableComponent } from "../../components/table";
 import styles from "./sharedTable.module.scss";
 import loaderSpinner from "../../../public/assets/icons/loader.svg";
 import {

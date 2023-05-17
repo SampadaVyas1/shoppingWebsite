@@ -13,6 +13,7 @@ import {
   IMultiSelectOptionsProp,
   IMultiSelectOptionsState,
 } from "./multiselectOptions.types";
+import { DEBOUNCE_TIME } from "@/common/constants";
 
 const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
   const {
@@ -58,15 +59,17 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
   const handleSearch = debounce(
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const value = event.target.value;
-      const updatedOptions = options.filter((data) =>
-        data.label.toLowerCase().includes(value.toLowerCase())
-      );
+      const updatedOptions = options.length
+        ? options.filter((data) =>
+            data.label.toLowerCase().includes(value.toLowerCase())
+          )
+        : [];
       setMultiselectStates((prevStates) => ({
         ...prevStates,
         filteredOptions: updatedOptions,
       }));
     },
-    300
+    DEBOUNCE_TIME.DROPDOWN_SEARCH_DEBOUNCE
   );
 
   return (
