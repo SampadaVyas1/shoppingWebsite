@@ -190,11 +190,12 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
           .replace(/^\w/, (value) => value.toUpperCase());
         const value =
           !!remainingFilteredArray &&
-          remainingFilteredArray[key]?.map((item: string, idx: number) => ({
-            id: idx + 1,
-            label: item,
-          }));
-        console.log(value);
+          (remainingFilteredArray[key] as Array<any>)?.map(
+            (item: string, idx: number) => ({
+              id: idx + 1,
+              label: item,
+            })
+          );
         return { type: key, name, value };
       });
     setFilterState((prev) => ({
