@@ -69,8 +69,8 @@ const Select = (props: ISelectProps) => {
         reposition={true}
         containerStyle={
           selectRef.current
-            ? { width: `${selectRef.current.clientWidth}px` }
-            : undefined
+            ? { width: `${selectRef.current.clientWidth}px`, zIndex:"6" }
+            : { zIndex:"6"}
         }
         onClickOutside={toggleOptions}
         content={({ position }) => {

@@ -32,6 +32,7 @@ export interface IList {
 export interface ICurrentAppliedField {
   interviewName?: string[];
   techStack?: string[];
+  search?:string;
 }
 
 export interface IFilteredData {

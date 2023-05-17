@@ -1,4 +1,5 @@
 import { Fragment, useCallback, useEffect, useState } from "react";
+import moment from "moment";
 import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import { Popover } from "react-tiny-popover";
@@ -7,7 +8,6 @@ import {
   ICurrentAppliedField,
   IData,
   IFilter,
-  IFilteredData,
   IList,
   ISubmitButton,
 } from "./candidates.types";
@@ -33,7 +33,10 @@ import {
 import Loader from "@/components/loader";
 import EmptyState from "@/components/emptyState";
 import Typography from "@/components/typography";
-import moment from "moment";
+import { useAppSelector } from "@/redux/hooks";
+import { useDispatch } from "react-redux";
+import { sagaActions } from "@/redux/actions";
+import { resetCandidatesData, resetPage } from "@/redux/slices/candidateSlice";
 
 const tableHeaderData = [
   {
@@ -113,15 +116,14 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
       colspanValue: TABLE_CONSTANTS.TIME,
     },
   ];
-
+  const [searchValue, setSearchValue] = useState<string>("");
   const [tabledata, setTableData] = useState<IData[]>([]);
   const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [nextPage, handleNextPage] = useState<boolean>(false);
   const [addButtonClicked, setAddButtonClicked] = useState<boolean>(false);
   const [filterState, setFilterState] = useState<{
     isFilterOpen: boolean;
-    filter: IFilter[] | false;
+    filter: IFilter[];
   }>({
     isFilterOpen: false,
     filter: [],
@@ -133,14 +135,11 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
     loading: true,
     tableLoading: false,
   });
-  const [getFilterData, setFilterData] = useState<IFilteredData | false>();
-  const [currentAppliedFilter, setCurrentAppliedFilter] = useState<
-    ICurrentAppliedField[]
-  >([]);
+
   const [levelsFilter, setLevelsFilter] = useState<string[]>([]);
   const [techStackOptions, setTechStackOptions] = useState<IList[]>();
-  const [tagList, setTagList] = useState<IList[]>([]);
   const [totalCandidateCount, setTotalCandidateCount] = useState();
+  const [selectedData, setSelectedData] = useState<number[]>([]);
 
   const filterList = {
     postingTitle: [],
@@ -148,6 +147,23 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
     techStack: [],
     interviewName: [],
   };
+
+  const [appliedFilter, setAppliedFilter] = useState<ICurrentAppliedField[]>(
+    []
+  );
+
+  const {
+    candidatesList,
+    filterData,
+    hasNextPage,
+    currentPage,
+    isLoading,
+    isError,
+    totalPages,
+    currentCandidates,
+  } = useAppSelector((state) => state.candidate);
+  const dispatch = useDispatch<any>();
+
   const createHeader = () => {
     const tableHeader = !hasOutsideData
       ? tableHeaderData.filter((header) => header.dataIndex !== "checkbox")
@@ -161,7 +177,7 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
 
   const toggleFilter = async () => {
     const remainingFilteredArray = Object.fromEntries(
-      Object.entries(getFilterData || {}).filter(
+      Object.entries(filterData || {}).filter(
         ([key]) => key !== "interviewName"
       )
     );
@@ -178,6 +194,7 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
             id: idx + 1,
             label: item,
           }));
+        console.log(value);
         return { type: key, name, value };
       });
     setFilterState((prev) => ({
@@ -188,22 +205,20 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
   };
 
   const applyFilter = async (filters: any = []) => {
+    dispatch(resetCandidatesData());
     const currentFieldObject: ICurrentAppliedField[] = [
-      { interviewName: levelsFilter },
       {
+        interviewName: levelsFilter,
+        search: filters?.search,
         techStack: filters?.techStack?.map((item: IList) => item?.label) || [],
       },
     ];
-    const response = await getCandidatesService({
-      filterBy: currentFieldObject,
+    setAppliedFilter(currentFieldObject);
+    dispatch({
+      type: sagaActions.DATA_AFTER_FILTERING,
+      payload: { filterBy: currentFieldObject, page: 1, limit: 10 },
     });
-    setCurrentAppliedFilter(currentFieldObject);
-    handleNextPage(response?.hasNextPage);
-    const updatedData = updateTheFetchData(
-      response?.candidates?.length !== 0 && response?.candidates
-    );
-    setPageNumber(response?.currentPage);
-    setTableData(updatedData);
+    setLoading((prev) => ({ ...prev, tableLoading: false }));
   };
 
   const customStyle = {
@@ -273,60 +288,34 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
   };
 
   const handlePageChange = async () => {
-    const response = await getCandidatesService({
-      filterBy: currentAppliedFilter,
-      limit: 10,
-      page: pageNumber + 1,
-    });
-    handleNextPage(response?.hasNextPage);
-    const updatedData = updateTheFetchData(response?.candidates);
-    setTableData([...tabledata, ...updatedData]);
+    !appliedFilter?.length && !searchValue.length
+      ? dispatch({
+          type: sagaActions.GET_ALL_CANDIDATES,
+          payload: { page: currentPage + 1, limit: 10 },
+        })
+      : dispatch({
+          type: sagaActions.DATA_AFTER_FILTERING,
+          payload: {
+            filterBy: appliedFilter,
+            page: currentPage + 1,
+            limit: 10,
+          },
+        });
     setPageNumber(pageNumber + 1);
-    setButtonState(sortbuttonData);
   };
 
-  useEffect(() => {
-    applyFilter();
-  }, [levelsFilter]);
+  const getAllCandidateData = useCallback(() => {
+    dispatch({
+      type: sagaActions.GET_ALL_CANDIDATES,
+      payload: { page: pageNumber, limit: 10 },
+    });
+  }, []);
 
-  useEffect(() => {
-    const getCandidates = async () => {
-      try {
-        const response = await getCandidatesService();
-        setTotalCandidateCount(response.totalCandidates);
-        handleNextPage(response.hasNextPage);
-        setButtonState({
-          ...sortbuttonData,
-          Name: { upKeyDisabled: true, downKeyDisabled: false },
-        });
-        const updatedData = updateTheFetchData(response.candidates);
-        setTableData(updatedData);
-        setLoading((prev) => ({ ...prev, loading: false }));
-      } catch (error) {
-        setLoading((prev) => ({ ...prev, loading: true }));
-      }
-    };
-    const getFilterApi = async () => {
-      const getAllfilter = await getFilterService();
-      setFilterData(getAllfilter);
-      setTechStackOptions(
-        getAllfilter?.techStack &&
-          getAllfilter?.techStack.map((item: string, index: number) => ({
-            id: index,
-            label: item,
-          }))
-      );
-      setTagList(
-        getAllfilter.interviewName &&
-          getAllfilter.interviewName.map((item: string, index: number) => ({
-            id: index,
-            label: item,
-          }))
-      );
-    };
-    getCandidates();
-    getFilterApi();
-  }, [addButtonClicked]);
+  const getAllFilterData = useCallback(() => {
+    dispatch({
+      type: sagaActions.GET_CANDIDATE_FILTER,
+    });
+  }, []);
 
   const handleAddCandidateSubmitButton = async (value: ISubmitButton) => {
     const updatedData = {
@@ -344,16 +333,9 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
   const handleSearch = debounce(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       const searchValue = event.target.value.trimStart().trimEnd();
+      setSearchValue(searchValue);
       setLoading((prev) => ({ ...prev, tableLoading: true }));
-      const response = await getCandidatesService({
-        filterBy: currentAppliedFilter,
-        search: searchValue,
-      });
-      const updatedData = updateTheFetchData(response?.candidates);
-      setTableData([...updatedData]);
-      setLoading((prev) => ({ ...prev, tableLoading: false }));
-      handleNextPage(response?.hasNextPage);
-      setPageNumber(response.currentPage);
+      applyFilter({ search: searchValue });
     },
     1000
   );
@@ -376,7 +358,44 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
     onSelect && onSelect(filteredData);
   };
 
-  const [selectedData, setSelectedData] = useState<number[]>([]);
+  const clearSearch = () => {
+    searchValue && setSearchValue("");
+  };
+
+  useEffect(() => {
+    setTableData(updateTheFetchData(currentCandidates));
+  }, [currentCandidates]);
+
+  useEffect(() => {
+    getAllCandidateData();
+    getAllFilterData();
+  }, []);
+
+  useEffect(() => {
+    setTechStackOptions(
+      filterData?.techStack &&
+        filterData?.techStack.map((item: string, index: number) => ({
+          id: index,
+          label: item,
+        }))
+    );
+  }, [filterData]);
+
+  useEffect(() => {
+    applyFilter([]);
+  }, [levelsFilter]);
+
+  useEffect(() => {
+    setPageNumber(pageNumber + 1);
+    setTableData(updateTheFetchData(candidatesList));
+    setLoading((prevState) => ({ ...prevState, loading: false }));
+  }, [candidatesList]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetPage());
+    };
+  }, [dispatch]);
 
   return (
     <Fragment>
@@ -425,24 +444,29 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
           <div className={styles.header}>
             <div className={styles.searchBox}>
               <InputBox
-                endIcon={Images.search}
+                endIcon={searchValue ? Images.close : Images.search}
                 placeholder="Search..."
-                onEndIconClick={Images.searchIcon}
+                onEndIconClick={clearSearch}
                 className={styles.search}
                 onChange={handleSearch}
               />
             </div>
             <div className={styles.tagList}>
-              {!!tagList &&
-                tagList.map((filterValue: { id: number; label: string }) => (
-                  <Tag
-                    tagValue={filterValue}
-                    onClick={() => handleClickHeaderTag(filterValue)}
-                    active={levelsFilter.includes(filterValue.label)}
-                    customClass={styles.default}
-                    key={filterValue.id}
-                  />
-                ))}
+              {!!filterData?.interviewName &&
+                filterData?.interviewName
+                  .map((item: string, index: number) => ({
+                    id: index,
+                    label: item,
+                  }))
+                  .map((filterValue: { id: number; label: string }) => (
+                    <Tag
+                      tagValue={filterValue}
+                      onClick={() => handleClickHeaderTag(filterValue)}
+                      active={levelsFilter.includes(filterValue.label)}
+                      customClass={styles.default}
+                      key={filterValue.id}
+                    />
+                  ))}
               <Popover
                 isOpen={true}
                 positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
@@ -485,7 +509,7 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
             </div>
           ) : (
             <InfiniteScroll
-              nextPage={nextPage}
+              nextPage={hasNextPage}
               handlePageChange={handlePageChange}
               customClass={customScrollStyle || styles.scroll}
             >
