@@ -41,16 +41,6 @@ const Login = () => {
   const login = useGoogleLogin({ onSuccess: onSuccess, flow: "auth-code" });
 
   useEffect(() => {
-    if (
-      !!getDataFromLocalStorage(TOKEN) &&
-      (router.pathname !== PRIVATE_ROUTES.HOME ||
-        router.pathname !== PRIVATE_ROUTES.NOT_FOUND_ROUTE)
-    ) {
-      router.back();
-    }
-  }, [router]);
-
-  useEffect(() => {
     isLoggedIn && router.replace(RECRUITER_ROUTES[1].path);
   }, [isLoggedIn, router]);
 
