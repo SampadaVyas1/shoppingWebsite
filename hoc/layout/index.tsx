@@ -27,7 +27,7 @@ const Layout = ({ children }: any) => {
   const [role, setRole] = useState<string>(ROLES.RECRUITER);
   const router = useRouter();
 
-  useEffect(() => {
+  const checkLoggedIn = () => {
     try {
       const userData: any = jwt_decode(`${getDataFromLocalStorage(TOKEN)}`);
       setRole(userData.role);
@@ -35,6 +35,10 @@ const Layout = ({ children }: any) => {
       console.log(error);
     }
     setLoggedIn(!!getDataFromLocalStorage(TOKEN));
+  };
+
+  useEffect(() => {
+    checkLoggedIn();
   }, [dispatch, userRole]);
 
   useEffect(() => {

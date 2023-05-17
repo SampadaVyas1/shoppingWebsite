@@ -18,7 +18,7 @@ import EmptyState from "@/components/emptyState";
 import styles from "./techStacks.module.scss";
 import loaderSpinner from "../../../public/assets/icons/loader.svg";
 import { ITechStackList } from "@/common/types";
-import { SORT_TYPE } from "@/common/constants";
+import { DEBOUNCE_TIME, SORT_TYPE } from "@/common/constants";
 import { IButtonState } from "@/common/types/candidates.types";
 import { debounce, sortDataByField } from "@/common/utils";
 import {
@@ -26,35 +26,18 @@ import {
   resetPage,
 } from "@/redux/slices/techStackSlice";
 import { tableHeader } from "@/helpers/techStacks";
-
-const sortButtonData: any = {
-  name: { upKeyDisabled: false, downKeyDisabled: false },
-};
-
-const customStyle = {
-  table: ({ ...props }) => {
-    return <table {...props} className={styles.table} />;
-  },
-  header: {
-    row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => (
-      <tr {...props} className={styles.customHeaderStyle} />
-    ),
-  },
-};
+import SharedTable from "@/components/SharedTable";
 
 const TechStacks = () => {
   const [techStackData, setTechStackData] = useState<ITechStackList[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [buttonState, setButtonState] = useState<IButtonState>(sortButtonData);
 
   const {
     techStackList,
     hasNextPage,
     currentPage,
     isLoading,
-    isError,
-    totalPages,
     currentTechStacks,
   } = useAppSelector((state) => state.techStack);
 
@@ -81,36 +64,8 @@ const TechStacks = () => {
     searchValue && setSearchValue("");
   };
 
-  const toggleSort = (
-    field: string,
-    data: any[],
-    upKeyDisabled: boolean,
-    downKeyDisabled: boolean
-  ) => {
-    setButtonState((buttonState: IButtonState) => ({
-      ...buttonState,
-      [field]: {
-        ...buttonState[field],
-        upKeyDisabled: upKeyDisabled,
-        downKeyDisabled: downKeyDisabled,
-      },
-    }));
-    const newData = !!data && sortDataByField(data, field, upKeyDisabled);
-    setTechStackData(newData);
-  };
-
-  const handleSortButtonClick = (
-    field: string,
-    sortType: string,
-    data: ITechStackList[]
-  ) => {
-    sortType === SORT_TYPE.ASCENDING
-      ? !buttonState[field]?.upKeyDisabled &&
-        toggleSort(field, data, true, false)
-      : sortType === SORT_TYPE.DESCENDING
-      ? !buttonState[field]?.downKeyDisabled &&
-        toggleSort(field, data, false, true)
-      : null;
+  const onDataChange = (data: ITechStackList[]) => {
+    setTechStackData(data);
   };
 
   const searchTechStack = debounce((searchKey: string) => {
@@ -118,7 +73,7 @@ const TechStacks = () => {
       type: sagaActions.SEARCH_TECH_STACK,
       payload: { search: searchKey, page: 1, limit: 10 },
     });
-  }, 1000);
+  }, DEBOUNCE_TIME.SEARCH_DEBOUNCE);
 
   const getAllTechStackData = useCallback(() => {
     !searchValue &&
@@ -152,49 +107,19 @@ const TechStacks = () => {
 
   return (
     <Container customClass={styles.techStacks}>
-      <InputBox
-        endIcon={searchValue ? Images.close : Images.search}
-        onEndIconClick={clearSearch}
-        value={searchValue}
-        placeholder="Search..."
-        onChange={handleSearch}
-        customClass={styles.searchBox}
+      <SharedTable
+        searchValue={searchValue}
+        tableHeader={tableHeader}
+        emptyStateImage={Images.techStackEmpty}
+        emptyStateMessage="No Tech Stacks Found"
+        handleSearch={handleSearch}
+        clearSearch={clearSearch}
+        isLoading={isLoading}
+        tableData={techStackData}
+        hasNextPage={hasNextPage}
+        handlePageChange={handlePageChange}
+        onDataChange={onDataChange}
       />
-      {!!techStackData.length || isLoading ? (
-        <React.Fragment>
-          <InfiniteScroll
-            nextPage={hasNextPage}
-            handlePageChange={handlePageChange}
-            customClass={styles.scroll}
-          >
-            {isLoading && (
-              <div className={styles.loadingWrapper}>
-                <Image
-                  src={loaderSpinner}
-                  className={styles.spinner}
-                  alt="loading"
-                />
-              </div>
-            )}
-
-            <TableComponent
-              data={techStackData}
-              columnHeaderTitle={tableHeader}
-              sortbuttonData={sortButtonData}
-              handleSortArrowClick={handleSortButtonClick}
-              customStyle={customStyle}
-              customRowStyling={styles.customRowStyling}
-            />
-          </InfiniteScroll>
-        </React.Fragment>
-      ) : (
-        !isLoading && (
-          <EmptyState
-            image={Images.techStackEmpty}
-            title={`No Tech stacks found`}
-          />
-        )
-      )}
     </Container>
   );
 };

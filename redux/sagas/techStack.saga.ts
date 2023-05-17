@@ -8,11 +8,12 @@ import {
   toggleLoading,
 } from "../slices/techStackSlice";
 import { getAllTechStackService } from "@/services/techStack.service";
+import { DEBOUNCE_TIME } from "@/common/constants";
 
 export function* searchTechStack({ payload }: AnyAction): any {
   try {
     yield put(toggleLoading());
-    yield delay(500);
+    yield delay(DEBOUNCE_TIME.SEARCH_DEBOUNCE);
     const result = yield getAllTechStackService(payload);
     yield put(handleTechStackSearch(result.data));
   } catch (e) {

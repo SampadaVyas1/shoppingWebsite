@@ -3,7 +3,7 @@ import { Theme, toast, TypeOptions } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ImageComponent from "@/components/image";
 import Images from "@/public/assets/icons";
-import { TOAST_VARIANTS } from "@/common/constants";
+import { DEBOUNCE_TIME, TOAST_VARIANTS } from "@/common/constants";
 
 const CloseButton = ({ closeToast }: any) => (
   <ImageComponent
@@ -19,7 +19,7 @@ export const notify = (
   toastId: number | string,
   onClose?: (toastId: number | string) => void,
   type: TypeOptions = TOAST_VARIANTS.SUCCESS as TypeOptions,
-  autoClose: number | false = 2000
+  autoClose: number | false = DEBOUNCE_TIME.TOAST_DEBOUNCE
 ) => {
   const handleClose = () => {
     toast.dismiss(toastId);

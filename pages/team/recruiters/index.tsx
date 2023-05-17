@@ -1,60 +1,21 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import Image from "next/image";
 import { sagaActions } from "@/redux/constants";
 import { useAppSelector } from "@/redux/hooks";
 import Container from "@/components/container";
-import InfiniteScroll from "@/components/infiniteScroll";
-import { TableComponent } from "@/components/table";
 import ConfirmationModal from "@/components/confirmationModal";
-import InputBox from "@/components/inputBox";
 import Images from "@/public/assets/icons";
-import EmptyState from "@/components/emptyState";
 import styles from "./recruiters.module.scss";
-import loaderSpinner from "../../../public/assets/icons/loader.svg";
-import { SORT_TYPE } from "@/common/constants";
-import {
-  IAdditionalValue,
-  IButtonState,
-  IShowToggle,
-} from "@/common/types/candidates.types";
-import { debounce, sortDataByField } from "@/common/utils";
+import { debounce } from "@/common/utils";
 import {
   resetCurrentRecruiters,
   resetPage,
 } from "@/redux/slices/recruiterSlice";
 import { RECRUITER_STATUS } from "@/common/types/enums";
-import { IRecruitersList, ITechStackList } from "@/common/types";
+import { IRecruitersList } from "@/common/types";
+import SharedTable from "@/components/SharedTable";
 import { tableHeader } from "@/helpers/recruiters";
-
-const sortButtonData: IButtonState = {
-  name: { upKeyDisabled: false, downKeyDisabled: false },
-  candidates: { upKeyDisabled: false, downKeyDisabled: false },
-};
-
-const customStyle = {
-  table: ({ ...props }) => {
-    return <table {...props} className={styles.table} />;
-  },
-  header: {
-    row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => (
-      <tr {...props} className={styles.customHeaderStyle} />
-    ),
-  },
-};
-
-const additionalValue: IAdditionalValue[] = [
-  {
-    colspan: "name",
-    colspanValue: "designation",
-    customStyle: styles.designation,
-  },
-];
-
-const showToggle: IShowToggle = {
-  colspan: "status",
-  customStyle: styles.designation,
-};
+import { DEBOUNCE_TIME } from "@/common/constants";
 
 const Recruiters = () => {
   const [recruitersData, setRecruitersData] = useState<IRecruitersList[]>([]);
@@ -64,15 +25,12 @@ const Recruiters = () => {
   );
   const [searchValue, setSearchValue] = useState<string>("");
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [buttonState, setButtonState] = useState<IButtonState>(sortButtonData);
 
   const {
     recruitersList,
     hasNextPage,
     currentPage,
     isLoading,
-    isError,
-    totalPages,
     currentRecruiters,
   } = useAppSelector((state) => state.recruiters);
 
@@ -100,48 +58,12 @@ const Recruiters = () => {
     searchValue && setSearchValue("");
   };
 
-  const toggleSort = (
-    field: string,
-    data: any[],
-    upKeyDisabled: boolean,
-    downKeyDisabled: boolean
-  ) => {
-    setButtonState((buttonState: IButtonState) => ({
-      ...buttonState,
-      [field]: {
-        ...buttonState[field],
-        upKeyDisabled: upKeyDisabled,
-        downKeyDisabled: downKeyDisabled,
-      },
-    }));
-    const newData = !!data && sortDataByField(data, field, upKeyDisabled);
-    setRecruitersData(newData);
-  };
-
-  const handleSortButtonClick = (
-    field: string,
-    sortType: string,
-    data: ITechStackList[]
-  ) => {
-    sortType === SORT_TYPE.ASCENDING
-      ? !buttonState[field]?.upKeyDisabled &&
-        toggleSort(field, data, true, false)
-      : sortType === SORT_TYPE.DESCENDING
-      ? !buttonState[field]?.downKeyDisabled &&
-        toggleSort(field, data, false, true)
-      : null;
-  };
-
   const searchRecruiter = debounce((searchKey: string) => {
     dispatch({
       type: sagaActions.SEARCH_RECRUITER,
       payload: { search: searchKey, page: 1, limit: 10 },
     });
-  }, 1000);
-
-  useEffect(() => {
-    setPageNumber(currentPage);
-  }, [currentPage]);
+  }, DEBOUNCE_TIME.SEARCH_DEBOUNCE);
 
   const getAllRecruitersData = useCallback(() => {
     !searchValue &&
@@ -162,6 +84,10 @@ const Recruiters = () => {
       };
     });
     return tableData;
+  };
+
+  const onDataChange = (data: IRecruitersList[]) => {
+    setRecruitersData(data);
   };
 
   const changeStatus = () => {
@@ -188,6 +114,10 @@ const Recruiters = () => {
   };
 
   useEffect(() => {
+    setPageNumber(currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
     setRecruitersData(updatedData(recruitersList));
   }, [recruitersList]);
 
@@ -207,53 +137,21 @@ const Recruiters = () => {
 
   return (
     <Container customClass={styles.recruiters}>
-      <InputBox
-        endIcon={searchValue ? Images.close : Images.search}
-        onEndIconClick={clearSearch}
-        value={searchValue}
-        placeholder="Search..."
-        onChange={handleSearch}
-        customClass={styles.searchBox}
+      <SharedTable
+        searchValue={searchValue}
+        tableHeader={tableHeader}
+        emptyStateImage={Images.emptyStateImage}
+        emptyStateMessage="No Recruiters Found"
+        handleSearch={handleSearch}
+        clearSearch={clearSearch}
+        isLoading={isLoading}
+        tableData={recruitersData}
+        hasNextPage={hasNextPage}
+        handlePageChange={handlePageChange}
+        isRecruiter
+        handleStatusChange={handleStatusChange}
+        onDataChange={onDataChange}
       />
-      {!!recruitersData.length || isLoading ? (
-        <React.Fragment>
-          <InfiniteScroll
-            nextPage={hasNextPage}
-            handlePageChange={handlePageChange}
-            customClass={styles.scroll}
-          >
-            {isLoading && (
-              <div className={styles.loadingWrapper}>
-                <Image
-                  src={loaderSpinner}
-                  className={styles.spinner}
-                  alt="loading"
-                />
-              </div>
-            )}
-
-            <TableComponent
-              data={recruitersData}
-              hoverCell="techStack"
-              additionalValue={additionalValue}
-              columnHeaderTitle={tableHeader}
-              sortbuttonData={sortButtonData}
-              handleSortArrowClick={handleSortButtonClick}
-              onSwitchToggle={handleStatusChange}
-              customStyle={customStyle}
-              showToggle={showToggle}
-              customRowStyling={styles.customRowStyling}
-            />
-          </InfiniteScroll>
-        </React.Fragment>
-      ) : (
-        !isLoading && (
-          <EmptyState
-            image={Images.emptyStateImage}
-            title={`No recruiters found`}
-          />
-        )
-      )}
 
       <ConfirmationModal
         open={isModalOpen}

@@ -12,11 +12,12 @@ import {
   toggleLoading,
   updateRecruiterData,
 } from "../slices/recruiterSlice";
+import { DEBOUNCE_TIME } from "@/common/constants";
 
 export function* searchRecruiters({ payload }: AnyAction): any {
   try {
     yield put(toggleLoading());
-    yield delay(500);
+    yield delay(DEBOUNCE_TIME.SEARCH_DEBOUNCE);
     const result = yield getAllRecruiterService(payload);
     yield put(handleRecruiterSearch(result.data));
   } catch (e) {

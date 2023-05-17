@@ -23,9 +23,11 @@ const Options = (props: IOptionsProp) => {
   const handleSearch = debounce(
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const value = event.target.value;
-      const updatedOptions = options.filter((data) =>
-        data.label.toLowerCase().includes(value.toLowerCase())
-      );
+      const updatedOptions = options.length
+        ? options.filter((data) =>
+            data.label.toLowerCase().includes(value.toLowerCase())
+          )
+        : [];
       setFilteredOptions(updatedOptions);
     },
     300

@@ -1,9 +1,8 @@
 import { PayloadAction, isPending, createSlice } from "@reduxjs/toolkit";
 import { googleLogout } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
 import { LOGIN } from "../constants";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
-import { REFRESH_TOKEN, TOKEN, USER_TOKEN } from "@/common/constants";
+import { REFRESH_TOKEN, TOKEN } from "@/common/constants";
 import { IUserData } from "@/common/types";
 import { ILoginStates, ITokens } from "@/common/types/login.types";
 
@@ -37,14 +36,6 @@ export const loginSlice = createSlice({
       state.isLoggedIn = true;
       state.isError = false;
       state.userDetails = payload;
-      const userData: any = jwt_decode(`${getDataFromLocalStorage(TOKEN)}`);
-      if (userData.role !== payload.role) {
-        state.isLoggedIn = false;
-        localStorage.clear();
-        googleLogout();
-        const win = window as Window;
-        win.location = "/login";
-      }
     },
     handleLogout: (state) => {
       state.isLoggedIn = false;
