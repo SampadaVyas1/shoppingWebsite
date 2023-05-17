@@ -77,3 +77,13 @@ export enum FILE_TYPES {
   TYPE_XLSX = "types/xlsx",
   TYPE_CSV = "types/csv",
 }
+
+export enum RECRUITER_STATUS {
+  INACTIVE = "Inactive",
+  ACTIVE = "Active",
+}
+
+export enum ROLES {
+  ADMIN = "ADMIN",
+  RECRUITER = "RECRUITER",
+}

@@ -10,10 +10,16 @@ export interface IHeaderTitleProps {
   id: number;
   title: string;
   sort?: boolean | false;
+  key: string;
+  dataIndex: string;
 }
 
 export interface IAdditionalValue {
   colspan: string;
   colspanValue: string;
-  customStyle?: string
+  customStyle?: string;
+}
+export interface IShowToggle {
+  colspan: string;
+  customStyle?: string;
 }

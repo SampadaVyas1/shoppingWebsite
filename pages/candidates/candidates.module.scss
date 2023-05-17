@@ -15,12 +15,12 @@
 
 .table {
   width: 100%;
-    background-color: $white;
-    border-collapse: collapse;
+  background-color: $white;
+  border-collapse: collapse;
 }
 .scroll {
   height: 43.75rem;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: auto;
   position: relative;
   margin: 1.5rem;
@@ -31,7 +31,7 @@
     background: $white;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: $secondaryText;
+    background-color: $scrollbar;
     border-radius: 1rem;
   }
   &::-webkit-scrollbar-track-piece:end {

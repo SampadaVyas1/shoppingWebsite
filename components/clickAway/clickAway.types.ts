@@ -1,4 +1,4 @@
-import { EVENT } from "@/common/enums";
+import { EVENT } from "@/common/types/enums";
 import { HTMLAttributes } from "react";
 
 export interface IClickAwayProps extends HTMLAttributes<HTMLDivElement> {

@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styles from "./options.module.scss";
 import Card from "@/components/card";
 import ImageComponent from "@/components/image";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 import { debounce } from "@/common/utils";
 import { IOptionType } from "@/common/types";
 import { IOptionsProp } from "./options.types";
+import { DEBOUNCE_TIME } from "@/common/constants";
 
 const Options = (props: IOptionsProp) => {
   const { options, selectedValue, onSelect, searchable } = props;
@@ -20,12 +21,18 @@ const Options = (props: IOptionsProp) => {
     onSelect(value);
   };
 
-  const handleSearch = debounce((value: string) => {
-    const updatedOptions = options.filter((data) =>
-      data.label.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredOptions(updatedOptions);
-  }, 300);
+  const handleSearch = debounce(
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const value = event.target.value;
+      const updatedOptions = options.length
+        ? options.filter((data) =>
+            data.label.toLowerCase().includes(value.toLowerCase())
+          )
+        : [];
+      setFilteredOptions(updatedOptions);
+    },
+    DEBOUNCE_TIME.DROPDOWN_SEARCH_DEBOUNCE
+  );
 
   return (
     <Card customClass={styles.optionsWrapper}>
@@ -34,7 +41,7 @@ const Options = (props: IOptionsProp) => {
           <InputBox
             startIcon={Images.search}
             placeholder="Search"
-            handleChange={handleSearch}
+            onChange={handleSearch}
           />
         )}
         <div className={styles.singleSelectOptions}>

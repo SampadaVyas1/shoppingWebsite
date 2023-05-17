@@ -10,6 +10,19 @@ export const VARIANT_TYPE = {
   SUBTITLE_16: "subtitle16",
 };
 
+export const TOAST_VARIANTS = {
+  SUCCESS: "success",
+  LIGHT_THEME: "light",
+};
+
+export const FORM_CONSTANTS = {
+  CHECKBOX: "checkbox",
+};
+
+export const PAGE_CONSTANTS = {
+  CANDIDATES: "candidates",
+};
+
 export const ERROR_CODES = {
   ERROR_NETWORK: "ERR_NETWORK",
   ERROR_UNAUTHORIZED: 401,
@@ -24,19 +37,22 @@ export const VALIDATION_ERRORS = {
   SPECIAL_CHARACTER_ERROR: "Special characters and numbers are not allowed",
   NOT_NUMBER_ERROR: "Only digits allowed",
 };
-export const ROLES = {
-  ADMIN: "admin",
-  RECRUITER: "recruiter",
-};
+
 export const DATE_FORMAT = {
-  DD_MM_YYYY: "DD/MM/YYYY",
+  DD_MM_YYYY: "DD-MM-YYYY",
 };
+
 export const TABLE_CONSTANTS = {
   CHECKBOX: "checkbox",
   CREATEDTIME: "createdTime",
   NAME: "name",
   DESIGNATION: "designation",
   TIME: "time",
+  ID: "id",
+};
+export const SORT_TYPE = {
+  ASCENDING: "ascending",
+  DESCENDING: "descending",
 };
 
 export const TOKEN = "token";
@@ -49,3 +65,15 @@ export const REGEX = {
 };
 export const TRANSITION_TIMEOUT = 300;
 export const INPUT_PLACEHOLDER = "Enter text here";
+
+export const API_ERROR_MESSAGES = {
+  ACCESS_TOKEN_EXPIRED: "ACCESS TOKEN EXPIRED",
+  ACCESS_TOKEN_INVALID: "ACCESS TOKEN INVALID",
+  REFRESH_TOKEN_EXPIRED: "REFRESH TOKEN EXPIRED",
+};
+
+export const DEBOUNCE_TIME = {
+  SEARCH_DEBOUNCE: 1000,
+  TOAST_DEBOUNCE: 2000,
+  DROPDOWN_SEARCH_DEBOUNCE: 300,
+};

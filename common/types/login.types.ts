@@ -1,6 +1,12 @@
+import { IUserData } from ".";
+
 export interface ILoginStates {
   isLoggedIn: boolean;
-  isLoading: any;
+  isLoading: boolean;
+  isError: boolean;
+  featureData: any;
+  isLoginError: boolean;
+  userDetails: IUserData;
 }
 export interface ITokens {
   accessToken: string;

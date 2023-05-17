@@ -31,3 +31,46 @@ export interface IEmptyStateType {
   subTitle?: string;
   customImageStyle?: string;
 }
+
+export interface ITechStackList {
+  id: number;
+  name: string;
+  totalCandidates: number;
+  activeCandidates: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string;
+}
+
+export interface IRecruitersList {
+  candidates: number;
+  createdAt: string;
+  deletedAt: string;
+  designation: string;
+  email: string;
+  employeeId: string;
+  firstName: string;
+  lastName: string;
+  id: string;
+  isActive: boolean;
+  mobileNumber: string;
+  role: string;
+  techStack: string[];
+  updatedAt: string;
+  userImageUrl: string;
+  freshLogin: string;
+  name?: string;
+  status?: string;
+}
+
+export interface IUserData {
+  firstLogin: boolean;
+  firstName: string;
+  lastName: string;
+  employeeId: number;
+  email: string;
+  designation: string;
+  role: string;
+  userImageUrl: string;
+  mobileNumber?: string;
+}
