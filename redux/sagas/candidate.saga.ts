@@ -1,60 +1,58 @@
 import { AnyAction } from "@reduxjs/toolkit";
 import { delay, put, takeEvery, takeLatest } from "redux-saga/effects";
 import { sagaActions } from "../constants";
-import {getCandidatesService,getFilterService,
-  addCandidatesService
+import {
+  getCandidatesService,
+  getFilterService,
+
+  addCandidatesService,
 } from "@/services/candidate.service";
 import {
   getAllCandidates,
-  handleCandidateSearch,
   toggleError,
   toggleLoading,
+  getAllFilters,
+  updateDataByFiltering,
   updateCandidateData,
 } from "../slices/candidateSlice";
 import { notify } from "@/helpers/toastHelper";
 
-export function* searchCandidates({ payload }: AnyAction): any {
-  try {
-    yield put(toggleLoading());
-    yield delay(500);
-    const result = yield getAllCandidates(payload);
-    yield put(handleCandidateSearch(result.data));
-  } catch (e) {
-    console.log(e);
-    yield put(toggleError());
-  }
-}
-
 export function* getAllCandidatesValue({ payload }: AnyAction): any {
   try {
     yield put(toggleLoading());
-    const result = yield getAllCandidates(payload);
-    yield put(updateCandidateData(result.data));
+    const result = yield getCandidatesService(payload);
+    yield put(getAllCandidates(result));
+  } catch (e) {
+    console.log(e);
+    yield put(toggleError());
+  }
+}
+export function* getAllFilter(): any {
+  try {
+    yield put(toggleLoading());
+    const result = yield getFilterService();
+    console.log(result)
+    yield put(getAllFilters(result));
+  } catch (e) {
+    console.log(e);
+    yield put(toggleError());
+  }
+}
+export function* handleFilterData({ payload }: AnyAction): any {
+  try {
+    yield put(toggleLoading());
+    const result = yield getCandidatesService(payload);
+    yield put(updateDataByFiltering(result));
   } catch (e) {
     console.log(e);
     yield put(toggleError());
   }
 }
 
-// export function* updateRecruiter({ payload }: AnyAction): any {
-//   try {
-//     const { employeeId, recruiters, isActive } = payload;
-//     const recruiterData = { employeeId, recruiters };
-//     yield put(toggleLoading());
-//     const result = yield updateRecruiterService(employeeId, isActive);
-//     if (result.data) {
-//       yield put(updateRecruiterData(recruiterData as unknown as void));
-//     } else {
-//       yield put(toggleError());
-//     }
-//   } catch (e) {
-//     console.log(e);
-//     yield put(toggleError());
-//   }
-// }
-
-export const recruiterSaga = [
+export const candidateSaga = [
   takeEvery(sagaActions.GET_ALL_CANDIDATES, getAllCandidatesValue),
-//   takeEvery(sagaActions.UPDATE_RECRUITER, updateRecruiter),
-  takeLatest(sagaActions.SEARCH_CANDIDATE, searchCandidates),
+  takeEvery(sagaActions.GET_CANDIDATE_FILTER,getAllFilter),
+  takeEvery(sagaActions.DATA_AFTER_FILTERING,handleFilterData)
 ];
+
+
