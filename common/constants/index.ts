@@ -71,5 +71,3 @@ export const API_ERROR_MESSAGES = {
   ACCESS_TOKEN_INVALID: "ACCESS TOKEN INVALID",
   REFRESH_TOKEN_EXPIRED: "REFRESH TOKEN EXPIRED",
 };
-
-export const ADMIN_EMAIL = "mailto:coditas.admin@domain.com";

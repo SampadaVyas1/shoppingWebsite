@@ -11,7 +11,7 @@ import Container from "@/components/container";
 import Images from "@/public/assets/icons";
 import { sagaActions } from "@/redux/constants";
 import { useAppSelector } from "@/redux/hooks";
-import { ADMIN_EMAIL, TOKEN } from "@/common/constants";
+import { TOKEN } from "@/common/constants";
 import { PRIVATE_ROUTES, RECRUITER_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
 import SectionImage from "../../public/assets/images/loginImage.svg";
