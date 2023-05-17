@@ -1,3 +1,5 @@
+import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
+
 export interface IButtonState {
   [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
 }
@@ -32,7 +34,7 @@ export interface IList {
 export interface ICurrentAppliedField {
   interviewName?: string[];
   techStack?: string[];
-  search?:string;
+  search?: string;
 }
 
 export interface IFilteredData {
@@ -49,4 +51,10 @@ export interface ISubmitButton {
   lastName: string;
   mobileNumber: string;
   techStack: IList;
+}
+
+export interface ICandidatePageProps {
+  customScrollStyle: string;
+  hasOutsideData: boolean;
+  onSelect: (data: IData[]) => void;
 }

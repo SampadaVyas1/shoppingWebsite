@@ -2,11 +2,11 @@ import { API_ROUTES } from "@/common/routes";
 import service from "./config";
 
 export const getCandidatesService = async (params?: any) => {
+  delete params.hasOutsideData;
   try {
     const response = await service.post(
       API_ROUTES.GET_CANDIDATES,
-      params ? params : {},
-      
+      params ? params : {}
     );
     return response?.data?.data;
   } catch (error) {
@@ -25,10 +25,7 @@ export const getFilterService = async () => {
 
 export const addCandidatesService = async (params?: any) => {
   try {
-    const response = await service.post(
-    API_ROUTES.ADD_CANDIDATES,
-      params,
-    );
+    const response = await service.post(API_ROUTES.ADD_CANDIDATES, params);
     return response;
   } catch (error) {
     return error;

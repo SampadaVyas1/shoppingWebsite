@@ -5,6 +5,7 @@ import InfiniteScroll from "@/components/infiniteScroll";
 import { Popover } from "react-tiny-popover";
 import {
   IButtonState,
+  ICandidatePageProps,
   ICurrentAppliedField,
   IData,
   IFilter,
@@ -104,7 +105,11 @@ const tableHeaderData = [
   },
 ];
 
-const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
+const Candidates = ({
+  customScrollStyle,
+  hasOutsideData,
+  onSelect,
+}: ICandidatePageProps) => {
   const sortbuttonData: IButtonState = {
     Name: { upKeyDisabled: false, downKeyDisabled: false },
     "Created time": { upKeyDisabled: false, downKeyDisabled: false },
@@ -217,7 +222,12 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
     setAppliedFilter(currentFieldObject);
     dispatch({
       type: sagaActions.DATA_AFTER_FILTERING,
-      payload: { filterBy: currentFieldObject, page: 1, limit: 10 },
+      payload: {
+        filterBy: currentFieldObject,
+        page: 1,
+        limit: 10,
+        hasOutsideData,
+      },
     });
     setLoading((prev) => ({ ...prev, tableLoading: false }));
   };
@@ -292,7 +302,7 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
     !appliedFilter?.length && !searchValue.length
       ? dispatch({
           type: sagaActions.GET_ALL_CANDIDATES,
-          payload: { page: currentPage + 1, limit: 10 },
+          payload: { page: currentPage + 1, limit: 10, hasOutsideData },
         })
       : dispatch({
           type: sagaActions.DATA_AFTER_FILTERING,
@@ -300,6 +310,7 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
             filterBy: appliedFilter,
             page: currentPage + 1,
             limit: 10,
+            hasOutsideData,
           },
         });
     setPageNumber(pageNumber + 1);
@@ -308,7 +319,7 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
   const getAllCandidateData = useCallback(() => {
     dispatch({
       type: sagaActions.GET_ALL_CANDIDATES,
-      payload: { page: pageNumber, limit: 10 },
+      payload: { page: pageNumber, limit: 10, hasOutsideData },
     });
   }, []);
 

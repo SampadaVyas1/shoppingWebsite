@@ -23,6 +23,7 @@ export enum API_ROUTES {
   GET_CANDIDATES = `tpi/candidate/getAllCandidates`,
   GET_FILTER = "tpi/filters/getAllFilters",
   ADD_CANDIDATES = "tpi/candidate/createCandidate",
+  GET_ROOM_DATA = "wa/whatsapp/getNewUsersList",
 }
 
 export const TEAM_PAGE_ROUTES = {

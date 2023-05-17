@@ -19,24 +19,6 @@ const StartConversationModal = (props: IStartConversationModalProps) => {
   const [selectedCandidates, setSelectedCandidates] = useState<
     ICandidateListCardProps[]
   >([]);
-  const [searchValue, setSearchValue] = useState<string>("");
-  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
-
-  const handleClearSearch = () => {
-    searchValue && setSearchValue("");
-  };
-
-  const handleSearch = (event: any) => {
-    setSearchValue(event.target.value);
-  };
-
-  const closeFilter = () => {
-    setIsFilterOpen(false);
-  };
-
-  const toggleFilter = () => {
-    setIsFilterOpen(!isFilterOpen);
-  };
 
   const handleStartConversation = async () => {
     const updatedData = await Promise.all(
@@ -55,42 +37,12 @@ const StartConversationModal = (props: IStartConversationModalProps) => {
   return (
     <div className={styles.startModal}>
       {!props.candidateList ? (
-        // <Container customClass={styles.header}>
-        //   <InputBox
-        //     endIcon={searchValue ? Images.crossIconBlack : Images.search}
-        //     placeholder="Search..."
-        //     value={searchValue}
-        //     customClass={styles.search}
-        //     onEndIconClick={handleClearSearch}
-        //     onChange={handleSearch}
-        //   />
-        //   <Popover
-        //     isOpen={true}
-        //     positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
-        //     reposition={true}
-        //     align="start"
-        //     onClickOutside={closeFilter}
-        //     padding={16}
-        //     content={
-        //       <TransitionWrapper open={isFilterOpen}>
-        //         <MessageFilter onClose={closeFilter} />
-        //       </TransitionWrapper>
-        //     }
-        //   >
-        //     <Image
-        //       src={Images.filterIcon}
-        //       onClick={toggleFilter}
-        //       alt="filter"
-        //       className={styles.filter}
-        //     />
-        //   </Popover>
         <Candidates
           customScrollStyle={styles.candidateTable}
           hasOutsideData
           onSelect={onRowSelect}
         />
       ) : (
-        // </Container>
         <EmptyState
           title="Oops! No candidate Found"
           image={Images.noCandidate}

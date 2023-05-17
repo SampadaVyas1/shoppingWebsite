@@ -36,7 +36,6 @@ export const candidateSlice = createSlice({
     },
     getAllCandidates: (state, { payload }: any) => {
       toast.dismiss();
-      console.log(payload);
       return {
         ...state,
         isLoading: false,
@@ -50,7 +49,6 @@ export const candidateSlice = createSlice({
     },
     getAllFilters: (state, { payload }: any) => {
       toast.dismiss();
-      console.log(payload);
       return {
         ...state,
         isLoading: false,
