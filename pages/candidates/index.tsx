@@ -33,6 +33,7 @@ import {
 import Loader from "@/components/loader";
 import EmptyState from "@/components/emptyState";
 import Typography from "@/components/typography";
+import moment from "moment";
 
 const tableHeaderData = [
   {
@@ -108,12 +109,7 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
 
   const additionalValue: any[] = [
     {
-      colspan: TABLE_CONSTANTS.NAME,
-      colspanValue: TABLE_CONSTANTS.DESIGNATION,
-      customStyle: styles.designation,
-    },
-    {
-      colspan: TABLE_CONSTANTS.CREATEDTIME,
+      colspan: "createdAt",
       colspanValue: TABLE_CONSTANTS.TIME,
     },
   ];
@@ -268,6 +264,7 @@ const Candidates = ({ customScrollStyle, hasOutsideData, onSelect }: any) => {
         return {
           ...item,
           checkbox: "true",
+          time: moment(item.createdAt).format("hh:mm a"),
           name: item.firstName + " " + item.lastName,
           recruiter: item.recruiterName + " " + item.recruiterlastName,
         };

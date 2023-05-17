@@ -1,7 +1,8 @@
 import Dexie, { Table } from "dexie";
 import { ISentMessage } from "./common/types";
+import { ICandidateListCardProps } from "./pageComponents/messages/candidateListCard/candidateListCard.types";
 
-export interface IMessage {
+export interface IMessage extends ICandidateListCardProps {
   id: string;
   messages: ISentMessage[];
   ta: string;
@@ -13,8 +14,9 @@ export class MySubClassedDexie extends Dexie {
 
   constructor() {
     super("ccMessages");
-    this.version(9).stores({
-      conversations: "id, ta, messages, unreadCount",
+    this.version(10).stores({
+      conversations:
+        "id, ta, messages, unreadCount,profilePhoto, name, userId, status, message, interviewName, interviewStatus, postingTitle, techStack",
       messages:
         "messageId,message,timestamp,messageType,status,to,from, phone, mediaUrl, fileName",
     });

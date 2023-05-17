@@ -1,7 +1,7 @@
 import { use, useCallback, useEffect, useState } from "react";
 import moment from "moment";
 import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "@/db";
+import { IMessage, db } from "@/db";
 import CandidateListCard from "../candidateListCard";
 import SkeletonLoader from "@/components/skeletonLoader";
 import InfiniteScroll from "@/components/infiniteScroll";
@@ -15,7 +15,9 @@ import { TIME_FORMAT } from "@/common/constants";
 const CandidateList = (props: ICandidateListProps) => {
   const { isLoading, selectedData, candidateData, onSelect } = props;
 
-  const [candidateList, setCandidateList] = useState<any>([]);
+  const [candidateList, setCandidateList] = useState<ICandidateListCardProps[]>(
+    []
+  );
   const conversations = useLiveQuery(() => {
     return db.conversations.toArray();
   });
@@ -68,15 +70,14 @@ const CandidateList = (props: ICandidateListProps) => {
           (candidate: ICandidateListCardProps, index: number) => {
             const { name, mobile, id, profilePhoto } = candidate;
             const currentCandidateData = conversations?.find(
-              (data) => data.id === mobile
+              (data: any) => data.id === id
             );
             const currentMessages = messageListData?.filter(
-              (message) => message.phone === mobile
+              (message: any) => message.phone === id
             );
             const sortedMessages = sortMessages(currentMessages!);
             const lastMessage =
               !!sortedMessages && sortedMessages[sortedMessages.length - 1];
-
             return (
               <CandidateListCard
                 key={index}
@@ -104,7 +105,6 @@ const CandidateList = (props: ICandidateListProps) => {
           }
         )}
       </div>
-      p
     </InfiniteScroll>
   );
 };

@@ -1,6 +1,8 @@
 import { db } from "@/db";
 import { ISentMessage } from "./types";
 import { messageSaga } from "@/redux/sagas/message.saga";
+import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
+import { SOCKET_CONSTANTS } from "./socketConstants";
 
 export const resetUnreadCount = async (mobile: string) => {
   const result = await db.conversations.where("id").equals(mobile).first();
@@ -101,4 +103,49 @@ export const sortMessageByTime = async (phone: string) => {
 
 export const deleteMessageByMessageId = (whatsappId: string) => {
   db.messages.delete(whatsappId);
+};
+
+export const addCandidate = async (candidateData: any) => {
+  const {
+    id,
+    firstName,
+    lastName,
+    techStack,
+    postingTitle,
+    interviewName,
+    interviewStatus,
+    profilePhoto,
+    mobileNumber,
+  } = candidateData;
+  const updatedData = {
+    userId: id,
+    id: mobileNumber,
+    profilePhoto,
+    name: `${firstName} ${lastName}`,
+    interviewName,
+    interviewStatus,
+    postingTitle,
+    techStack,
+  };
+  const result = await db.conversations
+    .where("id")
+    .equals(mobileNumber)
+    .first();
+  if (result !== undefined) {
+    await db.conversations.put({ ...result, ...updatedData });
+  } else {
+    await db.conversations.add({
+      ...updatedData,
+      messages: [],
+      ta: SOCKET_CONSTANTS.USER_ID,
+      unreadCount: 0,
+      mobile: mobileNumber,
+    });
+  }
+  return updatedData;
+};
+
+export const getCandidateData = async (mobile: any) => {
+  const result = await db.conversations.where("id").equals(mobile).first();
+  return result;
 };

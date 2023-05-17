@@ -57,7 +57,6 @@ const Recruiters = () => {
     const updatedData =
       !!fakeData &&
       fakeData.map((item: any) => {
-        console.log(item);
         return {
           ...item,
           Name: `${item.mobileNumber}`,

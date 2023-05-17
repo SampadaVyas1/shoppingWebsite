@@ -29,7 +29,7 @@ const CandidateListCard = (props: ICandidateListCardProps) => {
     >
       <ImageComponent
         src={profilePhoto}
-        fallbackText={name.charAt(0)}
+        fallbackText={name?.charAt(0)}
         customClass={styles.profile}
         fallbackClass={styles.profile}
       />

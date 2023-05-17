@@ -33,14 +33,8 @@ import { MESSAGE_STATUS, MESSAGE_TYPES } from "@/common/enums";
 import { ISelectedFile } from "@/pages/messages/messages.types";
 
 const MessageScreen = (props: IMessageScreenProps) => {
-  const {
-    name,
-    designation,
-    techStack,
-    interviewStatus,
-    profileImage,
-    mobile,
-  } = props.candidateData;
+  const { name, designation, techStack, interviewStatus, profileImage, id } =
+    props.candidateData;
 
   const [isRoomJoined, setRoomJoined] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -70,7 +64,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           timestamp,
           messageType: MESSAGE_TYPES.TEXT,
           status: MESSAGE_STATUS.SENT,
-          to: mobile,
+          to: id,
           from: SOCKET_CONSTANTS.USER_ID,
         })
       : getSentMessageData({
@@ -80,18 +74,18 @@ const MessageScreen = (props: IMessageScreenProps) => {
           caption: message,
           messageType: selectedFile.type,
           status: MESSAGE_STATUS.SENDING,
-          to: mobile,
+          to: id,
           from: SOCKET_CONSTANTS.USER_ID,
         });
     setMessage("");
     selectedFile?.file?.name && setSelectedFile(null);
     whatsappId.length && deleteMessageByMessageId(whatsappId);
-    await updateMessage({ ...newMessage, phone: mobile });
+    await updateMessage({ ...newMessage, phone: id });
     !selectedFile?.file?.name
       ? socket.emit(SOCKET_ROUTES.SEND_PERSONAL_MESSAGE, {
           messaging_product: SOCKET_CONSTANTS.MESSAGING_PRODUCT,
           recipient_type: SOCKET_CONSTANTS.RECIPIENT_TYPE,
-          to: mobile,
+          to: id,
           type: MESSAGE_TYPES.TEXT,
           messageId: messageId,
           text: {
@@ -128,10 +122,10 @@ const MessageScreen = (props: IMessageScreenProps) => {
       caption: body?.text,
       messageType: MESSAGE_TYPES.IMAGE,
       status: MESSAGE_STATUS.SENDING,
-      to: mobile,
+      to: id,
       from: SOCKET_CONSTANTS.USER_ID,
     });
-    await updateMessage({ ...newMessage, phone: mobile });
+    await updateMessage({ ...newMessage, phone: id });
   };
 
   useEffect(() => {
@@ -163,7 +157,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
         });
       }
     });
-  }, [mobile, props.isConnected]);
+  }, [id, props.isConnected]);
 
   useEffect(() => {
     const receiveMessage = async (data: any) => {
@@ -194,22 +188,22 @@ const MessageScreen = (props: IMessageScreenProps) => {
     return () => {
       socket.off(SOCKET_ROUTES.PERSONAL_MESSAGE, receiveMessage);
     };
-  }, [mobile, props.userId]);
+  }, [id, props.userId]);
 
   useEffect(() => {
     if (props.isConnected) {
       setRoomJoined(false);
       socket.emit(SOCKET_ROUTES.JOIN_ROOM, {
-        to: mobile,
+        to: id,
         userId: SOCKET_CONSTANTS.USER_ID,
       });
-      setDataInSessionStorage("phone", mobile);
+      setDataInSessionStorage("phone", id);
       socket.on(SOCKET_ROUTES.ROOM_STATUS, (data) => {
         setRoomJoined(true);
       });
-      resetUnreadCount(mobile);
+      resetUnreadCount(id);
     }
-  }, [mobile, props.isConnected]);
+  }, [id, props.isConnected]);
 
   return (
     <div className={styles.messageScreen} ref={chatScreenRef}>
@@ -226,7 +220,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           <ChatBodySkeleton />
         ) : (
           <ChatBody
-            phone={mobile}
+            phone={id}
             onRetry={handleClick}
             isLoading={!props.isConnected || !isRoomJoined}
           />

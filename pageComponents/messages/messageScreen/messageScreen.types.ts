@@ -6,6 +6,7 @@ export interface IMessageScreenProps {
     interviewStatus: string;
     profileImage: string;
     mobile: string;
+    id: string;
   };
   userId: string;
   isConnected: boolean;

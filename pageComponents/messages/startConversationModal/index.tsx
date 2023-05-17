@@ -12,12 +12,15 @@ import Button from "@/components/button";
 import Candidates from "@/pages/candidates";
 import { BUTTON_VARIANT, TOOLTIP_POSITION } from "@/common/enums";
 import { IStartConversationModalProps } from "./startConversationModal.types";
+import { addCandidate } from "@/common/dbUtils";
+import { ICandidateListCardProps } from "../candidateListCard/candidateListCard.types";
 
 const StartConversationModal = (props: IStartConversationModalProps) => {
+  const [selectedCandidates, setSelectedCandidates] = useState<
+    ICandidateListCardProps[]
+  >([]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
-
-  const [selectedCandidates, setSelectedCandidates] = useState<any[]>([]);
 
   const handleClearSearch = () => {
     searchValue && setSearchValue("");
@@ -35,50 +38,59 @@ const StartConversationModal = (props: IStartConversationModalProps) => {
     setIsFilterOpen(!isFilterOpen);
   };
 
+  const handleStartConversation = async () => {
+    const updatedData = await Promise.all(
+      selectedCandidates?.map(async (candidate) => {
+        return await addCandidate(candidate);
+      })
+    );
+    props.onCandidateSelect && props.onCandidateSelect(updatedData);
+    props.handleClose();
+  };
+
   const onRowSelect = (value: any[]) => {
     setSelectedCandidates(value);
-    console.log(value, ">>>");
   };
 
   return (
     <div className={styles.startModal}>
-      {/* <Container customClass={styles.header}>
-        <InputBox
-          endIcon={searchValue ? Images.crossIconBlack : Images.search}
-          placeholder="Search..."
-          value={searchValue}
-          customClass={styles.search}
-          onEndIconClick={handleClearSearch}
-          onChange={handleSearch}
-        />
-        <Popover
-          isOpen={true}
-          positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
-          reposition={true}
-          align="start"
-          onClickOutside={closeFilter}
-          padding={16}
-          content={
-            <TransitionWrapper open={isFilterOpen}>
-              <MessageFilter onClose={closeFilter} />
-            </TransitionWrapper>
-          }
-        >
-          <Image
-            src={Images.filterIcon}
-            onClick={toggleFilter}
-            alt="filter"
-            className={styles.filter}
-          />
-        </Popover>
-      </Container> */}
       {!props.candidateList ? (
+        // <Container customClass={styles.header}>
+        //   <InputBox
+        //     endIcon={searchValue ? Images.crossIconBlack : Images.search}
+        //     placeholder="Search..."
+        //     value={searchValue}
+        //     customClass={styles.search}
+        //     onEndIconClick={handleClearSearch}
+        //     onChange={handleSearch}
+        //   />
+        //   <Popover
+        //     isOpen={true}
+        //     positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
+        //     reposition={true}
+        //     align="start"
+        //     onClickOutside={closeFilter}
+        //     padding={16}
+        //     content={
+        //       <TransitionWrapper open={isFilterOpen}>
+        //         <MessageFilter onClose={closeFilter} />
+        //       </TransitionWrapper>
+        //     }
+        //   >
+        //     <Image
+        //       src={Images.filterIcon}
+        //       onClick={toggleFilter}
+        //       alt="filter"
+        //       className={styles.filter}
+        //     />
+        //   </Popover>
         <Candidates
           customScrollStyle={styles.candidateTable}
           hasOutsideData
           onSelect={onRowSelect}
         />
       ) : (
+        // </Container>
         <EmptyState
           title="Oops! No candidate Found"
           image={Images.noCandidate}
@@ -91,7 +103,8 @@ const StartConversationModal = (props: IStartConversationModalProps) => {
         </Button>
         <Button
           variant={BUTTON_VARIANT.CONTAINED}
-          disabled={!props.candidateList?.length}
+          disabled={!selectedCandidates.length}
+          onClick={handleStartConversation}
         >
           Submit
         </Button>

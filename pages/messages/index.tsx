@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Popover } from "react-tiny-popover";
+import { useLiveQuery } from "dexie-react-hooks";
+import { db } from "@/db";
 import Image from "next/image";
 import socket from "@/socket";
 import Button from "@/components/button";
@@ -15,7 +17,6 @@ import Modal from "@/components/modal";
 import StartConversationModal from "@/pageComponents/messages/startConversationModal";
 import styles from "./messages.module.scss";
 import Images from "@/public/assets/icons";
-import candidateData from "./candidates.json";
 import levelData from "../../helpers/levelsData.json";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
 import {
@@ -36,6 +37,7 @@ import { IIncomingMessageType, IMessagesStates } from "./messages.types";
 import { useAppSelector } from "@/redux/hooks";
 import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
 import { getDataFromSessionStorage } from "@/common/utils";
+import { IData } from "../candidates/candidates.types";
 
 const Messages = () => {
   const [messagePageState, setMessagePageState] = useState<IMessagesStates>({
@@ -46,7 +48,10 @@ const Messages = () => {
     isFilterOpen: false,
     isAddModalOpen: false,
   });
-  const { phone } = useAppSelector((state) => state.messages);
+  const conversations = useLiveQuery(() => {
+    return db.conversations.toArray();
+  });
+
   const {
     selectedLevels,
     selectedCandidate,
@@ -55,7 +60,7 @@ const Messages = () => {
     isAddModalOpen,
   } = messagePageState;
 
-  const handleCandidateSelect = (candidate: any) => {
+  const handleCandidateSelect = (candidate: IData) => {
     setMessagePageState((prevState) => ({
       ...prevState,
       selectedCandidate: candidate,
@@ -104,11 +109,16 @@ const Messages = () => {
       }));
   };
 
-  const handleAddCandidate = () => {
+  const handleAddModalClose = () => {
     setMessagePageState((prevState) => ({
       ...prevState,
       isAddModalOpen: !isAddModalOpen,
     }));
+  };
+
+  const handleAddCandidate = (selectedCandidate: IData[]) => {
+    const [firstCandidate, ...otherCandidates] = selectedCandidate ?? [];
+    selectedCandidate?.length === 1 && handleCandidateSelect(firstCandidate);
   };
 
   const createNewMessage = (singleMessage: IIncomingMessageType) => {
@@ -268,9 +278,9 @@ const Messages = () => {
           </Popover>
         </div>
 
-        {candidateData.length ? (
+        {conversations?.length ? (
           <CandidateList
-            candidateData={candidateData}
+            candidateData={conversations}
             selectedData={selectedCandidate}
             onSelect={handleCandidateSelect}
             isLoading={false}
@@ -296,11 +306,11 @@ const Messages = () => {
           startIcon={Images.plusIcon}
           variant={BUTTON_VARIANT.CONTAINED}
           customStyle={styles.plusIcon}
-          onClick={handleAddCandidate}
+          onClick={handleAddModalClose}
         />
       </div>
       <div className={styles.messageScreen}>
-        {!selectedCandidate?.mobile ? (
+        {!selectedCandidate?.id ? (
           <ImageComponent
             src={MessagePlaceholder}
             customClass={styles.messagePlaceholder}
@@ -317,12 +327,15 @@ const Messages = () => {
       {
         <Modal
           open={isAddModalOpen}
-          onClose={handleAddCandidate}
+          onClose={handleAddModalClose}
           header="Start a new conversation with"
           showCloseIcon
           customStyle={styles.startModal}
         >
-          <StartConversationModal handleClose={handleAddCandidate} />
+          <StartConversationModal
+            handleClose={handleAddModalClose}
+            onCandidateSelect={handleAddCandidate}
+          />
         </Modal>
       }
     </div>

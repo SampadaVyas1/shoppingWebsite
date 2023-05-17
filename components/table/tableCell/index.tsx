@@ -91,13 +91,6 @@ const TableCell = (props: ITable) => {
                   customStyle={`${extraField.customStyle}? ${extraField.customStyle} :${styles.colSpan}`}
                 />
               ) : null}
-              {dataIndex === extraField.colspan ? (
-                <Typography
-                  children={data[index][extraField.colspanValue]}
-                  variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
-                  customStyle={`${extraField.customStyle}? ${extraField.customStyle} :${styles.colSpan}`}
-                />
-              ) : null}
             </Fragment>
           );
         })}
