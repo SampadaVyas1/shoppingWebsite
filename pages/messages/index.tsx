@@ -47,7 +47,7 @@ const Messages = () => {
     isFilterOpen: false,
     isAddModalOpen: false,
   });
-  const { phone } = useAppSelector((state) => state.messages);
+  const { employeeId } = useAppSelector((state) => state.login.userDetails);
   const {
     selectedLevels,
     selectedCandidate,
@@ -129,7 +129,7 @@ const Messages = () => {
       timestamp: timestamp,
       messageType: messageType,
       mediaUrl: mediaUrl,
-      to: SOCKET_CONSTANTS.USER_ID,
+      to: `${employeeId}`,
       caption: caption,
       fileName: fileName,
       from: from,
@@ -138,17 +138,17 @@ const Messages = () => {
   };
 
   useEffect(() => {
-    if (!socket.connected) {
+    if (!socket.connected && employeeId) {
       socket.connect();
       socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-        phoneId: SOCKET_CONSTANTS.PHONE_ID,
-        userId: SOCKET_CONSTANTS.USER_ID,
+        phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+        userId: `${employeeId}`,
       });
 
       socket.on(SOCKET_ROUTES.CONNECT, () => {
         socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-          phoneId: SOCKET_CONSTANTS.PHONE_ID,
-          userId: SOCKET_CONSTANTS.USER_ID,
+          phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+          userId: `${employeeId}`,
         });
         setMessagePageState((prevState) => ({
           ...prevState,
@@ -213,8 +213,8 @@ const Messages = () => {
       async (data: IIncomingMessageType) => {
         const { from, wamid } = data;
         const newMessage = createNewMessage(data);
-        (!sessionStorage.getItem("phone") ||
-          from !== getDataFromSessionStorage("phone")) &&
+        (!getDataFromSessionStorage(SOCKET_CONSTANTS.PHONE) ||
+          from !== getDataFromSessionStorage(SOCKET_CONSTANTS.PHONE)) &&
           (await increaseUnreadCount(from, wamid, false));
         await updateMessage({ ...newMessage, phone: from });
       }
@@ -222,7 +222,7 @@ const Messages = () => {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [employeeId]);
 
   return (
     <div className={styles.messagesPage}>
@@ -278,7 +278,14 @@ const Messages = () => {
           />
         ) : (
           <div className={styles.emptyCandidateList}>
-            <EmptyState title={"No message yet"} subTitle={"click on the “+” button to start messaging a candidate"} image={Images.noCandidates} customImageStyle={styles.noCandidateImage}/>
+            <EmptyState
+              title={"No message yet"}
+              subTitle={
+                "click on the “+” button to start messaging a candidate"
+              }
+              image={Images.noCandidates}
+              customImageStyle={styles.noCandidateImage}
+            />
           </div>
         )}
         <Button
@@ -297,7 +304,7 @@ const Messages = () => {
         ) : (
           <MessageScreen
             candidateData={selectedCandidate}
-            userId={SOCKET_CONSTANTS.USER_ID}
+            userId={`${employeeId}`}
             isConnected={isConnected}
           />
         )}

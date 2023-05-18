@@ -23,8 +23,7 @@ export enum MESSAGE_STATUS_VARIANT {
 }
 
 export enum SOCKET_CONSTANTS {
-  PHONE_ID = "104746919070579",
-  USER_ID = "11098",
   MESSAGING_PRODUCT = "whatsapp",
   RECIPIENT_TYPE = "individual",
+  PHONE = "phone",
 }

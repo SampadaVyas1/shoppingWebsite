@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import { ISentMessage } from "./types";
 import { messageSaga } from "@/redux/sagas/message.saga";
+import { SOCKET_CONSTANTS } from "./socketConstants";
 
 export const resetUnreadCount = async (mobile: string) => {
   const result = await db.conversations.where("id").equals(mobile).first();
@@ -75,17 +76,6 @@ export const getSentMessageData = (messageData: ISentMessage) => {
   return newMessage;
 };
 
-export const filterList = async (searchKey: string) => {
-  if (searchKey) {
-    db.conversations
-      .filter(function (data) {
-        return data.id.includes(searchKey);
-      })
-      .toArray()
-      .then(function (result) {});
-  }
-};
-
 export const getMessageFromMessageId = async (messageId: string) => {
   const result = await db.messages.where("messageId").equals(messageId).first();
   return result;
@@ -93,7 +83,7 @@ export const getMessageFromMessageId = async (messageId: string) => {
 
 export const sortMessageByTime = async (phone: string) => {
   const result = await db.messages
-    .where("phone")
+    .where(SOCKET_CONSTANTS.PHONE)
     .equals(phone)
     .sortBy("timestamp");
   return result;

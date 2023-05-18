@@ -31,6 +31,7 @@ import {
 } from "@/common/dbUtils";
 import { MESSAGE_STATUS, MESSAGE_TYPES } from "@/common/types/enums";
 import { ISelectedFile } from "@/pages/messages/messages.types";
+import { useAppSelector } from "@/redux/hooks";
 
 const MessageScreen = (props: IMessageScreenProps) => {
   const {
@@ -46,6 +47,8 @@ const MessageScreen = (props: IMessageScreenProps) => {
   const [message, setMessage] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<ISelectedFile | null>(null);
   const chatScreenRef = useRef<HTMLDivElement>(null);
+
+  const { employeeId } = useAppSelector((state) => state.login.userDetails);
 
   const handleMessageChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -71,7 +74,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           messageType: MESSAGE_TYPES.TEXT,
           status: MESSAGE_STATUS.SENT,
           to: mobile,
-          from: SOCKET_CONSTANTS.USER_ID,
+          from: `${employeeId}`,
         })
       : getSentMessageData({
           messageId,
@@ -81,7 +84,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           messageType: selectedFile.type,
           status: MESSAGE_STATUS.SENDING,
           to: mobile,
-          from: SOCKET_CONSTANTS.USER_ID,
+          from: `${employeeId}`,
         });
     setMessage("");
     selectedFile?.file?.name && setSelectedFile(null);
@@ -129,7 +132,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
       messageType: MESSAGE_TYPES.IMAGE,
       status: MESSAGE_STATUS.SENDING,
       to: mobile,
-      from: SOCKET_CONSTANTS.USER_ID,
+      from: `${employeeId}`,
     });
     await updateMessage({ ...newMessage, phone: mobile });
   };
@@ -182,7 +185,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
         timestamp: timestamp,
         messageType: messageType,
         mediaUrl: mediaUrl,
-        to: SOCKET_CONSTANTS.USER_ID,
+        to: `${employeeId}`,
         caption: caption,
         from: from,
       };
@@ -197,19 +200,21 @@ const MessageScreen = (props: IMessageScreenProps) => {
   }, [mobile, props.userId]);
 
   useEffect(() => {
-    if (props.isConnected) {
+    if (props.isConnected && employeeId) {
       setRoomJoined(false);
       socket.emit(SOCKET_ROUTES.JOIN_ROOM, {
         to: mobile,
-        userId: SOCKET_CONSTANTS.USER_ID,
+        userId: `${employeeId}`,
       });
-      setDataInSessionStorage("phone", mobile);
+      setDataInSessionStorage(SOCKET_CONSTANTS.PHONE, mobile);
       socket.on(SOCKET_ROUTES.ROOM_STATUS, (data) => {
+        console.log(data);
+
         setRoomJoined(true);
       });
       resetUnreadCount(mobile);
     }
-  }, [mobile, props.isConnected]);
+  }, [mobile, props.isConnected, employeeId]);
 
   return (
     <div className={styles.messageScreen} ref={chatScreenRef}>
