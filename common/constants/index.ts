@@ -42,6 +42,11 @@ export const DATE_FORMAT = {
   DD_MM_YYYY: "DD-MM-YYYY",
 };
 
+export const ATTACHMENT_MODAL = {
+  IMAGES_TYPES: "image/png, image/jpg, image/jpeg",
+  DOCUMENT_TYPE:
+    "application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,text/plain, application/pdf",
+};
 export const TABLE_CONSTANTS = {
   CHECKBOX: "checkbox",
   CREATEDTIME: "createdTime",

@@ -12,8 +12,14 @@ import { IData, IHeaderTitleProps } from "@/common/types/candidates.types";
 import Loader from "../loader";
 import SkeletonLoader from "../skeletonLoader";
 import { TYPOGRAPHY_VARIANT, SKELETON_VARIANT } from "@/common/types/enums";
-import { handleAllRowSelect, toCamelCase } from "@/common/utils";
+
 import ImageComponent from "../imageComponent";
+import {
+  handleAllRowSelect,
+  checkIdeal,
+  checkMaster,
+  checkRow,
+} from "@/common/utils";
 
 export const TableComponent = (props: ITableComponent) => {
   const {
@@ -85,50 +91,94 @@ export const TableComponent = (props: ITableComponent) => {
     return (
       !!columnHeaderTitle &&
       columnHeaderTitle?.map((column: IHeaderTitleProps) => {
-        const dataIndex = toCamelCase(column.title);
+        const dataIndex = column.dataIndex;
         return (
           <Column
             title={
               <div className={styles.header}>
                 {column.title === TABLE_CONSTANTS.CHECKBOX ? (
-                  <CustomCheckBox />
+                  <CustomCheckBox
+                    ideal={!!selectedRow && checkIdeal(selectedRow, data)}
+                    checked={!!selectedRow && checkMaster(selectedRow, data)}
+                    handleClick={
+                      selectedRow &&
+                      handleRowSelect &&
+                      handleAllRowSelects(data, selectedRow, handleRowSelect)
+                    }
+                  />
                 ) : (
                   <Typography
                     variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
-                    children={column.title}
                     customStyle={styles.title}
-                  />
+                  >
+                    {column.title}
+                  </Typography>
                 )}
                 {!!column.sort && (
                   <div className={styles.sortIcon}>
                     <ImageComponent
-                      src={upArrowEnabled}
+                      src={
+                        !!buttonState && buttonState[dataIndex]?.upKeyDisabled
+                          ? upArrowDisabled
+                          : upArrowEnabled
+                      }
                       width={10}
                       height={10}
+                      onClick={
+                        data && handleAscendingArrowClick(dataIndex, data)
+                      }
                       className={styles.ascendingicon}
                     />
                     <ImageComponent
-                      src={downArrowEnabled}
+                      src={
+                        !!buttonState &&
+                        buttonState[dataIndex as string]?.downKeyDisabled
+                          ? downArrowDisabled
+                          : downArrowEnabled
+                      }
                       width={10}
                       height={10}
+                      onClick={
+                        data &&
+                        handleDescendingArrowClick(dataIndex as string, data)
+                      }
                       className={styles.ascendingicon}
                     />
                   </div>
                 )}
               </div>
             }
-            dataIndex={dataIndex}
-            key={dataIndex}
-            render={(text: string, record: IRecordProps) =>
+            dataIndex={dataIndex as string}
+            key={column.key as string}
+            render={(text: string, record: IData, index: number) =>
               column.title == TABLE_CONSTANTS.CHECKBOX ? (
-                <CustomCheckBox checked={record.checked} />
-              ) : (
+                <CustomCheckBox
+                  id={data[index][TABLE_CONSTANTS.ID]}
+                  handleClick={handleCheckBoxClicks(
+                    data[index][TABLE_CONSTANTS.ID]
+                  )}
+                  checked={
+                    selectedRow &&
+                    checkRow(data[index][TABLE_CONSTANTS.ID], selectedRow)
+                  }
+                  customClass={styles.checkBoxStyling}
+                />
+              ) : !isLoading ? (
                 <TableCell
-                  dataIndex={dataIndex}
-                  record={record}
+                  dataIndex={dataIndex as string}
+                  data={data}
+                  showToggle={showToggle}
+                  onSwitchToggle={onSwitchToggle}
                   field={fieldforDateFormat}
-                  additionalValue={additionalValue}
+                  additionalValue={additionalValue && additionalValue}
                   dataFormatType={dataFormatType}
+                  index={index}
+                  hoverCell={hoverCell}
+                />
+              ) : (
+                <SkeletonLoader
+                  type={SKELETON_VARIANT.TEXT_LARGE}
+                  customClass={styles.cellLoader}
                 />
               )
             }

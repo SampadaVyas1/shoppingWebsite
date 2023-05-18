@@ -65,15 +65,12 @@ const StartConversationModal = (props: IStartConversationModalProps) => {
           />
         </Popover>
       </Container>
-      {!props.candidateList ? (
-        <Candidates customScrollStyle={styles.candidateTable} />
-      ) : (
-        <EmptyState
-          title="Oops! No candidate Found"
-          image={Images.noCandidate}
-          subTitle=" It looks like you haven't added any candidates yet. You can start by searching for candidates using the search bar above. Once you've searched the  candidates, you can select them and send a bulk message by clicking the 'Submit' button. Happy recruiting!"
-        />
-      )}
+
+      <EmptyState
+        title="Oops! No candidate Found"
+        image={Images.noCandidate}
+        subTitle=" It looks like you haven't added any candidates yet. You can start by searching for candidates using the search bar above. Once you've searched the  candidates, you can select them and send a bulk message by clicking the 'Submit' button. Happy recruiting!"
+      />
       <Container customClass={styles.footer}>
         <Button variant={BUTTON_VARIANT.OUTLINED} onClick={props.handleClose}>
           Cancel
