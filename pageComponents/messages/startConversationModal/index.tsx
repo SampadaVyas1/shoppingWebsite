@@ -10,7 +10,11 @@ import TransitionWrapper from "@/components/transitionWrapper";
 import MessageFilter from "../messageFilter";
 import Button from "@/components/button";
 import Candidates from "@/pages/candidates";
-import { BUTTON_VARIANT, TOOLTIP_POSITION } from "@/common/types/enums";
+import {
+  ARROW_ALIGNMENT,
+  BUTTON_VARIANT,
+  TOOLTIP_POSITION,
+} from "@/common/types/enums";
 import { IStartConversationModalProps } from "./startConversationModal.types";
 
 const StartConversationModal = (props: IStartConversationModalProps) => {
@@ -48,7 +52,7 @@ const StartConversationModal = (props: IStartConversationModalProps) => {
           isOpen={true}
           positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
           reposition={true}
-          align="start"
+          align={ARROW_ALIGNMENT.START}
           onClickOutside={closeFilter}
           padding={16}
           content={

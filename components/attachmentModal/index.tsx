@@ -5,6 +5,7 @@ import styles from "./attachmentModal.module.scss";
 import Images from "@/public/assets/icons";
 import { IAttachmentModalProps } from "./attachmentModal.types";
 import { ATTACHMENT_MODAL } from "@/common/constants";
+import { MESSAGE_TYPES } from "@/common/types/enums";
 
 const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
   const imageRef = useRef<HTMLInputElement>(null);
@@ -19,12 +20,12 @@ const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
 
   const onImageSelect = (event: any) => {
     const [file, ...otherElements] = event.target.files;
-    file && onSelection(file, "image");
+    file && onSelection(file, MESSAGE_TYPES.IMAGE);
   };
 
   const onFileSelect = (event: any) => {
     const [file, ...otherElements] = event.target.files;
-    file && onSelection(file, "document");
+    file && onSelection(file, MESSAGE_TYPES.DOCUMENT);
   };
 
   return (

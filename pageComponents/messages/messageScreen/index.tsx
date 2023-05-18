@@ -30,7 +30,7 @@ import {
   updateMessage,
 } from "@/common/dbUtils";
 import { MESSAGE_STATUS, MESSAGE_TYPES } from "@/common/types/enums";
-import { ISelectedFile } from "@/pages/messages/messages.types";
+import { ISelectedFile } from "@/common/types/messages.types";
 import { useAppSelector } from "@/redux/hooks";
 
 const MessageScreen = (props: IMessageScreenProps) => {

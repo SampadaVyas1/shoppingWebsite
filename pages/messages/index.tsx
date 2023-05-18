@@ -19,12 +19,12 @@ import candidateData from "./candidates.json";
 import levelData from "../../helpers/levelsData.json";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
 import {
-  filterList,
   getMessageFromMessageId,
   increaseUnreadCount,
   updateMessage,
 } from "@/common/dbUtils";
 import {
+  ARROW_ALIGNMENT,
   BUTTON_VARIANT,
   MESSAGE_TYPES,
   TOOLTIP_POSITION,
@@ -32,7 +32,10 @@ import {
 } from "@/common/types/enums";
 import MessagePlaceholder from "@/public/assets/images/messagePlaceholder.svg";
 import { ITagType } from "@/components/tag/tag.types";
-import { IIncomingMessageType, IMessagesStates } from "./messages.types";
+import {
+  IIncomingMessageType,
+  IMessagesStates,
+} from "../../common/types/messages.types";
 import { useAppSelector } from "@/redux/hooks";
 import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
 import { getDataFromSessionStorage } from "@/common/utils";
@@ -94,7 +97,6 @@ const Messages = () => {
       ...prevState,
       searchValue: event.target.value,
     }));
-    filterList(event.target.value);
   };
 
   const handleClearSearch = () => {
@@ -251,7 +253,7 @@ const Messages = () => {
             isOpen={true}
             positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
             reposition={true}
-            align="start"
+            align={ARROW_ALIGNMENT.START}
             onClickOutside={closeFilter}
             padding={16}
             content={

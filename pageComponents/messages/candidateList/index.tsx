@@ -1,7 +1,7 @@
 import { use, useCallback, useEffect, useState } from "react";
 import moment from "moment";
 import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "@/db";
+import { IMessage, db } from "@/db";
 import CandidateListCard from "../candidateListCard";
 import SkeletonLoader from "@/components/skeletonLoader";
 import InfiniteScroll from "@/components/infiniteScroll";
@@ -11,6 +11,7 @@ import { sortMessages } from "@/common/dbUtils";
 import { ICandidateListCardProps } from "../candidateListCard/candidateListCard.types";
 import { ICandidateListProps } from "./candidateList.types";
 import { TIME_FORMAT } from "@/common/constants";
+import { ISentMessage } from "@/common/types";
 
 const CandidateList = (props: ICandidateListProps) => {
   const { isLoading, selectedData, candidateData, onSelect } = props;
@@ -68,10 +69,10 @@ const CandidateList = (props: ICandidateListProps) => {
           (candidate: ICandidateListCardProps, index: number) => {
             const { name, mobile, id, profilePhoto } = candidate;
             const currentCandidateData = conversations?.find(
-              (data) => data.id === mobile
+              (data: IMessage) => data.id === mobile
             );
             const currentMessages = messageListData?.filter(
-              (message) => message.phone === mobile
+              (message: ISentMessage) => message.phone === mobile
             );
             const sortedMessages = sortMessages(currentMessages!);
             const lastMessage =

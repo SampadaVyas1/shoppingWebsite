@@ -107,3 +107,9 @@ export enum ROLES {
   ADMIN = "ADMIN",
   RECRUITER = "RECRUITER",
 }
+
+export enum ARROW_ALIGNMENT {
+  START = "start",
+  END = "end",
+  CENTER = "center",
+}
