@@ -19,6 +19,8 @@ const InfiniteScroll = ({
 
   const [containerHeight, setContainerHeight] = useState<number>(0);
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   const handleDebounce = () => {
     const scroller = scrollRef?.current;
     const atBottom =
@@ -43,7 +45,7 @@ const InfiniteScroll = ({
       setContainerHeight(scrollRef.current.scrollHeight);
     }
   };
-  const scrollRef = useRef<HTMLDivElement>(null);
+
   const handleScroll = reverseScroll
     ? debounce(handleReverseScroll)
     : debounce(handleDebounce);

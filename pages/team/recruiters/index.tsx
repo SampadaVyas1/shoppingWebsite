@@ -1,167 +1,176 @@
-import Search from "@/components/searchBar";
-import EmptyState from "@/components/emptyState";
-import Images from "@/public/assets/icons";
-import { TableComponent } from "@/components/table";
-import InfiniteScroll from "@/components/infiniteScroll";
-import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
-import fakeData from "./mockData.json";
-import styles from "./recruiters.module.scss";
+import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { sagaActions } from "@/redux/constants";
+import { useAppSelector } from "@/redux/hooks";
 import Container from "@/components/container";
-import { useEffect, useState } from "react";
-import Loader from "@/components/loader";
-import InputBox from "@/components/inputBox";
+import ConfirmationModal from "@/components/confirmationModal";
+import Images from "@/public/assets/icons";
+import styles from "./recruiters.module.scss";
+import { debounce } from "@/common/utils";
+import {
+  resetCurrentRecruiters,
+  resetPage,
+} from "@/redux/slices/recruiterSlice";
+import { RECRUITER_STATUS } from "@/common/types/enums";
+import { IRecruitersList } from "@/common/types";
+import SharedTable from "@/shared-components/SharedTable";
+import { tableHeader } from "@/helpers/recruiters";
+import { DEBOUNCE_TIME } from "@/common/constants";
+
 const Recruiters = () => {
-  const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [nextPage, setNextPage] = useState<boolean>(true);
-  const keys = !!data && data[0] && Object?.keys(data[0]);
-  const tableHeader =
-    !!keys &&
-    keys.map((key: any, index: any) => {
-      let sort = key === "Name" || key === "Candidates" ? true : false;
+  const [recruitersData, setRecruitersData] = useState<IRecruitersList[]>([]);
+  const [isModalOpen, toggleModal] = useState<boolean>(false);
+  const [selectedRecruiter, setSelectedRecruiter] = useState<IRecruitersList>(
+    {} as IRecruitersList
+  );
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [pageNumber, setPageNumber] = useState<number>(1);
+
+  const {
+    recruitersList,
+    hasNextPage,
+    currentPage,
+    isLoading,
+    currentRecruiters,
+  } = useAppSelector((state) => state.recruiters);
+
+  const dispatch = useDispatch();
+
+  const handlePageChange = () => {
+    searchValue &&
+      dispatch({
+        type: sagaActions.SEARCH_RECRUITER,
+        payload: { search: searchValue, page: currentPage + 1, limit: 10 },
+      });
+
+    setPageNumber(pageNumber + 1);
+  };
+
+  const handleSearch = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setSearchValue(event.target.value);
+    dispatch(resetCurrentRecruiters());
+    searchRecruiter(event.target.value);
+  };
+
+  const clearSearch = () => {
+    searchValue && setSearchValue("");
+  };
+
+  const searchRecruiter = debounce((searchKey: string) => {
+    dispatch({
+      type: sagaActions.SEARCH_RECRUITER,
+      payload: { search: searchKey, page: 1, limit: 10 },
+    });
+  }, DEBOUNCE_TIME.SEARCH_DEBOUNCE);
+
+  const getAllRecruitersData = useCallback(() => {
+    !searchValue &&
+      dispatch({
+        type: sagaActions.GET_RECRUITERS,
+        payload: { page: pageNumber, limit: 10 },
+      });
+  }, [dispatch, pageNumber, searchValue]);
+
+  const updatedData = (data: IRecruitersList[]) => {
+    const tableData = data.map((recruiter) => {
       return {
-        id: index + 1,
-        title: key,
-        sort: sort,
-        dataIndex: key,
-        key: key,
+        ...recruiter,
+        name: `${recruiter.firstName} ${recruiter.lastName}`,
+        status: recruiter.isActive
+          ? RECRUITER_STATUS.ACTIVE
+          : RECRUITER_STATUS.INACTIVE,
       };
     });
-  const filteredHeaderData =
-    !!tableHeader && tableHeader.filter((obj: any) => /^[A-Z]/.test(obj.title));
-  const additionalValue: any[] = [
-    {
-      colspan: TABLE_CONSTANTS.NAME,
-      colspanValue: TABLE_CONSTANTS.DESIGNATION,
-      customStyle: styles.designation,
-    },
-    {
-      colspan: TABLE_CONSTANTS.CREATEDTIME,
-      colspanValue: TABLE_CONSTANTS.TIME,
-    },
-  ];
-  const handlePageChange = () => {};
+    return tableData;
+  };
 
-  const customStyle = {
-    table: ({ ...props }) => {
-      return <table {...props} className={styles.table} />;
-    },
-    header: {
-      row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => (
-        <tr {...props} className={styles.customHeaderStyle} />
-      ),
-    },
+  const onDataChange = (data: IRecruitersList[]) => {
+    setRecruitersData(data);
+  };
+
+  const changeStatus = () => {
+    dispatch({
+      type: sagaActions.UPDATE_RECRUITER,
+      payload: {
+        employeeId: selectedRecruiter.employeeId,
+        isActive: !selectedRecruiter.isActive,
+        recruiters: recruitersData,
+      },
+    });
+
+    toggleModal(false);
+  };
+
+  const handleStatusChange = (data: IRecruitersList) => {
+    toggleModal(!isModalOpen);
+    setSelectedRecruiter(data);
+  };
+
+  const handleModalClose = () => {
+    toggleModal(false);
+    setSelectedRecruiter({} as IRecruitersList);
   };
 
   useEffect(() => {
-    const updatedData =
-      !!fakeData &&
-      fakeData.map((item: any) => {
-        return {
-          ...item,
-          Name: `${item.mobileNumber}`,
-          "Mobile number": `${item.mobileNumber}`,
-          "Email ID": `${item.experienceLevel}`,
-          "Tech stack": `${item.techStack}`,
-          Candidates: `${item.createdAt}`,
-          Status: `${item.interviewStatus}`,
-        };
-      });
-    setData(updatedData);
-    // setButtonState({
-    //   ...buttonState,
-    //   Name: {
-    //     ...buttonState["Name"],
-    //     upKeyDisabled: true,
-    //     downKeyDisabled: false,
-    //   },
-    // });
-  }, []);
-  const handleSearch = () => {};
+    setPageNumber(currentPage);
+  }, [currentPage]);
+
+  useEffect(() => {
+    setRecruitersData(updatedData(recruitersList));
+  }, [recruitersList]);
+
+  useEffect(() => {
+    getAllRecruitersData();
+  }, [getAllRecruitersData]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetPage());
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    setRecruitersData(updatedData(currentRecruiters));
+  }, [currentRecruiters]);
 
   return (
-    // <Container>
-    //   {/* <Search />
-    //   <EmptyState
-    //     image={Images.emptyStateImage}
-    //     title="Nothing to see here!"
-    //     subTitle="Click on + to add a recruiter"
-    //   /> */}
-    //   <InfiniteScroll
-    //     nextPage={true}
-    //     handlePageChange={handlePageChange}
-    //     customClass={styles.scroll}
-    //   >
-    //     <TableComponent
-    //       data={data}
-    //       columnHeaderTitle={filteredHeaderData}
-    //       // sortbuttonData={sortbuttonData}
-    //       additionalValue={additionalValue}
-    //       // fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
-    //       // dataFormatType={DATE_FORMAT.DD_MM_YYYY}
-    //       customStyle={customStyle}
-    //       customRowStyling={styles.customRowStyling}
-    //       // buttonState={buttonState}
-    //       // handleSortArrowClick={handleSortButtonClick}
-    //       // selectedRow={selectedRow}
-    //       // handleRowSelect={handleRowSelect}
-    //       // handleRowEachSelect={handleRowEachSelect}
-    //       // hoverCell={"techStack"} selectedRow={[]}
-    //     />
-    //   </InfiniteScroll>
-    // </Container>
+    <Container customClass={styles.recruiters}>
+      <SharedTable
+        searchValue={searchValue}
+        tableHeader={tableHeader}
+        emptyStateImage={Images.emptyStateImage}
+        emptyStateMessage="No Recruiters Found"
+        handleSearch={handleSearch}
+        clearSearch={clearSearch}
+        isLoading={isLoading}
+        tableData={recruitersData}
+        hasNextPage={hasNextPage}
+        handlePageChange={handlePageChange}
+        isRecruiter
+        handleStatusChange={handleStatusChange}
+        onDataChange={onDataChange}
+      />
 
-    <div>Recruiter</div>
-
-    // <>
-    //   {loading ? (
-    //     <Loader />
-    //   ) : data.length === 0 ? (
-    //     <div className={styles.emptyState}>
-    //       <EmptyState
-    //         image={Images.emptyStateImage}
-    //         title="Nothing to see here!"
-    //         subTitle="Click on + to add a recruiter"
-    //       />
-    //     </div>
-    //   ) : (
-    //     <Container>
-    //       <div className={styles.header}>
-    //         <div className={styles.searchBox}>
-    //           <InputBox
-    //             endIcon={Images.search}
-    //             placeholder="Search..."
-    //             onEndIconClick={Images.searchIcon}
-    //             className={styles.search}
-    //             onChange={handleSearch}
-    //           />
-    //         </div>
-    //       </div>
-    //       <InfiniteScroll
-    //         nextPage={nextPage}
-    //         handlePageChange={handlePageChange}
-    //         customClass={styles.scroll}
-    //       >
-    //         <TableComponent
-    //           data={data}
-    //           columnHeaderTitle={filteredHeaderData}
-    //           // sortbuttonData={sortbuttonData}
-    //           additionalValue={additionalValue}
-    //           // fieldforDateFormat={{ time: TABLE_CONSTANTS.CREATEDTIME }}
-    //           // dataFormatType={DATE_FORMAT.DD_MM_YYYY}
-    //           customStyle={customStyle}
-    //           customRowStyling={styles.customRowStyling}
-    //           // buttonState={buttonState}
-    //           // handleSortArrowClick={handleSortButtonClick}
-    //           // selectedRow={selectedRow}
-    //           // handleRowSelect={handleRowSelect}
-    //           // handleRowEachSelect={handleRowEachSelect}
-    //           // hoverCell={"techStack"} selectedRow={[]}
-    //         />
-    //       </InfiniteScroll>
-    //     </Container>
-    //   )}
-    // </>
+      <ConfirmationModal
+        open={isModalOpen}
+        title={`Change to ${
+          selectedRecruiter?.isActive
+            ? RECRUITER_STATUS.INACTIVE
+            : RECRUITER_STATUS.ACTIVE
+        }`}
+        description={`Are you sure you want to change the status to ${
+          selectedRecruiter?.isActive
+            ? RECRUITER_STATUS.INACTIVE
+            : RECRUITER_STATUS.ACTIVE
+        } for ${selectedRecruiter?.name}? `}
+        cancelButtonText="Cancel"
+        confirmButtonText="Yes"
+        onCancelButtonClick={handleModalClose}
+        onConfirmButtonClick={changeStatus}
+      />
+    </Container>
   );
 };
 

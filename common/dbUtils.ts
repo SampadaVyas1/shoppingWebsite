@@ -95,7 +95,7 @@ export const getMessageFromMessageId = async (messageId: string) => {
 
 export const sortMessageByTime = async (phone: string) => {
   const result = await db.messages
-    .where("phone")
+    .where(SOCKET_CONSTANTS.PHONE)
     .equals(phone)
     .sortBy("timestamp");
   return result;
@@ -137,7 +137,7 @@ export const addCandidate = async (candidateData: any) => {
     await db.conversations.add({
       ...updatedData,
       messages: [],
-      ta: SOCKET_CONSTANTS.USER_ID,
+      ta: "SOCKET_CONSTANTS.USER_ID",
       unreadCount: 0,
       mobile: mobileNumber,
     });
@@ -149,3 +149,5 @@ export const getCandidateData = async (mobile: any) => {
   const result = await db.conversations.where("id").equals(mobile).first();
   return result;
 };
+
+export const filterData = async () => {};

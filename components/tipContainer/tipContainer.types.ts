@@ -1,4 +1,4 @@
-import { TOOLTIP_POSITION } from "@/common/enums";
+import { TOOLTIP_POSITION } from "@/common/types/enums";
 import { MESSAGE_STATUS_VARIANT } from "@/common/socketConstants";
 
 export interface ITipContainerProps {

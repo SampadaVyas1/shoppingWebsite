@@ -30,8 +30,11 @@ import {
   MESSAGE_TYPES,
   TOOLTIP_POSITION,
   TYPOGRAPHY_VARIANT,
-} from "@/common/enums";
-import { MESSAGE_STATUS_VARIANT } from "@/common/socketConstants";
+} from "@/common/types/enums";
+import {
+  MESSAGE_STATUS_VARIANT,
+  SOCKET_CONSTANTS,
+} from "@/common/socketConstants";
 import { sortMessageByTime } from "@/common/dbUtils";
 
 const ChatBody = (props: IChatBodyProps) => {
@@ -41,7 +44,10 @@ const ChatBody = (props: IChatBodyProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const messageListData = useLiveQuery(() => {
-    return db.messages.where("phone").equals(phone).sortBy("timestamp");
+    return db.messages
+      .where(SOCKET_CONSTANTS.PHONE)
+      .equals(phone)
+      .sortBy("timestamp");
   });
 
   const [chats, setChats] = useState<ISentMessage[]>([]);
@@ -81,7 +87,7 @@ const ChatBody = (props: IChatBodyProps) => {
   const loadMoreChats = async (batchSize: number) => {
     setIsLoading(true);
     const messageCollection = await db.messages
-      .where("phone")
+      .where(SOCKET_CONSTANTS.PHONE)
       .equals(phone)
       .sortBy("timestamp");
     const messages = await messageCollection;
@@ -104,8 +110,8 @@ const ChatBody = (props: IChatBodyProps) => {
   }, [phone, messageListData]);
 
   useEffect(() => {
-    setDataInSessionStorage("phone", phone);
-    return () => setDataInSessionStorage("phone", "");
+    setDataInSessionStorage(SOCKET_CONSTANTS.PHONE, phone);
+    return () => setDataInSessionStorage(SOCKET_CONSTANTS.PHONE, "");
   }, [phone]);
 
   return (

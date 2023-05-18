@@ -5,7 +5,7 @@ import ImageComponent from "@/components/imageComponent";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 import { debounce } from "@/common/utils";
 import CustomCheckBox from "@/components/customCheckBox";
 import { IOptionType } from "@/common/types";
@@ -122,7 +122,10 @@ const MulitSelectCheckBOX = (props: IMultiSelectCheckBoxProp) => {
             })
           ) : (
             <div className={styles.noData}>
-              <ImageComponent src={Images.searchResultNotFound} customClass={styles.icon} />
+              <ImageComponent
+                src={Images.searchResultNotFound}
+                customClass={styles.icon}
+              />
               <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}>
                 No results.Try other terms
               </Typography>

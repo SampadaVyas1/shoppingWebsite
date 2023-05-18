@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./tooltip.module.scss";
-import { TOOLTIP_POSITION } from "@/common/enums";
 import { ITooltipProp } from "./tooltip.types";
+import { TOOLTIP_POSITION } from "@/common/types/enums";
 
 const Tooltip = (props: ITooltipProp) => {
   const {

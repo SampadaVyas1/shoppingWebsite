@@ -1,10 +1,10 @@
 import { REFRESH_TOKEN, TOKEN } from "@/common/constants";
-import { API_ROUTES } from "@/common/routes";
+import { SERVICE_GAUTH } from "@/common/routes";
 import service from "./config";
 
 export const getLoginData = async (codeResponse?: any) => {
   try {
-    const response = await service.post(API_ROUTES.LOGIN, {
+    const response = await service.post(SERVICE_GAUTH.LOGIN, {
       authorizationCode: codeResponse.code,
     });
     return { data: response.data.data, error: null };
@@ -15,7 +15,7 @@ export const getLoginData = async (codeResponse?: any) => {
 
 export const getAccessToken = async () => {
   try {
-    const response = await service.post(API_ROUTES.GET_ACCESS_TOKEN, null, {
+    const response = await service.post(SERVICE_GAUTH.GET_ACCESS_TOKEN, null, {
       params: { refreshToken: localStorage.getItem(REFRESH_TOKEN) },
     });
     return response;
@@ -24,10 +24,19 @@ export const getAccessToken = async () => {
   }
 };
 
-export const getDummyData = async () => {
+export const getAllFeatureAccess = async () => {
   try {
-    const response = await service.get(API_ROUTES.CHECK_TOKEN);
-    return response;
+    const response = await service.get(SERVICE_GAUTH.FEATURE_ACCESS);
+    return response.data;
+  } catch (error) {
+    return { data: null, error: error };
+  }
+};
+
+export const getUserDetail = async () => {
+  try {
+    const response = await service.get(SERVICE_GAUTH.GET_USER_DETAILS);
+    return response.data;
   } catch (error) {
     return { data: null, error: error };
   }

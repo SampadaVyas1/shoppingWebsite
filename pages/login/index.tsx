@@ -12,15 +12,22 @@ import Images from "@/public/assets/icons";
 import { sagaActions } from "@/redux/actions";
 import { useAppSelector } from "@/redux/hooks";
 import { TOKEN } from "@/common/constants";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { PRIVATE_ROUTES, RECRUITER_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
 import SectionImage from "../../public/assets/images/loginImage.svg";
+import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 
 const Login = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { isLoggedIn, isLoading } = useAppSelector((state) => state.login);
+  const { isLoggedIn, isLoading, isLoginError } = useAppSelector(
+    (state) => state.login
+  );
+
+  const handleContactAdmin = () => {
+    const win: Window = window;
+    win.location = `${process.env.NEXT_PUBLIC_ADMIN_EMAIL}`;
+  };
 
   const handleClick = async (codeResponse: Object) => {
     dispatch({
@@ -32,16 +39,6 @@ const Login = () => {
     handleClick(codeResponse);
   }
   const login = useGoogleLogin({ onSuccess: onSuccess, flow: "auth-code" });
-
-  useEffect(() => {
-    if (
-      !!getDataFromLocalStorage(TOKEN) &&
-      (router.pathname !== PRIVATE_ROUTES.HOME ||
-        router.pathname !== PRIVATE_ROUTES.NOT_FOUND_ROUTE)
-    ) {
-      router.back();
-    }
-  }, [router]);
 
   useEffect(() => {
     isLoggedIn && router.replace(RECRUITER_ROUTES[1].path);
@@ -86,11 +83,22 @@ const Login = () => {
               Sign in with google
             </Button>
 
+            {isLoginError && (
+              <Typography
+                customStyle={styles.loginError}
+                variant={TYPOGRAPHY_VARIANT.ERROR}
+              >
+                <ImageComponent src={Images.warning} />
+                {`You don't have permissions to login`}
+              </Typography>
+            )}
+
             <Typography
               variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
               customStyle={styles.text}
             >
-              Having trouble logging in? <span> Contact Admin</span>
+              Having trouble logging in?
+              <span onClick={handleContactAdmin}> Contact Admin</span>
             </Typography>
 
             <Container customClass={styles.footer}>

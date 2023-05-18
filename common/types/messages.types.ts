@@ -1,4 +1,4 @@
-import { MESSAGE_TYPES } from "@/common/enums";
+import { MESSAGE_TYPES } from "@/common/types/enums";
 import { ITagType } from "@/components/tag/tag.types";
 
 export interface IMessagesStates {

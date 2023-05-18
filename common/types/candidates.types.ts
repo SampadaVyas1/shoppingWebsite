@@ -12,8 +12,8 @@ export interface IHeaderTitleProps {
   id: number;
   title: string;
   sort?: boolean | false;
-  dataIndex?: string | any;
-  key?: string | null;
+  key: string;
+  dataIndex: string;
 }
 
 export interface IAdditionalValue {
@@ -57,4 +57,8 @@ export interface ICandidatePageProps {
   customScrollStyle: string;
   hasOutsideData: boolean;
   onSelect: (data: IData[]) => void;
+}
+export interface IShowToggle {
+  colspan: string;
+  customStyle?: string;
 }

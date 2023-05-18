@@ -20,24 +20,30 @@ import Images from "@/public/assets/icons";
 import levelData from "../../helpers/levelsData.json";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
 import {
-  filterList,
   getMessageFromMessageId,
   increaseUnreadCount,
   updateMessage,
 } from "@/common/dbUtils";
 import {
+  ARROW_ALIGNMENT,
   BUTTON_VARIANT,
   MESSAGE_TYPES,
   TOOLTIP_POSITION,
   TYPOGRAPHY_VARIANT,
-} from "@/common/enums";
+} from "@/common/types/enums";
 import MessagePlaceholder from "@/public/assets/images/messagePlaceholder.svg";
 import { ITagType } from "@/components/tag/tag.types";
-import { IIncomingMessageType, IMessagesStates } from "./messages.types";
+import {
+  IIncomingMessageType,
+  IMessagesStates,
+} from "../../common/types/messages.types";
 import { useAppSelector } from "@/redux/hooks";
 import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
 import { getDataFromSessionStorage } from "@/common/utils";
-import { IData } from "../candidates/candidates.types";
+import EmptyState from "@/components/emptyState";
+import { IData } from "@/common/types/candidates.types";
+import { sagaActions } from "@/redux/actions";
+import { useDispatch } from "react-redux";
 
 const Messages = () => {
   const [messagePageState, setMessagePageState] = useState<IMessagesStates>({
@@ -53,6 +59,9 @@ const Messages = () => {
     return dbData;
   });
 
+  const dispatch = useDispatch();
+
+  const { employeeId } = useAppSelector((state) => state.login.userDetails);
   const {
     selectedLevels,
     selectedCandidate,
@@ -99,7 +108,6 @@ const Messages = () => {
       ...prevState,
       searchValue: event.target.value,
     }));
-    filterList(event.target.value);
   };
 
   const handleClearSearch = () => {
@@ -139,7 +147,7 @@ const Messages = () => {
       timestamp: timestamp,
       messageType: messageType,
       mediaUrl: mediaUrl,
-      to: SOCKET_CONSTANTS.USER_ID,
+      to: `${employeeId}`,
       caption: caption,
       fileName: fileName,
       from: from,
@@ -148,17 +156,17 @@ const Messages = () => {
   };
 
   useEffect(() => {
-    if (!socket.connected) {
+    if (!socket.connected && employeeId) {
       socket.connect();
       socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-        phoneId: SOCKET_CONSTANTS.PHONE_ID,
-        userId: SOCKET_CONSTANTS.USER_ID,
+        phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+        userId: `${employeeId}`,
       });
 
       socket.on(SOCKET_ROUTES.CONNECT, () => {
         socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-          phoneId: SOCKET_CONSTANTS.PHONE_ID,
-          userId: SOCKET_CONSTANTS.USER_ID,
+          phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+          userId: `${employeeId}`,
         });
         setMessagePageState((prevState) => ({
           ...prevState,
@@ -223,8 +231,8 @@ const Messages = () => {
       async (data: IIncomingMessageType) => {
         const { from, wamid } = data;
         const newMessage = createNewMessage(data);
-        (!sessionStorage.getItem("phone") ||
-          from !== getDataFromSessionStorage("phone")) &&
+        (!getDataFromSessionStorage(SOCKET_CONSTANTS.PHONE) ||
+          from !== getDataFromSessionStorage(SOCKET_CONSTANTS.PHONE)) &&
           (await increaseUnreadCount(from, wamid, false));
         await updateMessage({ ...newMessage, phone: from });
       }
@@ -232,6 +240,10 @@ const Messages = () => {
     return () => {
       socket.disconnect();
     };
+  }, [employeeId]);
+
+  useEffect(() => {
+    dispatch({ type: sagaActions.GET_CANDIDATE_FILTER });
   }, []);
 
   return (
@@ -261,7 +273,7 @@ const Messages = () => {
             isOpen={true}
             positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
             reposition={true}
-            align="start"
+            align={ARROW_ALIGNMENT.START}
             onClickOutside={closeFilter}
             padding={16}
             content={
@@ -288,19 +300,14 @@ const Messages = () => {
           />
         ) : (
           <div className={styles.emptyCandidateList}>
-            <ImageComponent
-              src={Images.noCandidates}
-              customClass={styles.noCandidateImage}
+            <EmptyState
+              title={"No message yet"}
+              subTitle={
+                "click on the “+” button to start messaging a candidate"
+              }
+              image={Images.noCandidates}
+              customImageStyle={styles.noCandidateImage}
             />
-            <Typography variant={TYPOGRAPHY_VARIANT.TEXT_LARGE_MEDIUM}>
-              Empty candidate list
-            </Typography>
-            <Typography
-              variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_REGULAR}
-              customStyle={styles.hint}
-            >
-              {` But don't worry - you can start adding candidates by clicking on the “+” button`}
-            </Typography>
           </div>
         )}
         <Button
@@ -319,7 +326,7 @@ const Messages = () => {
         ) : (
           <MessageScreen
             candidateData={selectedCandidate}
-            userId={SOCKET_CONSTANTS.USER_ID}
+            userId={`${employeeId}`}
             isConnected={isConnected}
           />
         )}

@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import ImageComponent from "../imageComponent";
 import styles from "./hoverCard.module.scss";
 import { ArrowContainer, Popover } from "react-tiny-popover";
-import { TOOLTIP_POSITION } from "@/common/enums";
+import { ARROW_ALIGNMENT, TOOLTIP_POSITION } from "@/common/types/enums";
 import { CSSTransition } from "react-transition-group";
 
 type IPositions =
@@ -19,7 +19,10 @@ interface IHoverCardProps {
   customTipStyle?: string;
   containerPosition?: IPositions[];
   tipPosition?: IPositions;
-  arrowAlign?: "start" | "end" | "center";
+  arrowAlign?:
+    | ARROW_ALIGNMENT.START
+    | ARROW_ALIGNMENT.END
+    | ARROW_ALIGNMENT.CENTER;
 }
 
 const HoverCard = (props: IHoverCardProps) => {
@@ -67,7 +70,7 @@ const HoverCard = (props: IHoverCardProps) => {
             arrowStyle={{
               opacity: 1,
               zIndex: 2,
-              left: position === "right" ? "0.25rem" : "auto",
+              left: position === TOOLTIP_POSITION.RIGHT ? "0.25rem" : "auto",
             }}
             className="popover-arrow-container"
             arrowClassName="popover-arrow"

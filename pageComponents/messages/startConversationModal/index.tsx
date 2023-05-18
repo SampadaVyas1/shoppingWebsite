@@ -10,7 +10,11 @@ import TransitionWrapper from "@/components/transitionWrapper";
 import MessageFilter from "../messageFilter";
 import Button from "@/components/button";
 import Candidates from "@/pages/candidates";
-import { BUTTON_VARIANT, TOOLTIP_POSITION } from "@/common/enums";
+import {
+  ARROW_ALIGNMENT,
+  BUTTON_VARIANT,
+  TOOLTIP_POSITION,
+} from "@/common/types/enums";
 import { IStartConversationModalProps } from "./startConversationModal.types";
 import { addCandidate } from "@/common/dbUtils";
 import { ICandidateListCardProps } from "../candidateListCard/candidateListCard.types";

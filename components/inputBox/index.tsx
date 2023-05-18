@@ -13,8 +13,8 @@ import styles from "./inputBox.module.scss";
 import ImageComponent from "../imageComponent";
 import Typography from "../typography";
 import { INPUT_PLACEHOLDER } from "@/common/constants";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { IInputProps } from "./inputBox.types";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 
 const InputBox = React.forwardRef((props: IInputProps, ref) => {
   const inputRef: RefObject<HTMLInputElement> | RefObject<HTMLTextAreaElement> =

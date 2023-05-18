@@ -4,7 +4,8 @@ import TransitionWrapper from "../transitionWrapper";
 import styles from "./attachmentModal.module.scss";
 import Images from "@/public/assets/icons";
 import { IAttachmentModalProps } from "./attachmentModal.types";
-import { IMAGE_TYPES } from "@/common/constants";
+import { ATTACHMENT_MODAL } from "@/common/constants";
+import { MESSAGE_TYPES } from "@/common/types/enums";
 
 const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
   const imageRef = useRef<HTMLInputElement>(null);
@@ -19,12 +20,12 @@ const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
 
   const onImageSelect = (event: any) => {
     const [file, ...otherElements] = event.target.files;
-    file && onSelection(file, "image");
+    file && onSelection(file, MESSAGE_TYPES.IMAGE);
   };
 
   const onFileSelect = (event: any) => {
     const [file, ...otherElements] = event.target.files;
-    file && onSelection(file, "document");
+    file && onSelection(file, MESSAGE_TYPES.DOCUMENT);
   };
 
   return (
@@ -36,7 +37,7 @@ const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
             ref={imageRef}
             className={styles.fileInput}
             onChange={onImageSelect}
-            accept={IMAGE_TYPES}
+            accept={ATTACHMENT_MODAL.IMAGES_TYPES}
           />
           <ImageComponent
             src={Images.imageAttachmentIcon}
@@ -48,8 +49,7 @@ const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
           <input
             type="file"
             ref={fileRef}
-            accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
-            text/plain, application/pdf"
+            accept={ATTACHMENT_MODAL.DOCUMENT_TYPE}
             className={styles.fileInput}
             onChange={onFileSelect}
           />

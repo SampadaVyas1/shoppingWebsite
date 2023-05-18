@@ -10,7 +10,7 @@ import arrowDown from "../../public/assets/icons/arrowDown.svg";
 import arrowUp from "../../public/assets/icons/arrowUp.svg";
 import { IOptionType } from "@/common/types";
 import { ISelectProps, ISelectStates } from "./select.types";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 
 const Select = (props: ISelectProps) => {
   const {

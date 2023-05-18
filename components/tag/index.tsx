@@ -3,7 +3,7 @@ import Typography from "../typography";
 import styles from "./index.module.scss";
 import { ITagProps } from "./tag.types";
 import Images from "@/public/assets/icons";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 
 const Tag = (props: ITagProps) => {
   const { active = false, onClick, customClass, tagValue, onDelete } = props;

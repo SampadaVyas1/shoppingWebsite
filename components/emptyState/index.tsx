@@ -2,8 +2,8 @@ import React from "react";
 import styles from "./emptyState.module.scss";
 import ImageComponent from "../../components/imageComponent";
 import Typography from "../typography";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
 import { IEmptyStateType } from "@/common/types";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 
 const EmptyState = ({
   title,

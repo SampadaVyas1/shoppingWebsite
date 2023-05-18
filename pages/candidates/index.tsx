@@ -3,15 +3,7 @@ import moment from "moment";
 import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import { Popover } from "react-tiny-popover";
-import {
-  IButtonState,
-  ICandidatePageProps,
-  ICurrentAppliedField,
-  IData,
-  IFilter,
-  IList,
-  ISubmitButton,
-} from "./candidates.types";
+
 import Container from "@/components/container";
 import Images from "@/public/assets/icons";
 import ImageComponent from "../../components/imageComponent/index";
@@ -19,7 +11,6 @@ import Tag from "@/components/tag/tag";
 import AddForm from "@/components/addForm";
 import Modal from "@/components/modal";
 import Filter from "@/components/filterComponent";
-import { TOOLTIP_POSITION, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import TransitionWrapper from "@/components/transitionWrapper";
 import Image from "next/image";
 import InputBox from "@/components/inputBox";
@@ -43,6 +34,16 @@ import { useAppSelector } from "@/redux/hooks";
 import { useDispatch } from "react-redux";
 import { sagaActions } from "@/redux/actions";
 import { resetCandidatesData, resetPage } from "@/redux/slices/candidateSlice";
+import {
+  ICandidatePageProps,
+  IButtonState,
+  IData,
+  IFilter,
+  IList,
+  ICurrentAppliedField,
+  ISubmitButton,
+} from "@/common/types/candidates.types";
+import { TYPOGRAPHY_VARIANT, TOOLTIP_POSITION } from "@/common/types/enums";
 
 const tableHeaderData = [
   {
@@ -368,12 +369,23 @@ const Candidates = ({
     selectedRow: number[],
     onSelectedRowChange: (value: number[]) => void
   ) => {
-    setSelectedData([...selectedRow]);
-    const filteredData = tabledata?.filter((data) =>
-      selectedRow?.includes(data.id)
-    );
+    let filteredData;
+    const filterSelectedRow = selectedData.filter((data) => data !== row);
+    if (!selectedData.includes(row)) {
+      setSelectedData([...selectedRow]);
+      filteredData = tabledata?.filter((data) =>
+        selectedRow?.includes(data.id)
+      );
+    } else {
+      setSelectedData([...filterSelectedRow]);
+      filteredData = tabledata?.filter((data) =>
+        filterSelectedRow?.includes(data.id)
+      );
+    }
     onSelect && onSelect(filteredData);
   };
+
+  console.log(selectedData);
 
   const clearSearch = () => {
     searchValue && setSearchValue("");

@@ -1,4 +1,4 @@
-import { MESSAGE_STATUS } from "@/common/enums";
+import { MESSAGE_STATUS } from "@/common/types/enums";
 
 export interface ICandidateListCardProps {
   id?: string;

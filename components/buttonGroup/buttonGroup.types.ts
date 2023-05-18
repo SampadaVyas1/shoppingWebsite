@@ -1,4 +1,4 @@
-import { ORIENTATIONS } from "@/common/enums";
+import { ORIENTATIONS } from "@/common/types/enums";
 
 export interface IButtonGroupProps {
   buttons: string[];

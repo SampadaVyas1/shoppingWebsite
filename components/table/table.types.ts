@@ -2,13 +2,16 @@ import {
   IAdditionalValue,
   IButtonState,
   IData,
-} from "@/pages/candidates/candidates.types";
+  IHeaderTitleProps,
+  IShowToggle,
+} from "@/common/types/candidates.types";
 
 interface ICustomStyle {
   header: {
     row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => JSX.Element;
   };
 }
+
 export interface IHandleRowSelect {
   (value: number[]): void;
 }
@@ -23,14 +26,18 @@ export interface ITableComponent {
   data: IData[];
   customRowStyling?: string;
   columnHeaderTitle: any[];
+  sortbuttonData?: IButtonState;
   dataFormatType?: string;
   fieldforDateFormat?: { time: string };
   customStyle?: ICustomStyle;
+  showToggle?: IShowToggle;
   moreverticalIcon?: boolean;
   buttonState?: IButtonState;
   handleSortArrowClick?: (field: string, sortType: string, data: any) => void;
   selectedRow?: number[];
   handleRowSelect?: IHandleRowSelect;
+  onSwitchToggle?: (data: any) => void;
+  isLoading?: boolean;
   handleRowEachSelect?: (
     row: number,
     selectedRow: number[],

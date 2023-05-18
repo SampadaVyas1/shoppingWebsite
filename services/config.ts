@@ -46,8 +46,8 @@ service.interceptors.response.use(
         const response = await getAccessToken();
         if (response?.status === ERROR_CODES.STATUS_OK) {
           const { data } = response.data;
-          setDataInLocalStorage(TOKEN, data);
-          originalRequest.headers.Authorization = data;
+          setDataInLocalStorage(TOKEN, data.accessToken);
+          originalRequest.headers.Authorization = data.accessToken;
           return axios(originalRequest);
         } else {
           localStorage.clear();

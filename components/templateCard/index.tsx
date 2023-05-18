@@ -5,7 +5,7 @@ import Typography from "../typography";
 import Button from "../button";
 import TipContainer from "../tipContainer";
 import styles from "./templateCard.module.scss";
-import { TOOLTIP_POSITION, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TOOLTIP_POSITION, TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 import { ITemplateCardProps } from "./templateCard.types";
 import { formatTemplateName } from "@/common/utils";
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect, SyntheticEvent } from "react";
 import styles from "./checkbox.module.scss";
 import ImageComponent from "../imageComponent";
 import Typography from "../typography";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 import checkedIcon from "../../public/assets/icons/checked.svg";
 import checkboxIdeal from "../../public/assets/icons/checkboxIdeal.svg";
 import { ENTER_KEYCODE } from "@/common/constants";

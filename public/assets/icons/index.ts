@@ -40,6 +40,8 @@ const Images = {
   candidateEmptyState: require("./candidateEmptyState.svg").default,
   Error404: require("./404.svg"),
   searchResultNotFound: require("./searchResultNotFound.svg"),
+  techStackEmpty: require("./techStackEmpty.svg").default,
+  warning: require("./warning.svg").default,
 };
 
 export default Images;

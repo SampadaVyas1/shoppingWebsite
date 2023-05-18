@@ -1,7 +1,11 @@
 import styles from "./button.module.scss";
 import ImageComponent from "../imageComponent";
-import { BUTTON_TYPES, BUTTON_VARIANT, BUTTON_SIZES } from "@/common/enums";
 import { IButtonProps } from "./button.types";
+import {
+  BUTTON_SIZES,
+  BUTTON_TYPES,
+  BUTTON_VARIANT,
+} from "@/common/types/enums";
 
 const Button = (props: IButtonProps) => {
   const {

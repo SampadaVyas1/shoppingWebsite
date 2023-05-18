@@ -1,16 +1,20 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import createSagaMiddleware from "redux-saga";
 import loginSlice from "../slices/loginSlice";
-import commonSlice from "../slices/commonSlice";
 import rootSaga from "../sagas";
-import messageSlice from "../slices/messageSlice"; 
-import candidateSlice from "../slices/candidateSlice"
+import messageSlice from "../slices/messageSlice";
+import candidateSlice from "../slices/candidateSlice";
+import techstackSlice from "../slices/techStackSlice";
+import recruiterSlice from "../slices/recruiterSlice";
+import commonSlice from "../slices/commonSlice";
 
 const rootReducer = combineReducers({
   login: loginSlice,
   common: commonSlice,
   messages: messageSlice,
-  candidate:candidateSlice,
+  candidate: candidateSlice,
+  techStack: techstackSlice,
+  recruiters: recruiterSlice,
 });
 
 const sagaMiddleware = createSagaMiddleware();

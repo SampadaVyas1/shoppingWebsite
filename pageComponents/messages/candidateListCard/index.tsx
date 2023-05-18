@@ -1,4 +1,4 @@
-import { MESSAGE_STATUS, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { MESSAGE_STATUS, TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 import ImageComponent from "@/components/imageComponent";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";

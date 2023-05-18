@@ -35,7 +35,6 @@
     width: 200%;
     margin-left: -100%;
     transition: margin 0.2s ease-in 0s;
-    &:before,
     &:after {
       display: block;
       float: left;
@@ -48,10 +47,13 @@
     }
     &:before {
       content: "";
+      width: 50%;
+      height: 1rem;
+      box-sizing: border-box;
       text-transform: uppercase;
       padding-left: 0.125rem;
+      float: left;
       background-color: $primary;
-      color: $white;
     }
   }
   .toggleSwitchInner:after {

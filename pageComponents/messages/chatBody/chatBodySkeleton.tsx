@@ -1,6 +1,6 @@
 import React from "react";
 import SkeletonLoader from "@/components/skeletonLoader";
-import { SKELETON_VARIANT } from "@/common/enums";
+import { SKELETON_VARIANT } from "@/common/types/enums";
 import styles from "./chatBody.module.scss";
 
 const ChatBodySkeleton = () => {

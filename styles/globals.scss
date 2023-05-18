@@ -23,15 +23,6 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
-.rpt-textbox-container {
-  width: auto !important;
-}
-
 .drawer-enter {
   transform: translateX(36.875rem);
 }
@@ -87,6 +78,7 @@ a {
 }
 .Toastify__toast-body {
   color: $white;
+  color: $white;
   font-size: 0.75rem;
 }
 .Toastify--animate-icon,
@@ -115,7 +107,7 @@ a {
   padding: 0.5rem 0.75rem;
 }
 .rc-table-cell {
-  padding: 0.5rem 0.75rem;
+  padding: 0.75rem 1rem;
 }
 .rc-table-tbody {
   width: auto;
@@ -129,6 +121,18 @@ a {
   padding: 0.5rem 0.75rem;
   height: 3.75rem;
 }
-.popover-arrow {
-  top: auto;
+
+.Toastify__toast--error {
+  border: 0.125rem solid $error;
+  border-radius: 1.5rem;
+  align-items: center;
+  display: flex;
+  box-sizing: border-box;
+}
+.Toastify__toast {
+  min-height: auto;
+}
+.rc-table-placeholder {
+  height: 33rem;
+  display: flex;
 }

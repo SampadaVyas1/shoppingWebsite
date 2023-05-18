@@ -1,8 +1,9 @@
+import React from "react";
+import { Theme, toast, TypeOptions } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ImageComponent from "@/components/imageComponent";
 import Images from "@/public/assets/icons";
-import React from "react";
-import { toast, TypeOptions } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { DEBOUNCE_TIME, TOAST_VARIANTS } from "@/common/constants";
 
 const CloseButton = ({ closeToast }: any) => (
   <ImageComponent
@@ -17,7 +18,8 @@ export const notify = (
   toastBody: JSX.Element | string,
   toastId: number | string,
   onClose?: (toastId: number | string) => void,
-  type: TypeOptions = "success"
+  type: TypeOptions = TOAST_VARIANTS.SUCCESS as TypeOptions,
+  autoClose: number | false = DEBOUNCE_TIME.TOAST_DEBOUNCE
 ) => {
   const handleClose = () => {
     toast.dismiss(toastId);
@@ -26,13 +28,13 @@ export const notify = (
   toast(toastBody, {
     position: toast.POSITION.TOP_CENTER,
     type: type,
-    autoClose: 2000,
+    autoClose: autoClose,
     hideProgressBar: hideProgressBar,
     closeOnClick: false,
     pauseOnHover: false,
     draggable: false,
     progress: undefined,
-    theme: "light",
+    theme: TOAST_VARIANTS.LIGHT_THEME as Theme,
     toastId: toastId,
     onClose: handleClose,
     pauseOnFocusLoss: false,

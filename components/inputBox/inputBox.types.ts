@@ -1,6 +1,6 @@
 import {
-  HTMLInputTextareaProps,
   HTMLInputProps,
+  HTMLInputTextareaProps,
   HTMLTextareaProps,
 } from "@/common/types";
 import { ChangeEvent, HTMLAttributes, MouseEvent, FocusEvent } from "react";

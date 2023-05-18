@@ -98,3 +98,18 @@ export enum TYPEOF {
   STRING = "string",
   NUMBER = "number",
 }
+export enum RECRUITER_STATUS {
+  INACTIVE = "Inactive",
+  ACTIVE = "Active",
+}
+
+export enum ROLES {
+  ADMIN = "ADMIN",
+  RECRUITER = "RECRUITER",
+}
+
+export enum ARROW_ALIGNMENT {
+  START = "start",
+  END = "end",
+  CENTER = "center",
+}

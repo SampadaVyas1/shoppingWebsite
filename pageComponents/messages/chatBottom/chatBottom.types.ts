@@ -1,5 +1,5 @@
 import { ChangeEvent, RefObject } from "react";
-import { ISelectedFile } from "@/pages/messages/messages.types";
+import { ISelectedFile } from "@/common/types/messages.types";
 
 export interface IChatBottomProps {
   candidateName: string;
