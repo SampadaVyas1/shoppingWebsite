@@ -34,6 +34,8 @@ const Images = {
   downArrowDisabled: require("./downArrowDisabled.svg").default,
   downArrowEnabled: require("./downArrowEnabled.svg").default,
   noCandidate: require("./noCandidate.svg").default,
+  techStackEmpty: require("./techStackEmpty.svg").default,
+  warning: require("./warning.svg").default,
 };
 
 export default Images;

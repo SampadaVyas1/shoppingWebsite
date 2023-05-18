@@ -1,8 +1,7 @@
-import { v4 as uuid } from "uuid";
 import Images from "@/public/assets/icons";
 import moment from "moment";
-import { MESSAGE_STATUS } from "./enums";
 import { HEADER, IMAGE, TIME_FORMAT } from "./constants";
+import { MESSAGE_STATUS } from "./types/enums";
 
 export const encodeToken = (data: string) => window.btoa(data);
 

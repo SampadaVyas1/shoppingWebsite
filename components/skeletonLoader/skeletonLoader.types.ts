@@ -1,4 +1,4 @@
-import { SKELETON_VARIANT } from "@/common/enums";
+import { SKELETON_VARIANT } from "@/common/types/enums";
 
 export interface ISkeletonLoaderProps {
   type:

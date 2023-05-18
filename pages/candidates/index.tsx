@@ -1,36 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import fakeData from "./mockData.json";
+import { TableComponent } from "@/components/table";
 import HeaderTitle from "./tableHeaderData.json";
+import { TABLE_CONSTANTS, DATE_FORMAT } from "@/common/constants";
 import {
-  IAdditionalValue,
   IButtonState,
   ICandidatesProps,
   IData,
-} from "./candidates.types";
-import { DATE_FORMAT, TABLE_CONSTANTS } from "@/common/constants";
-import { TableComponent } from "@/components/table";
+  IAdditionalValue,
+} from "@/common/types/candidates.types";
 
-const sortbuttonData = {
+const sortbuttonData: IButtonState = {
   name: { upKeyDisabled: false, downKeyDisabled: false },
-  experienceLevel: { upKeyDisabled: false, downKeyDisabled: false },
   createdTime: { upKeyDisabled: false, downKeyDisabled: false },
-  mobileNumber: { upKeyDisabled: false, downKeyDisabled: false },
-  techStack: { upKeyDisabled: false, downKeyDisabled: false },
-  recruiter: { upKeyDisabled: false, downKeyDisabled: false },
-  status: { upKeyDisabled: false, downKeyDisabled: false },
 };
 
 const Candidates = (props: ICandidatesProps) => {
   const [data, setData] = useState<IData[] | null>(null);
   const [buttonState, setButtonState] = useState<IButtonState>(sortbuttonData);
 
-  const handlePageChange = () => {
-    fakeData.push(...fakeData);
-    setData([...fakeData]);
-    setButtonState(sortbuttonData);
-  };
   const additionalValue: IAdditionalValue[] = [
     {
       colspan: TABLE_CONSTANTS.NAME,
@@ -53,6 +43,10 @@ const Candidates = (props: ICandidatesProps) => {
       ),
     },
   };
+
+  function handlePageChange(): void {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <InfiniteScroll

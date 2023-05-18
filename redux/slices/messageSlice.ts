@@ -26,6 +26,7 @@ export const messageSlice = createSlice({
     },
     toggleError: (state) => {
       state.isError = true;
+      state.isLoading = false;
     },
   },
 });

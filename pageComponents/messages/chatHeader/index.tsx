@@ -3,7 +3,7 @@ import Typography from "@/components/typography";
 import SkeletonLoader from "@/components/skeletonLoader";
 import styles from "./chatHeader.module.scss";
 import { IChatHeaderProps } from "./chatHeader.types";
-import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { SKELETON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 
 const ChatHeader = (props: IChatHeaderProps) => {
   const {

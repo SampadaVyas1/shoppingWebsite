@@ -2,6 +2,8 @@ import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 import "@/styles/globals.scss";
 import Splash from "@/components/splash";
 import AuthProvider from "@/context/authContext";
@@ -29,6 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
         ) : (
           <ProtectedRoute>
             <Component {...pageProps} />
+            <ToastContainer />
           </ProtectedRoute>
         )}
       </Provider>

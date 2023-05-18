@@ -1,4 +1,4 @@
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 import Typography from "../typography";
 import styles from "./card.module.scss";
 import { ICardProps } from "./card.types";

@@ -29,7 +29,7 @@ import {
   MESSAGE_TYPES,
   TOOLTIP_POSITION,
   TYPOGRAPHY_VARIANT,
-} from "@/common/enums";
+} from "@/common/types/enums";
 import MessagePlaceholder from "@/public/assets/images/messagePlaceholder.svg";
 import { ITagType } from "@/components/tag/tag.types";
 import { IIncomingMessageType, IMessagesStates } from "./messages.types";

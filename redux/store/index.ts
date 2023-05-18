@@ -4,11 +4,15 @@ import loginSlice from "../slices/loginSlice";
 import commonSlice from "../slices/commonSlice";
 import rootSaga from "../sagas";
 import messageSlice from "../slices/messageSlice";
+import techstackSlice from "../slices/techStackSlice";
+import recruiterSlice from "../slices/recruiterSlice";
 
 const rootReducer = combineReducers({
   login: loginSlice,
   common: commonSlice,
   messages: messageSlice,
+  techStack: techstackSlice,
+  recruiters: recruiterSlice,
 });
 
 const sagaMiddleware = createSagaMiddleware();

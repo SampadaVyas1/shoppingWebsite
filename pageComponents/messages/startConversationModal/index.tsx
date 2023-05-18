@@ -10,7 +10,7 @@ import TransitionWrapper from "@/components/transitionWrapper";
 import MessageFilter from "../messageFilter";
 import Button from "@/components/button";
 import Candidates from "@/pages/candidates";
-import { BUTTON_VARIANT, TOOLTIP_POSITION } from "@/common/enums";
+import { BUTTON_VARIANT, TOOLTIP_POSITION } from "@/common/types/enums";
 import { IStartConversationModalProps } from "./startConversationModal.types";
 
 const StartConversationModal = (props: IStartConversationModalProps) => {

@@ -29,7 +29,7 @@ import {
   resetUnreadCount,
   updateMessage,
 } from "@/common/dbUtils";
-import { MESSAGE_STATUS, MESSAGE_TYPES } from "@/common/enums";
+import { MESSAGE_STATUS, MESSAGE_TYPES } from "@/common/types/enums";
 import { ISelectedFile } from "@/pages/messages/messages.types";
 
 const MessageScreen = (props: IMessageScreenProps) => {

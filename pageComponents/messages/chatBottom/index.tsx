@@ -16,7 +16,7 @@ import {
   MESSAGE_TYPES,
   SKELETON_VARIANT,
   TOOLTIP_POSITION,
-} from "@/common/enums";
+} from "@/common/types/enums";
 import TransitionWrapper from "@/components/transitionWrapper";
 import { Popover, ArrowContainer } from "react-tiny-popover";
 import { useAppSelector } from "@/redux/hooks";

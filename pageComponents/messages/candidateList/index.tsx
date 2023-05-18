@@ -6,7 +6,7 @@ import CandidateListCard from "../candidateListCard";
 import SkeletonLoader from "@/components/skeletonLoader";
 import InfiniteScroll from "@/components/infiniteScroll";
 import styles from "./candidateList.module.scss";
-import { SKELETON_VARIANT } from "@/common/enums";
+import { SKELETON_VARIANT } from "@/common/types/enums";
 import { sortMessages } from "@/common/dbUtils";
 import { ICandidateListCardProps } from "../candidateListCard/candidateListCard.types";
 import { ICandidateListProps } from "./candidateList.types";

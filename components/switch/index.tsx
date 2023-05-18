@@ -13,6 +13,7 @@ const Switch = (props: ISwitchProps) => {
       props.onChange(!props.active);
     }
   };
+  const handleCheckboxChange = () => {};
   return (
     <div className={styles.toggleSwitch} onClick={handleChange}>
       <input
@@ -20,6 +21,7 @@ const Switch = (props: ISwitchProps) => {
         className={styles.toggleSwitchCheckbox}
         name={props.name}
         checked={props.active}
+        onChange={handleCheckboxChange}
         disabled={props.disabled}
         id={props.name}
       />

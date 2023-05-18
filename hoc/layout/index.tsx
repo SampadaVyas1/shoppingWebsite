@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
+import jwt_decode from "jwt-decode";
 import Navbar from "@/components/navbar";
 import TeamNavbar from "@/components/teamNavbar";
 import Splash from "@/components/splash";
@@ -12,17 +13,40 @@ import {
   TEAM_ROUTES,
 } from "@/common/routes";
 import { TEAM_PAGE_ROUTES } from "@/common/routes";
-import { ROLES, TOKEN } from "@/common/constants";
+import { TOKEN } from "@/common/constants";
 import { getDataFromLocalStorage } from "@/common/utils";
+import { useDispatch } from "react-redux";
+import { sagaActions } from "@/redux/constants";
+import { useAppSelector } from "@/redux/hooks";
+import { ROLES } from "@/common/types/enums";
 
 const Layout = ({ children }: any) => {
-  const role = ROLES.ADMIN;
+  const dispatch = useDispatch();
+  const { role: userRole } = useAppSelector((state) => state.login.userDetails);
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
+  const [role, setRole] = useState<string>(ROLES.RECRUITER);
   const router = useRouter();
 
-  useEffect(() => {
+  const checkLoggedIn = () => {
+    try {
+      const userData: any = jwt_decode(`${getDataFromLocalStorage(TOKEN)}`);
+      setRole(userData.role);
+    } catch (error) {
+      console.log(error);
+    }
     setLoggedIn(!!getDataFromLocalStorage(TOKEN));
-  }, []);
+  };
+
+  useEffect(() => {
+    checkLoggedIn();
+  }, [dispatch, userRole]);
+
+  useEffect(() => {
+    if (router.pathname !== PRIVATE_ROUTES.LOGIN) {
+      dispatch({ type: sagaActions.FETCH_ROLE });
+      dispatch({ type: sagaActions.GET_USER_DETAILS });
+    }
+  }, [dispatch]);
 
   return (
     <>

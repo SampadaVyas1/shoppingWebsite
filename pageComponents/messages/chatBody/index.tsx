@@ -30,7 +30,7 @@ import {
   MESSAGE_TYPES,
   TOOLTIP_POSITION,
   TYPOGRAPHY_VARIANT,
-} from "@/common/enums";
+} from "@/common/types/enums";
 import { MESSAGE_STATUS_VARIANT } from "@/common/socketConstants";
 import { sortMessageByTime } from "@/common/dbUtils";
 

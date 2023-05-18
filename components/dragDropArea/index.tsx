@@ -8,7 +8,7 @@ import {
   FILE_EXTENSION,
   FILE_TYPES,
   TYPOGRAPHY_VARIANT,
-} from "@/common/enums";
+} from "@/common/types/enums";
 import { IDragDropArea } from "./dragDropArea.types";
 
 const DragDropArea = (props: IDragDropArea) => {

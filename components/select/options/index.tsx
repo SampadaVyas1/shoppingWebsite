@@ -5,10 +5,11 @@ import ImageComponent from "@/components/imageComponent";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 import { debounce } from "@/common/utils";
 import { IOptionType } from "@/common/types";
 import { IOptionsProp } from "./options.types";
+import { DEBOUNCE_TIME } from "@/common/constants";
 
 const Options = (props: IOptionsProp) => {
   const { options, selectedValue, onSelect, searchable, customStyle } = props;
@@ -23,12 +24,14 @@ const Options = (props: IOptionsProp) => {
   const handleSearch = debounce(
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       const value = event.target.value;
-      const updatedOptions = options.filter((data) =>
-        data.label.toLowerCase().includes(value.toLowerCase())
-      );
+      const updatedOptions = options.length
+        ? options.filter((data) =>
+            data.label.toLowerCase().includes(value.toLowerCase())
+          )
+        : [];
       setFilteredOptions(updatedOptions);
     },
-    300
+    DEBOUNCE_TIME.DROPDOWN_SEARCH_DEBOUNCE
   );
 
   return (

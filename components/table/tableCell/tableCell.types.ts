@@ -1,14 +1,24 @@
+import { IRecruitersList } from "@/common/types";
+import {
+  IAdditionalValue,
+  IData,
+  IShowToggle,
+} from "@/common/types/candidates.types";
+
 export interface ITable {
-    dataIndex: string;
-    record: any;
-    field?: { time: string };
-    additionalValue?: any;
-    dataFormatType?:string;
-  }
-  
-  export interface IExtraField {
-    colspan: string;
-    colspanValue: string;
-    customStyle?: string;
-  }
-  
+  dataIndex: string;
+  data: IData[];
+  field?: { time: string };
+  additionalValue?: IAdditionalValue[];
+  showToggle?: IShowToggle;
+  dataFormatType?: string;
+  index: number;
+  hoverCell?: string;
+  onSwitchToggle?: (data: any) => void;
+}
+
+export interface IExtraField {
+  colspan: string;
+  colspanValue: string;
+  customStyle?: string;
+}

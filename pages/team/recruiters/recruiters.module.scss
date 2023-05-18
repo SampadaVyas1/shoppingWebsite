@@ -1,0 +1,78 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.recruiters {
+  overflow: hidden;
+  @include flex-direction(column, 1);
+  .searchBox {
+    display: flex;
+    width: 27rem;
+    margin-left: 1.5rem;
+  }
+  .customHeaderStyle {
+    background-color: $tableHeader;
+  }
+  .designation {
+    color: $disabledText;
+  }
+  .errorMessage {
+    @include flex-center-alignment;
+    font-size: 1rem;
+    border: 0.125rem solid $error;
+    width: fit-content;
+    align-self: center;
+    padding: 0.5rem 2rem;
+    border-radius: 0.25rem;
+  }
+  .table {
+    width: 100%;
+    background-color: $white;
+    border-collapse: collapse;
+  }
+  .scroll {
+    max-height: 80%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    margin: 1.5rem;
+    &::-webkit-scrollbar {
+      width: 0.3rem;
+    }
+    &::-webkit-scrollbar-track {
+      background: $white;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: $secondaryText;
+      border-radius: 1rem;
+    }
+    &::-webkit-scrollbar-track-piece:end {
+      margin-bottom: 0.5rem;
+    }
+  }
+  .customRowStyling:hover {
+    background-color: $tableHover;
+  }
+
+  .loadingWrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    opacity: 0.7;
+    @include flex-center-alignment;
+  }
+  .spinner {
+    width: 2.5rem;
+    height: 2.5rem;
+    animation: spinner 1.5s linear infinite;
+  }
+  @keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}

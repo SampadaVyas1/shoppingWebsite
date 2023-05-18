@@ -1,51 +1,47 @@
-import { IAdditionalValue } from "@/pages/candidates/candidates.types";
+import {
+  IAdditionalValue,
+  IButtonState,
+  IData,
+  IHeaderTitleProps,
+  IShowToggle,
+} from "@/common/types/candidates.types";
 
-export interface IButtonState {
-  [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
+interface ICustomStyle {
+  header: {
+    row: (props: React.HTMLAttributes<HTMLTableRowElement>[]) => JSX.Element;
+  };
 }
 
-export interface IData {
-  [key: string]: any;
+export interface IHandleRowSelect {
+  (value: number[]): void;
 }
-
-export interface IHeaderTitleProps {
-  id: number;
-  title: string;
-  sort?: boolean | false;
+export interface IHandleRowEachSelect {
+  row: number;
+  selectedRow: number[];
+  onSelectedRowChange: (value: number[]) => void;
 }
-
-export interface IRecordProps {
-  id: number;
-  name: string;
-  designation: string;
-  mobileNumber: string;
-  experienceLevel: string;
-  createdTime: string;
-  status: string;
-  recruiter: string;
-  techStack: string;
-  time: string;
-  checked: boolean;
-}
-
 export interface ITableComponent {
   additionalValue?: IAdditionalValue[];
-  data: any;
+  loading?: boolean;
+  data: IData[];
   customRowStyling?: string;
-  columnHeaderTitle: {
-    id: number;
-    title: string;
-    sort?: boolean | false;
-  }[];
-  sortbuttonData?: {
-    [key: string]: { upKeyDisabled: boolean; downKeyDisabled: boolean };
-  };
+  columnHeaderTitle: any[];
+  sortbuttonData?: IButtonState;
   dataFormatType?: string;
   fieldforDateFormat?: { time: string };
-  customStyle?: {
-    header: {
-      row: (props: any[]) => JSX.Element;
-    };
-  };
+  customStyle?: ICustomStyle;
+  showToggle?: IShowToggle;
   moreverticalIcon?: boolean;
+  buttonState?: IButtonState;
+  handleSortArrowClick?: (field: string, sortType: string, data: any) => void;
+  selectedRow?: number[];
+  handleRowSelect?: IHandleRowSelect;
+  onSwitchToggle?: (data: any) => void;
+  isLoading?: boolean;
+  handleRowEachSelect?: (
+    row: number,
+    selectedRow: number[],
+    onSelectedRowChange: (value: number[]) => void
+  ) => void;
+  hoverCell?: string;
 }

@@ -1,29 +1,39 @@
 import Table from "rc-table";
 import styles from "./table.module.scss";
-import {
-  IHeaderTitleProps,
-  IRecordProps,
-  ITableComponent,
-} from "./table.types";
-import { toCamelCase } from "@/common/utils";
-import { TABLE_CONSTANTS } from "@/common/constants";
+import { IHandleRowSelect, ITableComponent } from "./table.types";
+import { SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import CustomCheckBox from "../customCheckBox";
 import Typography from "../typography";
-import { TYPOGRAPHY_VARIANT } from "@/common/enums";
-import ImageComponent from "@/components/imageComponent";
 import { Column } from "rc-table";
 import Images from "@/public/assets/icons";
 import TableCell from "./tableCell";
+import { Fragment, useCallback } from "react";
+import { IData, IHeaderTitleProps } from "@/common/types/candidates.types";
+import Loader from "../loader";
+import SkeletonLoader from "../skeletonLoader";
+import { TYPOGRAPHY_VARIANT, SKELETON_VARIANT } from "@/common/types/enums";
+import { handleAllRowSelect, toCamelCase } from "@/common/utils";
+import ImageComponent from "../imageComponent";
 
 export const TableComponent = (props: ITableComponent) => {
   const {
     data,
+    loading,
     columnHeaderTitle,
     additionalValue,
     fieldforDateFormat,
     dataFormatType,
     customStyle,
     customRowStyling,
+    buttonState,
+    handleSortArrowClick,
+    selectedRow,
+    handleRowSelect,
+    showToggle,
+    handleRowEachSelect,
+    hoverCell,
+    onSwitchToggle,
+    isLoading,
   } = props;
   const {
     upArrowDisabled,
@@ -31,6 +41,45 @@ export const TableComponent = (props: ITableComponent) => {
     downArrowDisabled,
     downArrowEnabled,
   } = Images;
+
+  const handleCheckBoxClick = useCallback(
+    (id: number) => {
+      !!selectedRow &&
+        !!handleRowEachSelect &&
+        handleRowSelect &&
+        handleRowEachSelect(id, selectedRow, handleRowSelect);
+    },
+    [handleRowEachSelect, handleRowSelect, selectedRow]
+  );
+
+  const handleCheckBoxClicks = useCallback(
+    (id: number) => () => {
+      !!handleCheckBoxClick && handleCheckBoxClick(id);
+    },
+    [handleCheckBoxClick]
+  );
+
+  const handleAscendingArrowClick = useCallback(
+    (dataIndex: string, data: any) => () => {
+      !!handleSortArrowClick &&
+        handleSortArrowClick(dataIndex, SORT_TYPE.ASCENDING, data);
+    },
+    [handleSortArrowClick]
+  );
+  const handleDescendingArrowClick = useCallback(
+    (dataIndex: string, data: any) => () => {
+      !!handleSortArrowClick &&
+        handleSortArrowClick(dataIndex, SORT_TYPE.DESCENDING, data);
+    },
+    [handleSortArrowClick]
+  );
+  const handleAllRowSelects = useCallback(
+    (data: IData[], selectedRow: number[], handleRowSelect: IHandleRowSelect) =>
+      () => {
+        handleAllRowSelect(data, selectedRow, handleRowSelect);
+      },
+    []
+  );
 
   const generateColumns = (columnHeaderTitle: IHeaderTitleProps[]) => {
     return (
@@ -90,12 +139,20 @@ export const TableComponent = (props: ITableComponent) => {
   };
 
   return (
-    <Table
-      data={!!data && data}
-      components={customStyle}
-      rowClassName={customRowStyling}
-    >
-      {generateColumns(columnHeaderTitle)}
-    </Table>
+    <Fragment>
+      {loading ? (
+        <Loader />
+      ) : (
+        <Table
+          data={!!data && data}
+          emptyText=""
+          className={styles.rcTable}
+          components={customStyle}
+          rowClassName={customRowStyling}
+        >
+          {generateColumns(columnHeaderTitle)}
+        </Table>
+      )}
+    </Fragment>
   );
 };

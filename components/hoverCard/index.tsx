@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import ImageComponent from "../imageComponent";
 import styles from "./hoverCard.module.scss";
 import { ArrowContainer, Popover } from "react-tiny-popover";
-import { TOOLTIP_POSITION } from "@/common/enums";
+import { TOOLTIP_POSITION } from "@/common/types/enums";
 import { CSSTransition } from "react-transition-group";
 
 type IPositions =

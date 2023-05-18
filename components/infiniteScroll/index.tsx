@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   InfiniteScrollProps,
   InfiniteScrollState,
@@ -18,6 +18,8 @@ const InfiniteScroll = ({
   });
 
   const [containerHeight, setContainerHeight] = useState<number>(0);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleDebounce = () => {
     const scroller = scrollRef?.current;
@@ -43,11 +45,10 @@ const InfiniteScroll = ({
       setContainerHeight(scrollRef.current.scrollHeight);
     }
   };
-  const scrollRef = useRef<HTMLDivElement>(null);
+
   const handleScroll = reverseScroll
     ? debounce(handleReverseScroll)
     : debounce(handleDebounce);
-
 
   return (
     <div ref={scrollRef} onScroll={handleScroll} className={customClass}>

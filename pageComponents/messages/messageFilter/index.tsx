@@ -8,7 +8,7 @@ import Button from "@/components/button";
 import Images from "@/public/assets/icons";
 import styles from "./messageFilter.module.scss";
 import { techStackOptions } from "@/components/addForm/addForm.constants";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/enums";
+import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/types/enums";
 import { ISelectedFilter } from "./messageFilter.types";
 
 const MessageFilter = ({ onClose }: any) => {
