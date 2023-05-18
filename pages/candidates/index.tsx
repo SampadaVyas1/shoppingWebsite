@@ -106,8 +106,8 @@ const tableHeaderData = [
     id: 7,
     title: "Interview Level",
     sort: false,
-    dataIndex: "interviewName",
-    key: "interviewName",
+    dataIndex: "interviewLevel",
+    key: "interviewLevel",
   },
 ];
 
@@ -156,7 +156,7 @@ const Candidates = ({
     postingTitle: [],
     candidateStatus: [],
     techStack: [],
-    interviewName: [],
+    interviewLevel: [],
   };
 
   const [appliedFilter, setAppliedFilter] = useState<ICurrentAppliedField[]>(
@@ -189,7 +189,7 @@ const Candidates = ({
   const toggleFilter = async () => {
     const remainingFilteredArray = Object.fromEntries(
       Object.entries(filterData || {}).filter(
-        ([key]) => key !== "interviewName"
+        ([key]) => key !== "interviewLevel"
       )
     );
     const filteredArray =
@@ -220,7 +220,7 @@ const Candidates = ({
     dispatch(resetCandidatesData());
     const currentFieldObject: ICurrentAppliedField[] = [
       {
-        interviewName: levelsFilter,
+        interviewLevel: levelsFilter,
         search: filters?.search,
         techStack: filters?.techStack?.map((item: IList) => item?.label) || [],
       },
@@ -385,8 +385,6 @@ const Candidates = ({
     onSelect && onSelect(filteredData);
   };
 
-  console.log(selectedData);
-
   const clearSearch = () => {
     searchValue && setSearchValue("");
   };
@@ -481,8 +479,8 @@ const Candidates = ({
               />
             </div>
             <div className={styles.tagList}>
-              {!!filterData?.interviewName &&
-                filterData?.interviewName
+              {!!filterData?.interviewLevel &&
+                filterData?.interviewLevel
                   .map((item: string, index: number) => ({
                     id: index,
                     label: item,

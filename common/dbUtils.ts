@@ -77,15 +77,22 @@ export const getSentMessageData = (messageData: ISentMessage) => {
   return newMessage;
 };
 
-export const filterList = async (searchKey: string) => {
-  if (searchKey) {
-    db.conversations
-      .filter(function (data: any) {
-        return data.id.includes(searchKey);
-      })
-      .toArray()
-      .then(function () {});
-  }
+export const getFilteredData = async (
+  searchKey: string,
+  selectedLevels: string[]
+) => {
+  const result = await db.conversations
+    .filter(function (data: any) {
+      if (
+        data.id.includes(searchKey) ||
+        data.name.toLowerCase().startsWith(searchKey.toLowerCase())
+      ) {
+        return true;
+      }
+      return false;
+    })
+    .toArray();
+  return result;
 };
 
 export const getMessageFromMessageId = async (messageId: string) => {
@@ -112,20 +119,22 @@ export const addCandidate = async (candidateData: any) => {
     lastName,
     techStack,
     postingTitle,
-    interviewName,
+    interviewLevel,
     interviewStatus,
     profilePhoto,
     mobileNumber,
+    roomId,
   } = candidateData;
   const updatedData = {
     userId: id,
     id: mobileNumber,
     profilePhoto,
     name: `${firstName} ${lastName}`,
-    interviewName,
+    interviewLevel,
     interviewStatus,
     postingTitle,
     techStack,
+    roomId,
   };
   const result = await db.conversations
     .where("id")
@@ -149,5 +158,3 @@ export const getCandidateData = async (mobile: any) => {
   const result = await db.conversations.where("id").equals(mobile).first();
   return result;
 };
-
-export const filterData = async () => {};

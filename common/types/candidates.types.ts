@@ -32,7 +32,7 @@ export interface IList {
   label: string;
 }
 export interface ICurrentAppliedField {
-  interviewName?: string[];
+  interviewLevel?: string[];
   techStack?: string[];
   search?: string;
 }
@@ -41,7 +41,7 @@ export interface IFilteredData {
   postingTitle?: string[];
   candidateStatus?: string[];
   techStack?: string[];
-  interviewName?: string[];
+  interviewLevel?: string[];
 }
 
 export interface ISubmitButton {

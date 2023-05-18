@@ -52,7 +52,7 @@ const ChatHeader = (props: IChatHeaderProps) => {
           styles.hint
         )}
         {renderTypography(
-          interviewStatus,
+          interviewStatus || `Yet to be contacted`,
           TYPOGRAPHY_VARIANT.TEXT_SMALL_SEMIBOLD,
           styles.status
         )}

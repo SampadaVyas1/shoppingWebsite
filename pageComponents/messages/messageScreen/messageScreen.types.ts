@@ -3,7 +3,7 @@ export interface IMessageScreenProps {
     name: string;
     designation: string;
     techStack: string;
-    interviewStatus: string;
+    interviewLevel: string;
     profileImage: string;
     mobile: string;
     id: string;

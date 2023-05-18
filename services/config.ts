@@ -55,6 +55,13 @@ service.interceptors.response.use(
           googleLogout();
         }
       }
+    } else if (
+      error?.response?.status == ERROR_CODES.ERROR_UNAUTHORIZED &&
+      !!token
+    ) {
+      localStorage.clear();
+      window.location.href = PRIVATE_ROUTES.LOGIN;
+      googleLogout();
     }
     return Promise.reject(error);
   }

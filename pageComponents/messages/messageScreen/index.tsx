@@ -34,7 +34,7 @@ import { ISelectedFile } from "@/common/types/messages.types";
 import { useAppSelector } from "@/redux/hooks";
 
 const MessageScreen = (props: IMessageScreenProps) => {
-  const { name, designation, techStack, interviewStatus, profileImage, id } =
+  const { name, designation, techStack, interviewLevel, profileImage, id } =
     props.candidateData;
 
   const [isRoomJoined, setRoomJoined] = useState<boolean>(false);
@@ -216,7 +216,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           name={name}
           designation={designation}
           techStack={techStack}
-          interviewStatus={interviewStatus}
+          interviewStatus={interviewLevel}
           profileImage={profileImage}
           isLoading={!props.isConnected || !isRoomJoined}
         />

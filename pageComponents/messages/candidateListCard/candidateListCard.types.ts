@@ -8,7 +8,7 @@ export interface ICandidateListCardProps {
   mobile: string;
   status?: MESSAGE_STATUS;
   message?: string;
-  interviewName?: string;
+  interviewLevel?: string;
   interviewStatus?: string;
   postingTitle?: string;
   techStack?: string[];

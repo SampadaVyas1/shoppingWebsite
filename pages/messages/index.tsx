@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Popover } from "react-tiny-popover";
 import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "@/db";
+import { IMessage, db } from "@/db";
 import Image from "next/image";
 import socket from "@/socket";
 import Button from "@/components/button";
@@ -17,9 +17,9 @@ import Modal from "@/components/modal";
 import StartConversationModal from "@/pageComponents/messages/startConversationModal";
 import styles from "./messages.module.scss";
 import Images from "@/public/assets/icons";
-import levelData from "../../helpers/levelsData.json";
 import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
 import {
+  getFilteredData,
   getMessageFromMessageId,
   increaseUnreadCount,
   updateMessage,
@@ -54,6 +54,10 @@ const Messages = () => {
     isFilterOpen: false,
     isAddModalOpen: false,
   });
+
+  const [conversationList, setConversationList] = useState<
+    IMessage[] | undefined
+  >(undefined);
   const conversations = useLiveQuery(() => {
     const dbData = db.conversations.toArray();
     return dbData;
@@ -62,6 +66,9 @@ const Messages = () => {
   const dispatch = useDispatch();
 
   const { employeeId } = useAppSelector((state) => state.login.userDetails);
+  const { interviewLevel } = useAppSelector(
+    (state) => state.candidate?.filterData
+  );
   const {
     selectedLevels,
     selectedCandidate,
@@ -93,13 +100,20 @@ const Messages = () => {
   };
 
   const handleTagSelect = (tag: ITagType) => {
-    const isSelected = selectedLevels.length && selectedLevels.includes(tag);
+    const isSelected =
+      selectedLevels.length &&
+      selectedLevels.filter((level) => level.id === tag.id).length;
+    const updatedTags = isSelected
+      ? selectedLevels.filter((levels) => levels.id !== tag.id)
+      : [...selectedLevels, tag];
 
+    updateConversationList(
+      searchValue,
+      updatedTags.map((tag) => tag.label)
+    );
     setMessagePageState((prevState) => ({
       ...prevState,
-      selectedLevels: isSelected
-        ? selectedLevels.filter((levels) => levels.id !== tag.id)
-        : [...selectedLevels, tag],
+      selectedLevels: updatedTags,
     }));
   };
 
@@ -108,6 +122,15 @@ const Messages = () => {
       ...prevState,
       searchValue: event.target.value,
     }));
+    updateConversationList(event.target.value);
+  };
+
+  const updateConversationList = async (
+    searchKey: string,
+    levels: string[] = []
+  ) => {
+    const result = await getFilteredData(searchKey, levels);
+    setConversationList(result);
   };
 
   const handleClearSearch = () => {
@@ -246,6 +269,10 @@ const Messages = () => {
     dispatch({ type: sagaActions.GET_CANDIDATE_FILTER });
   }, []);
 
+  useEffect(() => {
+    setConversationList(conversations);
+  }, [conversations]);
+
   return (
     <div className={styles.messagesPage}>
       <div className={styles.candidateList}>
@@ -260,14 +287,20 @@ const Messages = () => {
         </div>
         <div className={styles.searchFilter}>
           <div className={styles.levelFilter}>
-            {levelData.map((levels, index) => (
-              <Tag
-                tagValue={{ id: levels.id, label: levels.label }}
-                active={selectedLevels.includes(levels)}
-                onClick={() => handleTagSelect(levels)}
-                key={index}
-              />
-            ))}
+            {!!interviewLevel &&
+              interviewLevel.map((levels: string, index: number) => (
+                <Tag
+                  tagValue={{ id: `${index}`, label: levels }}
+                  active={
+                    !!selectedLevels.filter((level) => level.id === `${index}`)
+                      .length
+                  }
+                  onClick={() =>
+                    handleTagSelect({ id: `${index}`, label: levels })
+                  }
+                  key={index}
+                />
+              ))}
           </div>
           <Popover
             isOpen={true}
@@ -291,12 +324,12 @@ const Messages = () => {
           </Popover>
         </div>
 
-        {!conversations || conversations?.length ? (
+        {!conversationList || conversationList?.length ? (
           <CandidateList
-            candidateData={conversations}
+            candidateData={conversationList as ICandidateListCardProps[]}
             selectedData={selectedCandidate}
             onSelect={handleCandidateSelect}
-            isLoading={!conversations}
+            isLoading={!conversationList}
           />
         ) : (
           <div className={styles.emptyCandidateList}>
