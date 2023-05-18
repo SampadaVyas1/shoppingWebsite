@@ -23,7 +23,12 @@ import { TOOLTIP_POSITION, TYPOGRAPHY_VARIANT } from "@/common/enums";
 import TransitionWrapper from "@/components/transitionWrapper";
 import Image from "next/image";
 import InputBox from "@/components/inputBox";
-import { DATE_FORMAT, SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
+import {
+  DATE_FORMAT,
+  SORT_TYPE,
+  TABLE_CONSTANTS,
+  TIME_FORMAT,
+} from "@/common/constants";
 import { TableComponent } from "../../components/table/index";
 import { debounce, sortDataByField } from "@/common/utils";
 import {
@@ -290,9 +295,9 @@ const Candidates = ({
         return {
           ...item,
           checkbox: "true",
-          time: moment(item.createdAt).format("hh:mm a"),
+          time: moment(item.createdAt).format(TIME_FORMAT.HOUR_MINUTE),
           name: item.firstName + " " + item.lastName,
-          recruiter: item.recruiterName + " " + item.recruiterlastName,
+          recruiter: item.recruiterFirstName + " " + item.recruiterLastName,
         };
       });
     return updatedData;

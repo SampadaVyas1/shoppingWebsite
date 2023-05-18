@@ -132,6 +132,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
     socket.on(SOCKET_ROUTES.GET_MESSAGE, async (data: any) => {
       const { id, receiverNumber, messageId } = data;
       const result = await getMessageFromMessageId(messageId);
+
       if (result) {
         await db.messages.update(messageId, {
           ...result,
