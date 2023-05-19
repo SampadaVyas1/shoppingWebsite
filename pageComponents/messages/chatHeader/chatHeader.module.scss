@@ -35,3 +35,38 @@
     }
   }
 }
+
+.profileImage {
+  box-sizing: border-box;
+  @include flex-center-alignment;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: $primary;
+  color: $white;
+  object-fit: contain;
+  object-position: center;
+  font-weight: 600;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.email {
+  padding: 0 1rem;
+  color: $gray-500;
+  align-self: flex-start;
+  line-height: 150%;
+  display: flex;
+  width: 100%;
+  padding: 0.125rem 3rem;
+  font-size: 0.875rem;
+
+  .boldText {
+    color: $gray-900;
+    align-self: flex-end;
+    font-weight: 500;
+    line-height: 150%;
+  }
+}

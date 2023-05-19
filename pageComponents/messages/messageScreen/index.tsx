@@ -29,20 +29,29 @@ import {
   resetUnreadCount,
   updateMessage,
 } from "@/common/dbUtils";
-import { MESSAGE_STATUS, MESSAGE_TYPES } from "@/common/types/enums";
+import { MESSAGE_STATUS, MESSAGE_TYPES, ROLES } from "@/common/types/enums";
 import { ISelectedFile } from "@/common/types/messages.types";
 import { useAppSelector } from "@/redux/hooks";
 
 const MessageScreen = (props: IMessageScreenProps) => {
-  const { name, designation, techStack, interviewLevel, profileImage, id } =
-    props.candidateData;
+  const {
+    name,
+    designation,
+    techStack,
+    interviewLevel,
+    profileImage,
+    id,
+    associatedTa,
+  } = props.candidateData;
 
   const [isRoomJoined, setRoomJoined] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<ISelectedFile | null>(null);
   const chatScreenRef = useRef<HTMLDivElement>(null);
 
-  const { employeeId } = useAppSelector((state) => state.login.userDetails);
+  const { employeeId, role } = useAppSelector(
+    (state) => state.login.userDetails
+  );
 
   const handleMessageChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -197,6 +206,13 @@ const MessageScreen = (props: IMessageScreenProps) => {
   useEffect(() => {
     if (props.isConnected && employeeId) {
       setRoomJoined(false);
+      if (role === ROLES.ADMIN) {
+        console.log(associatedTa);
+        socket.emit(SOCKET_ROUTES.CREDENTIALS, {
+          phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+          userId: `${associatedTa}`,
+        });
+      }
       socket.emit(SOCKET_ROUTES.JOIN_ROOM, {
         to: id,
         userId: `${employeeId}`,
@@ -214,6 +230,8 @@ const MessageScreen = (props: IMessageScreenProps) => {
       <Fragment>
         <ChatHeader
           name={name}
+          phone={id}
+          recruiter={props.recruiterName}
           designation={designation}
           techStack={techStack}
           interviewStatus={interviewLevel}

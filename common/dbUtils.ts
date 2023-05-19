@@ -124,6 +124,7 @@ export const addCandidate = async (candidateData: any) => {
     profilePhoto,
     mobileNumber,
     roomId,
+    associatedTa,
   } = candidateData;
   const updatedData = {
     userId: id,
@@ -135,6 +136,7 @@ export const addCandidate = async (candidateData: any) => {
     postingTitle,
     techStack,
     roomId,
+    ta: associatedTa,
   };
   const result = await db.conversations
     .where("id")
@@ -146,7 +148,6 @@ export const addCandidate = async (candidateData: any) => {
     await db.conversations.add({
       ...updatedData,
       messages: [],
-      ta: "SOCKET_CONSTANTS.USER_ID",
       unreadCount: 0,
       mobile: mobileNumber,
     });
@@ -157,4 +158,13 @@ export const addCandidate = async (candidateData: any) => {
 export const getCandidateData = async (mobile: any) => {
   const result = await db.conversations.where("id").equals(mobile).first();
   return result;
+};
+
+export const getCandidateList = (employeeId: string) => {
+  const dbData = db.conversations
+    .where("associatedTa")
+    .equals(`${employeeId}`)
+    .toArray();
+  console.log(employeeId);
+  return dbData;
 };

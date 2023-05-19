@@ -5,4 +5,6 @@ export interface IChatHeaderProps {
   techStack: string;
   interviewStatus: string;
   isLoading: boolean;
+  recruiter: string;
+  phone: string;
 }

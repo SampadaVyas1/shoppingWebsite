@@ -15,4 +15,5 @@ export interface ICandidateListCardProps {
   unreadCount?: number;
   onClick?: () => void;
   isSelected?: boolean;
+  ta?: string;
 }

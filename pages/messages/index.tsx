@@ -66,9 +66,6 @@ const Messages = () => {
   const dispatch = useDispatch();
 
   const { employeeId } = useAppSelector((state) => state.login.userDetails);
-  const { interviewLevel } = useAppSelector(
-    (state) => state.candidate?.filterData
-  );
   const {
     selectedLevels,
     selectedCandidate,
@@ -285,7 +282,8 @@ const Messages = () => {
             onChange={handleSearch}
           />
         </div>
-        <div className={styles.searchFilter}>
+        {/* TO BE ADDED LATER */}
+        {/* <div className={styles.searchFilter}>
           <div className={styles.levelFilter}>
             {!!interviewLevel &&
               interviewLevel.map((levels: string, index: number) => (
@@ -322,7 +320,7 @@ const Messages = () => {
               className={styles.filter}
             />
           </Popover>
-        </div>
+        </div> */}
 
         {!conversationList || conversationList?.length ? (
           <CandidateList
@@ -360,6 +358,7 @@ const Messages = () => {
           <MessageScreen
             candidateData={selectedCandidate}
             userId={`${employeeId}`}
+            recruiterName={`${selectedCandidate?.recruiterFirstName} ${selectedCandidate?.lastName}`}
             isConnected={isConnected}
           />
         )}
