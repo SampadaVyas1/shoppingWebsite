@@ -14,9 +14,9 @@ export class MySubClassedDexie extends Dexie {
 
   constructor() {
     super("ccMessages");
-    this.version(12).stores({
+    this.version(14).stores({
       conversations:
-        "id, ta, messages, unreadCount,profilePhoto, name, userId, status, message, interviewLevel, interviewStatus, postingTitle, techStack, roomId",
+        "id, ta, messages, unreadCount,profilePhoto, name, userId, status, message, interviewLevel, interviewStatus, postingTitle, techStack, roomId, recruiterFirstName, recruiterLastName",
       messages:
         "messageId,message,timestamp,messageType,status,to,from, phone, mediaUrl, fileName",
     });

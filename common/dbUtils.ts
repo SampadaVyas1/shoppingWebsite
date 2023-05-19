@@ -124,6 +124,8 @@ export const addCandidate = async (candidateData: any) => {
     profilePhoto,
     mobileNumber,
     roomId,
+    recruiterFirstName,
+    recruiterLastName,
     associatedTa,
   } = candidateData;
   const updatedData = {
@@ -136,6 +138,8 @@ export const addCandidate = async (candidateData: any) => {
     postingTitle,
     techStack,
     roomId,
+    recruiterFirstName,
+    recruiterLastName,
     ta: associatedTa,
   };
   const result = await db.conversations

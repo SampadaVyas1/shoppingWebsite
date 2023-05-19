@@ -358,7 +358,7 @@ const Messages = () => {
           <MessageScreen
             candidateData={selectedCandidate}
             userId={`${employeeId}`}
-            recruiterName={`${selectedCandidate?.recruiterFirstName} ${selectedCandidate?.lastName}`}
+            recruiterName={`${selectedCandidate?.recruiterFirstName} ${selectedCandidate?.recruiterLastName}`}
             isConnected={isConnected}
           />
         )}
