@@ -34,6 +34,7 @@ const ImageComponent = (props: IImageProps) => {
           onClick={props.onClick}
           draggable={false}
           width={+width}
+          priority
           height={+height}
           onError={handleError}
           {...otherProps}

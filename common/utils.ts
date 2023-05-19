@@ -3,6 +3,9 @@ import Images from "@/public/assets/icons";
 import moment from "moment";
 import { HEADER, IMAGE, TIME_FORMAT } from "./constants";
 import { MESSAGE_STATUS } from "./types/enums";
+import { googleLogout } from "@react-oauth/google";
+import { createDataForSync } from "./utils/dbUtils";
+import { syncChat } from "@/services/messages.service";
 
 interface IData {
   [key: string]: any;

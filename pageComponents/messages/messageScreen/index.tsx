@@ -28,21 +28,14 @@ import {
   getSentMessageData,
   resetUnreadCount,
   updateMessage,
-} from "@/common/dbUtils";
+} from "@/common/utils/dbUtils";
 import { MESSAGE_STATUS, MESSAGE_TYPES, ROLES } from "@/common/types/enums";
 import { ISelectedFile } from "@/common/types/messages.types";
 import { useAppSelector } from "@/redux/hooks";
 
 const MessageScreen = (props: IMessageScreenProps) => {
-  const {
-    name,
-    designation,
-    techStack,
-    interviewLevel,
-    profileImage,
-    id,
-    associatedTa,
-  } = props.candidateData;
+  const { name, designation, techStack, interviewLevel, profileImage, id, ta } =
+    props.candidateData;
 
   const [isRoomJoined, setRoomJoined] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -207,10 +200,9 @@ const MessageScreen = (props: IMessageScreenProps) => {
     if (props.isConnected && employeeId) {
       setRoomJoined(false);
       if (role === ROLES.ADMIN) {
-        console.log(associatedTa);
         socket.emit(SOCKET_ROUTES.CREDENTIALS, {
           phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
-          userId: `${associatedTa}`,
+          userId: `${ta}`,
         });
       }
       socket.emit(SOCKET_ROUTES.JOIN_ROOM, {

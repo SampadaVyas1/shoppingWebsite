@@ -7,7 +7,7 @@ import SkeletonLoader from "@/components/skeletonLoader";
 import InfiniteScroll from "@/components/infiniteScroll";
 import styles from "./candidateList.module.scss";
 import { SKELETON_VARIANT } from "@/common/types/enums";
-import { sortMessages } from "@/common/dbUtils";
+import { sortMessages } from "@/common/utils/dbUtils";
 import { ICandidateListCardProps } from "../candidateListCard/candidateListCard.types";
 import { ICandidateListProps } from "./candidateList.types";
 import { TIME_FORMAT } from "@/common/constants";
@@ -71,11 +71,12 @@ const CandidateList = (props: ICandidateListProps) => {
           (candidate: ICandidateListCardProps, index: number) => {
             const { name, mobile, id, profilePhoto } = candidate;
             const currentCandidateData = conversations?.find(
-              (data: IMessage) => data.id === mobile
+              (data: IMessage) => data.id === id
             );
             const currentMessages = messageListData?.filter(
-              (message: ISentMessage) => message.phone === mobile
+              (message: ISentMessage) => message.phone === id
             );
+
             const sortedMessages = sortMessages(currentMessages!);
             const lastMessage =
               !!sortedMessages && sortedMessages[sortedMessages.length - 1];

@@ -35,7 +35,7 @@ import {
   MESSAGE_STATUS_VARIANT,
   SOCKET_CONSTANTS,
 } from "@/common/socketConstants";
-import { sortMessageByTime } from "@/common/dbUtils";
+import { sortMessageByTime } from "@/common/utils/dbUtils";
 
 const ChatBody = (props: IChatBodyProps) => {
   const { phone, onRetry } = props;

@@ -23,7 +23,7 @@ import {
   getMessageFromMessageId,
   increaseUnreadCount,
   updateMessage,
-} from "@/common/dbUtils";
+} from "@/common/utils/dbUtils";
 import {
   ARROW_ALIGNMENT,
   BUTTON_VARIANT,
@@ -44,6 +44,8 @@ import EmptyState from "@/components/emptyState";
 import { IData } from "@/common/types/candidates.types";
 import { sagaActions } from "@/redux/actions";
 import { useDispatch } from "react-redux";
+import { addDataAfterSync, createDataForSync } from "@/common/utils/dbUtils";
+import { syncChat } from "@/services/messages.service";
 
 const Messages = () => {
   const [messagePageState, setMessagePageState] = useState<IMessagesStates>({
@@ -257,13 +259,11 @@ const Messages = () => {
         await updateMessage({ ...newMessage, phone: from });
       }
     );
-    return () => {
-      socket.disconnect();
-    };
   }, [employeeId]);
 
   useEffect(() => {
     dispatch({ type: sagaActions.GET_CANDIDATE_FILTER });
+    dispatch({ type: sagaActions.BACKUP_CHATS });
   }, []);
 
   useEffect(() => {

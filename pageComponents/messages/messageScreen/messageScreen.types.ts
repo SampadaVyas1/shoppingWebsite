@@ -7,7 +7,7 @@ export interface IMessageScreenProps {
     profileImage: string;
     mobile: string;
     id: string;
-    associatedTa: string;
+    ta: string;
     recruiterFirstName: string;
   };
   recruiterName: string;

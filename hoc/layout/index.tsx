@@ -48,6 +48,12 @@ const Layout = ({ children }: any) => {
     }
   }, [dispatch]);
 
+  useEffect(() => {
+    if (router.pathname === "/messages" && role === ROLES.ADMIN) {
+      router.replace(PRIVATE_ROUTES.NOT_FOUND_ROUTE);
+    }
+  }, [role, router]);
+
   return (
     <>
       {router.pathname === PRIVATE_ROUTES.NOT_FOUND_ROUTE ? (

@@ -1,8 +1,14 @@
 import { db } from "@/db";
-import { ISentMessage } from "./types";
+import { ISentMessage } from "../types";
 import { messageSaga } from "@/redux/sagas/message.saga";
-import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
-import { SOCKET_CONSTANTS } from "./socketConstants";
+import { SOCKET_CONSTANTS } from "../socketConstants";
+import { getDataFromLocalStorage } from ".";
+import { getTimeStamp } from "../utils";
+import { getChats } from "@/services/messages.service";
+import CryptoJS from "crypto-js";
+import axios from "axios";
+
+const ENCRYPTION_KEY = "secretKey123";
 
 export const resetUnreadCount = async (mobile: string) => {
   const result = await db.conversations.where("id").equals(mobile).first();
@@ -77,6 +83,76 @@ export const getSentMessageData = (messageData: ISentMessage) => {
   return newMessage;
 };
 
+export const getMessageFromMessageId = async (messageId: string) => {
+  const result = await db.messages.where("messageId").equals(messageId).first();
+  return result;
+};
+
+export const sortMessageByTime = async (phone: string) => {
+  const result = await db.messages
+    .where(SOCKET_CONSTANTS.PHONE)
+    .equals(phone)
+    .sortBy("timestamp");
+  return result;
+};
+
+export const deleteMessageByMessageId = (whatsappId: string) => {
+  db.messages.delete(whatsappId);
+};
+
+export const createDataForSync = async () => {
+  const conversations = await db.conversations.toArray();
+  const result = await Promise.all(
+    conversations.map(async (candidate, index) => {
+      const { id, name, interviewStatus, postingTitle, techStack, roomId, ta } =
+        candidate;
+
+      const messages = await db.messages
+        .where("phone")
+        .equals(id)
+        .and(function (message) {
+          return (
+            parseInt(message.timestamp) >
+            parseInt(
+              `${getDataFromLocalStorage(SOCKET_CONSTANTS.LAST_BACKUP_TIME)}`
+            )
+          );
+        })
+        .toArray();
+      return {
+        id,
+        name,
+        interviewStatus,
+        postingTitle,
+        techStack,
+        roomId,
+        ta,
+        messages,
+      };
+    })
+  );
+  return { lastBackupTime: getTimeStamp(), chatHistory: result };
+};
+
+export const decrypt = (message: string) => {
+  const bytes = CryptoJS.AES.decrypt(message, ENCRYPTION_KEY as string);
+  const originalText = bytes.toString(CryptoJS.enc.Utf8);
+  return JSON.parse(originalText);
+};
+
+export const addDataAfterSync = async () => {
+  const response = await getChats();
+  const fileData = await axios.get(response.data);
+  const chatsData = decrypt(fileData.data);
+
+  await Promise.all(
+    chatsData?.chatHistory?.map(async (user: any) => {
+      await db.conversations.put(user);
+      await db.messages.bulkPut(user.messages);
+    })
+  );
+};
+
 export const getFilteredData = async (
   searchKey: string,
   selectedLevels: string[]
@@ -93,23 +169,6 @@ export const getFilteredData = async (
     })
     .toArray();
   return result;
-};
-
-export const getMessageFromMessageId = async (messageId: string) => {
-  const result = await db.messages.where("messageId").equals(messageId).first();
-  return result;
-};
-
-export const sortMessageByTime = async (phone: string) => {
-  const result = await db.messages
-    .where(SOCKET_CONSTANTS.PHONE)
-    .equals(phone)
-    .sortBy("timestamp");
-  return result;
-};
-
-export const deleteMessageByMessageId = (whatsappId: string) => {
-  db.messages.delete(whatsappId);
 };
 
 export const addCandidate = async (candidateData: any) => {
@@ -165,6 +224,6 @@ export const getCandidateList = (employeeId: string) => {
     .where("associatedTa")
     .equals(`${employeeId}`)
     .toArray();
-  console.log(employeeId);
+
   return dbData;
 };

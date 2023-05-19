@@ -16,7 +16,7 @@ import {
   TOOLTIP_POSITION,
 } from "@/common/types/enums";
 import { IStartConversationModalProps } from "./startConversationModal.types";
-import { addCandidate } from "@/common/dbUtils";
+import { addCandidate } from "@/common/utils/dbUtils";
 import { ICandidateListCardProps } from "../candidateListCard/candidateListCard.types";
 
 const StartConversationModal = (props: IStartConversationModalProps) => {

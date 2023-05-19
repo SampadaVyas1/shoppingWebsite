@@ -11,18 +11,22 @@ import Container from "@/components/container";
 import Images from "@/public/assets/icons";
 import { sagaActions } from "@/redux/actions";
 import { useAppSelector } from "@/redux/hooks";
-import { TOKEN } from "@/common/constants";
-import { PRIVATE_ROUTES, RECRUITER_ROUTES } from "@/common/routes";
-import { getDataFromLocalStorage } from "@/common/utils";
 import SectionImage from "../../public/assets/images/loginImage.svg";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/types/enums";
+import {
+  BUTTON_VARIANT,
+  ROLES,
+  TYPOGRAPHY_VARIANT,
+} from "@/common/types/enums";
+import { getChats } from "@/services/messages.service";
+import { addDataAfterSync } from "@/common/utils/dbUtils";
 
 const Login = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { isLoggedIn, isLoading, isLoginError } = useAppSelector(
-    (state) => state.login
-  );
+  const { isLoggedIn, isLoading, isLoginError, userDetails, featureData } =
+    useAppSelector((state) => state.login);
+
+  const [isChatLoading, setChatLoading] = useState<boolean>(false);
 
   const handleContactAdmin = () => {
     const win: Window = window;
@@ -35,17 +39,40 @@ const Login = () => {
       token: codeResponse,
     });
   };
+
   function onSuccess(codeResponse: Object) {
     handleClick(codeResponse);
   }
   const login = useGoogleLogin({ onSuccess: onSuccess, flow: "auth-code" });
 
   useEffect(() => {
-    isLoggedIn && router.replace(RECRUITER_ROUTES[1].path);
-  }, [isLoggedIn, router]);
+    if (isLoggedIn) {
+      dispatch({ type: sagaActions.GET_USER_DETAILS });
+    }
+  }, [isLoggedIn, router, userDetails]);
+
+  useEffect(() => {
+    if (userDetails.role) {
+      const redirectRoute =
+        userDetails.role === ROLES.ADMIN ? "/team" : "/messages";
+      router.replace(redirectRoute);
+    }
+  }, [userDetails]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      const getChatData = async () => {
+        setChatLoading(true);
+        addDataAfterSync();
+        setChatLoading(false);
+      };
+      getChatData();
+    }
+  }, [isLoggedIn]);
 
   return (
     <>
+      {isChatLoading && <p>Fetching chats</p>}
       {isLoggedIn || isLoading ? (
         <Loader />
       ) : (

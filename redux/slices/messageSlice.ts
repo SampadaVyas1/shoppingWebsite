@@ -9,6 +9,7 @@ const initialState: IMessageSliceStates = {
   templates: [],
   isError: false,
   currentMessage: {} as ISentMessage,
+  syncing: false,
 };
 
 export const messageSlice = createSlice({
@@ -33,6 +34,9 @@ export const messageSlice = createSlice({
       state.isError = true;
       state.isLoading = false;
     },
+    handleSyncing: (state, action) => {
+      state.syncing = action.payload;
+    },
   },
 });
 export default messageSlice.reducer;
@@ -41,4 +45,5 @@ export const {
   setAllTemplates,
   toggleError,
   setCurrentMessage,
+  handleSyncing,
 } = messageSlice.actions;

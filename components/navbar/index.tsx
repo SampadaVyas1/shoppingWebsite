@@ -14,13 +14,15 @@ import TransitionWrapper from "../transitionWrapper";
 import Images from "@/public/assets/icons";
 import { PRIVATE_ROUTES, TEAM_PAGE_ROUTES } from "@/common/routes";
 import { INavbarProps, profileData } from "./navbar.types";
-import { handleLogout } from "@/redux/slices/loginSlice";
 import { useAppSelector } from "@/redux/hooks";
 import {
   TYPOGRAPHY_VARIANT,
   TOOLTIP_POSITION,
   BUTTON_VARIANT,
 } from "@/common/types/enums";
+import { sagaActions } from "@/redux/actions";
+import Loader from "../loader";
+import { notify } from "@/helpers/toastHelper";
 
 const Navbar = ({ routes }: INavbarProps) => {
   const router = useRouter();
@@ -36,11 +38,12 @@ const Navbar = ({ routes }: INavbarProps) => {
     mobileNumber,
   } = useAppSelector((state) => state.login.userDetails);
 
+  const { syncing } = useAppSelector((state) => state.messages);
+
   const dispatch = useDispatch();
 
   const onLogout = () => {
-    dispatch(handleLogout());
-    router.replace(PRIVATE_ROUTES.LOGIN);
+    dispatch({ type: sagaActions.BACKUP_CHATS, payload: { logoutUser: true } });
   };
 
   const handleProfileClick = () => {
@@ -60,6 +63,7 @@ const Navbar = ({ routes }: INavbarProps) => {
   };
   return (
     <div className={styles.navbar}>
+      {syncing && <Loader customStyles={styles.loader} />}
       <div className={styles.navbarLeft}>
         <div className={styles.logo} onClick={redirectHome}>
           <ImageComponent src={Images.coditasIcon} width={32} height={32} />
@@ -175,7 +179,7 @@ const Navbar = ({ routes }: INavbarProps) => {
               Cancel
             </Button>
             <Button variant={BUTTON_VARIANT.CONTAINED} onClick={onLogout}>
-              Log Out
+              {syncing ? "Logging out...." : "Log Out"}
             </Button>
           </div>
         </div>

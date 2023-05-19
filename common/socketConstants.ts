@@ -15,6 +15,7 @@ export const SOCKET_ROUTES = {
   PENDING_MESSAGES: "pendingMessages",
   PENDING_STATUS: "pendingStatus",
   SEND_TEMPLATE: "sendTemplate",
+  SYNC_DATA: "syncData",
 };
 
 export enum MESSAGE_STATUS_VARIANT {
@@ -26,4 +27,5 @@ export enum SOCKET_CONSTANTS {
   MESSAGING_PRODUCT = "whatsapp",
   RECIPIENT_TYPE = "individual",
   PHONE = "phone",
+  LAST_BACKUP_TIME = "lastBackupTime",
 }

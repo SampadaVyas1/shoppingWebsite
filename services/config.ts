@@ -4,6 +4,8 @@ import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
 import { ERROR_CODES, TOKEN, USER_TOKEN } from "@/common/constants";
 import { PRIVATE_ROUTES } from "@/common/routes";
 import { getAccessToken } from "./login.service";
+import { createDataForSync } from "@/common/utils/dbUtils";
+import { syncChat } from "./messages.service";
 
 const service = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -50,6 +52,8 @@ service.interceptors.response.use(
           originalRequest.headers.Authorization = data.accessToken;
           return axios(originalRequest);
         } else {
+          const syncData = await createDataForSync();
+          const result = await syncChat(syncData);
           localStorage.clear();
           window.location.href = PRIVATE_ROUTES.LOGIN;
           googleLogout();
@@ -59,6 +63,8 @@ service.interceptors.response.use(
       error?.response?.status == ERROR_CODES.ERROR_UNAUTHORIZED &&
       !!token
     ) {
+      const syncData = await createDataForSync();
+      const result = await syncChat(syncData);
       localStorage.clear();
       window.location.href = PRIVATE_ROUTES.LOGIN;
       googleLogout();

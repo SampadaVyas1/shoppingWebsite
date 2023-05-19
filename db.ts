@@ -7,6 +7,7 @@ export interface IMessage extends ICandidateListCardProps {
   messages: ISentMessage[];
   ta: string;
   unreadCount: number;
+  roomId: string;
 }
 export class MySubClassedDexie extends Dexie {
   conversations!: Table<IMessage>;

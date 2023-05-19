@@ -37,11 +37,6 @@ export const loginSlice = createSlice({
       state.isError = false;
       state.userDetails = payload;
     },
-    handleLogout: (state) => {
-      state.isLoggedIn = false;
-      localStorage.clear();
-      googleLogout();
-    },
     toggleLoading: (state) => {
       state.isLoading = true;
     },
@@ -58,7 +53,6 @@ export const loginSlice = createSlice({
 export default loginSlice.reducer;
 export const {
   handleLogin,
-  handleLogout,
   toggleLoading,
   toggleError,
   handleFeatureAccess,
