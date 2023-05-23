@@ -1,33 +1,36 @@
 @import "../../styles/variables";
 
+@mixin left-position-transform($left, $top, $transform) {
+  left: $left;
+  top: $top;
+  position: absolute;
+  transform: $transform;
+}
+
 .hoverContainer {
   filter: $hoverCardDropShadow;
 
   .right {
-    left: -0.875rem;
-    position: absolute;
-    top: 50%;
-    transform: rotate(275deg);
+    @include left-position-transform(-0.875rem, 50%, rotate(275deg));
   }
   .left {
+    @include left-position-transform(auto, 50%, rotate(90deg));
     right: -0.875rem;
-    position: absolute;
-    left: auto;
-    top: 50%;
-    transform: rotate(90deg);
   }
   .top {
-    top: -0.875rem;
-    position: absolute;
-    left: calc(50% - 0.875rem);
-    transform: rotate(0deg);
+    @include left-position-transform(
+      calc(50% - 0.875rem),
+      -0.875rem,
+      rotate(0deg)
+    );
   }
   .bottom {
+    @include left-position-transform(
+      calc(50% - 0.875rem),
+      auto,
+      rotate(180deg)
+    );
     bottom: -0.875rem;
-    top: auto;
-    position: absolute;
-    left: calc(50% - 0.875rem);
-    transform: rotate(180deg);
   }
 }
 

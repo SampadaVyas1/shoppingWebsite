@@ -76,9 +76,6 @@ export const TIME_FORMAT = {
 };
 export const HEADER = "HEADER";
 export const IMAGE = "image";
-export const IMAGE_TYPES = "image/png, image/jpg, image/jpeg";
-export const DOCUMENT_TYPES =
-  "application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint";
 export const ENTER_KEYCODE = 13;
 
 export const API_ERROR_MESSAGES = {

@@ -69,7 +69,7 @@ const CandidateList = (props: ICandidateListProps) => {
       <div className={styles.list}>
         {candidateList?.map(
           (candidate: ICandidateListCardProps, index: number) => {
-            const { name, mobile, id, profilePhoto } = candidate;
+            const { id } = candidate;
             const currentCandidateData = conversations?.find(
               (data: IMessage) => data.id === id
             );

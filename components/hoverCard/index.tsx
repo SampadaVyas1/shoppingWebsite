@@ -5,25 +5,8 @@ import styles from "./hoverCard.module.scss";
 import { ArrowContainer, Popover } from "react-tiny-popover";
 import { ARROW_ALIGNMENT, TOOLTIP_POSITION } from "@/common/types/enums";
 import { CSSTransition } from "react-transition-group";
-
-type IPositions =
-  | TOOLTIP_POSITION.BOTTOM
-  | TOOLTIP_POSITION.LEFT
-  | TOOLTIP_POSITION.TOP
-  | TOOLTIP_POSITION.RIGHT;
-
-interface IHoverCardProps {
-  children: JSX.Element;
-  component: JSX.Element;
-  customStyle?: string;
-  customTipStyle?: string;
-  containerPosition?: IPositions[];
-  tipPosition?: IPositions;
-  arrowAlign?:
-    | ARROW_ALIGNMENT.START
-    | ARROW_ALIGNMENT.END
-    | ARROW_ALIGNMENT.CENTER;
-}
+import { DEBOUNCE_TIME } from "@/common/constants";
+import { IHoverCardProps } from "./hoverCard.types";
 
 const HoverCard = (props: IHoverCardProps) => {
   const {
@@ -40,7 +23,7 @@ const HoverCard = (props: IHoverCardProps) => {
   const showTip = () => {
     timeout = setTimeout(() => {
       setActive(true);
-    }, 300);
+    }, DEBOUNCE_TIME.DROPDOWN_SEARCH_DEBOUNCE);
   };
 
   const hideTip = () => {
@@ -57,7 +40,7 @@ const HoverCard = (props: IHoverCardProps) => {
       content={({ position, childRect, popoverRect }) => (
         <CSSTransition
           in={active}
-          timeout={300}
+          timeout={DEBOUNCE_TIME.DROPDOWN_SEARCH_DEBOUNCE}
           classNames="alert"
           unmountOnExit
         >
