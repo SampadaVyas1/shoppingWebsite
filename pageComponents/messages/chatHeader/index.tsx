@@ -1,23 +1,17 @@
 import React, { useState } from "react";
-import ImageComponent from "@/components/imageComponent";
+import { ArrowContainer, Popover } from "react-tiny-popover";
 import Typography from "@/components/typography";
 import SkeletonLoader from "@/components/skeletonLoader";
 import styles from "./chatHeader.module.scss";
 import { IChatHeaderProps } from "./chatHeader.types";
 import {
   ARROW_ALIGNMENT,
-  BUTTON_VARIANT,
   SKELETON_VARIANT,
   TOOLTIP_POSITION,
   TYPOGRAPHY_VARIANT,
 } from "@/common/types/enums";
 import TransitionWrapper from "@/components/transitionWrapper";
-import { ArrowContainer, Popover } from "react-tiny-popover";
-import MessageFilter from "../messageFilter";
 import ProfileCard from "@/components/profileCard";
-import Images from "@/build/assets/icons";
-import Button from "@/components/button";
-import Image from "next/image";
 
 const ChatHeader = (props: IChatHeaderProps) => {
   const {
@@ -45,8 +39,16 @@ const ChatHeader = (props: IChatHeaderProps) => {
     );
   };
 
+  const renderSkeleton = (className: string, variant: SKELETON_VARIANT) => (
+    <SkeletonLoader type={variant} customClass={className} />
+  );
+
   const handleDetails = () => {
     toggleDetails(!showDetails);
+  };
+
+  const closeDetails = () => {
+    showDetails && toggleDetails(false);
   };
 
   return !isLoading ? (
@@ -57,7 +59,7 @@ const ChatHeader = (props: IChatHeaderProps) => {
           positions={[TOOLTIP_POSITION.BOTTOM, TOOLTIP_POSITION.RIGHT]}
           reposition={true}
           align={ARROW_ALIGNMENT.START}
-          // onClickOutside={handleDetails}
+          onClickOutside={closeDetails}
           padding={16}
           content={({ position, childRect, popoverRect }) => (
             <TransitionWrapper open={showDetails}>
@@ -148,19 +150,10 @@ const ChatHeader = (props: IChatHeaderProps) => {
   ) : (
     <div className={styles.chatHeader}>
       <div className={styles.profile}>
-        <SkeletonLoader
-          type={SKELETON_VARIANT.CIRCLE}
-          customClass={styles.image}
-        />
+        {renderSkeleton(styles.image, SKELETON_VARIANT.CIRCLE)}
         <div className={styles.detailSkeleton}>
-          <SkeletonLoader
-            type={SKELETON_VARIANT.TEXT_SMALL}
-            customClass={styles.skeletonText}
-          />
-          <SkeletonLoader
-            type={SKELETON_VARIANT.TEXT_MEDIUM}
-            customClass={styles.skeletonText}
-          />
+          {renderSkeleton(styles.skeletonText, SKELETON_VARIANT.TEXT_SMALL)}
+          {renderSkeleton(styles.skeletonText, SKELETON_VARIANT.TEXT_MEDIUM)}
         </div>
       </div>
     </div>

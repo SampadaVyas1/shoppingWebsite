@@ -1,13 +1,9 @@
 import { useState } from "react";
 import { Popover } from "react-tiny-popover";
 import EmptyState from "@/components/emptyState";
-import Image from "next/image";
 import styles from "./startConversationModal.module.scss";
 import Images from "@/public/assets/icons";
 import Container from "@/components/container";
-import InputBox from "@/components/inputBox";
-import TransitionWrapper from "@/components/transitionWrapper";
-import MessageFilter from "../messageFilter";
 import Button from "@/components/button";
 import Candidates from "@/pages/candidates";
 import {

@@ -27,6 +27,11 @@ const CandidateList = (props: ICandidateListProps) => {
     return db.messages.toArray();
   });
 
+  const renderSkeleton = (
+    variant: SKELETON_VARIANT,
+    className: string = ""
+  ) => <SkeletonLoader type={variant} customClass={className} />;
+
   const onPageChange = () => {
     setCandidateList(candidateList.concat(candidateData));
   };
@@ -45,16 +50,10 @@ const CandidateList = (props: ICandidateListProps) => {
       {[...Array(10).keys()].map((element: number, index: number) => {
         return (
           <div className={styles.userSkeleton} key={index}>
-            <SkeletonLoader type={SKELETON_VARIANT.CIRCLE} />
+            {renderSkeleton(SKELETON_VARIANT.CIRCLE)}
             <div className={styles.contentSkeleton}>
-              <SkeletonLoader
-                type={SKELETON_VARIANT.TEXT_LARGE}
-                customClass={styles.skeletonBox}
-              />
-              <SkeletonLoader
-                type={SKELETON_VARIANT.TEXT_MEDIUM}
-                customClass={styles.skeletonBox}
-              />
+              {renderSkeleton(SKELETON_VARIANT.TEXT_LARGE, styles.skeletonBox)}
+              {renderSkeleton(SKELETON_VARIANT.TEXT_MEDIUM, styles.skeletonBox)}
             </div>
           </div>
         );

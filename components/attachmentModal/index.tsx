@@ -1,4 +1,9 @@
-import { useRef } from "react";
+import {
+  ChangeEventHandler,
+  LegacyRef,
+  MouseEventHandler,
+  useRef,
+} from "react";
 import ImageComponent from "../imageComponent";
 import TransitionWrapper from "../transitionWrapper";
 import styles from "./attachmentModal.module.scss";
@@ -28,37 +33,42 @@ const AttachmentModal = ({ open, onSelection }: IAttachmentModalProps) => {
     file && onSelection(file, MESSAGE_TYPES.DOCUMENT);
   };
 
+  const renderAttachmentOption = (
+    onChange: ChangeEventHandler<HTMLInputElement>,
+    onClick: MouseEventHandler<HTMLDivElement>,
+    ref: LegacyRef<HTMLInputElement>,
+    accept: string,
+    image: string
+  ) => (
+    <div className={styles.imageAttachment} onClick={onClick}>
+      <input
+        type="file"
+        ref={ref}
+        accept={accept}
+        className={styles.fileInput}
+        onChange={onChange}
+      />
+      <ImageComponent src={image} width={52} height={52} />
+    </div>
+  );
+
   return (
     <TransitionWrapper open={open}>
       <div className={styles.attachmentModal}>
-        <div className={styles.imageAttachment} onClick={handleImageSelection}>
-          <input
-            type="file"
-            ref={imageRef}
-            className={styles.fileInput}
-            onChange={onImageSelect}
-            accept={ATTACHMENT_MODAL.IMAGES_TYPES}
-          />
-          <ImageComponent
-            src={Images.imageAttachmentIcon}
-            width={52}
-            height={52}
-          />
-        </div>
-        <div className={styles.imageAttachment} onClick={handleFileSelection}>
-          <input
-            type="file"
-            ref={fileRef}
-            accept={ATTACHMENT_MODAL.DOCUMENT_TYPE}
-            className={styles.fileInput}
-            onChange={onFileSelect}
-          />
-          <ImageComponent
-            src={Images.docsAttachmentIcon}
-            width={52}
-            height={52}
-          />
-        </div>
+        {renderAttachmentOption(
+          onImageSelect,
+          handleImageSelection,
+          imageRef,
+          ATTACHMENT_MODAL.IMAGES_TYPES,
+          Images.imageAttachmentIcon
+        )}
+        {renderAttachmentOption(
+          onFileSelect,
+          handleFileSelection,
+          fileRef,
+          ATTACHMENT_MODAL.DOCUMENT_TYPE,
+          Images.docsAttachmentIcon
+        )}
       </div>
     </TransitionWrapper>
   );

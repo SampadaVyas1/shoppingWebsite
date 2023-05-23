@@ -41,8 +41,8 @@ import ChatList from "./chatsList";
 const ChatBody = (props: IChatBodyProps) => {
   const { phone, onRetry } = props;
   const [selectedImage, setSelectedImage] = useState<string | File>("");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const messageListData = useLiveQuery(() => {
     return db.messages
@@ -57,13 +57,6 @@ const ChatBody = (props: IChatBodyProps) => {
     messagesEndRef.current &&
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
-  const handleRetry = useCallback(
-    (message: string, messageId: string) => () => {
-      onRetry(message, messageId);
-    },
-    [onRetry]
-  );
 
   const handleModalClose = () => {
     setSelectedImage("");
@@ -100,26 +93,6 @@ const ChatBody = (props: IChatBodyProps) => {
   const getMediaUrl = (media: string | File) => {
     return typeof media !== "string" ? URL.createObjectURL(media) : media;
   };
-
-  const renderTypography = (
-    text: string | JSX.Element,
-    className: string,
-    variant: TYPOGRAPHY_VARIANT
-  ) => (
-    <Typography variant={variant} customStyle={className}>
-      {text}
-    </Typography>
-  );
-
-  const renderTag = (label: string, onClick?: () => void) => (
-    <Tag
-      tagValue={{
-        id: "1",
-        label: label,
-      }}
-      onClick={onClick}
-    />
-  );
 
   useEffect(() => {
     scrollToBottom();

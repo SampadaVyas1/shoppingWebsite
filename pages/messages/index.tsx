@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Popover } from "react-tiny-popover";
+import { useDispatch } from "react-redux";
 import { useLiveQuery } from "dexie-react-hooks";
 import { IMessage, db } from "@/db";
 import Image from "next/image";
@@ -11,7 +12,6 @@ import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Tag from "@/components/tag";
 import TransitionWrapper from "@/components/transitionWrapper";
-import MessageFilter from "@/pageComponents/messages/messageFilter";
 import MessageScreen from "@/pageComponents/messages/messageScreen";
 import Modal from "@/components/modal";
 import StartConversationModal from "@/pageComponents/messages/startConversationModal";
@@ -43,9 +43,6 @@ import { getDataFromSessionStorage } from "@/common/utils";
 import EmptyState from "@/components/emptyState";
 import { IData } from "@/common/types/candidates.types";
 import { sagaActions } from "@/redux/actions";
-import { useDispatch } from "react-redux";
-import { addDataAfterSync, createDataForSync } from "@/common/utils/dbUtils";
-import { syncChat } from "@/services/messages.service";
 
 const Messages = () => {
   const [messagePageState, setMessagePageState] = useState<IMessagesStates>({
@@ -138,6 +135,7 @@ const Messages = () => {
         ...prevState,
         searchValue: "",
       }));
+    updateConversationList("");
   };
 
   const handleAddModalClose = () => {
@@ -235,6 +233,7 @@ const Messages = () => {
         MESSAGE_TYPES.DOCUMENT,
         MESSAGE_TYPES.IMAGE,
       ];
+
       Promise.all(
         data.map(async (singleMessage: IIncomingMessageType) => {
           const { from, wamid } = singleMessage;
@@ -248,6 +247,7 @@ const Messages = () => {
         })
       );
     });
+
     socket.on(
       SOCKET_ROUTES.NOTIFICATION,
       async (data: IIncomingMessageType) => {

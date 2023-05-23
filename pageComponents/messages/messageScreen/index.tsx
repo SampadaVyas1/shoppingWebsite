@@ -62,25 +62,25 @@ const MessageScreen = (props: IMessageScreenProps) => {
   const handleClick = async (message: string, whatsappId: string = "") => {
     const timestamp = getTimeStamp().toString();
     const messageId = `${uuid()}${timestamp}`;
+    const commonParams = {
+      to: id,
+      from: `${employeeId}`,
+      timestamp,
+      messageId,
+    };
     const newMessage = !selectedFile?.file?.name
       ? getSentMessageData({
-          messageId,
+          ...commonParams,
           message,
-          timestamp,
           messageType: MESSAGE_TYPES.TEXT,
           status: MESSAGE_STATUS.SENT,
-          to: id,
-          from: `${employeeId}`,
         })
       : getSentMessageData({
-          messageId,
+          ...commonParams,
           mediaUrl: selectedFile.file,
-          timestamp,
           caption: message,
           messageType: selectedFile.type,
           status: MESSAGE_STATUS.SENDING,
-          to: id,
-          from: `${employeeId}`,
         });
     setMessage("");
     selectedFile?.file?.name && setSelectedFile(null);
@@ -197,7 +197,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
   }, [id, props.userId]);
 
   useEffect(() => {
-    if (props.isConnected && employeeId) {
+    if (socket.connected && employeeId) {
       setRoomJoined(false);
       if (role === ROLES.ADMIN) {
         socket.emit(SOCKET_ROUTES.CREDENTIALS, {
@@ -209,13 +209,14 @@ const MessageScreen = (props: IMessageScreenProps) => {
         to: id,
         userId: `${employeeId}`,
       });
+
       setDataInSessionStorage(SOCKET_CONSTANTS.PHONE, id);
       socket.on(SOCKET_ROUTES.ROOM_STATUS, (data) => {
         setRoomJoined(true);
       });
       resetUnreadCount(id);
     }
-  }, [id, props.isConnected, employeeId]);
+  }, [id, socket.connected, employeeId]);
 
   return (
     <div className={styles.messageScreen} ref={chatScreenRef}>
@@ -228,15 +229,15 @@ const MessageScreen = (props: IMessageScreenProps) => {
           techStack={techStack}
           interviewStatus={interviewLevel}
           profileImage={profileImage}
-          isLoading={!props.isConnected || !isRoomJoined}
+          isLoading={!socket.connected || !isRoomJoined}
         />
-        {!props.isConnected || !isRoomJoined ? (
+        {!socket.connected || !isRoomJoined ? (
           <ChatBodySkeleton />
         ) : (
           <ChatBody
             phone={id}
             onRetry={handleClick}
-            isLoading={!props.isConnected || !isRoomJoined}
+            isLoading={!socket.connected || !isRoomJoined}
           />
         )}
         <ChatBottom
@@ -249,7 +250,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           candidateName={name}
           onTemplateSend={handleTemplateSend}
           chatScreenRef={chatScreenRef}
-          isLoading={!props.isConnected || !isRoomJoined}
+          isLoading={!socket.connected || !isRoomJoined}
         />
       </Fragment>
     </div>

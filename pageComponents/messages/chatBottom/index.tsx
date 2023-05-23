@@ -51,6 +51,10 @@ const ChatBottom = (props: IChatBottomProps) => {
 
   const [message, setMessage] = useState<string>("");
 
+  const renderSkeleton = (className: string, variant: SKELETON_VARIANT) => (
+    <SkeletonLoader type={variant} customClass={className} />
+  );
+
   const handleClick = (
     event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>
   ) => {
@@ -121,22 +125,10 @@ const ChatBottom = (props: IChatBottomProps) => {
 
   return props.isLoading ? (
     <div className={styles.chatBottom}>
-      <SkeletonLoader
-        type={SKELETON_VARIANT.TEXT_SMALL}
-        customClass={styles.skeletonIcon}
-      />
-      <SkeletonLoader
-        type={SKELETON_VARIANT.TEXT_SMALL}
-        customClass={styles.skeletonIcon}
-      />
-      <SkeletonLoader
-        type={SKELETON_VARIANT.TEXT_LARGE}
-        customClass={styles.skeletonBox}
-      />
-      <SkeletonLoader
-        type={SKELETON_VARIANT.TEXT_SMALL}
-        customClass={styles.skeletonIcon}
-      />
+      {renderSkeleton(styles.skeletonIcon, SKELETON_VARIANT.TEXT_SMALL)}
+      {renderSkeleton(styles.skeletonIcon, SKELETON_VARIANT.TEXT_SMALL)}
+      {renderSkeleton(styles.skeletonBox, SKELETON_VARIANT.TEXT_LARGE)}
+      {renderSkeleton(styles.skeletonIcon, SKELETON_VARIANT.TEXT_SMALL)}
     </div>
   ) : (
     <form className={styles.chatBottom} onSubmit={handleClick}>

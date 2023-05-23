@@ -3,6 +3,7 @@
 
 .startModal {
   @include flex-direction(column);
+  min-height: 40rem;
   gap: 1.5rem;
   .header {
     padding: 0 !important;

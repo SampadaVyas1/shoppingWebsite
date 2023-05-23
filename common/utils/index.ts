@@ -1,6 +1,6 @@
 import moment from "moment";
 import { HEADER, IMAGE, PAGE_CONSTANTS, TIME_FORMAT } from "../constants";
-import Images from "@/build/assets/icons";
+import Images from "@/public/assets/icons";
 import { MESSAGE_STATUS } from "../types/enums";
 
 interface IData {
