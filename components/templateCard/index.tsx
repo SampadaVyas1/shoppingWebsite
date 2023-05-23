@@ -11,25 +11,37 @@ import { formatTemplateName } from "@/common/utils";
 
 const TemplateCard = (props: ITemplateCardProps) => {
   const { header, description, imageUrl, templateName, hasActions } = props;
+
+  const renderTypography = (
+    text: string | JSX.Element,
+    className: string,
+    variant: TYPOGRAPHY_VARIANT
+  ) => (
+    <Typography variant={variant} customStyle={className}>
+      {text}
+    </Typography>
+  );
+
   return (
     <Container customClass={styles.templateWrapper}>
-      <Typography
-        variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}
-        customStyle={styles.templateTitle}
-      >
-        {formatTemplateName(templateName!)}
-      </Typography>
+      {renderTypography(
+        formatTemplateName(templateName!),
+        styles.templateTitle,
+        TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD
+      )}
       <TipContainer position={TOOLTIP_POSITION.RIGHT}>
         <div className={styles.templateContent}>
           {imageUrl && (
             <ImageComponent src={imageUrl} customClass={styles.templateImage} />
           )}
-          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}>
-            {header}
-          </Typography>
-          <Typography variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}>
-            {description}
-          </Typography>
+          {header &&
+            renderTypography(header, "", TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR)}
+          {description &&
+            renderTypography(
+              description,
+              "",
+              TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR
+            )}
         </div>
       </TipContainer>
       {hasActions && (

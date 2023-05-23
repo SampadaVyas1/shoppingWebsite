@@ -1,4 +1,14 @@
 @import "../../styles/variables";
+
+@mixin tip-position($left, $transform) {
+  position: absolute;
+  width: 1rem;
+  height: 0.75rem;
+  left: $left;
+  top: -0.0125rem;
+  border-radius: 0.0625rem;
+  transform: $transform;
+}
 .tipContainer {
   position: relative;
   width: fit-content;
@@ -20,22 +30,17 @@
   }
 
   .left {
-    position: absolute;
-    width: 1rem;
-    height: 0.75rem;
-    left: -0.125rem;
-    top: -0.0125rem;
-    border-radius: 0.0625rem;
-    transform: rotate(120deg) matrix(0.42, 0.91, -0.62, 0.78, 0, 0);
+    @include tip-position(
+      -0.125rem,
+      rotate(120deg) matrix(0.42, 0.91, -0.62, 0.78, 0, 0)
+    );
   }
   .right {
-    position: absolute;
-    width: 1rem;
-    height: 0.75rem;
+    @include tip-position(
+      auto,
+      rotate(35deg) matrix(0.42, 0.91, -0.62, 0.78, 0, 0)
+    );
     right: -0.25rem;
-    top: -0.0125rem;
-    border-radius: 0.0625rem;
-    transform: rotate(35deg) matrix(0.42, 0.91, -0.62, 0.78, 0, 0);
   }
 }
 .sent {
