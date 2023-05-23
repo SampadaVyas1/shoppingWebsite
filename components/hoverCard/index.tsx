@@ -1,9 +1,7 @@
-import Images from "@/public/assets/icons";
 import { useState, useRef } from "react";
-import ImageComponent from "../imageComponent";
 import styles from "./hoverCard.module.scss";
 import { ArrowContainer, Popover } from "react-tiny-popover";
-import { ARROW_ALIGNMENT, TOOLTIP_POSITION } from "@/common/types/enums";
+import { TOOLTIP_POSITION } from "@/common/types/enums";
 import { CSSTransition } from "react-transition-group";
 import { DEBOUNCE_TIME } from "@/common/constants";
 import { IHoverCardProps } from "./hoverCard.types";

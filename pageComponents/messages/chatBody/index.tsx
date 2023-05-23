@@ -36,10 +36,11 @@ import {
   SOCKET_CONSTANTS,
 } from "@/common/socketConstants";
 import { sortMessageByTime } from "@/common/utils/dbUtils";
+import ChatList from "./chatsList";
 
 const ChatBody = (props: IChatBodyProps) => {
   const { phone, onRetry } = props;
-  const [selectedImage, setSelectedImage] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState<string | File>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -96,6 +97,30 @@ const ChatBody = (props: IChatBodyProps) => {
     setIsLoading(false);
   };
 
+  const getMediaUrl = (media: string | File) => {
+    return typeof media !== "string" ? URL.createObjectURL(media) : media;
+  };
+
+  const renderTypography = (
+    text: string | JSX.Element,
+    className: string,
+    variant: TYPOGRAPHY_VARIANT
+  ) => (
+    <Typography variant={variant} customStyle={className}>
+      {text}
+    </Typography>
+  );
+
+  const renderTag = (label: string, onClick?: () => void) => (
+    <Tag
+      tagValue={{
+        id: "1",
+        label: label,
+      }}
+      onClick={onClick}
+    />
+  );
+
   useEffect(() => {
     scrollToBottom();
   }, [messageListData, messagesEndRef]);
@@ -122,131 +147,14 @@ const ChatBody = (props: IChatBodyProps) => {
       onReversePageChange={handleScroll}
     >
       {isLoading && <Loader customStyles={styles.chatLoader} />}
-      {!!chats &&
-        chats?.map((messageData: ISentMessage, index: number) => {
-          const {
-            status,
-            timestamp,
-            message,
-            messageId,
-            caption,
-            mediaUrl,
-            messageType: type,
-          } = messageData;
-          const messageType = status
-            ? MESSAGE_STATUS_VARIANT.SENT
-            : MESSAGE_STATUS_VARIANT.RECEIVED;
-          const icon = getStatusImage(status!);
-          return (
-            <React.Fragment key={index}>
-              {!isSameDay(timestamp, chats[index - 1]?.timestamp) && (
-                <div className={styles.date}>{getCurrentDay(timestamp)}</div>
-              )}
-              <TipContainer
-                position={
-                  messageData?.status
-                    ? TOOLTIP_POSITION.RIGHT
-                    : TOOLTIP_POSITION.LEFT
-                }
-                variant={messageType}
-                customStyles={styles[messageType]}
-              >
-                <div className={styles.messageContent}>
-                  {mediaUrl && type === "image" && (
-                    <ImageComponent
-                      src={
-                        typeof mediaUrl !== "string"
-                          ? URL.createObjectURL(mediaUrl)
-                          : mediaUrl
-                      }
-                      onClick={() =>
-                        setSelectedImage(
-                          typeof mediaUrl !== "string"
-                            ? URL.createObjectURL(mediaUrl)
-                            : mediaUrl
-                        )
-                      }
-                      fallbackText="Image"
-                      customClass={styles.chatImage}
-                      width={200}
-                      height={200}
-                    />
-                  )}
-                  {type === MESSAGE_TYPES.DOCUMENT &&
-                    (typeof mediaUrl !== "string" ? (
-                      <Tag
-                        tagValue={{
-                          id: "1",
-                          label: mediaUrl?.name!,
-                        }}
-                      />
-                    ) : (
-                      <Tag
-                        tagValue={{
-                          id: "1",
-                          label:
-                            caption ||
-                            mediaUrl!.substring(mediaUrl.lastIndexOf("/") + 1),
-                        }}
-                        onClick={() => handleMediaDownload(mediaUrl)}
-                      />
-                    ))}
-                  <Typography
-                    variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
-                    customStyle={styles.messageText}
-                  >
-                    {message}
-                  </Typography>
-                  {type !== "document" && (
-                    <Typography
-                      variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
-                      customStyle={styles.messageText}
-                    >
-                      {caption}
-                    </Typography>
-                  )}
-
-                  <div className={styles.time}>
-                    <Typography
-                      variant={TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR}
-                      customStyle={styles.hint}
-                    >
-                      {formatTime(timestamp)}
-                    </Typography>
-                    {messageType !== MESSAGE_STATUS_VARIANT.RECEIVED &&
-                      (messageData.status === MESSAGE_STATUS.SENDING ? (
-                        <ImageComponent
-                          src={Images.loaderSpinner}
-                          className={styles.spinner}
-                        />
-                      ) : (
-                        <ImageComponent
-                          src={icon}
-                          customClass={styles.icon}
-                          width={20}
-                          height={20}
-                        />
-                      ))}
-                  </div>
-                </div>
-              </TipContainer>
-              {status === MESSAGE_STATUS.FAILED && (
-                <Typography
-                  variant={TYPOGRAPHY_VARIANT.ERROR}
-                  customStyle={styles.failedError}
-                >
-                  Failed to send.
-                  <span
-                    className={styles.retry}
-                    onClick={handleRetry(message!, messageId)}
-                  >
-                    Tap to retry.
-                  </span>
-                </Typography>
-              )}
-            </React.Fragment>
-          );
-        })}
+      {!!chats && (
+        <ChatList
+          chats={chats}
+          onRetry={onRetry}
+          handleMediaDownload={handleMediaDownload}
+          setSelectedImage={setSelectedImage}
+        />
+      )}
       <div ref={messagesEndRef}></div>
       <Modal
         open={!!selectedImage.length}
@@ -257,7 +165,7 @@ const ChatBody = (props: IChatBodyProps) => {
       >
         {!!selectedImage && (
           <ImageComponent
-            src={selectedImage}
+            src={selectedImage.toString()}
             customClass={styles.imagePreview}
           />
         )}
