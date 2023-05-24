@@ -21,6 +21,7 @@ import {
   TOOLTIP_POSITION,
   BUTTON_VARIANT,
 } from "@/common/types/enums";
+import { sagaActions } from "@/redux/constants";
 
 const Navbar = ({ routes }: INavbarProps) => {
   const router = useRouter();
@@ -39,8 +40,7 @@ const Navbar = ({ routes }: INavbarProps) => {
   const dispatch = useDispatch();
 
   const onLogout = () => {
-    dispatch(handleLogout());
-    router.replace(PRIVATE_ROUTES.LOGIN);
+    dispatch({ type: sagaActions.LOGOUT_USER });
   };
 
   const handleProfileClick = () => {

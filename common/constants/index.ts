@@ -58,6 +58,7 @@ export const SORT_TYPE = {
 export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";
 export const USER_TOKEN = "userToken";
+export const REFRESH_KEY = "refreshKey";
 
 export const REGEX = {
   ONLY_ALPHABETS: /^[A-Za-z]+$/,
@@ -70,6 +71,10 @@ export const API_ERROR_MESSAGES = {
   ACCESS_TOKEN_EXPIRED: "ACCESS TOKEN EXPIRED",
   ACCESS_TOKEN_INVALID: "ACCESS TOKEN INVALID",
   REFRESH_TOKEN_EXPIRED: "REFRESH TOKEN EXPIRED",
+  LOGIN_ERROR:
+    "Multiple Device Login Detected. Please log out from the previous device before logging in again. For assistance, contact support.",
+  ACCESS_DENIED_ERROR:
+    "The email you selected does not appear to be registered. Please contact Candidate connect support.",
 };
 
 export const DEBOUNCE_TIME = {

@@ -7,6 +7,7 @@ export interface ILoginStates {
   featureData: any;
   isLoginError: boolean;
   userDetails: IUserData;
+  errorMessage: string;
 }
 export interface ITokens {
   accessToken: string;

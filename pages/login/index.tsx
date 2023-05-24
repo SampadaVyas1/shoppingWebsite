@@ -11,18 +11,23 @@ import Container from "@/components/container";
 import Images from "@/public/assets/icons";
 import { sagaActions } from "@/redux/constants";
 import { useAppSelector } from "@/redux/hooks";
-import { TOKEN } from "@/common/constants";
+import { API_ERROR_MESSAGES, TOKEN } from "@/common/constants";
 import { PRIVATE_ROUTES, RECRUITER_ROUTES } from "@/common/routes";
 import { getDataFromLocalStorage } from "@/common/utils";
 import SectionImage from "../../public/assets/images/loginImage.svg";
 import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/types/enums";
+import { resetErrorMessage } from "@/redux/slices/loginSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { isLoggedIn, isLoading, isLoginError } = useAppSelector(
+  const { isLoggedIn, isLoading, isLoginError, errorMessage } = useAppSelector(
     (state) => state.login
   );
+
+  const handleErrorClose = () => {
+    dispatch(resetErrorMessage());
+  };
 
   const handleContactAdmin = () => {
     const win: Window = window;
@@ -42,7 +47,7 @@ const Login = () => {
 
   useEffect(() => {
     isLoggedIn && router.replace(RECRUITER_ROUTES[1].path);
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn]);
 
   return (
     <>
@@ -89,7 +94,13 @@ const Login = () => {
                 variant={TYPOGRAPHY_VARIANT.ERROR}
               >
                 <ImageComponent src={Images.warning} />
-                {`You don't have permissions to login`}
+                {errorMessage || API_ERROR_MESSAGES.ACCESS_DENIED_ERROR}
+                <ImageComponent
+                  src={Images.close}
+                  onClick={handleErrorClose}
+                  width={16}
+                  height={16}
+                />
               </Typography>
             )}
 
