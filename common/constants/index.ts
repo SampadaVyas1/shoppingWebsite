@@ -75,7 +75,6 @@ export const TIME_FORMAT = {
   DATE_MONTH: "DD/MM/YYYY",
 };
 export const HEADER = "HEADER";
-export const IMAGE = "image";
 export const ENTER_KEYCODE = 13;
 
 export const API_ERROR_MESSAGES = {

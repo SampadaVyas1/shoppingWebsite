@@ -1,8 +1,8 @@
 import { v4 as uuid } from "uuid";
 import Images from "@/public/assets/icons";
 import moment from "moment";
-import { HEADER, IMAGE, TIME_FORMAT } from "./constants";
-import { MESSAGE_STATUS } from "./types/enums";
+import { HEADER, TIME_FORMAT } from "./constants";
+import { MESSAGE_STATUS, MESSAGE_TYPES } from "./types/enums";
 import { googleLogout } from "@react-oauth/google";
 import { createDataForSync } from "./utils/dbUtils";
 import { syncChat } from "@/services/messages.service";
@@ -170,7 +170,7 @@ export const formatTemplateData = (
       return {
         type: component.format.toLowerCase(),
         [component.format.toLowerCase()]:
-          component.format.toLowerCase() === IMAGE
+          component.format.toLowerCase() === MESSAGE_TYPES.IMAGE
             ? { link: imageLink }
             : candidateName,
       };

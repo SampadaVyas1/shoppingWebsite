@@ -32,6 +32,8 @@ import {
 import { MESSAGE_STATUS, MESSAGE_TYPES, ROLES } from "@/common/types/enums";
 import { ISelectedFile } from "@/common/types/messages.types";
 import { useAppSelector } from "@/redux/hooks";
+import { useDispatch } from "react-redux";
+import { setPhone } from "@/redux/slices/messageSlice";
 
 const MessageScreen = (props: IMessageScreenProps) => {
   const { name, designation, techStack, interviewLevel, profileImage, id, ta } =
@@ -41,6 +43,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
   const [message, setMessage] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<ISelectedFile | null>(null);
   const chatScreenRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
 
   const { employeeId, role } = useAppSelector(
     (state) => state.login.userDetails
@@ -210,7 +213,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
         userId: `${employeeId}`,
       });
 
-      setDataInSessionStorage(SOCKET_CONSTANTS.PHONE, id);
+      dispatch(setPhone(id));
       socket.on(SOCKET_ROUTES.ROOM_STATUS, (data) => {
         setRoomJoined(true);
       });

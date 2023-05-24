@@ -6,10 +6,11 @@ import { getChats } from "@/services/messages.service";
 import CryptoJS from "crypto-js";
 import axios from "axios";
 
-const ENCRYPTION_KEY = "secretKey123";
-
-export const resetUnreadCount = async (mobile: string) => {
-  const result = await db.conversations.where("id").equals(mobile).first();
+export const resetUnreadCount = async (candidateMobileNumber: string) => {
+  const result = await db.conversations
+    .where("id")
+    .equals(candidateMobileNumber)
+    .first();
   if (result !== undefined) {
     try {
       await db?.conversations.put({
@@ -33,21 +34,27 @@ export const sortMessages = (messageList: ISentMessage[]) => {
   );
 };
 
-export const getMessages = async (mobile: string) => {
-  return await db.messages.where("phone").equals(mobile).toArray();
+export const getMessages = async (candidateMobileNumber: string) => {
+  return await db.messages
+    .where("phone")
+    .equals(candidateMobileNumber)
+    .toArray();
 };
 
 export const increaseUnreadCount = async (
-  mobile: string,
+  candidateMobileNumber: string,
   messageId: string,
   isPending: boolean
 ) => {
-  const result = await db.conversations.where("id").equals(mobile).first();
+  const result = await db.conversations
+    .where("id")
+    .equals(candidateMobileNumber)
+    .first();
   const isMessageExists =
     isPending &&
     (await db.messages.where("messageId").equals(messageId).first());
 
-  if (result !== undefined && mobile && !isMessageExists) {
+  if (result !== undefined && candidateMobileNumber && !isMessageExists) {
     await db?.conversations.put({
       ...result,
       unreadCount: result.unreadCount + 1,
@@ -133,7 +140,10 @@ export const createDataForSync = async () => {
 };
 
 export const decrypt = (message: string) => {
-  const bytes = CryptoJS.AES.decrypt(message, ENCRYPTION_KEY as string);
+  const bytes = CryptoJS.AES.decrypt(
+    message,
+    process.env.NEXT_PUBLIC_ENCRYPTION_KEY as string
+  );
   const originalText = bytes.toString(CryptoJS.enc.Utf8);
   return JSON.parse(originalText);
 };
@@ -216,8 +226,11 @@ export const addCandidate = async (candidateData: any) => {
   return updatedData;
 };
 
-export const getCandidateData = async (mobile: any) => {
-  const result = await db.conversations.where("id").equals(mobile).first();
+export const getCandidateData = async (candidateMobileNumber: string) => {
+  const result = await db.conversations
+    .where("id")
+    .equals(candidateMobileNumber)
+    .first();
   return result;
 };
 

@@ -1,7 +1,7 @@
 import moment from "moment";
-import { HEADER, IMAGE, PAGE_CONSTANTS, TIME_FORMAT } from "../constants";
+import { HEADER, PAGE_CONSTANTS, TIME_FORMAT } from "../constants";
 import Images from "@/public/assets/icons";
-import { MESSAGE_STATUS } from "../types/enums";
+import { MESSAGE_STATUS, MESSAGE_TYPES } from "../types/enums";
 
 interface IData {
   [key: string]: any;
@@ -172,7 +172,7 @@ export const formatTemplateData = (
       return {
         type: component.format.toLowerCase(),
         [component.format.toLowerCase()]:
-          component.format.toLowerCase() === IMAGE
+          component.format.toLowerCase() === MESSAGE_TYPES.IMAGE
             ? { link: imageLink }
             : candidateName,
       };

@@ -65,6 +65,7 @@ const Messages = () => {
   const dispatch = useDispatch();
 
   const { employeeId } = useAppSelector((state) => state.login.userDetails);
+  const { phone } = useAppSelector((state) => state.messages);
   const {
     selectedLevels,
     selectedCandidate,
@@ -253,9 +254,8 @@ const Messages = () => {
       async (data: IIncomingMessageType) => {
         const { from, wamid } = data;
         const newMessage = createNewMessage(data);
-        (!getDataFromSessionStorage(SOCKET_CONSTANTS.PHONE) ||
-          from !== getDataFromSessionStorage(SOCKET_CONSTANTS.PHONE)) &&
-          (await increaseUnreadCount(from, wamid, false));
+        !phone ||
+          (from !== phone && (await increaseUnreadCount(from, wamid, false)));
         await updateMessage({ ...newMessage, phone: from });
       }
     );

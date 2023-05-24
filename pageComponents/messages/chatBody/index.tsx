@@ -37,12 +37,16 @@ import {
 } from "@/common/socketConstants";
 import { sortMessageByTime } from "@/common/utils/dbUtils";
 import ChatList from "./chatsList";
+import { useDispatch } from "react-redux";
+import { setPhone } from "@/redux/slices/messageSlice";
 
 const ChatBody = (props: IChatBodyProps) => {
   const { phone, onRetry } = props;
   const [selectedImage, setSelectedImage] = useState<string | File>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const dispatch = useDispatch();
 
   const messageListData = useLiveQuery(() => {
     return db.messages
@@ -108,8 +112,10 @@ const ChatBody = (props: IChatBodyProps) => {
   }, [phone, messageListData]);
 
   useEffect(() => {
-    setDataInSessionStorage(SOCKET_CONSTANTS.PHONE, phone);
-    return () => setDataInSessionStorage(SOCKET_CONSTANTS.PHONE, "");
+    dispatch(setPhone(phone));
+    return () => {
+      dispatch(setPhone(""));
+    };
   }, [phone]);
 
   return (

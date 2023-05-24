@@ -46,4 +46,5 @@ export const {
   toggleError,
   setCurrentMessage,
   handleSyncing,
+  setPhone,
 } = messageSlice.actions;
