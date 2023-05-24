@@ -17,7 +17,10 @@ import Modal from "@/components/modal";
 import StartConversationModal from "@/pageComponents/messages/startConversationModal";
 import styles from "./messages.module.scss";
 import Images from "@/public/assets/icons";
-import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
+import {
+  SOCKET_CONSTANTS,
+  SOCKET_ROUTES,
+} from "@/common/constants/socketConstants";
 import {
   getFilteredData,
   getMessageFromMessageId,

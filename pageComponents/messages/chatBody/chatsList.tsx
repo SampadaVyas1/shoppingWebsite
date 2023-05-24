@@ -3,7 +3,7 @@ import Images from "@/public/assets/icons";
 import ImageComponent from "@/components/imageComponent";
 import TipContainer from "@/components/tipContainer";
 import styles from "./chatBody.module.scss";
-import { MESSAGE_STATUS_VARIANT } from "@/common/socketConstants";
+import { MESSAGE_STATUS_VARIANT } from "@/common/constants/socketConstants";
 import { ISentMessage } from "@/common/types";
 import {
   TOOLTIP_POSITION,

@@ -3,7 +3,7 @@ import service from "./config";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
 import axios from "axios";
 import { TOKEN } from "@/common/constants";
-import { SOCKET_CONSTANTS } from "@/common/socketConstants";
+import { SOCKET_CONSTANTS } from "@/common/constants/socketConstants";
 
 export const getAllTemplates = async () => {
   try {

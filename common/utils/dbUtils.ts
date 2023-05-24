@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { ISentMessage } from "../types";
-import { SOCKET_CONSTANTS } from "../socketConstants";
+import { SOCKET_CONSTANTS } from "../constants/socketConstants";
 import { getDataFromLocalStorage, getTimeStamp } from ".";
 import { getChats } from "@/services/messages.service";
 import CryptoJS from "crypto-js";

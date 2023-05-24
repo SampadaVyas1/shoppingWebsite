@@ -1,5 +1,5 @@
 import { TOOLTIP_POSITION } from "@/common/types/enums";
-import { MESSAGE_STATUS_VARIANT } from "@/common/socketConstants";
+import { MESSAGE_STATUS_VARIANT } from "@/common/constants/socketConstants";
 
 export interface ITipContainerProps {
   children: JSX.Element;

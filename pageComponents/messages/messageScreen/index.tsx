@@ -21,7 +21,10 @@ import {
   getTimeStamp,
   setDataInSessionStorage,
 } from "@/common/utils";
-import { SOCKET_CONSTANTS, SOCKET_ROUTES } from "@/common/socketConstants";
+import {
+  SOCKET_CONSTANTS,
+  SOCKET_ROUTES,
+} from "@/common/constants/socketConstants";
 import {
   deleteMessageByMessageId,
   getMessageFromMessageId,

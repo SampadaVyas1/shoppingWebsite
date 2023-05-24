@@ -1,7 +1,7 @@
 import { TOOLTIP_POSITION } from "@/common/types/enums";
 import styles from "./tipContainer.module.scss";
 import { ITipContainerProps } from "./tipContainer.types";
-import { MESSAGE_STATUS_VARIANT } from "@/common/socketConstants";
+import { MESSAGE_STATUS_VARIANT } from "@/common/constants/socketConstants";
 
 const TipContainer = (props: ITipContainerProps) => {
   const {

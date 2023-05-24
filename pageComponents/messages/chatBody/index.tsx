@@ -34,7 +34,7 @@ import {
 import {
   MESSAGE_STATUS_VARIANT,
   SOCKET_CONSTANTS,
-} from "@/common/socketConstants";
+} from "@/common/constants/socketConstants";
 import { sortMessageByTime } from "@/common/utils/dbUtils";
 import ChatList from "./chatsList";
 import { useDispatch } from "react-redux";
