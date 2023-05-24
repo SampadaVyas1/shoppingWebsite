@@ -18,7 +18,7 @@ import { getDataFromLocalStorage } from "@/common/utils";
 import { useDispatch } from "react-redux";
 import { sagaActions } from "@/redux/actions";
 import { useAppSelector } from "@/redux/hooks";
-import { ROLES } from "@/common/types/enums";
+import { ROLES, ROUTES_PATH } from "@/common/types/enums";
 
 const Layout = ({ children }: any) => {
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ const Layout = ({ children }: any) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (router.pathname === "/messages" && role === ROLES.ADMIN) {
+    if (router.pathname === ROUTES_PATH.MESSAGES && role === ROLES.ADMIN) {
       router.replace(PRIVATE_ROUTES.NOT_FOUND_ROUTE);
     }
   }, [role, router]);

@@ -18,6 +18,7 @@ import SectionImage from "../../public/assets/images/loginImage.svg";
 import {
   BUTTON_VARIANT,
   ROLES,
+  ROUTES_PATH,
   TYPOGRAPHY_VARIANT,
 } from "@/common/types/enums";
 import { resetErrorMessage } from "@/redux/slices/loginSlice";
@@ -66,7 +67,9 @@ const Login = () => {
   useEffect(() => {
     if (userDetails.role) {
       const redirectRoute =
-        userDetails.role === ROLES.ADMIN ? "/team" : "/messages";
+        userDetails.role === ROLES.ADMIN
+          ? ROUTES_PATH.TEAM
+          : ROUTES_PATH.MESSAGES;
       router.replace(redirectRoute);
     }
   }, [userDetails]);

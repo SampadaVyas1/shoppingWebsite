@@ -103,7 +103,6 @@
 }
 .messageBodySkeleton {
   overflow: hidden;
-  flex: 1;
   background-color: $secondary;
   @include flex-direction(column, 1);
   padding: 1.5rem;

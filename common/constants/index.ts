@@ -77,6 +77,7 @@ export const TIME_FORMAT = {
 };
 export const HEADER = "HEADER";
 export const ENTER_KEYCODE = 13;
+export const TIMESTAMP = "timestamp";
 
 export const API_ERROR_MESSAGES = {
   ACCESS_TOKEN_EXPIRED: "ACCESS TOKEN EXPIRED",

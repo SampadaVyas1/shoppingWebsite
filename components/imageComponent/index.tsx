@@ -47,7 +47,9 @@ const ImageComponent = (props: IImageProps) => {
         className={`${styles.imagePlaceholder} ${fallbackClass}`}
         onClick={props.onClick}
       >
-        <Typography customStyle={styles.profileText}>{fallbackText}</Typography>
+        <Typography customStyle={styles.profileText}>
+          {fallbackText?.toUpperCase()}
+        </Typography>
       </div>
     );
   }

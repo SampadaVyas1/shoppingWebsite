@@ -39,6 +39,7 @@ import { sortMessageByTime } from "@/common/utils/dbUtils";
 import ChatList from "./chatsList";
 import { useDispatch } from "react-redux";
 import { setPhone } from "@/redux/slices/messageSlice";
+import { TIMESTAMP } from "@/common/constants";
 
 const ChatBody = (props: IChatBodyProps) => {
   const { phone, onRetry } = props;
@@ -52,7 +53,7 @@ const ChatBody = (props: IChatBodyProps) => {
     return db.messages
       .where(SOCKET_CONSTANTS.PHONE)
       .equals(phone)
-      .sortBy("timestamp");
+      .sortBy(TIMESTAMP);
   });
 
   const [chats, setChats] = useState<ISentMessage[]>([]);
@@ -87,7 +88,7 @@ const ChatBody = (props: IChatBodyProps) => {
     const messageCollection = await db.messages
       .where(SOCKET_CONSTANTS.PHONE)
       .equals(phone)
-      .sortBy("timestamp");
+      .sortBy(TIMESTAMP);
     const messages = await messageCollection;
     const nextMessages = messages.slice(-(chats.length + batchSize));
     setChats(nextMessages);

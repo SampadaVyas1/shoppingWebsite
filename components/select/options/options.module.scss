@@ -2,11 +2,9 @@
 @import "../../../styles/mixins";
 
 .optionsWrapper {
-  display: flex;
-  flex-direction: column;
+  @include flex-direction(column, 1);
   border-radius: 0.25rem;
   min-width: 7.5rem;
-  flex: 1;
   gap: 0.5rem;
   box-sizing: border-box;
   background-color: $white;
@@ -23,9 +21,8 @@
   }
 
   .singleSelectOptions {
-    display: flex;
+    @include flex-direction(column, none);
     overflow-y: auto;
-    flex-direction: column;
     &::-webkit-scrollbar {
       width: 0.25rem;
     }

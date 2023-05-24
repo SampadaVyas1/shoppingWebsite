@@ -113,3 +113,9 @@ export enum ARROW_ALIGNMENT {
   END = "end",
   CENTER = "center",
 }
+
+export enum ROUTES_PATH {
+  MESSAGES = "/messages",
+  TEAM = "/teams",
+  CANDIDATES = "/candidates",
+}

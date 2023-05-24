@@ -5,6 +5,7 @@ import { getDataFromLocalStorage, getTimeStamp } from ".";
 import { getChats } from "@/services/messages.service";
 import CryptoJS from "crypto-js";
 import axios from "axios";
+import { TIMESTAMP } from "../constants";
 
 export const resetUnreadCount = async (candidateMobileNumber: string) => {
   const result = await db.conversations
@@ -97,7 +98,7 @@ export const sortMessageByTime = async (phone: string) => {
   const result = await db.messages
     .where(SOCKET_CONSTANTS.PHONE)
     .equals(phone)
-    .sortBy("timestamp");
+    .sortBy(TIMESTAMP);
   return result;
 };
 
