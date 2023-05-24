@@ -1,6 +1,16 @@
 @import "../../styles/variables";
 @import "../../styles/mixins";
 
+@mixin checkbox-common($width, $height, $top, $left) {
+  content: "";
+  display: block;
+  position: absolute;
+  width: $width;
+  height: $height;
+  top: $top;
+  left: $left;
+}
+
 .checkbox {
   @include flex-align-center;
   width: fit-content;
@@ -13,32 +23,20 @@
     height: 0.875rem;
     border-radius: 0.25rem;
     &:before {
-      content: "";
-      display: block;
-      position: absolute;
-      width: 0.875rem;
-      height: 0.875rem;
-      top: -0.05rem;
-      left: -0.05rem;
       border: 0.125rem solid $primary;
       border-radius: 0.25rem;
       background-color: $white;
+      @include checkbox-common(0.875rem, 0.875rem, -0.05rem, -0.05rem);
     }
     &:checked {
       &:before {
         border: 0.125rem solid $primary;
       }
       &:after {
-        content: "";
-        display: block;
-        width: 0.25rem;
-        height: 0.5rem;
         border: solid $primary;
         border-width: 0 0.125rem 0.125rem 0;
         transform: rotate(45deg);
-        position: absolute;
-        top: 0.125rem;
-        left: 0.325rem;
+        @include checkbox-common(0.25rem, 0.5rem, 0.125rem, 0.325rem);
       }
     }
 
