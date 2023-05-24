@@ -6,6 +6,6 @@ export interface ITagProps {
   onDelete?: () => void;
 }
 export interface ITagType {
-  id: string;
+  id: string | number;
   label: string;
 }

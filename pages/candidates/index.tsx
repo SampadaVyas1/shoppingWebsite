@@ -3,11 +3,9 @@ import moment from "moment";
 import styles from "./candidates.module.scss";
 import InfiniteScroll from "@/components/infiniteScroll";
 import { Popover } from "react-tiny-popover";
-
 import Container from "@/components/container";
 import Images from "@/public/assets/icons";
 import ImageComponent from "../../components/imageComponent/index";
-import Tag from "@/components/tag/tag";
 import AddForm from "@/components/addForm";
 import Modal from "@/components/modal";
 import Filter from "@/components/filterComponent";
@@ -44,6 +42,7 @@ import {
   ISubmitButton,
 } from "@/common/types/candidates.types";
 import { TYPOGRAPHY_VARIANT, TOOLTIP_POSITION } from "@/common/types/enums";
+import Tag from "@/components/tag";
 
 const tableHeaderData = [
   {
