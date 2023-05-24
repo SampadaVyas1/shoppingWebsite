@@ -6,12 +6,14 @@ import styles from "./chatHeader.module.scss";
 import { IChatHeaderProps } from "./chatHeader.types";
 import {
   ARROW_ALIGNMENT,
+  ROLES,
   SKELETON_VARIANT,
   TOOLTIP_POSITION,
   TYPOGRAPHY_VARIANT,
 } from "@/common/types/enums";
 import TransitionWrapper from "@/components/transitionWrapper";
 import ProfileCard from "@/components/profileCard";
+import { useAppSelector } from "@/redux/hooks";
 
 const ChatHeader = (props: IChatHeaderProps) => {
   const {
@@ -26,6 +28,7 @@ const ChatHeader = (props: IChatHeaderProps) => {
   } = props;
 
   const [showDetails, toggleDetails] = useState<boolean>(false);
+  const { role } = useAppSelector((state) => state.login.userDetails);
 
   const renderTypography = (
     text: string | JSX.Element,
@@ -88,19 +91,20 @@ const ChatHeader = (props: IChatHeaderProps) => {
                         TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR,
                         styles.email
                       )}
-                      {renderTypography(
-                        <>
-                          Recruiter:
-                          <span className={styles.boldText}>{recruiter}</span>
-                        </>,
-                        TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR,
-                        styles.email
-                      )}
+                      {role === ROLES.ADMIN &&
+                        renderTypography(
+                          <>
+                            Recruiter:
+                            <span className={styles.boldText}>{recruiter}</span>
+                          </>,
+                          TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR,
+                          styles.email
+                        )}
                       {renderTypography(
                         <>
                           Status :
                           <span className={styles.boldText}>
-                            {interviewStatus}
+                            {interviewStatus || " N/A"}
                           </span>
                         </>,
                         TYPOGRAPHY_VARIANT.TEXT_SMALL_REGULAR,

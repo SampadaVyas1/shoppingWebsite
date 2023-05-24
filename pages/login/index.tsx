@@ -11,22 +11,34 @@ import Container from "@/components/container";
 import Images from "@/public/assets/icons";
 import { sagaActions } from "@/redux/actions";
 import { useAppSelector } from "@/redux/hooks";
+import { addDataAfterSync } from "@/common/utils/dbUtils";
+import { API_ERROR_MESSAGES, TOKEN } from "@/common/constants";
+import { PRIVATE_ROUTES, RECRUITER_ROUTES } from "@/common/routes";
 import SectionImage from "../../public/assets/images/loginImage.svg";
 import {
   BUTTON_VARIANT,
   ROLES,
   TYPOGRAPHY_VARIANT,
 } from "@/common/types/enums";
-import { getChats } from "@/services/messages.service";
-import { addDataAfterSync } from "@/common/utils/dbUtils";
+import { resetErrorMessage } from "@/redux/slices/loginSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { isLoggedIn, isLoading, isLoginError, userDetails, featureData } =
-    useAppSelector((state) => state.login);
 
   const [isChatLoading, setChatLoading] = useState<boolean>(false);
+  const {
+    isLoggedIn,
+    isLoading,
+    isLoginError,
+    errorMessage,
+    userDetails,
+    featureData,
+  } = useAppSelector((state) => state.login);
+
+  const handleErrorClose = () => {
+    dispatch(resetErrorMessage());
+  };
 
   const handleContactAdmin = () => {
     const win: Window = window;
@@ -60,7 +72,7 @@ const Login = () => {
   }, [userDetails]);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && userDetails.role !== ROLES.ADMIN) {
       const getChatData = async () => {
         setChatLoading(true);
         addDataAfterSync();
@@ -68,6 +80,7 @@ const Login = () => {
       };
       getChatData();
     }
+    isLoggedIn && router.replace(RECRUITER_ROUTES[1].path);
   }, [isLoggedIn]);
 
   return (
@@ -116,7 +129,13 @@ const Login = () => {
                 variant={TYPOGRAPHY_VARIANT.ERROR}
               >
                 <ImageComponent src={Images.warning} />
-                {`You don't have permissions to login`}
+                {errorMessage || API_ERROR_MESSAGES.ACCESS_DENIED_ERROR}
+                <ImageComponent
+                  src={Images.close}
+                  onClick={handleErrorClose}
+                  width={16}
+                  height={16}
+                />
               </Typography>
             )}
 

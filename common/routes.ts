@@ -21,6 +21,7 @@ export enum SERVICE_GAUTH {
   CHECK_TOKEN = "gauth/auth/checkToken",
   FEATURE_ACCESS = "gauth/featureAccess/getAllFeatureAccess",
   GET_USER_DETAILS = "gauth/auth/userDetails",
+  LOGOUT = "gauth/auth/logout",
 }
 export enum SERVICE_TPI {
   GET_RECRUITER = "tpi/userRole/getAllRecruiters",

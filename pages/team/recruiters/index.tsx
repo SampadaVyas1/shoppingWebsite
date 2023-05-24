@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { sagaActions } from "@/redux/constants";
+import { sagaActions } from "@/redux/actions";
 import { useAppSelector } from "@/redux/hooks";
 import Container from "@/components/container";
 import ConfirmationModal from "@/components/confirmationModal";

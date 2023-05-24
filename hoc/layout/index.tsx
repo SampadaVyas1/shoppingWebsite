@@ -16,7 +16,7 @@ import { TEAM_PAGE_ROUTES } from "@/common/routes";
 import { TOKEN } from "@/common/constants";
 import { getDataFromLocalStorage } from "@/common/utils";
 import { useDispatch } from "react-redux";
-import { sagaActions } from "@/redux/constants";
+import { sagaActions } from "@/redux/actions";
 import { useAppSelector } from "@/redux/hooks";
 import { ROLES } from "@/common/types/enums";
 

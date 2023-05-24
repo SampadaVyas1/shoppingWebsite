@@ -1,6 +1,6 @@
 import { AnyAction } from "@reduxjs/toolkit";
 import { delay, put, takeEvery, takeLatest } from "redux-saga/effects";
-import { sagaActions } from "../constants";
+import { sagaActions } from "../actions";
 import {
   getAllTechStacks,
   handleTechStackSearch,

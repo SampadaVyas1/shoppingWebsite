@@ -19,6 +19,7 @@ import {
   TYPOGRAPHY_VARIANT,
   TOOLTIP_POSITION,
   BUTTON_VARIANT,
+  ROLES,
 } from "@/common/types/enums";
 import { sagaActions } from "@/redux/actions";
 import Loader from "../loader";
@@ -36,6 +37,7 @@ const Navbar = ({ routes }: INavbarProps) => {
     email,
     designation,
     mobileNumber,
+    role,
   } = useAppSelector((state) => state.login.userDetails);
 
   const { syncing } = useAppSelector((state) => state.messages);
@@ -43,7 +45,12 @@ const Navbar = ({ routes }: INavbarProps) => {
   const dispatch = useDispatch();
 
   const onLogout = () => {
-    dispatch({ type: sagaActions.BACKUP_CHATS, payload: { logoutUser: true } });
+    role !== ROLES.ADMIN &&
+      dispatch({
+        type: sagaActions.BACKUP_CHATS,
+        payload: { logoutUser: true },
+      });
+    dispatch({ type: sagaActions.LOGOUT_USER });
   };
 
   const handleProfileClick = () => {
