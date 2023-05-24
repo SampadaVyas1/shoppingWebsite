@@ -131,7 +131,7 @@ export const getCurrentDay = (timestamp: string) => {
 };
 
 export const formatTime = (timestamp: string) => {
-  return moment.unix(parseInt(timestamp)).format("hh:mm A");
+  return moment.unix(parseInt(timestamp)).format(TIME_FORMAT.HOUR_MINUTE);
 };
 
 export const getStatusImage = (status: string) => {

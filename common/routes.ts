@@ -33,7 +33,7 @@ export enum SERVICE_TPI {
 }
 
 export enum SERVICE_WHATSAPP {
-  GET_ALL_TEMPLATES = "/wa/whatsapp/getAllTemplates",
+  GET_ALL_TEMPLATES = "wa/whatsapp/getAllTemplates",
   GET_ROOM_DATA = "wa/whatsapp/getNewUsersList",
   SYNC_CHATS = "wa/whatsapp/syncChats",
   GET_CHATS = "wa/whatsapp/getChats",

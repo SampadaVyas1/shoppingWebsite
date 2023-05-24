@@ -17,7 +17,6 @@ import { AddFormSchema } from "./validation";
 import { REGEX, VALIDATION_ERRORS } from "@/common/constants";
 import { IOptionType } from "@/common/types";
 
-
 const defaultFormValues = {
   firstName: "",
   lastName: "",
@@ -62,27 +61,10 @@ const AddForm = ({ handleSubmitButton, techStackOptions }: any) => {
 
     handleSubmitButton && handleSubmitButton(value);
   };
-  console.log(errors);
 
   return (
     <div className={styles.addFormWrapper}>
-      {/* TO BE ADDED LATER
-      <Card title="From File">
-        <React.Fragment>
-          
-          <DragDropArea customStyle={styles.uploadForm} /> 
-          <Typography
-            variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}
-            customStyle={styles.downloadLink}
-          >
-            Download sample file
-          </Typography>
-        </React.Fragment>
-      </Card>
-          */}
-
       <form onSubmit={handleSubmit(onSubmit)} className={styles.addForm}>
-        {/* <form onSubmit={onSubmit} className={styles.addForm}> */}
         <Typography variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}>
           Manually
         </Typography>
