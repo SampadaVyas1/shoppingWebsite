@@ -53,9 +53,22 @@ const Login = () => {
     });
   };
 
-  function onSuccess(codeResponse: Object) {
+  const getChatData = async () => {
+    setChatLoading(true);
+    addDataAfterSync();
+    setChatLoading(false);
+  };
+
+  const onSuccess = (codeResponse: Object) => {
     handleClick(codeResponse);
-  }
+  };
+  const replaceRoute = () => {
+    const redirectRoute =
+      userDetails.role === ROLES.ADMIN
+        ? ROUTES_PATH.TEAM
+        : ROUTES_PATH.MESSAGES;
+    router.replace(redirectRoute);
+  };
   const login = useGoogleLogin({ onSuccess: onSuccess, flow: "auth-code" });
 
   useEffect(() => {
@@ -66,21 +79,12 @@ const Login = () => {
 
   useEffect(() => {
     if (userDetails.role) {
-      const redirectRoute =
-        userDetails.role === ROLES.ADMIN
-          ? ROUTES_PATH.TEAM
-          : ROUTES_PATH.MESSAGES;
-      router.replace(redirectRoute);
+      replaceRoute();
     }
   }, [userDetails]);
 
   useEffect(() => {
     if (isLoggedIn && userDetails.role !== ROLES.ADMIN) {
-      const getChatData = async () => {
-        setChatLoading(true);
-        addDataAfterSync();
-        setChatLoading(false);
-      };
       getChatData();
     }
     isLoggedIn && router.replace(RECRUITER_ROUTES[1].path);

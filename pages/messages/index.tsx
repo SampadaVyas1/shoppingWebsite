@@ -383,20 +383,18 @@ const Messages = () => {
         )}
       </div>
 
-      {
-        <Modal
-          open={isAddModalOpen}
-          onClose={handleAddModalClose}
-          header="Start a new conversation with"
-          showCloseIcon
-          customStyle={styles.startModal}
-        >
-          <StartConversationModal
-            handleClose={handleAddModalClose}
-            onCandidateSelect={handleAddCandidate}
-          />
-        </Modal>
-      }
+      <Modal
+        open={isAddModalOpen}
+        onClose={handleAddModalClose}
+        header="Start a new conversation with"
+        showCloseIcon
+        customStyle={styles.startModal}
+      >
+        <StartConversationModal
+          handleClose={handleAddModalClose}
+          onCandidateSelect={handleAddCandidate}
+        />
+      </Modal>
     </div>
   );
 };
