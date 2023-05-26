@@ -48,3 +48,12 @@ export const getChats = async () => {
     return error;
   }
 };
+
+export const getFileData = async (file: string) => {
+  try {
+    const response = await axios.get(file);
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+};

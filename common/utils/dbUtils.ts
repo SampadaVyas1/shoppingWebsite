@@ -2,7 +2,7 @@ import { db } from "@/db";
 import { ISentMessage } from "../types";
 import { SOCKET_CONSTANTS } from "../constants/socketConstants";
 import { getDataFromLocalStorage, getTimeStamp } from ".";
-import { getChats } from "@/services/messages.service";
+import { getChats, getFileData } from "@/services/messages.service";
 import CryptoJS from "crypto-js";
 import axios from "axios";
 import { TIMESTAMP } from "../constants";
@@ -151,8 +151,8 @@ export const decrypt = (message: string) => {
 
 export const addDataAfterSync = async () => {
   const response = await getChats();
-  const fileData = await axios.get(response.data);
-  const chatsData = decrypt(fileData.data);
+  const fileData = await getFileData(response.data);
+  const chatsData = decrypt(fileData);
 
   await Promise.all(
     chatsData?.chatHistory?.map(async (user: any) => {
