@@ -7,35 +7,15 @@ import React, {
 } from "react";
 import { db } from "@/db";
 import { useLiveQuery } from "dexie-react-hooks";
-import TipContainer from "@/components/tipContainer";
-import Typography from "@/components/typography";
 import ImageComponent from "@/components/imageComponent";
-import Tag from "@/components/tag";
 import Modal from "@/components/modal";
 import InfiniteScroll from "@/components/infiniteScroll";
 import Loader from "@/components/loader";
-import Images from "@/public/assets/icons";
 import styles from "./chatBody.module.scss";
 import { IChatBodyProps } from "./chatBody.types";
 import { ISentMessage } from "@/common/types";
-import {
-  formatTime,
-  getCurrentDay,
-  getStatusImage,
-  isSameDay,
-  setDataInSessionStorage,
-} from "@/common/utils";
-import {
-  MESSAGE_STATUS,
-  MESSAGE_TYPES,
-  TOOLTIP_POSITION,
-  TYPOGRAPHY_VARIANT,
-} from "@/common/types/enums";
-import {
-  MESSAGE_STATUS_VARIANT,
-  SOCKET_CONSTANTS,
-} from "@/common/constants/socketConstants";
-import { sortMessageByTime } from "@/common/utils/dbUtils";
+import { SOCKET_CONSTANTS } from "@/common/constants/socketConstants";
+import { getSortedMessages, sortMessageByTime } from "@/common/utils/dbUtils";
 import ChatList from "./chatsList";
 import { useDispatch } from "react-redux";
 import { setPhone } from "@/redux/slices/messageSlice";
@@ -50,10 +30,7 @@ const ChatBody = (props: IChatBodyProps) => {
   const dispatch = useDispatch();
 
   const messageListData = useLiveQuery(() => {
-    return db.messages
-      .where(SOCKET_CONSTANTS.PHONE)
-      .equals(phone)
-      .sortBy(TIMESTAMP);
+    return getSortedMessages(phone);
   });
 
   const [chats, setChats] = useState<ISentMessage[]>([]);
@@ -95,8 +72,10 @@ const ChatBody = (props: IChatBodyProps) => {
     setIsLoading(false);
   };
 
-  const getMediaUrl = (media: string | File) => {
-    return typeof media !== "string" ? URL.createObjectURL(media) : media;
+  const getInitialChats = async () => {
+    const messageCollection = await sortMessageByTime(phone);
+    const messages = await messageCollection;
+    setChats(messages.slice(-25));
   };
 
   useEffect(() => {
@@ -104,13 +83,8 @@ const ChatBody = (props: IChatBodyProps) => {
   }, [messageListData, messagesEndRef]);
 
   useEffect(() => {
-    const print = async () => {
-      const messageCollection = await sortMessageByTime(phone);
-      const messages = await messageCollection;
-      setChats(messages.slice(-25));
-    };
-    print();
-  }, [phone, messageListData]);
+    getInitialChats();
+  }, [phone, messageListData, props.isLoading]);
 
   useEffect(() => {
     dispatch(setPhone(phone));

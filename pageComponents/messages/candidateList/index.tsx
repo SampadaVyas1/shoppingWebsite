@@ -7,7 +7,11 @@ import SkeletonLoader from "@/components/skeletonLoader";
 import InfiniteScroll from "@/components/infiniteScroll";
 import styles from "./candidateList.module.scss";
 import { SKELETON_VARIANT } from "@/common/types/enums";
-import { sortMessages } from "@/common/utils/dbUtils";
+import {
+  getAllConversations,
+  getAllMessages,
+  sortMessages,
+} from "@/common/utils/dbUtils";
 import { ICandidateListCardProps } from "../candidateListCard/candidateListCard.types";
 import { ICandidateListProps } from "./candidateList.types";
 import { TIME_FORMAT } from "@/common/constants";
@@ -20,11 +24,11 @@ const CandidateList = (props: ICandidateListProps) => {
     []
   );
   const conversations = useLiveQuery(() => {
-    return db.conversations.toArray();
+    return getAllConversations();
   });
 
   const messageListData = useLiveQuery(() => {
-    return db.messages.toArray();
+    return getAllMessages();
   });
 
   const renderSkeleton = (

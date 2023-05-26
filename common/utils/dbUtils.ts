@@ -243,3 +243,18 @@ export const getCandidateList = (employeeId: string) => {
 
   return dbData;
 };
+
+export const getAllMessages = () => {
+  return db.messages.toArray();
+};
+
+export const getAllConversations = () => {
+  return db.conversations.toArray();
+};
+
+export const getSortedMessages = (phoneNumber: string) => {
+  return db.messages
+    .where(SOCKET_CONSTANTS.PHONE)
+    .equals(phoneNumber)
+    .sortBy(TIMESTAMP);
+};

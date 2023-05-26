@@ -123,6 +123,10 @@ const ChatBottom = (props: IChatBottomProps) => {
   const [selectedImage, ...otherElements] =
     header?.example?.header_handle ?? [];
 
+  useEffect(() => {
+    props.isLoading && onTemplateClose();
+  }, [props.isLoading]);
+
   return props.isLoading ? (
     <div className={styles.chatBottom}>
       {renderSkeleton(styles.skeletonIcon, SKELETON_VARIANT.TEXT_SMALL)}

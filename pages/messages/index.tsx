@@ -22,6 +22,7 @@ import {
   SOCKET_ROUTES,
 } from "@/common/constants/socketConstants";
 import {
+  getAllConversations,
   getFilteredData,
   getMessageFromMessageId,
   increaseUnreadCount,
@@ -61,8 +62,7 @@ const Messages = () => {
     IMessage[] | undefined
   >(undefined);
   const conversations = useLiveQuery(() => {
-    const dbData = db.conversations.toArray();
-    return dbData;
+    return getAllConversations();
   });
 
   const dispatch = useDispatch();
@@ -179,58 +179,20 @@ const Messages = () => {
     return newMessage;
   };
 
-  useEffect(() => {
-    if (!socket.connected && employeeId) {
-      socket.connect();
-      socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-        phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
-        userId: `${employeeId}`,
-      });
-
-      socket.on(SOCKET_ROUTES.CONNECT, () => {
-        socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-          phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
-          userId: `${employeeId}`,
-        });
-        setMessagePageState((prevState) => ({
-          ...prevState,
-          isConnected: true,
-        }));
-      });
-
-      socket.on(SOCKET_ROUTES.DISCONNECT, () => {
-        setMessagePageState((prevState) => ({
-          ...prevState,
-          isConnected: false,
-        }));
-      });
-    }
-
-    socket.on(SOCKET_ROUTES.STATUS, async (data: any) => {
-      const matchedResult = await getMessageFromMessageId(data.id);
-      if (matchedResult) {
-        await updateMessage({ ...matchedResult, status: data.status });
+  const getNotificationsFromSocket = () => {
+    socket.on(
+      SOCKET_ROUTES.NOTIFICATION,
+      async (data: IIncomingMessageType) => {
+        const { from, wamid } = data;
+        const newMessage = createNewMessage(data);
+        !phone ||
+          (from !== phone && (await increaseUnreadCount(from, wamid, false)));
+        await updateMessage({ ...newMessage, phone: from });
       }
-    });
+    );
+  };
 
-    socket.on(SOCKET_ROUTES.PENDING_STATUS, async (data: any) => {
-      if (data.length) {
-        Promise.all(
-          data.map(async (pendingStatus: any) => {
-            const matchedResult = await getMessageFromMessageId(
-              pendingStatus.id
-            );
-            if (matchedResult) {
-              await updateMessage({
-                ...matchedResult,
-                status: pendingStatus.status,
-              });
-            }
-          })
-        );
-      }
-    });
-
+  const getPendingMessages = () => {
     socket.on(SOCKET_ROUTES.PENDING_MESSAGES, async (data: any) => {
       const messageTypes = [
         MESSAGE_TYPES.TEXT,
@@ -251,17 +213,71 @@ const Messages = () => {
         })
       );
     });
+  };
 
-    socket.on(
-      SOCKET_ROUTES.NOTIFICATION,
-      async (data: IIncomingMessageType) => {
-        const { from, wamid } = data;
-        const newMessage = createNewMessage(data);
-        !phone ||
-          (from !== phone && (await increaseUnreadCount(from, wamid, false)));
-        await updateMessage({ ...newMessage, phone: from });
+  const getPendingStatus = () => {
+    socket.on(SOCKET_ROUTES.PENDING_STATUS, async (data: any) => {
+      if (data.length) {
+        Promise.all(
+          data.map(async (pendingStatus: any) => {
+            const matchedResult = await getMessageFromMessageId(
+              pendingStatus.id
+            );
+            if (matchedResult) {
+              await updateMessage({
+                ...matchedResult,
+                status: pendingStatus.status,
+              });
+            }
+          })
+        );
       }
-    );
+    });
+  };
+
+  const getStatus = () => {
+    socket.on(SOCKET_ROUTES.STATUS, async (data: any) => {
+      const matchedResult = await getMessageFromMessageId(data.id);
+      if (matchedResult) {
+        await updateMessage({ ...matchedResult, status: data.status });
+      }
+    });
+  };
+
+  const connectSocket = () => {
+    socket.connect();
+    socket.emit(SOCKET_ROUTES.CREDENTIALS, {
+      phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+      userId: `${employeeId}`,
+    });
+
+    socket.on(SOCKET_ROUTES.CONNECT, () => {
+      socket.emit(SOCKET_ROUTES.CREDENTIALS, {
+        phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+        userId: `${employeeId}`,
+      });
+      setMessagePageState((prevState) => ({
+        ...prevState,
+        isConnected: true,
+      }));
+    });
+
+    socket.on(SOCKET_ROUTES.DISCONNECT, () => {
+      setMessagePageState((prevState) => ({
+        ...prevState,
+        isConnected: false,
+      }));
+    });
+  };
+
+  useEffect(() => {
+    if (!socket.connected && employeeId) {
+      connectSocket();
+    }
+    getStatus();
+    getPendingStatus();
+    getPendingMessages();
+    getNotificationsFromSocket();
   }, [employeeId]);
 
   useEffect(() => {

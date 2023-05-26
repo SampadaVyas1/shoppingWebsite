@@ -139,22 +139,23 @@ const MessageScreen = (props: IMessageScreenProps) => {
     await updateMessage({ ...newMessage, phone: id });
   };
 
-  useEffect(() => {
-    socket.on(SOCKET_ROUTES.GET_MESSAGE, async (data: any) => {
-      const { id, receiverNumber, messageId } = data;
-      const result = await getMessageFromMessageId(messageId);
+  const receiveMessage = async (data: any) => {
+    const { from, wamid, messageType, timestamp, message, mediaUrl, caption } =
+      data;
+    const newMessage = {
+      messageId: wamid,
+      message: message,
+      timestamp: timestamp,
+      messageType: messageType,
+      mediaUrl: mediaUrl,
+      to: `${employeeId}`,
+      caption: caption,
+      from: from,
+    };
+    await updateMessage({ ...newMessage, phone: from });
+  };
 
-      if (result) {
-        await db.messages.update(messageId, {
-          ...result,
-          message: result?.message,
-          messageId: id,
-        });
-      }
-    });
-  }, []);
-
-  useEffect(() => {
+  const getMediaFromSocket = () => {
     socket.on(SOCKET_ROUTES.GET_MEDIA, async (data: any) => {
       const { id, receiverNumber, messageId, mediaUrl, fileName } = data;
       const result = await getMessageFromMessageId(messageId);
@@ -169,31 +170,54 @@ const MessageScreen = (props: IMessageScreenProps) => {
         });
       }
     });
+  };
+
+  const joinRoom = () => {
+    setRoomJoined(false);
+    setMessage("");
+    setSelectedFile(null);
+    if (role === ROLES.ADMIN) {
+      socket.emit(SOCKET_ROUTES.CREDENTIALS, {
+        phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+        userId: `${ta}`,
+      });
+    }
+    socket.emit(SOCKET_ROUTES.JOIN_ROOM, {
+      to: id,
+      userId: `${employeeId}`,
+    });
+
+    dispatch(setPhone(id));
+    socket.on(SOCKET_ROUTES.ROOM_STATUS, (data) => {
+      setRoomJoined(true);
+    });
+    resetUnreadCount(id);
+  };
+
+  const getMessageFromSocket = () => {
+    socket.on(SOCKET_ROUTES.GET_MESSAGE, async (data: any) => {
+      const { id, receiverNumber, messageId } = data;
+      const result = await getMessageFromMessageId(messageId);
+
+      if (result) {
+        await db.messages.update(messageId, {
+          ...result,
+          message: result?.message,
+          messageId: id,
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    getMessageFromSocket();
+  }, []);
+
+  useEffect(() => {
+    getMediaFromSocket();
   }, [id, props.isConnected]);
 
   useEffect(() => {
-    const receiveMessage = async (data: any) => {
-      const {
-        from,
-        wamid,
-        messageType,
-        timestamp,
-        message,
-        mediaUrl,
-        caption,
-      } = data;
-      const newMessage = {
-        messageId: wamid,
-        message: message,
-        timestamp: timestamp,
-        messageType: messageType,
-        mediaUrl: mediaUrl,
-        to: `${employeeId}`,
-        caption: caption,
-        from: from,
-      };
-      await updateMessage({ ...newMessage, phone: from });
-    };
     if (socket.on) {
       socket.on(SOCKET_ROUTES.PERSONAL_MESSAGE, receiveMessage);
     }
@@ -204,23 +228,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
 
   useEffect(() => {
     if (socket.connected && employeeId) {
-      setRoomJoined(false);
-      if (role === ROLES.ADMIN) {
-        socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-          phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
-          userId: `${ta}`,
-        });
-      }
-      socket.emit(SOCKET_ROUTES.JOIN_ROOM, {
-        to: id,
-        userId: `${employeeId}`,
-      });
-
-      dispatch(setPhone(id));
-      socket.on(SOCKET_ROUTES.ROOM_STATUS, (data) => {
-        setRoomJoined(true);
-      });
-      resetUnreadCount(id);
+      joinRoom();
     }
   }, [id, socket.connected, employeeId]);
 
