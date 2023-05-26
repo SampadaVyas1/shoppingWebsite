@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Images from "@/build/assets/icons";
+import Images from "@/public/assets/icons";
 import EmptyState from "../../components/emptyState";
 import InfiniteScroll from "../../components/infiniteScroll";
 import InputBox from "../../components/inputBox";

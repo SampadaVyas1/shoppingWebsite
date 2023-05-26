@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { Popover } from "react-tiny-popover";
 import styles from "./select.module.scss";
 import Options from "./options";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import Typography from "../typography";
 import OptionTags from "./optionTag";
 import MultiSelectOptions from "./multiselectOptions";
@@ -69,8 +69,8 @@ const Select = (props: ISelectProps) => {
         reposition={true}
         containerStyle={
           selectRef.current
-            ? { width: `${selectRef.current.clientWidth}px` }
-            : undefined
+            ? { width: `${selectRef.current.clientWidth}px`, zIndex:"6" }
+            : { zIndex:"6"}
         }
         onClickOutside={toggleOptions}
         content={({ position }) => {

@@ -1,5 +1,5 @@
 import styles from "./button.module.scss";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import { IButtonProps } from "./button.types";
 import {
   BUTTON_SIZES,

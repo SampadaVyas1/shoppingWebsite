@@ -42,6 +42,11 @@ export const DATE_FORMAT = {
   DD_MM_YYYY: "DD-MM-YYYY",
 };
 
+export const ATTACHMENT_MODAL = {
+  IMAGES_TYPES: "image/png, image/jpg, image/jpeg",
+  DOCUMENT_TYPE:
+    "application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,text/plain, application/pdf",
+};
 export const TABLE_CONSTANTS = {
   CHECKBOX: "checkbox",
   CREATEDTIME: "createdTime",
@@ -66,6 +71,13 @@ export const REGEX = {
 };
 export const TRANSITION_TIMEOUT = 300;
 export const INPUT_PLACEHOLDER = "Enter text here";
+export const TIME_FORMAT = {
+  HOUR_MINUTE: "hh:mm A",
+  DATE_MONTH: "DD/MM/YYYY",
+};
+export const HEADER = "HEADER";
+export const ENTER_KEYCODE = 13;
+export const TIMESTAMP = "timestamp";
 
 export const API_ERROR_MESSAGES = {
   ACCESS_TOKEN_EXPIRED: "ACCESS TOKEN EXPIRED",

@@ -1,0 +1,75 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+.candidateCard {
+  @include flex-align-center;
+  background-color: $white;
+  gap: 1.5rem;
+  padding: 1rem 1rem 1rem 3rem;
+  box-sizing: border-box;
+  border-bottom: 0.03125rem solid $grayLight;
+  max-height: 5.5rem;
+  box-sizing: border-box;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $selectMessage;
+  }
+  .profile {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: $primaryButtonHover;
+  }
+  .candidateDetail {
+    @include flex-direction(column, 1);
+    gap: 0.25rem;
+    overflow: hidden;
+    .nameTime {
+      @include flex-justify-align(space-between);
+      .name {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: $gray-900;
+      }
+      .time {
+        color: $gray-500;
+      }
+    }
+    .message {
+      @include flex-align-center;
+      gap: 0.5rem;
+      .messageText {
+        color: $gray-500;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        flex: 1;
+      }
+      .status {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+
+      .unread {
+        color: $gray-500;
+        flex: 1;
+      }
+      .badge {
+        @include flex-center-alignment;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 50%;
+        background-color: $primaryButtonHover;
+        color: $white;
+        font-size: 0.75rem;
+      }
+    }
+  }
+}
+.selected {
+  background-color: $selectedContentBackground;
+
+  &:hover {
+    background-color: $selectedContentBackground;
+  }
+}

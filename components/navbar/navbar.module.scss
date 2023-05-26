@@ -1,5 +1,6 @@
 @import "../../styles/variables";
 @import "../../styles/mixins";
+@import "../../styles/media";
 
 .navbar {
   max-height: 3.5rem;
@@ -62,17 +63,15 @@
     width: 21.5rem;
 
     .logout {
-      display: flex;
-      flex-direction: column;
+      @include flex-direction(column);
       gap: 1rem;
 
       .text {
         color: $gray-500;
       }
       .buttons {
-        display: flex;
         gap: 0.5rem;
-        justify-content: flex-end;
+        @include flex-justify-align(flex-end);
       }
     }
   }
@@ -85,6 +84,14 @@
   .boldText {
     color: $primary;
   }
+}
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  left: 0;
+  opacity: 0.7;
 }
 .profileBody {
   display: table;
@@ -117,5 +124,13 @@
   width: 100%;
   .footerButton {
     flex: 1;
+  }
+}
+
+@media screen and (max-width: $md-max) {
+  .header {
+    color: $primary;
+    font-size: 1rem !important;
+    font-weight: 600;
   }
 }

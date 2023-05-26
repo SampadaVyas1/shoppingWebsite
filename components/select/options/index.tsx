@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import styles from "./options.module.scss";
 import Card from "@/components/card";
-import ImageComponent from "@/components/image";
+import ImageComponent from "@/components/imageComponent";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
@@ -12,7 +12,7 @@ import { IOptionsProp } from "./options.types";
 import { DEBOUNCE_TIME } from "@/common/constants";
 
 const Options = (props: IOptionsProp) => {
-  const { options, selectedValue, onSelect, searchable } = props;
+  const { options, selectedValue, onSelect, searchable, customStyle } = props;
 
   const [filteredOptions, setFilteredOptions] =
     useState<IOptionType[]>(options);
@@ -35,11 +35,11 @@ const Options = (props: IOptionsProp) => {
   );
 
   return (
-    <Card customClass={styles.optionsWrapper}>
+    <Card customClass={`${styles.optionsWrapper} ${customStyle}`}>
       <>
         {searchable && (
           <InputBox
-            startIcon={Images.search}
+            endIcon={Images.search}
             placeholder="Search"
             onChange={handleSearch}
           />
@@ -50,7 +50,7 @@ const Options = (props: IOptionsProp) => {
               return (
                 <div
                   className={
-                    option.id === selectedValue.id
+                    option.id === selectedValue?.id
                       ? `${styles.option} ${styles.selected}`
                       : styles.option
                   }

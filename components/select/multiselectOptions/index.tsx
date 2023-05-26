@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useCallback, useState } from "react";
 import styles from "./multiSelectOptions.module.scss";
 import Card from "@/components/card";
-import ImageComponent from "@/components/image";
+import ImageComponent from "@/components/imageComponent";
 import InputBox from "@/components/inputBox";
 import Typography from "@/components/typography";
 import Images from "@/public/assets/icons";
@@ -29,7 +29,6 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
     useState<IMultiSelectOptionsState>({
       filteredOptions: options,
     });
-
   const { filteredOptions } = multiselectStates;
 
   const handleClick = useCallback(
@@ -83,7 +82,7 @@ const MultiSelectOptions = (props: IMultiSelectOptionsProp) => {
       <>
         {searchable && (
           <InputBox
-            startIcon={Images.search}
+            endIcon={Images.search}
             placeholder="Search"
             onChange={handleSearch}
           />

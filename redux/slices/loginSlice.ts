@@ -78,12 +78,12 @@ export const loginSlice = createSlice({
 export default loginSlice.reducer;
 export const {
   handleLogin,
-  handleLogout,
   toggleLoading,
   toggleError,
   handleFeatureAccess,
   handleUserDetail,
   toggleLoginError,
   setErrorMessage,
+  handleLogout,
   resetErrorMessage,
 } = loginSlice.actions;

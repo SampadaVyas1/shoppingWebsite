@@ -11,7 +11,6 @@ import {
 import { SORT_TYPE, TABLE_CONSTANTS } from "@/common/constants";
 import CustomCheckBox from "../customCheckBox";
 import Typography from "../typography";
-import ImageComponent from "@/components/image";
 import { Column } from "rc-table";
 import Images from "@/public/assets/icons";
 import TableCell from "./tableCell";
@@ -20,6 +19,7 @@ import { IData, IHeaderTitleProps } from "@/common/types/candidates.types";
 import Loader from "../loader";
 import SkeletonLoader from "../skeletonLoader";
 import { TYPOGRAPHY_VARIANT, SKELETON_VARIANT } from "@/common/types/enums";
+import ImageComponent from "../imageComponent";
 
 export const TableComponent = (props: ITableComponent) => {
   const {
@@ -48,32 +48,26 @@ export const TableComponent = (props: ITableComponent) => {
     downArrowEnabled,
   } = Images;
 
-  const handleCheckBoxClick = useCallback(
-    (id: number) => {
-      !!selectedRow &&
-        !!handleRowEachSelect &&
-        handleRowSelect &&
-        handleRowEachSelect(id, selectedRow, handleRowSelect);
-    },
-    [handleRowEachSelect, handleRowSelect, selectedRow]
-  );
+  const handleCheckBoxClick = (id: number) => {
+    selectedRow &&
+      !!handleRowEachSelect &&
+      handleRowSelect &&
+      handleRowEachSelect(id, [...selectedRow, id], handleRowSelect);
+  };
 
-  const handleCheckBoxClicks = useCallback(
-    (id: number) => () => {
-      !!handleCheckBoxClick && handleCheckBoxClick(id);
-    },
-    [handleCheckBoxClick]
-  );
+  const handleCheckBoxClicks = (id: number) => {
+    !!handleCheckBoxClick && handleCheckBoxClick(id);
+  };
 
   const handleAscendingArrowClick = useCallback(
-    (dataIndex: string, data: any) => () => {
+    (dataIndex: string, data: IData) => () => {
       !!handleSortArrowClick &&
         handleSortArrowClick(dataIndex, SORT_TYPE.ASCENDING, data);
     },
     [handleSortArrowClick]
   );
   const handleDescendingArrowClick = useCallback(
-    (dataIndex: string, data: any) => () => {
+    (dataIndex: string, data: IData) => () => {
       !!handleSortArrowClick &&
         handleSortArrowClick(dataIndex, SORT_TYPE.DESCENDING, data);
     },
@@ -154,9 +148,9 @@ export const TableComponent = (props: ITableComponent) => {
               column.title == TABLE_CONSTANTS.CHECKBOX ? (
                 <CustomCheckBox
                   id={data[index][TABLE_CONSTANTS.ID]}
-                  handleClick={handleCheckBoxClicks(
-                    data[index][TABLE_CONSTANTS.ID]
-                  )}
+                  handleClick={() =>
+                    handleCheckBoxClicks(data[index][TABLE_CONSTANTS.ID])
+                  }
                   checked={
                     selectedRow &&
                     checkRow(data[index][TABLE_CONSTANTS.ID], selectedRow)

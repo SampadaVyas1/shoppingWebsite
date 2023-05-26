@@ -3,22 +3,23 @@
 
 .searchBarContainer {
   @include flex-space-between-alignment;
-  padding: 0.875rem 2rem;
+  height: 3rem;
 }
 .icons {
   width: 1.75rem;
   height: 1.75rem;
+  flex: 1;
 
   &:hover {
     cursor: pointer;
   }
 }
 .searchBar {
-  background: $white;
-  border: $inputBoxBorder;
-  box-shadow: $inputBoxShadow;
-  border-radius: 0.5rem;
-  padding: 0.6rem 1rem;
-  width: 30.12rem;
-  height: 2.5rem;
+  flex: 2;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: $searchText;
+  font-weight: 400;
+ 
 }

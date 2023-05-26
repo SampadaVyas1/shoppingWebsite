@@ -1,0 +1,52 @@
+@import "../../styles/variables";
+
+@mixin tip-position($left, $transform) {
+  position: absolute;
+  width: 1rem;
+  height: 0.75rem;
+  left: $left;
+  top: -0.0125rem;
+  border-radius: 0.0625rem;
+  transform: $transform;
+}
+.tipContainer {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 0.5rem;
+  max-width: 24.56rem;
+  min-width: 10.1875rem;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+  box-shadow: $cardBoxShadow;
+
+  :nth-child(1) {
+    z-index: 1;
+  }
+  :nth-child(2) {
+    z-index: 2;
+    position: relative;
+    font-size: 0.75rem;
+  }
+
+  .left {
+    @include tip-position(
+      -0.125rem,
+      rotate(120deg) matrix(0.42, 0.91, -0.62, 0.78, 0, 0)
+    );
+  }
+  .right {
+    @include tip-position(
+      auto,
+      rotate(35deg) matrix(0.42, 0.91, -0.62, 0.78, 0, 0)
+    );
+    right: -0.25rem;
+  }
+}
+.sent {
+  background-color: $selectMessage;
+  align-self: flex-end;
+}
+.received {
+  background-color: $white;
+}

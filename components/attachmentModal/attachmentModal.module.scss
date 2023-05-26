@@ -1,0 +1,23 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+.attachmentModal {
+  @include flex-direction(column);
+  gap: 0.75rem;
+  position: absolute;
+  left: 3.75rem;
+  bottom: 6rem;
+  padding: 0.5rem;
+  z-index: 4;
+
+  .imageAttachment {
+    position: relative;
+    height: 3.25rem;
+    .fileInput {
+      display: none;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

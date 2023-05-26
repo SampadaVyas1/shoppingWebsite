@@ -17,10 +17,10 @@ import {
   setErrorMessage,
   resetErrorMessage,
 } from "../slices/loginSlice";
-import { sagaActions } from "../constants";
 import { PRIVATE_ROUTES } from "@/common/routes";
 import { googleLogout } from "@react-oauth/google";
 import { ERROR_CODES } from "@/common/constants";
+import { sagaActions } from "../actions";
 
 export function* handleLoginSaga({ token }: AnyAction): any {
   try {

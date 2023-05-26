@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { ArrowContainer, Popover } from "react-tiny-popover";
 import { useDispatch } from "react-redux";
 import styles from "./navbar.module.scss";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import Typography from "../typography";
 import ProfileCard from "../profileCard";
 import Modal from "../modal";
@@ -14,14 +14,16 @@ import TransitionWrapper from "../transitionWrapper";
 import Images from "@/public/assets/icons";
 import { PRIVATE_ROUTES, TEAM_PAGE_ROUTES } from "@/common/routes";
 import { INavbarProps, profileData } from "./navbar.types";
-import { handleLogout } from "@/redux/slices/loginSlice";
 import { useAppSelector } from "@/redux/hooks";
 import {
   TYPOGRAPHY_VARIANT,
   TOOLTIP_POSITION,
   BUTTON_VARIANT,
+  ROLES,
 } from "@/common/types/enums";
-import { sagaActions } from "@/redux/constants";
+import { sagaActions } from "@/redux/actions";
+import Loader from "../loader";
+import { notify } from "@/helpers/toastHelper";
 
 const Navbar = ({ routes }: INavbarProps) => {
   const router = useRouter();
@@ -35,11 +37,19 @@ const Navbar = ({ routes }: INavbarProps) => {
     email,
     designation,
     mobileNumber,
+    role,
   } = useAppSelector((state) => state.login.userDetails);
+
+  const { syncing } = useAppSelector((state) => state.messages);
 
   const dispatch = useDispatch();
 
   const onLogout = () => {
+    role !== ROLES.ADMIN &&
+      dispatch({
+        type: sagaActions.BACKUP_CHATS,
+        payload: { logoutUser: true },
+      });
     dispatch({ type: sagaActions.LOGOUT_USER });
   };
 
@@ -60,6 +70,7 @@ const Navbar = ({ routes }: INavbarProps) => {
   };
   return (
     <div className={styles.navbar}>
+      {syncing && <Loader customStyles={styles.loader} />}
       <div className={styles.navbarLeft}>
         <div className={styles.logo} onClick={redirectHome}>
           <ImageComponent src={Images.coditasIcon} width={32} height={32} />
@@ -175,7 +186,7 @@ const Navbar = ({ routes }: INavbarProps) => {
               Cancel
             </Button>
             <Button variant={BUTTON_VARIANT.CONTAINED} onClick={onLogout}>
-              Log Out
+              {syncing ? "Logging out...." : "Log Out"}
             </Button>
           </div>
         </div>

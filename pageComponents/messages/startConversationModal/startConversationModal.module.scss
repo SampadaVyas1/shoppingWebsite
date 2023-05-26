@@ -1,0 +1,34 @@
+@import "../../../styles/mixins.scss";
+@import "../../../styles/variables.scss";
+
+.startModal {
+  @include flex-direction(column);
+  min-height: 40rem;
+  gap: 1.5rem;
+  .header {
+    padding: 0 !important;
+    @include flex-space-between-alignment;
+    .search {
+      max-width: 32.625rem;
+    }
+  }
+  .footer {
+    display: flex;
+    gap: 1.5rem;
+    align-self: flex-end;
+  }
+  .candidateTable {
+    height: 23rem;
+    margin: 0;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 0.25rem;
+      height: 0.25rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $secondaryTextLight;
+      border-radius: 0.25rem;
+    }
+  }
+}

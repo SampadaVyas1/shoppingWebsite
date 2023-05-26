@@ -1,8 +1,8 @@
 export interface IProfileCardProps {
-  profileImage: string;
+  profileImage: string | null;
   firstName: string;
-  lastName: string;
+  lastName?: string;
   designation: string;
   cardBody: React.ReactNode;
-  cardFooter: React.ReactNode;
+  cardFooter?: React.ReactNode;
 }

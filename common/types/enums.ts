@@ -55,6 +55,16 @@ export enum TOOLTIP_POSITION {
   RIGHT = "right",
   TOP = "top",
   BOTTOM = "bottom",
+  CENTER = "center",
+}
+
+export enum MESSAGE_STATUS {
+  SENT = "SENT",
+  RECEIVED = "RECEIVED",
+  DELIVERED = "DELIVERED",
+  READ = "READ",
+  FAILED = "FAILED",
+  SENDING = "SENDING",
 }
 
 export enum BUTTON_SIZES {
@@ -78,6 +88,16 @@ export enum FILE_TYPES {
   TYPE_CSV = "types/csv",
 }
 
+export enum MESSAGE_TYPES {
+  TEXT = "text",
+  IMAGE = "image",
+  DOCUMENT = "document",
+}
+
+export enum TYPEOF {
+  STRING = "string",
+  NUMBER = "number",
+}
 export enum RECRUITER_STATUS {
   INACTIVE = "Inactive",
   ACTIVE = "Active",
@@ -86,4 +106,16 @@ export enum RECRUITER_STATUS {
 export enum ROLES {
   ADMIN = "ADMIN",
   RECRUITER = "RECRUITER",
+}
+
+export enum ARROW_ALIGNMENT {
+  START = "start",
+  END = "end",
+  CENTER = "center",
+}
+
+export enum ROUTES_PATH {
+  MESSAGES = "/messages",
+  TEAM = "/teams",
+  CANDIDATES = "/candidates",
 }

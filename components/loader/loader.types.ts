@@ -1,3 +1,3 @@
 export interface ILoaderProps {
-  customStyle?: string;
+  customStyles?: string;
 }

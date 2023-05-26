@@ -1,0 +1,71 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins.scss";
+
+.chatHeader {
+  padding: 0.75rem 1.5rem;
+  box-sizing: border-box;
+  @include flex-space-between-alignment;
+
+  .profile {
+    @include flex-align-center;
+    gap: 1.5rem;
+    .image {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+    }
+  }
+  .detail {
+    @include flex-direction(column);
+    .hint {
+      color: $gray-500;
+    }
+    .status {
+      color: $primary;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+  }
+  .detailSkeleton {
+    width: 25rem;
+    @include flex-direction(column);
+    gap: 0.5rem;
+    .skeletonText {
+      height: 1rem;
+    }
+  }
+}
+
+.profileImage {
+  box-sizing: border-box;
+  @include flex-center-alignment;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: $primary;
+  color: $white;
+  object-fit: contain;
+  object-position: center;
+  font-weight: 600;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.email {
+  color: $gray-500;
+  align-self: flex-start;
+  line-height: 150%;
+  display: flex;
+  width: 100%;
+  padding: 0.125rem 3rem;
+  font-size: 0.875rem;
+
+  .boldText {
+    color: $gray-900;
+    align-self: flex-end;
+    font-weight: 500;
+    line-height: 150%;
+  }
+}

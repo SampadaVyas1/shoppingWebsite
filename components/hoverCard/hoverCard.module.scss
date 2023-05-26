@@ -1,0 +1,42 @@
+@import "../../styles/variables";
+
+@mixin left-position-transform($left, $top, $transform) {
+  left: $left;
+  top: $top;
+  position: absolute;
+  transform: $transform;
+}
+
+.hoverContainer {
+  filter: $hoverCardDropShadow;
+
+  .right {
+    @include left-position-transform(-0.875rem, 50%, rotate(275deg));
+  }
+  .left {
+    @include left-position-transform(auto, 50%, rotate(90deg));
+    right: -0.875rem;
+  }
+  .top {
+    @include left-position-transform(
+      calc(50% - 0.875rem),
+      -0.875rem,
+      rotate(0deg)
+    );
+  }
+  .bottom {
+    @include left-position-transform(
+      calc(50% - 0.875rem),
+      auto,
+      rotate(180deg)
+    );
+    bottom: -0.875rem;
+  }
+}
+
+.hoverCardWrapper {
+  position: relative;
+  &:hover {
+    cursor: pointer;
+  }
+}

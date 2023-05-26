@@ -4,26 +4,38 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import styles from "./login.module.scss";
 import Button from "@/components/button";
-import ImageComponent from "@/components/image";
+import ImageComponent from "@/components/imageComponent";
 import Loader from "@/components/loader";
 import Typography from "@/components/typography";
 import Container from "@/components/container";
 import Images from "@/public/assets/icons";
-import { sagaActions } from "@/redux/constants";
+import { sagaActions } from "@/redux/actions";
 import { useAppSelector } from "@/redux/hooks";
+import { addDataAfterSync } from "@/common/utils/dbUtils";
 import { API_ERROR_MESSAGES, TOKEN } from "@/common/constants";
 import { PRIVATE_ROUTES, RECRUITER_ROUTES } from "@/common/routes";
-import { getDataFromLocalStorage } from "@/common/utils";
 import SectionImage from "../../public/assets/images/loginImage.svg";
-import { BUTTON_VARIANT, TYPOGRAPHY_VARIANT } from "@/common/types/enums";
+import {
+  BUTTON_VARIANT,
+  ROLES,
+  ROUTES_PATH,
+  TYPOGRAPHY_VARIANT,
+} from "@/common/types/enums";
 import { resetErrorMessage } from "@/redux/slices/loginSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { isLoggedIn, isLoading, isLoginError, errorMessage } = useAppSelector(
-    (state) => state.login
-  );
+
+  const [isChatLoading, setChatLoading] = useState<boolean>(false);
+  const {
+    isLoggedIn,
+    isLoading,
+    isLoginError,
+    errorMessage,
+    userDetails,
+    featureData,
+  } = useAppSelector((state) => state.login);
 
   const handleErrorClose = () => {
     dispatch(resetErrorMessage());
@@ -40,17 +52,47 @@ const Login = () => {
       token: codeResponse,
     });
   };
-  function onSuccess(codeResponse: Object) {
+
+  const getChatData = async () => {
+    setChatLoading(true);
+    addDataAfterSync();
+    setChatLoading(false);
+  };
+
+  const onSuccess = (codeResponse: Object) => {
     handleClick(codeResponse);
-  }
+  };
+  const replaceRoute = () => {
+    const redirectRoute =
+      userDetails.role === ROLES.ADMIN
+        ? ROUTES_PATH.TEAM
+        : ROUTES_PATH.MESSAGES;
+    router.replace(redirectRoute);
+  };
   const login = useGoogleLogin({ onSuccess: onSuccess, flow: "auth-code" });
 
   useEffect(() => {
+    if (isLoggedIn) {
+      dispatch({ type: sagaActions.GET_USER_DETAILS });
+    }
+  }, [isLoggedIn, router, userDetails]);
+
+  useEffect(() => {
+    if (userDetails.role) {
+      replaceRoute();
+    }
+  }, [userDetails]);
+
+  useEffect(() => {
+    if (isLoggedIn && userDetails.role !== ROLES.ADMIN) {
+      getChatData();
+    }
     isLoggedIn && router.replace(RECRUITER_ROUTES[1].path);
   }, [isLoggedIn]);
 
   return (
     <>
+      {isChatLoading && <p>Fetching chats</p>}
       {isLoggedIn || isLoading ? (
         <Loader />
       ) : (

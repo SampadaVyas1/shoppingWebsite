@@ -2,12 +2,9 @@
 @import "../../../styles/mixins";
 
 .optionsWrapper {
-  display: flex;
-  flex-direction: column;
-  border-radius: 0.5rem;
+  @include flex-direction(column, 1);
+  border-radius: 0.25rem;
   min-width: 7.5rem;
-  flex: 1;
-  padding: 0 !important;
   gap: 0.5rem;
   box-sizing: border-box;
   background-color: $white;
@@ -24,10 +21,8 @@
   }
 
   .singleSelectOptions {
-    display: flex;
-    max-height: 11.25rem;
+    @include flex-direction(column, none);
     overflow-y: auto;
-    flex-direction: column;
     &::-webkit-scrollbar {
       width: 0.25rem;
     }
@@ -39,13 +34,13 @@
 
     .option {
       font-size: 0.875rem;
-      padding: 0.5rem;
+      padding: 0.75rem 1rem;
       line-height: 1.3125rem;
-      height: 2.25rem;
+      height: 3rem;
       box-sizing: border-box;
       &:hover {
         cursor: pointer;
-        background-color: $listHoverColor;
+        background-color: $grayBlue;
       }
     }
     .selected {

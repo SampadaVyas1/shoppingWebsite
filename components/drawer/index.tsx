@@ -1,6 +1,6 @@
 import Images from "@/public/assets/icons";
 import styles from "./drawer.module.scss";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import TransitionWrapper from "../transitionWrapper";
 import { IDrawerProps } from "./drawer.types";
 

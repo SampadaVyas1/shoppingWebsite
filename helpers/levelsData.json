@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "label": "Screening"
+  },
+  {
+    "id": "2",
+    "label": "L1 Interview"
+  },
+  {
+    "id": "3",
+    "label": "L2 Interview"
+  },
+  {
+    "id": "4",
+    "label": "HM Interview"
+  },
+  {
+    "id": "5",
+    "label": "Selected"
+  },
+  {
+    "id": "6",
+    "label": "Rejected"
+  }
+]

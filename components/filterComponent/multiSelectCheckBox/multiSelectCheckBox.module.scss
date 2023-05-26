@@ -1,0 +1,63 @@
+@import "../../../styles/variables";
+@import "../../../styles/mixins";
+
+.optionsWrapper {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  gap: 0.5rem;
+  min-width: 7.5rem;
+  padding: 0 !important;
+  box-sizing: border-box;
+  flex: 1;
+  overflow: hidden;
+  background-color: $white;
+
+  .noData {
+    @include flex-center-alignment;
+    flex-direction: column;
+    padding: 1rem 0.75rem;
+    gap: 0.5rem;
+    .icon {
+      width: 10.5rem;
+      height: 7.5rem;
+
+    }
+  }
+
+  .multiSelectOptions {
+    display: flex;
+    flex-direction: column;
+    max-height: 11.25rem;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 0.25rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $gray-200;
+      border-radius: 1rem;
+    }
+    .option {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      line-height: 1.5rem;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 0.875rem;
+      &:hover {
+        cursor: pointer;
+        background-color: $listHoverColor;
+      }
+    }
+    .selected {
+      background-color: $selectMessage;
+      color: $primary;
+      font-weight: 600;
+
+      &:hover {
+        background-color: $selectMessage;
+      }
+    }
+  }
+}

@@ -8,9 +8,8 @@
   padding: 0;
 
   .section {
-    flex: 1;
+    @include flex-direction(column, 1);
     @include flex-center-alignment;
-    flex-direction: column;
     padding: 0;
     gap: 2rem;
     position: relative;
@@ -31,14 +30,13 @@
     .appLogo {
       gap: 1rem;
       @include flex-align-center;
-
       .appName {
         color: $primary;
       }
     }
     .content {
       @include flex-center-alignment;
-      flex-direction: column;
+      @include flex-direction(column);
       width: 23.75rem;
       gap: 1rem;
     }

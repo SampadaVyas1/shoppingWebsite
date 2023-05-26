@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./splash.module.scss";
-import ImageComponent from "../image";
+import ImageComponent from "../imageComponent";
 import Typography from "../typography";
 import Images from "@/public/assets/icons";
 import { TYPOGRAPHY_VARIANT } from "@/common/types/enums";

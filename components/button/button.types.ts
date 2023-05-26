@@ -6,7 +6,7 @@ import {
 } from "@/common/types/enums";
 
 export interface IButtonProps extends HtmlHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   startIcon?: string;
   endIcon?: string;
   variant?:

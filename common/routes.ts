@@ -11,7 +11,7 @@ export const RECRUITER_ROUTES = [
 ];
 
 export const ADMIN_ROUTES = [
-  ...RECRUITER_ROUTES,
+  ...RECRUITER_ROUTES.filter((route) => route.id !== 1),
   { id: 3, path: "/team", name: "Team" },
 ];
 
@@ -27,6 +27,16 @@ export enum SERVICE_TPI {
   GET_RECRUITER = "tpi/userRole/getAllRecruiters",
   UPDATE_RECRUITER = "tpi/userRole/updateUser",
   GET_TECH_STACKS = "tpi/techStack/getAllTechStacks",
+  GET_CANDIDATES = `tpi/candidate/getAllCandidates`,
+  GET_FILTER = "tpi/filters/getAllFilters",
+  ADD_CANDIDATES = "tpi/candidate/createCandidate",
+}
+
+export enum SERVICE_WHATSAPP {
+  GET_ALL_TEMPLATES = "wa/whatsapp/getAllTemplates",
+  GET_ROOM_DATA = "wa/whatsapp/getNewUsersList",
+  SYNC_CHATS = "wa/whatsapp/syncChats",
+  GET_CHATS = "wa/whatsapp/getChats",
 }
 
 export const TEAM_PAGE_ROUTES = {

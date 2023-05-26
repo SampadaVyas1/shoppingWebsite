@@ -16,17 +16,16 @@ import styles from "./addForm.module.scss";
 import { AddFormSchema } from "./validation";
 import { REGEX, VALIDATION_ERRORS } from "@/common/constants";
 import { IOptionType } from "@/common/types";
-import { experienceLevels, techStackOptions } from "./addForm.constants";
 
 const defaultFormValues = {
   firstName: "",
   lastName: "",
   mobileNumber: "",
-  experience: {} as IOptionType,
+  experienceLevel: "",
   techStack: {} as IOptionType,
 };
 
-const AddForm = () => {
+const AddForm = ({ handleSubmitButton, techStackOptions }: any) => {
   const hookForm = useForm({
     defaultValues: defaultFormValues,
     mode: "onChange",
@@ -46,13 +45,8 @@ const AddForm = () => {
 
   const submitButtonDisableCondition =
     !isValid ||
-    !hookForm.watch("experience.id") ||
-    !hookForm.watch("techStack.id");
-
-  const experienceValue = (value: IOptionType | IOptionType[]) => {
-    if (!Array.isArray(value)) setValue("experience", value);
-    clearErrors(["experience"]);
-  };
+    !hookForm.watch("experienceLevel") ||
+    !hookForm.watch("techStack.label");
 
   const techStackValue = (value: IOptionType | IOptionType[]) => {
     if (!Array.isArray(value)) setValue("techStack", value);
@@ -64,21 +58,12 @@ const AddForm = () => {
       setError("techStack", { message: VALIDATION_ERRORS.REQUIRED_ERROR });
       return;
     }
+
+    handleSubmitButton && handleSubmitButton(value);
   };
 
   return (
     <div className={styles.addFormWrapper}>
-      <Card title="From File">
-        <React.Fragment>
-          <DragDropArea customStyle={styles.uploadForm} />
-          <Typography
-            variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}
-            customStyle={styles.downloadLink}
-          >
-            Download sample file
-          </Typography>
-        </React.Fragment>
-      </Card>
       <form onSubmit={handleSubmit(onSubmit)} className={styles.addForm}>
         <Typography variant={TYPOGRAPHY_VARIANT.TEXT_MEDIUM_SEMIBOLD}>
           Manually
@@ -128,14 +113,13 @@ const AddForm = () => {
 
         <Controller
           control={control}
-          name="experience"
+          name="experienceLevel"
           render={({}) => (
-            <Select
-              {...register("experience")}
-              onSelect={experienceValue}
+            <InputBox
+              {...register("experienceLevel")}
+              value={hookForm.watch("experienceLevel")}
               placeholder=""
-              options={experienceLevels}
-              error={errors.experience?.message}
+              error={errors.experienceLevel?.message}
               label="Experience Level"
             />
           )}
