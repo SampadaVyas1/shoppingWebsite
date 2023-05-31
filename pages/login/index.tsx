@@ -125,7 +125,7 @@ const Login = () => {
               startIcon={Images.googleIcon}
               variant={BUTTON_VARIANT.OUTLINED}
               customStyle={styles.loginButton}
-              onClick={login}
+              onClick={getDataFromLocalStorage(TOKEN) ? replaceRoute : login}
             >
               Sign in with google
             </Button>
