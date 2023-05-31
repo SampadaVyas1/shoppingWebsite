@@ -22,6 +22,7 @@ import {
   TYPOGRAPHY_VARIANT,
 } from "@/common/types/enums";
 import { resetErrorMessage } from "@/redux/slices/loginSlice";
+import { getDataFromLocalStorage } from "@/common/utils";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -125,7 +126,7 @@ const Login = () => {
               startIcon={Images.googleIcon}
               variant={BUTTON_VARIANT.OUTLINED}
               customStyle={styles.loginButton}
-              onClick={login}
+              onClick={getDataFromLocalStorage(TOKEN) ? replaceRoute : login}
             >
               Sign in with google
             </Button>
