@@ -22,6 +22,7 @@ import {
   TYPOGRAPHY_VARIANT,
 } from "@/common/types/enums";
 import { resetErrorMessage } from "@/redux/slices/loginSlice";
+import { getDataFromLocalStorage } from "@/common/utils";
 
 const Login = () => {
   const dispatch = useDispatch();
