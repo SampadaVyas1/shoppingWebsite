@@ -37,8 +37,11 @@ import { ISelectedFile } from "@/common/types/messages.types";
 import { useAppSelector } from "@/redux/hooks";
 import { useDispatch } from "react-redux";
 import { setPhone } from "@/redux/slices/messageSlice";
+import { initiateSocket } from "@/socket/webSocket";
 
 const MessageScreen = (props: IMessageScreenProps) => {
+  const socketConnection = initiateSocket();
+
   const { name, designation, techStack, interviewLevel, profileImage, id, ta } =
     props.candidateData;
 
@@ -65,7 +68,25 @@ const MessageScreen = (props: IMessageScreenProps) => {
     setSelectedFile(null);
   };
 
-  const handleClick = async (message: string, whatsappId: string = "") => {
+  const handleClick = async (onSend: any, whatsappId: string = "") => {
+    const { message, data } = onSend;
+    const sendMedia = !!selectedFile && {
+      action: "sendMediaMessage",
+      body: {
+        phoneId: "104746919070579",
+        employeeId: `11097`,
+        to: "919359673461",
+        imageData: {
+          file: selectedFile?.file,
+          fileName: selectedFile?.file?.name,
+          caption: message,
+          messageId: "id",
+          type: selectedFile.type,
+          contentType: selectedFile.file.type,
+        },
+      },
+    };
+
     const timestamp = getTimeStamp().toString();
     const messageId = `${uuid()}${timestamp}`;
     const commonParams = {
@@ -89,28 +110,18 @@ const MessageScreen = (props: IMessageScreenProps) => {
           status: MESSAGE_STATUS.SENDING,
         });
     setMessage("");
+
     selectedFile?.file?.name && setSelectedFile(null);
     whatsappId.length && deleteMessageByMessageId(whatsappId);
     await updateMessage({ ...newMessage, phone: id });
+
     !selectedFile?.file?.name
-      ? socket.emit(SOCKET_ROUTES.SEND_PERSONAL_MESSAGE, {
-          messaging_product: SOCKET_CONSTANTS.MESSAGING_PRODUCT,
-          recipient_type: SOCKET_CONSTANTS.RECIPIENT_TYPE,
-          to: id,
-          type: MESSAGE_TYPES.TEXT,
-          messageId: messageId,
-          text: {
-            body: message,
-          },
-        })
-      : socket.emit(SOCKET_ROUTES.SEND_MEDIA, {
-          file: selectedFile?.file,
-          fileName: selectedFile.file.name,
-          caption: message,
-          messageId: messageId,
-          type: selectedFile.type,
-          contentType: selectedFile.file.type,
-        });
+      ? socketConnection.send(JSON.stringify(data))
+      : socketConnection.send(JSON.stringify(sendMedia));
+
+    socketConnection.onmessage = (event: any) => {
+      console.log("Received message:", event.data);
+    };
   };
 
   const handleTemplateSend = async (template: any) => {
@@ -122,7 +133,40 @@ const MessageScreen = (props: IMessageScreenProps) => {
       messageId,
       timestamp
     );
-    socket.emit(SOCKET_ROUTES.SEND_TEMPLATE, templateData);
+
+    const data = {
+      action: "sendTemplate",
+      body: {
+        phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+        employeeId: `${employeeId}`,
+        to: "919359673461",
+        type: "template",
+        template: {
+          namespace: templateData.messageId,
+          name: templateData.name,
+          language: {
+            policy: "deterministic",
+            code: "en",
+          },
+          components: [
+            {
+              type: "header",
+              parameters: [
+                {
+                  type: "text",
+                  text: templateData.components[0]?.parameters[0]?.text,
+                },
+              ],
+            },
+          ],
+        },
+      },
+    };
+    socketConnection.send(JSON.stringify(data));
+    socketConnection.onmessage = (event: any) => {
+      console.log("Received message:", event.data);
+    };
+    // socket.emit(SOCKET_ROUTES.SEND_TEMPLATE, templateData);
     const [header, body, ...otherElements] = template?.components ?? [];
     const [parameters, ...restElements] = header?.example?.header_handle ?? [];
     const newMessage = getSentMessageData({

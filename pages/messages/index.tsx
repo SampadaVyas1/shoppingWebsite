@@ -83,6 +83,22 @@ const Messages = () => {
       selectedCandidate: candidate,
     }));
   };
+    //websocket//////////////////////////////////////////
+//   const url =`wss://tv3cidqrkf.execute-api.ap-south-1.amazonaws.com/dev?employeeId=${employeeId}`;
+//  const socketConnection = new WebSocket(url);
+
+//   socketConnection.onopen = () => {
+//     console.log('WebSocket connection established.');
+//   };
+
+//   socketConnection.onmessage = (event) => {
+//     console.log('Received message:', event.data);
+//   };
+
+//   socketConnection.onclose = () => {
+//     console.log('WebSocket connection closed.');
+//   };
+////////////////////////////////////////////////////////////////
 
   const closeFilter = () => {
     setMessagePageState((prevState) => ({

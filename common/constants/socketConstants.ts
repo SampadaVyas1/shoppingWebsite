@@ -16,6 +16,8 @@ export const SOCKET_ROUTES = {
   PENDING_STATUS: "pendingStatus",
   SEND_TEMPLATE: "sendTemplate",
   SYNC_DATA: "syncData",
+  SEND_MEDIA_MESSAGE:"sendMediaMessage",
+  SEND_MESSAGE:"sendMessage"
 };
 
 export enum MESSAGE_STATUS_VARIANT {

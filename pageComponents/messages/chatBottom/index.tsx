@@ -28,8 +28,9 @@ import { IOptionType } from "@/common/types";
 import { formatTemplateHeader, formatTemplateName } from "@/common/utils";
 import TemplateCard from "@/components/templateCard";
 import Button from "@/components/button";
+import { SOCKET_ROUTES } from "@/common/constants/socketConstants";
 
-const ChatBottom = (props: IChatBottomProps) => {
+const ChatBottom = (props: IChatBottomProps) => {  
   const {
     candidateName,
     handleMessageChange,
@@ -39,9 +40,13 @@ const ChatBottom = (props: IChatBottomProps) => {
     onFileRemoval,
     chatScreenRef,
     onTemplateSend,
+    
   } = props;
 
   const { isLoading, templates } = useAppSelector((state) => state.messages);
+  const { employeeId } = useAppSelector(
+    (state) => state.login.userDetails
+  );
   const dispatch = useDispatch();
 
   const [showAttachmentModal, toggleAttachmentModal] = useState<boolean>(false);
@@ -60,7 +65,20 @@ const ChatBottom = (props: IChatBottomProps) => {
   ) => {
     event.preventDefault();
     if (message.length || selectedFile?.file?.name) {
-      onSend(message);
+      const data = {
+        action: SOCKET_ROUTES.SEND_MESSAGE,
+        body: {
+          phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+          employeeId:`${employeeId}`,
+          to: "919359673461",
+          type:MESSAGE_TYPES.TEXT,
+          recipient_type: "individual",
+          text: {
+            body: message,
+          },
+        },
+      };
+      onSend({message:message,data:data});
       setMessage("");
     }
   };
@@ -224,7 +242,6 @@ const ChatBottom = (props: IChatBottomProps) => {
           />
         </React.Fragment>
       )}
-
       {selectedFile?.file?.name && (
         <Container customClass={styles.imagePreview}>
           {selectedFile.file.type.includes(MESSAGE_TYPES.IMAGE) ? (
