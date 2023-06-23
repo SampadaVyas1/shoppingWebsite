@@ -24,6 +24,8 @@ import {
 import { sagaActions } from "@/redux/actions";
 import Loader from "../loader";
 import { notify } from "@/helpers/toastHelper";
+import { TOKEN } from "@/common/constants";
+import { getDataFromLocalStorage } from "@/common/utils";
 
 const Navbar = ({ routes }: INavbarProps) => {
   const router = useRouter();
@@ -45,7 +47,7 @@ const Navbar = ({ routes }: INavbarProps) => {
   const dispatch = useDispatch();
 
   const onLogout = () => {
-    role !== ROLES.ADMIN &&
+    role !== ROLES.ADMIN && !!getDataFromLocalStorage(TOKEN)
       dispatch({
         type: sagaActions.BACKUP_CHATS,
         payload: { logoutUser: true },
