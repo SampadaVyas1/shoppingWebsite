@@ -46,11 +46,9 @@ export function* handleLogoutSaga(): any {
   try {
     yield put(toggleLoading());
     const result = yield logoutUser();
-    if (!!!result.error) {
+    if (!result.error) {
       yield put(handleLogout());
       window.location.href = PRIVATE_ROUTES.LOGIN;
-    } else {
-      yield put(toggleLoginError());
     }
   } catch (e) {
     yield put(toggleLoginError());
