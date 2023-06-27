@@ -67,9 +67,11 @@ service.interceptors.response.use(
       const syncData = await createDataForSync();
       const result = await syncChat(syncData);
       const isLogout = await logoutUser();
-      !!isLogout?.data && (window.location.href = PRIVATE_ROUTES.LOGIN);
-      !!isLogout?.data && googleLogout();
-      !!isLogout?.data && localStorage.clear();
+      if (!!isLogout?.data) {
+        window.location.href = PRIVATE_ROUTES.LOGIN;
+        googleLogout();
+        localStorage.clear();
+      }
     }
     return Promise.reject(error);
   }
