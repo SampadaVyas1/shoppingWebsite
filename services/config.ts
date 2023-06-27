@@ -67,7 +67,7 @@ service.interceptors.response.use(
       const syncData = await createDataForSync();
       const result = await syncChat(syncData);
       const isLogout = await logoutUser();
-      if (!!isLogout?.data) {
+      if (isLogout?.data) {
         window.location.href = PRIVATE_ROUTES.LOGIN;
         googleLogout();
         localStorage.clear();
