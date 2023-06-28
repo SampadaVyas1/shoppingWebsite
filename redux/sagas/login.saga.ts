@@ -44,15 +44,16 @@ export function* handleLoginSaga({ token }: AnyAction): any {
 }
 
 export function* handleLogoutSaga(): any {
+  try {
     yield put(toggleLoading());
     const result = yield logoutUser();
+    if (!result.error) {
       yield put(handleLogout());
-      if (!!!result.error) {
-        yield put(handleLogout());
-        window.location.href = PRIVATE_ROUTES.LOGIN;
-      } else {
-        yield put(toggleLoginError());
-      }
+      window.location.href = PRIVATE_ROUTES.LOGIN;
+    }
+  } catch (e) {
+    yield put(toggleLoginError());
+  }
 }
 
 export function* fetchRoleSaga(): any {

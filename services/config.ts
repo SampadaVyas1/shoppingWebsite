@@ -38,19 +38,26 @@ service.interceptors.response.use(
       };
       error.response.data = data;
       return Promise.reject(error);
-    } else if (
+    } 
+    else if (
       error?.response?.status == ERROR_CODES.ERROR_FORBIDDEN &&
       !!token
     ) {
       if (!originalRequest._retry) {
         originalRequest._retry = true;
-
         const response = await getAccessToken();
         if (response?.status === ERROR_CODES.STATUS_OK) {
           const { data } = response.data;
           setDataInLocalStorage(TOKEN, data.accessToken);
           originalRequest.headers.Authorization = data.accessToken;
           return axios(originalRequest);
+        } 
+        else {
+          const syncData = await createDataForSync();
+          const result = await syncChat(syncData);
+          localStorage.clear();
+          window.location.href = PRIVATE_ROUTES.LOGIN;
+          googleLogout();
         }
         // else {
         //   const syncData = await createDataForSync();
@@ -67,9 +74,12 @@ service.interceptors.response.use(
     ) {
       const syncData = await createDataForSync();
       const result = await syncChat(syncData);
-      localStorage.clear();
-      window.location.href = PRIVATE_ROUTES.LOGIN;
-      googleLogout();
+      const isLogout = await logoutUser();
+      if (isLogout?.data) {
+        window.location.href = PRIVATE_ROUTES.LOGIN;
+        googleLogout();
+        localStorage.clear();
+      }
     }
     return Promise.reject(error);
   }

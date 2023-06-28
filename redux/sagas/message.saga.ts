@@ -31,9 +31,6 @@ export function* backupChats({ payload }: any): any {
     const syncData = yield createDataForSync();
     const result = yield syncChat(syncData);
     if (payload?.logoutUser) {
-      localStorage.clear();
-      window.location.href = PRIVATE_ROUTES.LOGIN;
-      googleLogout();
       db.conversations.clear();
       db.messages.clear();
     }
