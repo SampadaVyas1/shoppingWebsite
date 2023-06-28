@@ -21,6 +21,7 @@ import { PRIVATE_ROUTES } from "@/common/routes";
 import { googleLogout } from "@react-oauth/google";
 import { ERROR_CODES } from "@/common/constants";
 import { sagaActions } from "../actions";
+import { db } from "@/db";
 
 export function* handleLoginSaga({ token }: AnyAction): any {
   try {
@@ -43,18 +44,15 @@ export function* handleLoginSaga({ token }: AnyAction): any {
 }
 
 export function* handleLogoutSaga(): any {
-  try {
     yield put(toggleLoading());
     const result = yield logoutUser();
-    if (!!!result.error) {
       yield put(handleLogout());
-      window.location.href = PRIVATE_ROUTES.LOGIN;
-    } else {
-      yield put(toggleLoginError());
-    }
-  } catch (e) {
-    yield put(toggleLoginError());
-  }
+      if (!!!result.error) {
+        yield put(handleLogout());
+        window.location.href = PRIVATE_ROUTES.LOGIN;
+      } else {
+        yield put(toggleLoginError());
+      }
 }
 
 export function* fetchRoleSaga(): any {

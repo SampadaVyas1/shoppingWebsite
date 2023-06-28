@@ -56,4 +56,5 @@ export const logoutUser = async () => {
   } catch (error) {
     return { data: null, error: error };
   }
+  
 };

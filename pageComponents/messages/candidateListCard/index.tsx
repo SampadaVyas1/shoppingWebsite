@@ -27,9 +27,9 @@ const CandidateListCard = (props: ICandidateListCardProps) => {
       }
       onClick={props.onClick}
     >
-      <ImageComponent
+  <ImageComponent
         src={profilePhoto}
-        fallbackText={name?.charAt(0)}
+        fallbackText={!!name ? name?.charAt(0) : "A"}
         customClass={styles.profile}
         fallbackClass={styles.profile}
       />

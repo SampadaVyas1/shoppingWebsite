@@ -92,6 +92,8 @@ export enum MESSAGE_TYPES {
   TEXT = "text",
   IMAGE = "image",
   DOCUMENT = "document",
+  TEMPLATE="template",
+  HEADER="header"
 }
 
 export enum TYPEOF {

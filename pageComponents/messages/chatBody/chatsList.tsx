@@ -91,15 +91,14 @@ const ChatList = ({
             >
               <div className={styles.messageContent}>
                 {mediaUrl && type === MESSAGE_TYPES.IMAGE && (
-                  // <ImageComponent
-                  //   src={getMediaUrl(mediaUrl)}
-                  //   onClick={() => setSelectedImage(getMediaUrl(mediaUrl))}
-                  //   fallbackText="Image"
-                  //   customClass={styles.chatImage}
-                  //   width={200}
-                  //   height={200}
-                  // />
-                  <></>
+                  <ImageComponent
+                    src={getMediaUrl(mediaUrl)}
+                    onClick={() => setSelectedImage(getMediaUrl(mediaUrl))}
+                    fallbackText="Image"
+                    customClass={styles.chatImage}
+                    width={200}
+                    height={200}
+                  />
                 )}
 
                 {type === MESSAGE_TYPES.DOCUMENT &&

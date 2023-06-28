@@ -25,7 +25,7 @@ import { sagaActions } from "@/redux/actions";
 import Options from "@/components/select/options";
 import Loader from "@/components/loader";
 import { IOptionType } from "@/common/types";
-import { formatTemplateHeader, formatTemplateName } from "@/common/utils";
+import { formatTemplateHeader, formatTemplateName, getTimeStamp } from "@/common/utils";
 import TemplateCard from "@/components/templateCard";
 import Button from "@/components/button";
 import { SOCKET_ROUTES } from "@/common/constants/socketConstants";
@@ -40,7 +40,6 @@ const ChatBottom = (props: IChatBottomProps) => {
     onFileRemoval,
     chatScreenRef,
     onTemplateSend,
-    
   } = props;
 
   const { isLoading, templates } = useAppSelector((state) => state.messages);
@@ -59,26 +58,12 @@ const ChatBottom = (props: IChatBottomProps) => {
   const renderSkeleton = (className: string, variant: SKELETON_VARIANT) => (
     <SkeletonLoader type={variant} customClass={className} />
   );
-
   const handleClick = (
     event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>
   ) => {
     event.preventDefault();
     if (message.length || selectedFile?.file?.name) {
-      const data = {
-        action: SOCKET_ROUTES.SEND_MESSAGE,
-        body: {
-          phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
-          employeeId:`${employeeId}`,
-          to: "919359673461",
-          type:MESSAGE_TYPES.TEXT,
-          recipient_type: "individual",
-          text: {
-            body: message,
-          },
-        },
-      };
-      onSend({message:message,data:data});
+      onSend(message);
       setMessage("");
     }
   };

@@ -5,7 +5,7 @@ import InfiniteScroll from "../../components/infiniteScroll";
 import InputBox from "../../components/inputBox";
 import { TableComponent } from "../../components/table";
 import styles from "./sharedTable.module.scss";
-import loaderSpinner from "../../../public/assets/icons/loader.svg";
+import loaderSpinner from "../../public/assets/icons/loader.svg";
 import {
   IAdditionalValue,
   IButtonState,

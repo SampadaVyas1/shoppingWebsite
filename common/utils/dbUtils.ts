@@ -25,7 +25,7 @@ export const resetUnreadCount = async (candidateMobileNumber: string) => {
 };
 
 export const updateMessage = async (newMessage: ISentMessage) => {
-  await db.messages.put(newMessage);
+  !!newMessage &&  await  db.messages.put(newMessage);
 };
 
 export const sortMessages = (messageList: ISentMessage[]) => {
@@ -90,7 +90,9 @@ export const getSentMessageData = (messageData: ISentMessage) => {
 };
 
 export const getMessageFromMessageId = async (messageId: string) => {
+  console.log(messageId,">>>> messaeid")
   const result = await db.messages.where("messageId").equals(messageId).first();
+  console.log(result)
   return result;
 };
 
@@ -146,7 +148,8 @@ export const decrypt = (message: string) => {
     process.env.NEXT_PUBLIC_ENCRYPTION_KEY as string
   );
   const originalText = bytes.toString(CryptoJS.enc.Utf8);
-  return JSON.parse(originalText);
+  console.log(originalText)
+  return originalText.length && JSON.parse(originalText);
 };
 
 export const addDataAfterSync = async () => {
@@ -154,8 +157,8 @@ export const addDataAfterSync = async () => {
   const fileData = await getFileData(response.data);
   const chatsData = decrypt(fileData);
 
-  await Promise.all(
-    chatsData?.chatHistory?.map(async (user: any) => {
+  !!chatsData && await Promise.all(
+    !!chatsData && chatsData?.chatHistory?.map(async (user: any) => {
       await db.conversations.put(user);
       await db.messages.bulkPut(user.messages);
     })

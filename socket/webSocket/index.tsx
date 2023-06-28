@@ -9,8 +9,10 @@ export const initiateSocket = ()=>{
   socketConnection.onopen = () => {
     console.log("WebSocket connection established.");
   };
-  socketConnection.onclose = () => {
-    console.log("WebSocket connection closed.");
+  socketConnection.onclose = (event) => {
+    if (event.code === 1001) {
+      initiateSocket();
+    }
   };
   return socketConnection;
 }

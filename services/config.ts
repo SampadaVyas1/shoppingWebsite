@@ -3,7 +3,7 @@ import { googleLogout } from "@react-oauth/google";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
 import { ERROR_CODES, TOKEN, USER_TOKEN } from "@/common/constants";
 import { PRIVATE_ROUTES } from "@/common/routes";
-import { getAccessToken } from "./login.service";
+import { getAccessToken, logoutUser } from "./login.service";
 import { createDataForSync } from "@/common/utils/dbUtils";
 import { syncChat } from "./messages.service";
 
@@ -51,13 +51,15 @@ service.interceptors.response.use(
           setDataInLocalStorage(TOKEN, data.accessToken);
           originalRequest.headers.Authorization = data.accessToken;
           return axios(originalRequest);
-        } else {
-          const syncData = await createDataForSync();
-          const result = await syncChat(syncData);
-          localStorage.clear();
-          window.location.href = PRIVATE_ROUTES.LOGIN;
-          googleLogout();
         }
+        // else {
+        //   const syncData = await createDataForSync();
+        //   const result = await syncChat(syncData);
+        //   const isLogout=await logoutUser();
+        //   !!isLogout.data && (window.location.href=PRIVATE_ROUTES.LOGIN);
+        //   !!isLogout.data &&  googleLogout();
+        //   !!isLogout.data && localStorage.clear();
+        // }
       }
     } else if (
       error?.response?.status == ERROR_CODES.ERROR_UNAUTHORIZED &&
