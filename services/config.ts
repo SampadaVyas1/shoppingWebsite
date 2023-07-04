@@ -59,14 +59,7 @@ service.interceptors.response.use(
           window.location.href = PRIVATE_ROUTES.LOGIN;
           googleLogout();
         }
-        // else {
-        //   const syncData = await createDataForSync();
-        //   const result = await syncChat(syncData);
-        //   const isLogout=await logoutUser();
-        //   !!isLogout.data && (window.location.href=PRIVATE_ROUTES.LOGIN);
-        //   !!isLogout.data &&  googleLogout();
-        //   !!isLogout.data && localStorage.clear();
-        // }
+        
       }
     } else if (
       error?.response?.status == ERROR_CODES.ERROR_UNAUTHORIZED &&

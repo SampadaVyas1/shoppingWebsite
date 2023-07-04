@@ -40,8 +40,7 @@ import { useDispatch } from "react-redux";
 import { setPhone } from "@/redux/slices/messageSlice";
 import { initiateSocket } from "@/socket/webSocket";
 import axios from "axios";
-import { getSendMediaChuks,getSendMediaData } from "@/services/messages.service";
-import { TOKEN } from "@/common/constants";
+import { sendMediaData } from "@/services/messages.service";
 
 const MessageScreen = (props: IMessageScreenProps) => {
   const socketConnection = initiateSocket();
@@ -72,54 +71,6 @@ const MessageScreen = (props: IMessageScreenProps) => {
     setSelectedFile(null);
   };
 
-  const getMediaObject = (selectedFile: any, messageId: any, message: any) => {
-    const CHUNK_SIZE = 4096; // Adjust the chunk size as needed
-
-    const sendMedia = !!selectedFile && {
-      action: "sendMediaMessage",
-      body: {
-        phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
-        employeeId: `${employeeId}`,
-        to: id,
-        imageData: {
-          file: null, // Will be replaced with chunks of file contents
-          fileName: selectedFile?.file?.name,
-          caption: message,
-          messageId: messageId,
-          type: selectedFile.type,
-          contentType: selectedFile.file.type,
-        },
-      },
-    };
-
-    const fileReader = new FileReader();
-    let offset = 0;
-
-    fileReader.onload = function (event: any) {
-      const fileContents = event.target.result;
-      const chunk = fileContents.slice(offset, offset + CHUNK_SIZE);
-      offset += CHUNK_SIZE;
-
-      if (chunk.length > 0) {
-        sendMedia.body.imageData.file = chunk;
-        socketConnection.send(JSON.stringify(sendMedia));
-        setTimeout(readNextChunk, 0);
-      }
-    };
-
-    function readNextChunk() {
-      const file = selectedFile?.file;
-      if (file) {
-        const blob = file.slice(offset);
-        fileReader.readAsBinaryString(blob);
-      }
-    }
-
-    readNextChunk();
-
-    return sendMedia;
-  };
-
   const handleClick = async (message: any, whatsappId: string = "") => {
     const timestamp = getTimeStamp().toString();
     const messageId = `${uuid()}${timestamp}`;
@@ -129,80 +80,36 @@ const MessageScreen = (props: IMessageScreenProps) => {
       timestamp,
       messageId,
     };
+    const response = await sendMediaData({
+      fileName: selectedFile?.file?.name,
+      fileType: selectedFile?.file?.type,
+      employeeId: `${employeeId}`,
+      to: id,
+    });
+    const presignedUrl = response && response.data.data;
+    const isUploaded = await axios.put(presignedUrl, selectedFile?.file, {
+      headers: {
+        "Content-Type": selectedFile?.file?.type,
+      },
+    });
 
-    const fileReader = new FileReader();
-    fileReader.onload = async (event: any) => {
-      const fileContents = event.target.result;
-      const chunkSize = 20 * 1024;
-      const totalChunks = Math.ceil(fileContents.length / chunkSize);
-      let fileStatus = true;
-      let currentChunk = 0;
-      let chunk;
-
-      while (currentChunk < totalChunks) {
-        const start = currentChunk * chunkSize;
-        const end = Math.min(start + chunkSize, fileContents.length);
-        chunk = fileContents.slice(start, end);
-
-        const sendMedia = selectedFile && {
-          chunk,
-          fileName: selectedFile.file.name,
-          fileStatus,
-        };
-        const token=getDataFromLocalStorage(TOKEN)
-        await axios.post(
-          "https://h6e3fag3ta.execute-api.ap-south-1.amazonaws.com/dev/wa/whatsapp/uploadMedia",
-          { ...sendMedia },
-          {
-            headers: {
-              Authorization:
-              token,
-            },
-          }
-        );
-        currentChunk++;
-      }
-
-      console.log("All chunks sent", chunk);
-      const token=getDataFromLocalStorage(TOKEN)
-      const response = await axios.post(
-        "https://h6e3fag3ta.execute-api.ap-south-1.amazonaws.com/dev/wa/whatsapp/uploadMedia",
-        { fileStatus: false, fileName: selectedFile?.file.name },
-        {
-          headers: {
-            Authorization:token,
-          }
-        }
-      );
-
-      if (response?.data?.data?.link) {
-        const sendMedia = !!selectedFile && {
-          action: "sendMediaMessage",
-          body: {
-            phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
-            employeeId: `${employeeId}`,
-            to: id,
-            imageData: {
-              file: response.data.data.link,
-              fileName: selectedFile?.file?.name,
-              caption: message,
-              messageId:messageId,
-              type: selectedFile.type,
-              contentType: selectedFile.file.type,
-            },
-          },
-        };
-        // console.log(sendMedia)
-        // !selectedFile?.file?.name
-        //   ? socketConnection.send(JSON.stringify(data))
-        //   : socketConnection.send(JSON.stringify(sendMedia));
-        !!sendMedia &&  socketConnection.send(JSON.stringify(sendMedia));
-      }
+    const sendMedia = !!selectedFile && {
+      action: SOCKET_ROUTES.SEND_MEDIA_MESSAGE,
+      body: {
+        phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+        employeeId: `${employeeId}`,
+        to: id,
+        imageData: {
+          fileName: selectedFile?.file?.name,
+          caption: message,
+          messageId: messageId,
+          type: selectedFile.type,
+          contentType: selectedFile.file.type,
+        },
+      },
     };
-    selectedFile?.file && fileReader.readAsBinaryString(selectedFile.file);
+  
 
-    socketConnection.onmessage = (event: any) => {
-    };
     const data = !!message && {
       action: SOCKET_ROUTES.SEND_MESSAGE,
       body: {
@@ -210,7 +117,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
         employeeId: `${employeeId}`,
         to: id,
         type: MESSAGE_TYPES.TEXT,
-        recipient_type:SOCKET_CONSTANTS.RECIPIENT_TYPE,
+        recipient_type: SOCKET_CONSTANTS.RECIPIENT_TYPE,
         text: {
           body: message,
         },
@@ -218,26 +125,23 @@ const MessageScreen = (props: IMessageScreenProps) => {
       },
     };
 
-  
-    const sendMedia =
-      !!selectedFile?.file && getMediaObject(selectedFile, messageId, message);
-
-    const newMessage = !selectedFile?.file?.name
-      ? getSentMessageData({
-          ...commonParams,
-          message,
-          messageType: MESSAGE_TYPES.TEXT,
-          status: MESSAGE_STATUS.SENT,
-        })
-      : getSentMessageData({
-          ...commonParams,
-          mediaUrl: selectedFile?.file,
-          caption: message,
-          messageType: selectedFile.type,
-          status: MESSAGE_STATUS.SENDING,
-        });
+    const newMessage =
+      !selectedFile?.file?.name && !selectedFile
+        ? getSentMessageData({
+            ...commonParams,
+            message,
+            messageType: MESSAGE_TYPES.TEXT,
+            status: MESSAGE_STATUS.SENT,
+          })
+        : getSentMessageData({
+            ...commonParams,
+            mediaUrl: selectedFile?.file,
+            caption: message,
+            messageType: selectedFile.type,
+            status: MESSAGE_STATUS.SENDING,
+          });
     setMessage("");
-
+ 
     selectedFile?.file?.name && setSelectedFile(null);
     whatsappId.length && deleteMessageByMessageId(whatsappId);
     await updateMessage({ ...newMessage, phone: id });
@@ -245,7 +149,6 @@ const MessageScreen = (props: IMessageScreenProps) => {
     !selectedFile?.file?.name && !!socketConnection
       ? socketConnection.send(JSON.stringify(data))
       : socketConnection.send(JSON.stringify(sendMedia));
-
   };
 
   const handleTemplateSend = async (template: any) => {
@@ -273,7 +176,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
           },
           components: [
             {
-              type:MESSAGE_TYPES.HEADER,
+              type: MESSAGE_TYPES.HEADER,
               parameters: [
                 {
                   type: MESSAGE_TYPES.TEXT,
@@ -314,17 +217,23 @@ const MessageScreen = (props: IMessageScreenProps) => {
   const getUpdateMessageId = async (event: any) => {
     const messageData = JSON.parse(event.data);
     const messageId = messageData.messageId && messageData.messageId;
+    const mediaUrl = messageData.mediaUrl && messageData.mediaUrl;
     const id = !!messageId && messageData.id;
+    const url = !!mediaUrl && messageData.mediaUrl;
     const matchedResult =
       messageId && (await getMessageFromMessageId(messageId));
     if (matchedResult) {
       await db.messages.update(messageId, {
         ...matchedResult,
         messageId: id,
+        mediaUrl: url,
+        messageType: messageData.type,
       });
     }
-    // !!messageData.message || !!messageData.mediaUrl && receiveMessage(messageData);
-    // !!messageData.message && receiveMessage(messageData);
+    !!messageData.message && receiveMessage(messageData);
+    if (!!messageData.mediaUrl && messageData.type === MESSAGE_TYPES.USER_INITIATED) {
+      receiveMessage(messageData);
+    }
   };
   const receiveMessage = async (data: any) => {
     const { from, wamid, messageType, timestamp, message, mediaUrl, caption } =
@@ -407,15 +316,6 @@ const MessageScreen = (props: IMessageScreenProps) => {
   useEffect(() => {
     getMediaFromSocket();
   }, [id, props.isConnected]);
-
-  useEffect(() => {
-    if (socket.on) {
-      socket.on(SOCKET_ROUTES.PERSONAL_MESSAGE, receiveMessage);
-    }
-    return () => {
-      socket.off(SOCKET_ROUTES.PERSONAL_MESSAGE, receiveMessage);
-    };
-  }, [id, props.userId]);
 
   useEffect(() => {
     if (socket.connected && employeeId) {

@@ -16,4 +16,3 @@ export const initiateSocket = ()=>{
   };
   return socketConnection;
 }
-// const url = `wss://2a60-103-176-135-206.ngrok-free.app?employeeId=${11090}`;

@@ -93,7 +93,8 @@ export enum MESSAGE_TYPES {
   IMAGE = "image",
   DOCUMENT = "document",
   TEMPLATE="template",
-  HEADER="header"
+  HEADER="header",
+  USER_INITIATED="user_initiated",
 }
 
 export enum TYPEOF {
@@ -116,8 +117,9 @@ export enum ARROW_ALIGNMENT {
   CENTER = "center",
 }
 
+
 export enum ROUTES_PATH {
   MESSAGES = "/messages",
-  TEAM = "/teams",
+  TEAM = "/team",
   CANDIDATES = "/candidates",
 }

@@ -11,9 +11,7 @@ export interface IChatBottomProps {
   onFileSelection: (file: File, type: string) => void;
   onTemplateSend?: (template: any) => void;
   onFileRemoval: () => void;
-  // onSend: (message: string) => void;
-  onSend: any;
-
+  onSend: (message: string) => void;
   isLoading: boolean;
   chatScreenRef: RefObject<HTMLDivElement>;
 }

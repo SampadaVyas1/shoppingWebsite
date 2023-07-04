@@ -90,9 +90,7 @@ export const getSentMessageData = (messageData: ISentMessage) => {
 };
 
 export const getMessageFromMessageId = async (messageId: string) => {
-  console.log(messageId,">>>> messaeid")
   const result = await db.messages.where("messageId").equals(messageId).first();
-  console.log(result)
   return result;
 };
 

@@ -13,7 +13,7 @@ import { sagaActions } from "@/redux/actions";
 import { useAppSelector } from "@/redux/hooks";
 import { addDataAfterSync } from "@/common/utils/dbUtils";
 import { API_ERROR_MESSAGES, TOKEN } from "@/common/constants";
-import { PRIVATE_ROUTES, RECRUITER_ROUTES } from "@/common/routes";
+import { RECRUITER_ROUTES } from "@/common/routes";
 import SectionImage from "../../public/assets/images/loginImage.svg";
 import {
   BUTTON_VARIANT,
