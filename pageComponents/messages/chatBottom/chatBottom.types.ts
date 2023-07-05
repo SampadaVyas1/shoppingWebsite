@@ -13,5 +13,6 @@ export interface IChatBottomProps {
   onFileRemoval: () => void;
   onSend: (message: string) => void;
   isLoading: boolean;
+  loader:boolean;
   chatScreenRef: RefObject<HTMLDivElement>;
 }

@@ -25,12 +25,17 @@ import { sagaActions } from "@/redux/actions";
 import Options from "@/components/select/options";
 import Loader from "@/components/loader";
 import { IOptionType } from "@/common/types";
-import { formatTemplateHeader, formatTemplateName, getTimeStamp } from "@/common/utils";
+import {
+  formatTemplateHeader,
+  formatTemplateName,
+  getTimeStamp,
+} from "@/common/utils";
 import TemplateCard from "@/components/templateCard";
 import Button from "@/components/button";
 import { SOCKET_ROUTES } from "@/common/constants/socketConstants";
+import Typography from "@/components/typography";
 
-const ChatBottom = (props: IChatBottomProps) => {  
+const ChatBottom = (props: IChatBottomProps) => {
   const {
     candidateName,
     handleMessageChange,
@@ -40,12 +45,11 @@ const ChatBottom = (props: IChatBottomProps) => {
     onFileRemoval,
     chatScreenRef,
     onTemplateSend,
+    loader,
   } = props;
 
   const { isLoading, templates } = useAppSelector((state) => state.messages);
-  const { employeeId } = useAppSelector(
-    (state) => state.login.userDetails
-  );
+  const { employeeId } = useAppSelector((state) => state.login.userDetails);
   const dispatch = useDispatch();
 
   const [showAttachmentModal, toggleAttachmentModal] = useState<boolean>(false);
@@ -69,7 +73,7 @@ const ChatBottom = (props: IChatBottomProps) => {
   };
 
   const handleTemplateSend = (
-    event: FormEvent<HTMLFormElement> | React.MouseEvent<HTMLImageElement>
+    event: React.MouseEvent<HTMLDivElement>
   ) => {
     event.preventDefault();
     selectedTemplate && onTemplateSend && onTemplateSend(selectedTemplate);
@@ -235,11 +239,14 @@ const ChatBottom = (props: IChatBottomProps) => {
               customClass={styles.attachedImage}
             />
           ) : (
-            <Tag
-              active
-              tagValue={{ id: uuid(), label: selectedFile.file.name }}
-              customClass={styles.fileName}
-            />
+            <>
+              {loader && <Loader customStyles={styles.loader} />}
+              <Tag
+                active
+                tagValue={{ id: uuid(), label: selectedFile.file.name }}
+                customClass={styles.fileName}
+              />
+            </>
           )}
           <ImageComponent
             src={Images.crossIconBlack}
@@ -267,16 +274,8 @@ const ChatBottom = (props: IChatBottomProps) => {
             customClass={styles.closeIcon}
             onClick={onTemplateClose}
           />
-          <div className={styles.sendButton}>
-            <ImageComponent
-              src={Images.sendIcon}
-              customClass={
-                selectedTemplate
-                  ? `${styles.sendIcon} ${styles.active}`
-                  : styles.sendIcon
-              }
-              onClick={handleTemplateSend}
-            />
+          <div className={styles.sendButton} onClick={(event: React.MouseEvent<HTMLDivElement>) => handleTemplateSend(event)}>
+            <Typography>Send</Typography>
           </div>
         </Container>
       )}

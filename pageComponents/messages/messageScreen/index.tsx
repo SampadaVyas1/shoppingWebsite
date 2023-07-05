@@ -52,6 +52,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
   const [message, setMessage] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<ISelectedFile | null>(null);
   const chatScreenRef = useRef<HTMLDivElement>(null);
+  const [loader,setLoader]=useState<boolean>(false)
   const dispatch = useDispatch();
 
   const { employeeId, role } = useAppSelector(
@@ -71,7 +72,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
     setSelectedFile(null);
   };
 
-  const handleClick = async (message: any, whatsappId: string = "") => {
+  const handleClick = async (message: any, whatsappId: string = "",mediaUrl?:any,) => {
     const timestamp = getTimeStamp().toString();
     const messageId = `${uuid()}${timestamp}`;
     const commonParams = {
@@ -86,30 +87,30 @@ const MessageScreen = (props: IMessageScreenProps) => {
       employeeId: `${employeeId}`,
       to: id,
     });
+    setLoader(true)
+
     const presignedUrl = response && response.data.data;
     const isUploaded = await axios.put(presignedUrl, selectedFile?.file, {
       headers: {
         "Content-Type": selectedFile?.file?.type,
       },
     });
-
-    const sendMedia = !!selectedFile && {
+    const sendMedia = !!selectedFile &&  {
       action: SOCKET_ROUTES.SEND_MEDIA_MESSAGE,
       body: {
         phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
         employeeId: `${employeeId}`,
         to: id,
         imageData: {
-          fileName: selectedFile?.file?.name,
+          fileName:selectedFile?.file?.name,
           caption: message,
           messageId: messageId,
-          type: selectedFile.type,
-          contentType: selectedFile.file.type,
+          type:selectedFile?.type,
+          contentType:selectedFile?.file.type,
         },
       },
     };
   
-
     const data = !!message && {
       action: SOCKET_ROUTES.SEND_MESSAGE,
       body: {
@@ -124,9 +125,8 @@ const MessageScreen = (props: IMessageScreenProps) => {
         messageId: messageId,
       },
     };
-
     const newMessage =
-      !selectedFile?.file?.name && !selectedFile
+      !selectedFile?.file?.name && !!!selectedFile
         ? getSentMessageData({
             ...commonParams,
             message,
@@ -150,7 +150,6 @@ const MessageScreen = (props: IMessageScreenProps) => {
       ? socketConnection.send(JSON.stringify(data))
       : socketConnection.send(JSON.stringify(sendMedia));
   };
-
   const handleTemplateSend = async (template: any) => {
     const timestamp = getTimeStamp().toString();
     const messageId = `${uuid()}${timestamp}`;
@@ -215,6 +214,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
     }
   };
   const getUpdateMessageId = async (event: any) => {
+setLoader(false)
     const messageData = JSON.parse(event.data);
     const messageId = messageData.messageId && messageData.messageId;
     const mediaUrl = messageData.mediaUrl && messageData.mediaUrl;
@@ -238,6 +238,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
   const receiveMessage = async (data: any) => {
     const { from, wamid, messageType, timestamp, message, mediaUrl, caption } =
       data;
+
     const newMessage = {
       messageId: wamid,
       message: message,
@@ -347,6 +348,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
         )}
         <ChatBottom
           onSend={handleClick}
+          loader={loader}
           onFileSelection={handleFileSelect}
           selectedFile={selectedFile}
           handleMessageChange={handleMessageChange}
