@@ -5,6 +5,7 @@ import { LOGIN } from "../constants";
 import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
 import {
   API_ERROR_MESSAGES,
+  EMPLOYEEID,
   REFRESH_KEY,
   REFRESH_TOKEN,
   TOKEN,
@@ -47,6 +48,7 @@ export const loginSlice = createSlice({
         REFRESH_KEY,
         window.btoa(state.userDetails?.employeeId?.toString())
       );
+      setDataInLocalStorage(EMPLOYEEID,payload.employeeId)
     },
     handleLogout: (state) => {
       state.isLoggedIn = false;

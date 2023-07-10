@@ -64,6 +64,7 @@ export const TOKEN = "token";
 export const REFRESH_TOKEN = "refreshToken";
 export const USER_TOKEN = "userToken";
 export const REFRESH_KEY = "refreshKey";
+export const EMPLOYEEID="employeeId"
 
 export const REGEX = {
   ONLY_ALPHABETS: /^[A-Za-z]+$/,

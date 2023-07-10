@@ -26,16 +26,7 @@ export const getRoomData = async (params?: any) => {
 
 export const sendMediaData = async (params: any) => {
   try {
-    const token = getDataFromLocalStorage(TOKEN);
-    const response = await axios.post(
-      "https://h6e3fag3ta.execute-api.ap-south-1.amazonaws.com/dev/wa/whatsapp/uploadMedia",
-      params,
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
+    const response = await service.post(SERVICE_WHATSAPP.UPLOAD_MEDIA,params);
     return response;
   } catch (error) {
     return { data: null, error: error };

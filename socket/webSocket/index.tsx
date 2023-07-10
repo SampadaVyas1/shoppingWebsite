@@ -1,9 +1,10 @@
 "use strict";
 
-import { REFRESH_KEY } from "@/common/constants";
+import { EMPLOYEEID} from "@/common/constants";
+import { getDataFromLocalStorage } from "@/common/utils";
 
 export const initiateSocket = ()=>{
-  const employeeId=window.atob(`${localStorage.getItem(REFRESH_KEY)}`)
+  const employeeId=getDataFromLocalStorage(EMPLOYEEID)
   const url = `wss://tv3cidqrkf.execute-api.ap-south-1.amazonaws.com/dev?employeeId=${employeeId}`;
   const socketConnection = new WebSocket(url);
   socketConnection.onopen = () => {

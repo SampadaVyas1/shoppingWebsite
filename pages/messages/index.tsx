@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { useLiveQuery } from "dexie-react-hooks";
 import { IMessage, db } from "@/db";
 import Image from "next/image";
-import socket from "@/socket";
 import Button from "@/components/button";
 import ImageComponent from "@/components/imageComponent";
 import CandidateList from "../../pageComponents/messages/candidateList";
@@ -178,105 +177,105 @@ const Messages = () => {
     return newMessage;
   };
 
-  const getNotificationsFromSocket = () => {
-    socket.on(
-      SOCKET_ROUTES.NOTIFICATION,
-      async (data: IIncomingMessageType) => {
-        const { from, wamid } = data;
-        const newMessage = createNewMessage(data);
-        !phone ||
-          (from !== phone && (await increaseUnreadCount(from, wamid, false)));
-        await updateMessage({ ...newMessage, phone: from });
-      }
-    );
-  };
+  // const getNotificationsFromSocket = () => {
+  //   socket.on(
+  //     SOCKET_ROUTES.NOTIFICATION,
+  //     async (data: IIncomingMessageType) => {
+  //       const { from, wamid } = data;
+  //       const newMessage = createNewMessage(data);
+  //       !phone ||
+  //         (from !== phone && (await increaseUnreadCount(from, wamid, false)));
+  //       await updateMessage({ ...newMessage, phone: from });
+  //     }
+  //   );
+  // };
 
-  const getPendingMessages = () => {
-    socket.on(SOCKET_ROUTES.PENDING_MESSAGES, async (data: any) => {
-      const messageTypes = [
-        MESSAGE_TYPES.TEXT,
-        MESSAGE_TYPES.DOCUMENT,
-        MESSAGE_TYPES.IMAGE,
-      ];
+  // const getPendingMessages = () => {
+  //   socket.on(SOCKET_ROUTES.PENDING_MESSAGES, async (data: any) => {
+  //     const messageTypes = [
+  //       MESSAGE_TYPES.TEXT,
+  //       MESSAGE_TYPES.DOCUMENT,
+  //       MESSAGE_TYPES.IMAGE,
+  //     ];
 
-      Promise.all(
-        data.map(async (singleMessage: IIncomingMessageType) => {
-          const { from, wamid } = singleMessage;
-          const newMessage = createNewMessage(singleMessage);
-          if (
-            messageTypes.includes(singleMessage?.messageType as MESSAGE_TYPES)
-          ) {
-            await increaseUnreadCount(from, wamid, true);
-            await updateMessage({ ...newMessage, phone: from });
-          }
-        })
-      );
-    });
-  };
+  //     Promise.all(
+  //       data.map(async (singleMessage: IIncomingMessageType) => {
+  //         const { from, wamid } = singleMessage;
+  //         const newMessage = createNewMessage(singleMessage);
+  //         if (
+  //           messageTypes.includes(singleMessage?.messageType as MESSAGE_TYPES)
+  //         ) {
+  //           await increaseUnreadCount(from, wamid, true);
+  //           await updateMessage({ ...newMessage, phone: from });
+  //         }
+  //       })
+  //     );
+  //   });
+  // };
 
-  const getPendingStatus = () => {
-    socket.on(SOCKET_ROUTES.PENDING_STATUS, async (data: any) => {
-      if (data.length) {
-        Promise.all(
-          data.map(async (pendingStatus: any) => {
-            const matchedResult = await getMessageFromMessageId(
-              pendingStatus.id
-            );
-            if (matchedResult) {
-              await updateMessage({
-                ...matchedResult,
-                status: pendingStatus.status,
-              });
-            }
-          })
-        );
-      }
-    });
-  };
+  // const getPendingStatus = () => {
+  //   socket.on(SOCKET_ROUTES.PENDING_STATUS, async (data: any) => {
+  //     if (data.length) {
+  //       Promise.all(
+  //         data.map(async (pendingStatus: any) => {
+  //           const matchedResult = await getMessageFromMessageId(
+  //             pendingStatus.id
+  //           );
+  //           if (matchedResult) {
+  //             await updateMessage({
+  //               ...matchedResult,
+  //               status: pendingStatus.status,
+  //             });
+  //           }
+  //         })
+  //       );
+  //     }
+  //   });
+  // };
 
-  const getStatus = () => {
-    socket.on(SOCKET_ROUTES.STATUS, async (data: any) => {
-      const matchedResult = await getMessageFromMessageId(data.id);
-      if (matchedResult) {
-        await updateMessage({ ...matchedResult, status: data.status });
-      }
-    });
-  };
+  // const getStatus = () => {
+  //   socket.on(SOCKET_ROUTES.STATUS, async (data: any) => {
+  //     const matchedResult = await getMessageFromMessageId(data.id);
+  //     if (matchedResult) {
+  //       await updateMessage({ ...matchedResult, status: data.status });
+  //     }
+  //   });
+  // };
 
   const connectSocket = () => {
-    socket.connect();
-    socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-      phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
-      userId: `${employeeId}`,
-    });
+    // socket.connect();
+    // socket.emit(SOCKET_ROUTES.CREDENTIALS, {
+    //   phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+    //   userId: `${employeeId}`,
+    // });
 
-    socket.on(SOCKET_ROUTES.CONNECT, () => {
-      socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-        phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
-        userId: `${employeeId}`,
-      });
-      setMessagePageState((prevState) => ({
-        ...prevState,
-        isConnected: true,
-      }));
-    });
+    // socket.on(SOCKET_ROUTES.CONNECT, () => {
+    //   socket.emit(SOCKET_ROUTES.CREDENTIALS, {
+    //     phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+    //     userId: `${employeeId}`,
+    //   });
+    //   setMessagePageState((prevState) => ({
+    //     ...prevState,
+    //     isConnected: true,
+    //   }));
+    // });
 
-    socket.on(SOCKET_ROUTES.DISCONNECT, () => {
-      setMessagePageState((prevState) => ({
-        ...prevState,
-        isConnected: false,
-      }));
-    });
+    // socket.on(SOCKET_ROUTES.DISCONNECT, () => {
+    //   setMessagePageState((prevState) => ({
+    //     ...prevState,
+    //     isConnected: false,
+    //   }));
+    // });
   };
 
   useEffect(() => {
-    if (!socket.connected && employeeId) {
-      connectSocket();
-    }
-    getStatus();
-    getPendingStatus();
-    getPendingMessages();
-    getNotificationsFromSocket();
+    // if (!socket.connected && employeeId) {
+    //   connectSocket();
+    // }
+    // getStatus();
+    // getPendingStatus();
+    // getPendingMessages();
+    // getNotificationsFromSocket();
   }, [employeeId]);
 
   useEffect(() => {

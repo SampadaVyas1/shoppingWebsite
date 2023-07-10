@@ -41,9 +41,9 @@ import { setPhone } from "@/redux/slices/messageSlice";
 import { initiateSocket } from "@/socket/webSocket";
 import axios from "axios";
 import { sendMediaData } from "@/services/messages.service";
+import service from "@/services/config";
 
 const MessageScreen = (props: IMessageScreenProps) => {
-  const socketConnection = initiateSocket();
 
   const { name, designation, techStack, interviewLevel, profileImage, id, ta } =
     props.candidateData;
@@ -52,12 +52,11 @@ const MessageScreen = (props: IMessageScreenProps) => {
   const [message, setMessage] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<ISelectedFile | null>(null);
   const chatScreenRef = useRef<HTMLDivElement>(null);
-  const [loader,setLoader]=useState<boolean>(false)
+  const [loader, setLoader] = useState<boolean>(false);
+  const [socketConnection,setSocketConnetion]=useState<any>()
   const dispatch = useDispatch();
 
-  const { employeeId, role } = useAppSelector(
-    (state) => state.login.userDetails
-  );
+  const { employeeId, role } = useAppSelector((state) => state.login.userDetails);
 
   const handleMessageChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -72,7 +71,11 @@ const MessageScreen = (props: IMessageScreenProps) => {
     setSelectedFile(null);
   };
 
-  const handleClick = async (message: any, whatsappId: string = "",mediaUrl?:any,) => {
+  const handleClick = async (
+    message: any,
+    whatsappId: string = "",
+    mediaUrl?: any
+  ) => {
     const timestamp = getTimeStamp().toString();
     const messageId = `${uuid()}${timestamp}`;
     const commonParams = {
@@ -81,36 +84,41 @@ const MessageScreen = (props: IMessageScreenProps) => {
       timestamp,
       messageId,
     };
-    const response = await sendMediaData({
-      fileName: selectedFile?.file?.name,
-      fileType: selectedFile?.file?.type,
-      employeeId: `${employeeId}`,
-      to: id,
-    });
-    setLoader(true)
-
-    const presignedUrl = response && response.data.data;
-    const isUploaded = await axios.put(presignedUrl, selectedFile?.file, {
-      headers: {
-        "Content-Type": selectedFile?.file?.type,
-      },
-    });
-    const sendMedia = !!selectedFile &&  {
-      action: SOCKET_ROUTES.SEND_MEDIA_MESSAGE,
-      body: {
-        phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+    const response: any =
+      !!selectedFile?.file && (await sendMediaData({
+        fileName: selectedFile?.file?.name,
+        fileType: selectedFile?.file?.type,
         employeeId: `${employeeId}`,
         to: id,
-        imageData: {
-          fileName:selectedFile?.file?.name,
-          caption: message,
-          messageId: messageId,
-          type:selectedFile?.type,
-          contentType:selectedFile?.file.type,
+      }));
+    setLoader(true);
+    console.log(selectedFile?.file)
+
+    const presignedUrl = !!response?.data?.data && response?.data?.data;
+    const isUploaded =
+      !!presignedUrl &&
+      (await axios.put(presignedUrl, selectedFile?.file, {
+        headers: {
+          "Content-Type": selectedFile?.file?.type,
         },
-      },
-    };
-  
+      }));
+    const sendMedia = !!presignedUrl &&
+      !!selectedFile && {
+        action: SOCKET_ROUTES.SEND_MEDIA_MESSAGE,
+        body: {
+          phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
+          employeeId: `${employeeId}`,
+          to: id,
+          imageData: {
+            fileName: selectedFile?.file?.name,
+            caption: message,
+            messageId: messageId,
+            type: selectedFile?.type,
+            contentType: selectedFile?.file.type,
+          },
+        },
+      };
+
     const data = !!message && {
       action: SOCKET_ROUTES.SEND_MESSAGE,
       body: {
@@ -141,14 +149,13 @@ const MessageScreen = (props: IMessageScreenProps) => {
             status: MESSAGE_STATUS.SENDING,
           });
     setMessage("");
- 
+console.log(sendMedia)
     selectedFile?.file?.name && setSelectedFile(null);
     whatsappId.length && deleteMessageByMessageId(whatsappId);
     await updateMessage({ ...newMessage, phone: id });
-
     !selectedFile?.file?.name && !!socketConnection
-      ? socketConnection.send(JSON.stringify(data))
-      : socketConnection.send(JSON.stringify(sendMedia));
+      ? socketConnection.send(JSON.stringify(data)):
+       socketConnection.send(JSON.stringify(sendMedia));
   };
   const handleTemplateSend = async (template: any) => {
     const timestamp = getTimeStamp().toString();
@@ -209,13 +216,13 @@ const MessageScreen = (props: IMessageScreenProps) => {
     const data = JSON.parse(event.data);
     const matchedResult = !!data.id && (await getMessageFromMessageId(data.id));
     if (matchedResult) {
-      !!data.status &&
-        (await updateMessage({ ...matchedResult, status: data.status }));
+      !!data.status && await updateMessage({ ...matchedResult, status: data.status });
     }
   };
   const getUpdateMessageId = async (event: any) => {
-setLoader(false)
     const messageData = JSON.parse(event.data);
+    console.log("messageData",messageData);
+    setLoader(false);
     const messageId = messageData.messageId && messageData.messageId;
     const mediaUrl = messageData.mediaUrl && messageData.mediaUrl;
     const id = !!messageId && messageData.id;
@@ -231,7 +238,10 @@ setLoader(false)
       });
     }
     !!messageData.message && receiveMessage(messageData);
-    if (!!messageData.mediaUrl && messageData.type === MESSAGE_TYPES.USER_INITIATED) {
+    if (
+      !!messageData.mediaUrl &&
+      messageData.type === MESSAGE_TYPES.USER_INITIATED
+    ) {
       receiveMessage(messageData);
     }
   };
@@ -252,77 +262,56 @@ setLoader(false)
     await updateMessage({ ...newMessage, phone: from });
   };
 
-  const getMediaFromSocket = () => {
-    socket.on(SOCKET_ROUTES.GET_MEDIA, async (data: any) => {
-      const { id, receiverNumber, messageId, mediaUrl, fileName } = data;
-      const result = await getMessageFromMessageId(messageId);
-      if (result) {
-        await db.messages.update(messageId, {
-          ...result,
-          message: result?.message,
-          messageId: id,
-          mediaUrl: mediaUrl,
-          fileName: fileName,
-          status: MESSAGE_STATUS.SENT,
-        });
-      }
-    });
-  };
+  // const getMediaFromSocket = () => {
+  //   socket.on(SOCKET_ROUTES.GET_MEDIA, async (data: any) => {
+  //     const { id, receiverNumber, messageId, mediaUrl, fileName } = data;
+  //     const result = await getMessageFromMessageId(messageId);
+  //     if (result) {
+  //       await db.messages.update(messageId, {
+  //         ...result,
+  //         message: result?.message,
+  //         messageId: id,
+  //         mediaUrl: mediaUrl,
+  //         fileName: fileName,
+  //         status: MESSAGE_STATUS.SENT,
+  //       });
+  //     }
+  //   });
+  // };
 
-  const joinRoom = () => {
-    setRoomJoined(false);
-    setMessage("");
-    setSelectedFile(null);
-    if (role === ROLES.ADMIN) {
-      socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-        phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
-        userId: `${ta}`,
-      });
-    }
-    socket.emit(SOCKET_ROUTES.JOIN_ROOM, {
-      to: id,
-      userId: `${employeeId}`,
-    });
+  // const getMessageFromSocket = () => {
+  //   socket.on(SOCKET_ROUTES.GET_MESSAGE, async (data: any) => {
+  //     const { id, receiverNumber, messageId } = data;
+  //     const result = await getMessageFromMessageId(messageId);
 
-    dispatch(setPhone(id));
-    socket.on(SOCKET_ROUTES.ROOM_STATUS, (data) => {
-      setRoomJoined(true);
-    });
-    resetUnreadCount(id);
-  };
-
-  const getMessageFromSocket = () => {
-    socket.on(SOCKET_ROUTES.GET_MESSAGE, async (data: any) => {
-      const { id, receiverNumber, messageId } = data;
-      const result = await getMessageFromMessageId(messageId);
-
-      if (result) {
-        await db.messages.update(messageId, {
-          ...result,
-          message: result?.message,
-          messageId: id,
-        });
-      }
-    });
-  };
-
+  //     if (result) {
+  //       await db.messages.update(messageId, {
+  //         ...result,
+  //         message: result?.message,
+  //         messageId: id,
+  //       });
+  //     }
+  //   });
+  // };
   useEffect(() => {
-    getMessageFromSocket();
-    socketConnection.onmessage = (event: any) => {
+    const connection = initiateSocket();
+    setSocketConnetion(connection)
+  }, []);
+  console.log(">>socketConnection",socketConnection)
+  useEffect(() => {
+    // getMessageFromSocket();
+    socketConnection && (socketConnection.onmessage = (event: any) => {
       getUpdateMessageId(event);
       getStatus(event);
-    };
+    });
+    // if(!!socketConnection)
+    // {
+    //   socketConnection.onmessage = (event: any) => {
+    //     getUpdateMessageId(event);
+    //     getStatus(event);
+    //   };
+    // }
   }, [socketConnection]);
-
-  useEffect(() => {
-    getMediaFromSocket();
-  }, [id, props.isConnected]);
-
-  useEffect(() => {
-    if (socket.connected && employeeId) {
-      joinRoom();
-    }
-  }, [id, socket.connected, employeeId]);
 
   return (
     <div className={styles.messageScreen} ref={chatScreenRef}>
@@ -335,17 +324,18 @@ setLoader(false)
           techStack={techStack}
           interviewStatus={interviewLevel}
           profileImage={profileImage}
-          isLoading={!socket.connected || !isRoomJoined}
+          isLoading={!socketConnection}
         />
-        {!socket.connected || !isRoomJoined ? (
-          <ChatBodySkeleton />
-        ) : (
+        {
+          !socketConnection ? (
+            <ChatBodySkeleton />
+          ) :
           <ChatBody
             phone={id}
             onRetry={handleClick}
-            isLoading={!socket.connected || !isRoomJoined}
+            isLoading={!socketConnection}
           />
-        )}
+        }
         <ChatBottom
           onSend={handleClick}
           loader={loader}
@@ -357,7 +347,7 @@ setLoader(false)
           candidateName={name}
           onTemplateSend={handleTemplateSend}
           chatScreenRef={chatScreenRef}
-          isLoading={!socket.connected || !isRoomJoined}
+          isLoading={!socketConnection}
         />
       </Fragment>
     </div>

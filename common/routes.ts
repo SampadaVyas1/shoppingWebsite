@@ -37,6 +37,7 @@ export enum SERVICE_WHATSAPP {
   GET_ROOM_DATA = "wa/whatsapp/getNewUsersList",
   SYNC_CHATS = "wa/whatsapp/syncChats",
   GET_CHATS = "wa/whatsapp/getChats",
+  UPLOAD_MEDIA="wa/whatsapp/uploadMedia"
 }
 
 export const TEAM_PAGE_ROUTES = {
