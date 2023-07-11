@@ -12,7 +12,6 @@ import styles from "./chatBottom.module.scss";
 import Images from "@/public/assets/icons";
 import { IChatBottomProps } from "./chatBottom.types";
 import {
-  BUTTON_VARIANT,
   MESSAGE_TYPES,
   SKELETON_VARIANT,
   TOOLTIP_POSITION,
@@ -25,14 +24,8 @@ import { sagaActions } from "@/redux/actions";
 import Options from "@/components/select/options";
 import Loader from "@/components/loader";
 import { IOptionType } from "@/common/types";
-import {
-  formatTemplateHeader,
-  formatTemplateName,
-  getTimeStamp,
-} from "@/common/utils";
+import { formatTemplateHeader, formatTemplateName } from "@/common/utils";
 import TemplateCard from "@/components/templateCard";
-import Button from "@/components/button";
-import { SOCKET_ROUTES } from "@/common/constants/socketConstants";
 import Typography from "@/components/typography";
 
 const ChatBottom = (props: IChatBottomProps) => {
@@ -46,6 +39,7 @@ const ChatBottom = (props: IChatBottomProps) => {
     chatScreenRef,
     onTemplateSend,
     loader,
+    phone,
   } = props;
 
   const { isLoading, templates } = useAppSelector((state) => state.messages);
@@ -72,9 +66,7 @@ const ChatBottom = (props: IChatBottomProps) => {
     }
   };
 
-  const handleTemplateSend = (
-    event: React.MouseEvent<HTMLDivElement>
-  ) => {
+  const handleTemplateSend = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     selectedTemplate && onTemplateSend && onTemplateSend(selectedTemplate);
     onTemplateClose();
@@ -133,6 +125,10 @@ const ChatBottom = (props: IChatBottomProps) => {
   useEffect(() => {
     props.isLoading && onTemplateClose();
   }, [props.isLoading]);
+
+  useEffect(() => {
+    setMessage("");
+  }, [phone]);
 
   return props.isLoading ? (
     <div className={styles.chatBottom}>
@@ -235,7 +231,7 @@ const ChatBottom = (props: IChatBottomProps) => {
         <Container customClass={styles.imagePreview}>
           {selectedFile.file.type.includes(MESSAGE_TYPES.IMAGE) ? (
             <ImageComponent
-              src={URL.createObjectURL(selectedFile.file)}
+              src={selectedFile.file && URL.createObjectURL(selectedFile.file)}
               customClass={styles.attachedImage}
             />
           ) : (
@@ -274,7 +270,12 @@ const ChatBottom = (props: IChatBottomProps) => {
             customClass={styles.closeIcon}
             onClick={onTemplateClose}
           />
-          <div className={styles.sendButton} onClick={(event: React.MouseEvent<HTMLDivElement>) => handleTemplateSend(event)}>
+          <div
+            className={styles.sendButton}
+            onClick={(event: React.MouseEvent<HTMLDivElement>) =>
+              handleTemplateSend(event)
+            }
+          >
             <Typography>Send</Typography>
           </div>
         </Container>

@@ -28,12 +28,12 @@ const ChatList = ({
   setSelectedImage,
 }: IChatListProps) => {
   const getMediaUrl = (media: string | File) => {
-    return typeof media !== "string" ? URL.createObjectURL(media) : media;
+    return typeof media !== "string"? media?.name ?URL.createObjectURL(media||""): "" : media;
   };
-
+  
   const handleRetry = useCallback(
-    (message: string, messageId: string) => () => {
-      onRetry(message, messageId);
+    (message: string, messageId: string,file:string | File) => () => {
+      onRetry(message, messageId,file);
     },
     [onRetry]
   );
@@ -60,7 +60,7 @@ const ChatList = ({
 
   return (
     <React.Fragment>
-      {chats?.map((messageData: ISentMessage, index: number) => {
+      {!!chats && chats?.map((messageData: ISentMessage, index: number) => {
         const {
           status,
           timestamp,
@@ -68,6 +68,8 @@ const ChatList = ({
           messageId,
           caption,
           mediaUrl,
+          fileName,
+          file,
           messageType: type,
         } = messageData;
         const messageType = status
@@ -105,8 +107,8 @@ const ChatList = ({
                   (typeof mediaUrl !== "string"
                     ? renderTag(mediaUrl?.name!)
                     : renderTag(
-                        caption ||
-                          mediaUrl!.substring(mediaUrl?.lastIndexOf("/") + 1),
+                        caption||
+                        mediaUrl!.substring(mediaUrl?.lastIndexOf("/") + 1),
                         () => handleMediaDownload(mediaUrl)
                       ))}
                 {message &&
@@ -151,7 +153,7 @@ const ChatList = ({
                   Failed to send.
                   <span
                     className={styles.retry}
-                    onClick={handleRetry(message!, messageId)}
+                    onClick={handleRetry(message!, messageId,file)}
                   >
                     Tap to retry.
                   </span>

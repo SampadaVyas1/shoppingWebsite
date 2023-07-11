@@ -19,7 +19,7 @@ export class MySubClassedDexie extends Dexie {
       conversations:
         "id, ta, messages, unreadCount,profilePhoto, name, userId, status, message, interviewLevel, interviewStatus, postingTitle, techStack, roomId, recruiterFirstName, recruiterLastName",
       messages:
-        "messageId,message,timestamp,messageType,status,to,from, phone, mediaUrl, fileName",
+        "messageId,message,timestamp,messageType,status,to,from, phone, mediaUrl,fileName",
     });
   }
 }

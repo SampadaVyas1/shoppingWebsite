@@ -1,8 +1,7 @@
 import { SERVICE_WHATSAPP } from "@/common/routes";
 import service from "./config";
-import { getDataFromLocalStorage, setDataInLocalStorage } from "@/common/utils";
+import {setDataInLocalStorage } from "@/common/utils";
 import axios from "axios";
-import { TOKEN } from "@/common/constants";
 import { SOCKET_CONSTANTS } from "@/common/constants/socketConstants";
 
 export const getAllTemplates = async () => {
@@ -26,8 +25,24 @@ export const getRoomData = async (params?: any) => {
 
 export const sendMediaData = async (params: any) => {
   try {
-    const response = await service.post(SERVICE_WHATSAPP.UPLOAD_MEDIA,params);
+    const response = await service.post(SERVICE_WHATSAPP.UPLOAD_MEDIA, params);
     return response;
+  } catch (error) {
+    return { data: null, error: error };
+  }
+};
+
+export const uploadPresinedUrl = async (
+  presignedUrl: any,
+  selectedFile: any
+) => {
+  try {
+    const upload = await axios.put(presignedUrl, selectedFile?.file, {
+      headers: {
+        "Content-Type": selectedFile?.file?.type,
+      },
+    });
+    return upload;
   } catch (error) {
     return { data: null, error: error };
   }
@@ -39,6 +54,7 @@ export const syncChat = async (params?: any) => {
       `${SERVICE_WHATSAPP.SYNC_CHATS}`,
       params
     );
+    console.log(">>>",response)
     const { lastBackupTime } = response.data.data;
     setDataInLocalStorage(SOCKET_CONSTANTS.LAST_BACKUP_TIME, lastBackupTime);
     return response.data;

@@ -8,7 +8,7 @@ export interface IChatBodyProps {
 
 export interface IChatListProps {
   chats: ISentMessage[];
-  onRetry: (message: string, messageId: string) => void;
+  onRetry: (message: string, messageId: string, file:string | File) => void;
   handleMediaDownload: (media: string) => void;
   setSelectedImage: (media: string | File) => void;
 }

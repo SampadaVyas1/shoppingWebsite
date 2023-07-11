@@ -1,5 +1,4 @@
 import React, {
-  useLayoutEffect,
   useState,
   useCallback,
   useEffect,
@@ -29,9 +28,9 @@ const ChatBody = (props: IChatBodyProps) => {
 
   const dispatch = useDispatch();
 
-  const messageListData = useLiveQuery(() => {
-    return getSortedMessages(phone);
-  });
+  const messageListData = useLiveQuery(() =>getSortedMessages(phone),  
+  [phone]);
+
 
   const [chats, setChats] = useState<ISentMessage[]>([]);
 
@@ -93,6 +92,7 @@ const ChatBody = (props: IChatBodyProps) => {
     };
   }, [phone]);
 
+
   return (
     <InfiniteScroll
       customClass={styles.messageBody}
@@ -101,14 +101,12 @@ const ChatBody = (props: IChatBodyProps) => {
       onReversePageChange={handleScroll}
     >
       {isLoading && <Loader customStyles={styles.chatLoader} />}
-      {!!chats && (
         <ChatList
           chats={chats}
           onRetry={onRetry}
           handleMediaDownload={handleMediaDownload}
           setSelectedImage={setSelectedImage}
         />
-      )}
       <div ref={messagesEndRef}></div>
       <Modal
         open={!!selectedImage.length}

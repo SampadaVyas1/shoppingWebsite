@@ -15,4 +15,5 @@ export interface IChatBottomProps {
   isLoading: boolean;
   loader:boolean;
   chatScreenRef: RefObject<HTMLDivElement>;
+  phone:string
 }

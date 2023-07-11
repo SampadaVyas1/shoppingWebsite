@@ -13,6 +13,7 @@ export const initiateSocket = ()=>{
   socketConnection.onclose = (event) => {
     if (event.code === 1001) {
       initiateSocket();
+      console.log("websocket connection closed")
     }
   };
   return socketConnection;

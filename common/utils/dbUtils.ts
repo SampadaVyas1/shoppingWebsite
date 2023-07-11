@@ -4,7 +4,6 @@ import { SOCKET_CONSTANTS } from "../constants/socketConstants";
 import { getDataFromLocalStorage, getTimeStamp } from ".";
 import { getChats, getFileData } from "@/services/messages.service";
 import CryptoJS from "crypto-js";
-import axios from "axios";
 import { TIMESTAMP } from "../constants";
 
 export const resetUnreadCount = async (candidateMobileNumber: string) => {
@@ -74,6 +73,8 @@ export const getSentMessageData = (messageData: ISentMessage) => {
     status,
     messageType = "text",
     caption,
+    fileName,
+    file,
   } = messageData;
   const newMessage = {
     messageId: messageId,
@@ -85,6 +86,8 @@ export const getSentMessageData = (messageData: ISentMessage) => {
     to: to,
     caption: caption,
     from: from,
+    fileName:fileName,
+    file:file
   };
   return newMessage;
 };

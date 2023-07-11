@@ -1,48 +1,29 @@
 import { useEffect, useState } from "react";
-import { Popover } from "react-tiny-popover";
 import { useDispatch } from "react-redux";
 import { useLiveQuery } from "dexie-react-hooks";
 import { IMessage, db } from "@/db";
-import Image from "next/image";
 import Button from "@/components/button";
 import ImageComponent from "@/components/imageComponent";
 import CandidateList from "../../pageComponents/messages/candidateList";
 import InputBox from "@/components/inputBox";
-import Typography from "@/components/typography";
-import Tag from "@/components/tag";
-import TransitionWrapper from "@/components/transitionWrapper";
+
 import MessageScreen from "@/pageComponents/messages/messageScreen";
 import Modal from "@/components/modal";
 import StartConversationModal from "@/pageComponents/messages/startConversationModal";
 import styles from "./messages.module.scss";
 import Images from "@/public/assets/icons";
-import {
-  SOCKET_CONSTANTS,
-  SOCKET_ROUTES,
-} from "@/common/constants/socketConstants";
+
 import {
   getAllConversations,
   getFilteredData,
-  getMessageFromMessageId,
   increaseUnreadCount,
-  updateMessage,
 } from "@/common/utils/dbUtils";
-import {
-  ARROW_ALIGNMENT,
-  BUTTON_VARIANT,
-  MESSAGE_TYPES,
-  TOOLTIP_POSITION,
-  TYPOGRAPHY_VARIANT,
-} from "@/common/types/enums";
+import { BUTTON_VARIANT } from "@/common/types/enums";
 import MessagePlaceholder from "@/public/assets/images/messagePlaceholder.svg";
 import { ITagType } from "@/components/tag/tag.types";
-import {
-  IIncomingMessageType,
-  IMessagesStates,
-} from "../../common/types/messages.types";
+import { IMessagesStates } from "../../common/types/messages.types";
 import { useAppSelector } from "@/redux/hooks";
 import { ICandidateListCardProps } from "@/pageComponents/messages/candidateListCard/candidateListCard.types";
-import { getDataFromSessionStorage } from "@/common/utils";
 import EmptyState from "@/components/emptyState";
 import { IData } from "@/common/types/candidates.types";
 import { sagaActions } from "@/redux/actions";
@@ -60,14 +41,13 @@ const Messages = () => {
   const [conversationList, setConversationList] = useState<
     IMessage[] | undefined
   >(undefined);
-  const conversations = useLiveQuery(() => {
-    return getAllConversations();
-  });
+  const conversations = useLiveQuery(() => 
+     getAllConversations()
+  );
 
   const dispatch = useDispatch();
 
   const { employeeId } = useAppSelector((state) => state.login.userDetails);
-  const { phone } = useAppSelector((state) => state.messages);
   const {
     selectedLevels,
     selectedCandidate,
@@ -151,132 +131,6 @@ const Messages = () => {
     const [firstCandidate, ...otherCandidates] = selectedCandidate ?? [];
     selectedCandidate?.length === 1 && handleCandidateSelect(firstCandidate);
   };
-
-  const createNewMessage = (singleMessage: IIncomingMessageType) => {
-    const {
-      from,
-      wamid,
-      messageType,
-      timestamp,
-      message,
-      mediaUrl,
-      caption,
-      fileName,
-    } = singleMessage;
-    const newMessage = {
-      messageId: wamid,
-      message: message,
-      timestamp: timestamp,
-      messageType: messageType,
-      mediaUrl: mediaUrl,
-      to: `${employeeId}`,
-      caption: caption,
-      fileName: fileName,
-      from: from,
-    };
-    return newMessage;
-  };
-
-  // const getNotificationsFromSocket = () => {
-  //   socket.on(
-  //     SOCKET_ROUTES.NOTIFICATION,
-  //     async (data: IIncomingMessageType) => {
-  //       const { from, wamid } = data;
-  //       const newMessage = createNewMessage(data);
-  //       !phone ||
-  //         (from !== phone && (await increaseUnreadCount(from, wamid, false)));
-  //       await updateMessage({ ...newMessage, phone: from });
-  //     }
-  //   );
-  // };
-
-  // const getPendingMessages = () => {
-  //   socket.on(SOCKET_ROUTES.PENDING_MESSAGES, async (data: any) => {
-  //     const messageTypes = [
-  //       MESSAGE_TYPES.TEXT,
-  //       MESSAGE_TYPES.DOCUMENT,
-  //       MESSAGE_TYPES.IMAGE,
-  //     ];
-
-  //     Promise.all(
-  //       data.map(async (singleMessage: IIncomingMessageType) => {
-  //         const { from, wamid } = singleMessage;
-  //         const newMessage = createNewMessage(singleMessage);
-  //         if (
-  //           messageTypes.includes(singleMessage?.messageType as MESSAGE_TYPES)
-  //         ) {
-  //           await increaseUnreadCount(from, wamid, true);
-  //           await updateMessage({ ...newMessage, phone: from });
-  //         }
-  //       })
-  //     );
-  //   });
-  // };
-
-  // const getPendingStatus = () => {
-  //   socket.on(SOCKET_ROUTES.PENDING_STATUS, async (data: any) => {
-  //     if (data.length) {
-  //       Promise.all(
-  //         data.map(async (pendingStatus: any) => {
-  //           const matchedResult = await getMessageFromMessageId(
-  //             pendingStatus.id
-  //           );
-  //           if (matchedResult) {
-  //             await updateMessage({
-  //               ...matchedResult,
-  //               status: pendingStatus.status,
-  //             });
-  //           }
-  //         })
-  //       );
-  //     }
-  //   });
-  // };
-
-  // const getStatus = () => {
-  //   socket.on(SOCKET_ROUTES.STATUS, async (data: any) => {
-  //     const matchedResult = await getMessageFromMessageId(data.id);
-  //     if (matchedResult) {
-  //       await updateMessage({ ...matchedResult, status: data.status });
-  //     }
-  //   });
-  // };
-
-  const connectSocket = () => {
-    // socket.connect();
-    // socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-    //   phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
-    //   userId: `${employeeId}`,
-    // });
-
-    // socket.on(SOCKET_ROUTES.CONNECT, () => {
-    //   socket.emit(SOCKET_ROUTES.CREDENTIALS, {
-    //     phoneId: `${process.env.NEXT_PUBLIC_PHONE_ID}`,
-    //     userId: `${employeeId}`,
-    //   });
-    //   setMessagePageState((prevState) => ({
-    //     ...prevState,
-    //     isConnected: true,
-    //   }));
-    // });
-
-    // socket.on(SOCKET_ROUTES.DISCONNECT, () => {
-    //   setMessagePageState((prevState) => ({
-    //     ...prevState,
-    //     isConnected: false,
-    //   }));
-    // });
-  };
-
-  useEffect(() => {
-    // if (!socket.connected && employeeId) {
-    //   connectSocket();
-    // }
-    // getStatus();
-    // getPendingStatus();
-    // getPendingMessages();
-    // getNotificationsFromSocket();
-  }, [employeeId]);
 
   useEffect(() => {
     dispatch({ type: sagaActions.GET_CANDIDATE_FILTER });
