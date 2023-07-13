@@ -75,6 +75,7 @@ export const getSentMessageData = (messageData: ISentMessage) => {
     caption,
     fileName,
     file,
+    contentType
   } = messageData;
   const newMessage = {
     messageId: messageId,
@@ -87,7 +88,8 @@ export const getSentMessageData = (messageData: ISentMessage) => {
     caption: caption,
     from: from,
     fileName:fileName,
-    file:file
+    file:file,
+    contentType:contentType
   };
   return newMessage;
 };
@@ -155,9 +157,10 @@ export const decrypt = (message: string) => {
 
 export const addDataAfterSync = async () => {
   const response = await getChats();
+  console.log(response)
   const fileData = await getFileData(response.data);
   const chatsData = decrypt(fileData);
-
+console.log(chatsData)
   !!chatsData && await Promise.all(
     !!chatsData && chatsData?.chatHistory?.map(async (user: any) => {
       await db.conversations.put(user);

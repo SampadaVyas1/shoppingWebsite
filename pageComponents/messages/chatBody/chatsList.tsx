@@ -32,8 +32,8 @@ const ChatList = ({
   };
   
   const handleRetry = useCallback(
-    (message: string, messageId: string,file:string | File) => () => {
-      onRetry(message, messageId,file);
+    (message: string, messageId: string, file:File, fileName:any,contentType:string,messageType:string,mediaUrl:any) => () => {
+      onRetry(message, messageId,file,fileName,contentType,messageType,mediaUrl);
     },
     [onRetry]
   );
@@ -69,6 +69,7 @@ const ChatList = ({
           caption,
           mediaUrl,
           fileName,
+          contentType,
           file,
           messageType: type,
         } = messageData;
@@ -153,7 +154,7 @@ const ChatList = ({
                   Failed to send.
                   <span
                     className={styles.retry}
-                    onClick={handleRetry(message!, messageId,file)}
+                    onClick={handleRetry(message!, messageId,file,fileName,contentType,messageType,mediaUrl)}
                   >
                     Tap to retry.
                   </span>

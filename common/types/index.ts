@@ -19,7 +19,8 @@ export interface ISentMessage {
   phone?: string;
   caption?: string;
   fileName?: string;
-  file?:any
+  file?:any,
+  contentType?:any
 }
 export interface IOptionType {
   id: number;
