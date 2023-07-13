@@ -1,4 +1,11 @@
-import { useState, useEffect, ChangeEvent, useRef, Fragment } from "react";
+import {
+  useState,
+  useEffect,
+  ChangeEvent,
+  useRef,
+  Fragment,
+  useCallback,
+} from "react";
 import { v4 as uuid } from "uuid";
 import { db } from "@/db";
 import ChatBodySkeleton from "../chatBody/chatBodySkeleton";
@@ -37,8 +44,8 @@ const MessageScreen = (props: IMessageScreenProps) => {
   const chatScreenRef = useRef<HTMLDivElement>(null);
   const [loader, setLoader] = useState<boolean>(false);
   const [socketConnection, setSocketConnetion] = useState<any>();
-  const [idfromonMessage,setId]=useState<string>()
 
+  console.log(socketConnection)
   const { employeeId, role } = useAppSelector(
     (state) => state.login.userDetails
   );
@@ -59,11 +66,11 @@ const MessageScreen = (props: IMessageScreenProps) => {
   const handleClick = async (
     message: any,
     whatsappId: string = "",
-    file?:any,
+    file?: any,
     fileName?: string,
     contentType?: string,
     messageType?: any,
-    mediaUrl?:any,
+    mediaUrl?: any
   ) => {
     const timestamp = getTimeStamp().toString();
     const messageId = `${uuid()}${timestamp}`;
@@ -85,7 +92,7 @@ const MessageScreen = (props: IMessageScreenProps) => {
 
     const presignedUrl = !!response?.data?.data && response?.data?.data;
     const isUploaded =
-      !!presignedUrl && (await uploadPresinedUrl(presignedUrl,selectedFile));
+      !!presignedUrl && (await uploadPresinedUrl(presignedUrl, selectedFile));
 
     const sendMedia = !!(selectedFile || file) && {
       action: SOCKET_ROUTES.SEND_MEDIA_MESSAGE,
@@ -95,12 +102,22 @@ const MessageScreen = (props: IMessageScreenProps) => {
         to: id,
         imageData: {
           fileName: selectedFile?.file?.name
-            ? selectedFile?.file?.name  : file?.file?.name ?  file?.file?.name
+            ? selectedFile?.file?.name
+            : file?.file?.name
+            ? file?.file?.name
             : fileName,
           caption: message,
           messageId: messageId,
-          type: selectedFile?.type ? selectedFile?.type : file?.type ? file?.type: messageType,
-          contentType: selectedFile?.file.type ? selectedFile?.file.type: file?.file?.type ? file?.file?.type : contentType,
+          type: selectedFile?.type
+            ? selectedFile?.type
+            : file?.type
+            ? file?.type
+            : messageType,
+          contentType: selectedFile?.file.type
+            ? selectedFile?.file.type
+            : file?.file?.type
+            ? file?.file?.type
+            : contentType,
         },
       },
     };
@@ -119,7 +136,8 @@ const MessageScreen = (props: IMessageScreenProps) => {
       },
     };
     const newMessage =
-      !(selectedFile?.file?.name || file?.file?.name ||fileName) && !!!selectedFile
+      !(selectedFile?.file?.name || file?.file?.name || fileName) &&
+      !!!selectedFile
         ? getSentMessageData({
             ...commonParams,
             message,
@@ -128,23 +146,36 @@ const MessageScreen = (props: IMessageScreenProps) => {
           })
         : getSentMessageData({
             ...commonParams,
-            mediaUrl: selectedFile?.file ? selectedFile?.file : file?.file ? (file?.file) : mediaUrl,
+            mediaUrl: selectedFile?.file
+              ? selectedFile?.file
+              : file?.file
+              ? file?.file
+              : mediaUrl,
             caption: message,
             file: selectedFile ? selectedFile : file,
             fileName: selectedFile?.file.name
               ? selectedFile?.file.name
-              : file?.file?.name ? file?.file?.name :fileName,
-            messageType: selectedFile?.type ? (selectedFile!.type) : (file?.type) ? file?.type:messageType,
+              : file?.file?.name
+              ? file?.file?.name
+              : fileName,
+            messageType: selectedFile?.type
+              ? selectedFile!.type
+              : file?.type
+              ? file?.type
+              : messageType,
             contentType: selectedFile?.file.type
               ? selectedFile?.file.type
-              : (file?.file?.type) ?  (file?.file?.type):contentType,
+              : file?.file?.type
+              ? file?.file?.type
+              : contentType,
             status: MESSAGE_STATUS.SENDING,
           });
     setMessage("");
     selectedFile?.file?.name && setSelectedFile(null);
     whatsappId.length && deleteMessageByMessageId(whatsappId);
     await updateMessage({ ...newMessage, phone: id });
-    const doesFileExist = selectedFile?.file?.name || file?.file?.name || fileName;
+    const doesFileExist =
+      selectedFile?.file?.name || file?.file?.name || fileName;
     !doesFileExist && !!socketConnection
       ? socketConnection.send(JSON.stringify(data))
       : socketConnection.send(JSON.stringify(sendMedia));
@@ -204,46 +235,45 @@ const MessageScreen = (props: IMessageScreenProps) => {
     await updateMessage({ ...newMessage, phone: id });
   };
 
-  const getStatus = async (event: any) => {
+  const getStatus = (event: any) => {
     const data = JSON.parse(event.data);
-  
-    const matchedResult = !!data.id && (await getMessageFromMessageId(data.id));
-    
-    if (!!matchedResult) {
-      !!data.status &&
-        (await updateMessage({ ...matchedResult, status: data.status }));
-    }
+
+    getMessageFromMessageId(data.id).then((response) => {
+      !!response &&
+        !!data.status &&
+        updateMessage({ ...response, status: data.status });
+    });
   };
 
   const getUpdateMessageId = async (event: any) => {
     const messageData = JSON.parse(event.data);
+    console.log(messageData);
     setLoader(false);
-
-    const messageId = messageData.messageId && messageData.messageId;
+    const messageId = (messageData.messageId && messageData.messageId) || "";
     const mediaUrl = messageData.mediaUrl && messageData.mediaUrl;
-
     const id = !!messageId && messageData.id;
     const url = !!mediaUrl && messageData.mediaUrl;
 
-    const matchedResult =
-      (messageId && !messageData.status) && (await getMessageFromMessageId(messageId));
-    if (matchedResult) {
-      await db.messages.update(messageId, {
-        ...matchedResult,
-        messageId: id,
-        mediaUrl: url,
-        messageType: messageData.type,
-      });
-    }
+    getMessageFromMessageId(messageId).then((data) => {
+      db.messages
+        .update(messageId, {
+          ...data,
+          messageId: id,
+          mediaUrl: url,
+          messageType: messageData.type,
+        })
+        .then(() => {
+          getStatus(event);
+        });
+    });
+
     !!messageData.message && receiveMessage(messageData);
-    if (
-      !!messageData.mediaUrl &&
-      messageData.type === MESSAGE_TYPES.USER_INITIATED
-    ) {
+    if (!!messageData.mediaUrl &&messageData.type === MESSAGE_TYPES.USER_INITIATED){
       receiveMessage(messageData);
     }
   };
-  const receiveMessage = async (data: any) => {
+
+  const receiveMessage = (data: any) => {
     const { from, wamid, messageType, timestamp, message, mediaUrl, caption } =
       data;
 
@@ -257,19 +287,20 @@ const MessageScreen = (props: IMessageScreenProps) => {
       caption: caption,
       from: from,
     };
-    await updateMessage({ ...newMessage, phone: from });
+    updateMessage({ ...newMessage, phone: from });
   };
 
   useEffect(() => {
     const connection = initiateSocket();
+    console.log(connection)
     setSocketConnetion(connection);
   }, []);
 
   useEffect(() => {
     socketConnection &&
-      (socketConnection.onmessage =async (event: any) => {
-       await getUpdateMessageId(event);
-        await getStatus(event);
+      (socketConnection.onmessage = (event: any) => {
+        console.log(event.data);
+        getUpdateMessageId(event);
       });
   }, [socketConnection]);
 

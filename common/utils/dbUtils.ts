@@ -23,8 +23,8 @@ export const resetUnreadCount = async (candidateMobileNumber: string) => {
   }
 };
 
-export const updateMessage = async (newMessage: ISentMessage) => {
-  !!newMessage &&  await  db.messages.put(newMessage);
+export const updateMessage = (newMessage: ISentMessage) => {  
+  !!newMessage && db.messages.put(newMessage);
 };
 
 export const sortMessages = (messageList: ISentMessage[]) => {
@@ -94,9 +94,8 @@ export const getSentMessageData = (messageData: ISentMessage) => {
   return newMessage;
 };
 
-export const getMessageFromMessageId = async (messageId: string) => {
-  const result = await db.messages.where("messageId").equals(messageId).first();
-  return result;
+export const getMessageFromMessageId = (messageId: any="") => {
+  return db.messages.where("messageId").equals(messageId).first();
 };
 
 export const sortMessageByTime = async (phone: string) => {
