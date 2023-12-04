@@ -1,0 +1,24 @@
+.cartPageContainer {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem;
+}
+.cartPageTable {
+  flex: 65%;
+  border-collapse: collapse;
+}
+.cartPageContainer td {
+  border: 1px solid black;
+  padding: 1rem;
+}
+.priceDetails {
+  flex: 35%;
+}
+.adjustPrice {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    font-size: 20px;
+}

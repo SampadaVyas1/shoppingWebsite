@@ -4,16 +4,45 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  // overflow-y: hidden;
 }
 
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
   font-family: "Roboto";
   margin: 0;
   height: 100%;
+  overflow-x: hidden !important;
+  //  overflow: hidden
 }
+#light {
+  background-color: white;
+  color: black;
+}
+#dark {
+  background-color: black;
+  color: white;
+}
+
+#dark .list_listContainerWrapper__Hbhtm {
+  background-color: black;
+}
+#dark .searchProduct {
+  background-color: black;
+  color: white !important;
+}
+#dark .productContent {
+  color: white;
+}
+// #dark .listContainer {
+//   background-color: black !important;
+//   color: red !important;
+// }
+// #light .listContainer {
+//   background-color: white !important;
+//   color: red !important;
+// }
 
 #__next {
   height: 100%;

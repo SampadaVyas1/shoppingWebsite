@@ -1,40 +1,28 @@
 import type { AppProps } from "next/app";
-import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
 import "@/styles/globals.scss";
-import Splash from "@/components/splash";
-import AuthProvider from "@/context/authContext";
-import ProtectedRoute from "@/hoc/protectedRoute";
-import { PRIVATE_ROUTES } from "@/common/routes";
-import { useState, useEffect } from "react";
-import { notify } from "@/helpers/toastHelper";
 import { Provider } from "react-redux";
-import { store } from "@/redux/store";
+import store from "@/reduxSaga/store/store";
+import EcomPage from "./eComPage";
+import { useRouter } from "next/router";
+import { Auth0Provider } from "@auth0/auth0-react";
+import { createContext, useState } from "react";
+// import { createContext } from "vm";
 
-const LoginElement = dynamic(() => import("./login"), {
-  loading: () => <Splash />,
-  ssr: false,
-  suspense: true,
-});
-
+export const ThemeContext = createContext<any>(null);
 export default function App({ Component, pageProps }: AppProps) {
-  const router = useRouter();
-
+  const [theme, setTheme] = useState("light");
+  const toggleTheme = () => {
+    setTheme((curr) => (curr === "light" ? "dark" : "light"));
+  };
   return (
-    <GoogleOAuthProvider clientId={`${process.env.NEXT_PUBLIC_CLIENT_ID}`}>
-      <Provider store={store}>
-        {router.pathname === PRIVATE_ROUTES.LOGIN ? (
-          <LoginElement />
-        ) : (
-          <ProtectedRoute>
-            <Component {...pageProps} />
-            <ToastContainer />
-          </ProtectedRoute>
-        )}
-      </Provider>
-    </GoogleOAuthProvider>
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      <div id={theme}>
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
+      </div>
+    </ThemeContext.Provider>
   );
 }

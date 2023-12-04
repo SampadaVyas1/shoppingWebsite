@@ -1,0 +1,39 @@
+.imageSlider {
+  width: 100%;
+  transition: transform 0.5s ease;
+  flex-shrink: 0;
+}
+.imageContainer {
+  position: relative;
+  cursor: pointer;
+  animation: mymove 5s infinite;
+  //   transform: translate(42px, 18px);
+  display: flex;
+}
+.buttonContainer {
+}
+.ButtonContainerWrapper {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  position: absolute;
+  top: 700px;
+  //   right: 575px;
+  padding-top: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// @keyframes mymove {
+//   from {
+//     right: 0px;
+//   }
+//   to {
+//     left: 0px;
+//   }
+// }

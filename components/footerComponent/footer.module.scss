@@ -1,0 +1,18 @@
+.footerWrapper {
+  padding: 1rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.designerName {
+  color: red;
+}
+.footer {
+  background-color: rgb(43, 52, 69);
+}
+.backToTop {
+  // float: right;
+  position: absolute;
+  right: 4rem;
+}

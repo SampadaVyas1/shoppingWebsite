@@ -25,75 +25,75 @@ import { resetErrorMessage } from "@/redux/slices/loginSlice";
 import { getDataFromLocalStorage } from "@/common/utils";
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const router = useRouter();
+  // const dispatch = useDispatch();
+  // const router = useRouter();
 
-  const [isChatLoading, setChatLoading] = useState<boolean>(false);
-  const {
-    isLoggedIn,
-    isLoading,
-    isLoginError,
-    errorMessage,
-    userDetails,
-    featureData,
-  } = useAppSelector((state) => state.login);
+  // const [isChatLoading, setChatLoading] = useState<boolean>(false);
+  // const {
+  //   isLoggedIn,
+  //   isLoading,
+  //   isLoginError,
+  //   errorMessage,
+  //   userDetails,
+  //   featureData,
+  // } = useAppSelector((state) => state.login);
 
-  const handleErrorClose = () => {
-    dispatch(resetErrorMessage());
-  };
+  // const handleErrorClose = () => {
+  //   dispatch(resetErrorMessage());
+  // };
 
-  const handleContactAdmin = () => {
-    const win: Window = window;
-    win.location = `${process.env.NEXT_PUBLIC_ADMIN_EMAIL}`;
-  };
+  // const handleContactAdmin = () => {
+  //   const win: Window = window;
+  //   win.location = `${process.env.NEXT_PUBLIC_ADMIN_EMAIL}`;
+  // };
 
-  const handleClick = async (codeResponse: Object) => {
-    dispatch({
-      type: sagaActions.GET_LOGIN_DATA,
-      token: codeResponse,
-    });
-  };
+  // const handleClick = async (codeResponse: Object) => {
+  //   dispatch({
+  //     type: sagaActions.GET_LOGIN_DATA,
+  //     token: codeResponse,
+  //   });
+  // };
 
-  const getChatData = async () => {
-    setChatLoading(true);
-    addDataAfterSync();
-    setChatLoading(false);
-  };
+  // const getChatData = async () => {
+  //   setChatLoading(true);
+  //   addDataAfterSync();
+  //   setChatLoading(false);
+  // };
 
-  const onSuccess = (codeResponse: Object) => {
-    handleClick(codeResponse);
-  };
-  const replaceRoute = () => {
-    const redirectRoute =
-      userDetails.role === ROLES.ADMIN
-        ? ROUTES_PATH.TEAM
-        : ROUTES_PATH.MESSAGES;
-    router.replace(redirectRoute);
-  };
-  const login = useGoogleLogin({ onSuccess: onSuccess, flow: "auth-code" });
+  // const onSuccess = (codeResponse: Object) => {
+  //   handleClick(codeResponse);
+  // };
+  // const replaceRoute = () => {
+  //   const redirectRoute =
+  //     userDetails.role === ROLES.ADMIN
+  //       ? ROUTES_PATH.TEAM
+  //       : ROUTES_PATH.MESSAGES;
+  //   router.replace(redirectRoute);
+  // };
+  // const login = useGoogleLogin({ onSuccess: onSuccess, flow: "auth-code" });
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      dispatch({ type: sagaActions.GET_USER_DETAILS });
-    }
-  }, [isLoggedIn, router, userDetails]);
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     dispatch({ type: sagaActions.GET_USER_DETAILS });
+  //   }
+  // }, [isLoggedIn, router, userDetails]);
 
-  useEffect(() => {
-    if (userDetails.role) {
-      replaceRoute();
-    }
-  }, [userDetails]);
+  // useEffect(() => {
+  //   if (userDetails.role) {
+  //     replaceRoute();
+  //   }
+  // }, [userDetails]);
 
-  useEffect(() => {
-    if (isLoggedIn && userDetails.role !== ROLES.ADMIN) {
-      getChatData();
-    }
-    isLoggedIn && router.replace(RECRUITER_ROUTES[1].path);
-  }, [isLoggedIn]);
+  // useEffect(() => {
+  //   if (isLoggedIn && userDetails.role !== ROLES.ADMIN) {
+  //     getChatData();
+  //   }
+  //   isLoggedIn && router.replace(RECRUITER_ROUTES[1].path);
+  // }, [isLoggedIn]);
 
   return (
     <>
-      {isChatLoading && <p>Fetching chats</p>}
+      {/* {isChatLoading && <p>Fetching chats</p>}
       {isLoggedIn || isLoading ? (
         <Loader />
       ) : (
@@ -177,7 +177,8 @@ const Login = () => {
             />
           </Container>
         </div>
-      )}
+      )} */}
+      Login
     </>
   );
 };

@@ -1,0 +1,91 @@
+.productDetails {
+  display: flex;
+  overflow: hidden;
+  padding: 2rem;
+  gap: 2rem;
+}
+.imageDetails {
+  flex: 1;
+}
+.info {
+  flex: 4;
+}
+.content {
+  color: gray;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.ratingStar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2rem;
+  color: #0772dd;
+  font-size: 1.2rem;
+  padding-bottom: 1rem;
+}
+
+.productInfo {
+  border-bottom: 2px solid rgb(170, 166, 166);
+}
+.price {
+  padding-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.offPrice {
+  color: rgb(255, 115, 0);
+  font-size: 2rem;
+}
+.inclusiveTaxes {
+  padding-top: 0.8rem;
+  font-weight: 500;
+  color: green;
+  font-size: 1.2rem;
+}
+.selectSize {
+  color: rgb(255, 0, 76);
+}
+.sizeChartData {
+  padding-top: 2rem;
+}
+
+.size {
+  color: rgb(255, 0, 76);
+  border-radius: 50%;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2.9rem;
+  height: 2.9rem;
+  border: 2px solid rgb(255, 0, 76);
+}
+.sizeDetails {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+.addToCart {
+  padding: 1rem;
+  background-color: rgb(255, 0, 76);
+  color: white;
+  width: 14rem;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.buttons {
+  padding-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}

@@ -1,0 +1,42 @@
+.topHeaderContainer {
+  background-color: #57585a;
+  padding: 0.3rem;
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.latestCloth {
+  background-color: rgb(216, 11, 45);
+  color: white;
+  padding: 0.2rem;
+  border-radius: 1rem;
+  border: none;
+  font-size: 1rem;
+  width: 6rem;
+}
+.freeShipping {
+  color: white;
+}
+.headerContainerRightSide {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+}
+.headerContainerLeftSide {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 0.5rem;
+  padding-right: 4rem;
+}
+.socialMediaIcon {
+  display: flex;
+  gap: 0.7rem;
+}
+.icons {
+  //   font-size: 1.2rem;
+  cursor: pointer;
+}

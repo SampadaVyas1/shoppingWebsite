@@ -1,0 +1,25 @@
+.listContainerWrapper {
+  position: absolute;
+  background-color: white;
+  z-index: 1;
+  padding: 1rem;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin-left: -3rem;
+
+  width: 10rem;
+  border-bottom-right-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+.list {
+  padding-bottom: 1rem;
+  list-style-type: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  &:hover {
+    color: #b30c0c;
+  }
+}
+.listNotToShow {
+  display: none;
+}
